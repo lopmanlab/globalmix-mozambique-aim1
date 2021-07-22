@@ -22,27 +22,12 @@ opts_chunk$set(comment = NA,
 
 
 ```{r imports, echo=FALSE, message = FALSE}
-# Packages
-library(ggplot2)
+# Load packages
+source("../scripts/00_load_libraries.R")
 
-library(tidyr)
-library(RColorBrewer)
-library(dplyr)
-library(leaflet)
-library(ggthemes)
-library(lubridate)
-library(plotly)
-library(knitr)
-library(kableExtra)
-options(knitr.table.format = "html") 
-#define theme
+# define theme
 theme_asart = ggthemes::theme_hc
-library(forcats)
-library(flexdashboard)
-
-library(REDCapR)
-library(redcapAPI)
-library(dplyr)
+options(knitr.table.format = "html") 
 
 data = rio::import("../raw/data_2021-06-15.csv")
 
@@ -65,6 +50,7 @@ hh <- hh %>%
 
 
 ```
+
 ## check the distribution of number of occupants, people slept in the house overnight, number of rooms, and number of bedrooms.
 ```{r, echo=FALSE, message = FALSE}
 # hh
@@ -164,9 +150,9 @@ ind = data %>%
 ind  = ind %>% 
   dplyr::mutate(highest_educlb = case_when(highest_educ == 0 ~ "No schooling", 
                                            highest_educ == 1 ~ "Primary School (1-7)", 
-                                           highest_educ == 1 ~ "Basic Secondary school (8-10)",
-                                           highest_educ == 1 ~ "Middle Secondary (11-12)", 
-                                           highest_educ == 1 ~ "1-3 years of college/university", 
+                                           highest_educ == 2 ~ "Basic Secondary school (8-10)",
+                                           highest_educ == 3 ~ "Middle Secondary (11-12)", 
+                                           highest_educ == 4 ~ "1-3 years of college/university", 
                                            highest_educ == 5 ~ "Bacherols",
                                            highest_educ == 6 ~ "More than Bachelors")) ## check spelling, initially "Bacherols"
 
