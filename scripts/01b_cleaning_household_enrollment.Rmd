@@ -1,0 +1,318 @@
+---
+title: "Global Mix Mozambique cleaning"
+author: mkiti@emory.edu
+output: html_document
+# date:--
+---
+
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, comment = NA, error= FALSE, cache = F}
+rm(list=ls())
+library(knitr)
+opts_chunk$set(comment = NA, 
+               echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE)
+```
+
+
+```{r imports, echo=FALSE, message = FALSE}
+# Load packages
+source("scripts/00_load_libraries.R")
+
+# load data
+data = rio::import("../raw/all_data_09242021.csv")
+
+# filter
+household_enrolment = data %>% 
+  dplyr::filter(redcap_event_name == "household_survey_arm_1") %>% 
+  dplyr::select("rec_id", "redcap_event_name", "redcap_repeat_instrument","redcap_repeat_instance", "interview_date","enumerator_id100","study_site","aim","hh","hoh_id","site_do_estudo_complete","hh_id","date_hohconsent","hh_head_gender","hh_head_gender_other", "hh_occupants","hh_slept","hh_room_num","hh_bedroom_num","hh_roof_material","hh_roof_material_other","hh_wall_material", "hh_wall_material_other","hh_ac","hh_fan","hh_amenities___0","hh_amenities___1","hh_amenities___2","hh_amenities___3", "hh_amenities___4","hh_transport___0","hh_transport___1","hh_transport___2","hh_transport___3","hh_transport___4","hh_grazing", "hh_poultry","hh_pig","hh_improvements","animal_touch___0","animal_touch___1","animal_touch___2","animal_touch___3", "animal_touch___4","animal_touch___5","animal_touch___6","animal_touch___7","animal_touch___8","animal_touch_other", "animal_injury___0","animal_injury___1","animal_injury___2","animal_injury___3","animal_injury___4","animal_injury___5", "animal_injury___6","animal_injury___7","animal_injury___8","animal_injury_other","animal_cook___0","animal_cook___1", "animal_cook___2","animal_cook___3","animal_cook___4","animal_cook___5","animal_cook___6","animal_cook___7","animal_cook___8", "animal_cook_other","water_source___0","water_source___1","water_source___2","water_source___3","water_source___4", "water_source___5","water_source___6","water_source___7","water_source___8","water_source___9","water_source___10", "water_source___11","water_source_other","water_drink___0","water_drink___1","water_drink___2","water_drink___3", "water_drink___4","water_drink___5","water_drink___6","water_drink___7","water_drink___8","water_drink___9","water_drink___10", "water_drink___11","water_drink_other","water_purify","water_purify_method___1","water_purify_method___2","water_purify_method___3", "water_purify_method___4","water_purify_method___5","water_purify_method___6","water_purify_method___7","water_purify_method___8", "water_purify_method_other","wash_hands_defecate","wash_hands_food","wash_hands_toilet","hh_toilet","hh_toilet_other", "hh_toilet_location","child_stool_disposal","child_stool_disposal_other","hh_smoking","hh_cook", "hh_fuel___0","hh_fuel___1","hh_fuel___2","hh_fuel___3","hh_fuel_other","hh_asthma","hh_tb", "informaes_de_agregado_familiar_e_casa_complete") %>% 
+  # ,"site_do_estudo_timestamp","individual_id","informaes_sobre_os_membros_da_famlia_timestamp", "informaes_de_agregado_familiar_e_casa_timestamp","hh_toilet_location_other",
+  dplyr::filter(redcap_repeat_instrument == "")
+
+```
+
+
+## Household survey for aim 1
+```{r, echo=FALSE, message = FALSE}
+
+
+## create a report of distribution of all variables in dataset
+# DataExplorer::create_report(hh)
+
+# drop vars with 100% missing data
+drop_vars1 <- c("hh_fuel_other", "hh_toilet_other", "water_drink_other", "water_source_other", "animal_cook_other", 
+               "animal_injury_other", "hh_wall_material_other", "hh_head_gender_other", "redcap_repeat_instance")
+
+hh <- hh %>%
+  select(-one_of(drop_vars1))
+
+# site
+hh = hh %>% 
+  dplyr::mutate(study_sitelb = case_when(study_site == 1 ~ "Manhiça",
+                                         study_site == 2 ~ "Polana Caniço")) 
+
+# aim
+hh = hh %>% 
+  dplyr::mutate(aimlb = case_when(aim == 0 ~ "1",
+                                         aim == 1 ~ "2")) 
+# hh head sex
+hh <- hh %>% 
+  dplyr::mutate(genderlb = case_when(hh_head_gender == 0 ~ "Female",
+                                                   hh_head_gender == 1 ~ "Male"))
+
+
+```
+
+## check the distribution of number of occupants, people slept in the house overnight, number of rooms, and number of bedrooms.
+```{r, echo=FALSE, message = FALSE}
+# hh
+temp1 <- c("hh_occupants","hh_slept","hh_room_num","hh_bedroom_num")
+boxplot(hh[,temp1])
+
+# for each house, hh_bedroom_num < hh_room_num
+```
+```{r, echo=FALSE, message=FALSE}
+# there is a household in which >40 people slept in. check and correct/ drop if necessary.
+hh %>%
+  select(study_site, enumerator_id100, hh_id, hh_slept, hh_room_num, hh_bedroom_num) %>%
+  filter(hh_slept > 20)
+# Polana Canico,
+```
+
+## Amenities
+```{r amenities, echo=FALSE}
+library(table1)
+library(gtsummary)
+library(janitor)
+# hh <- hh %>%
+  # rename(amenity_electricity = hh_amenities___0,
+  #        amenity_fridge = hh_amenities___1,
+  #        amenity_radio = hh_amenities___2,
+  #        amenity_tv = hh_amenities___3,
+  #        amenity_none = hh_amenities___4,
+  #        )
+label(hh$hh_amenities___0) <- "Electricity"
+label(hh$hh_amenities___1) <- "Refrigerator/Freezer"
+label(hh$hh_amenities___2) <- "Radio"
+label(hh$hh_amenities___3) <- "Television"
+label(hh$hh_amenities___4) <- "None of the above"
+
+t1 <- hh %>%
+  select(hh_amenities___0, hh_amenities___1, hh_amenities___2, hh_amenities___3, hh_amenities___4) %>%
+   tbl_summary(percent="column",
+              digits = all_categorical() ~ 1,
+              missing="no") %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("**Table 1: Availability of household amenities (Row %).**")
+t1
+```
+## Does your family own any of the following means of transport?
+```{r transport, echo=FALSE}
+# hh <- hh %>%
+#   rename(transport_bicycle = hh_transport___0,
+#          transport_motorcycle = hh_transport___1,
+#          transport_car = hh_transport___2,
+#          transport_tractor = hh_transport___3,
+#          transport_none = hh_transport___4,
+#          )
+
+label(hh$hh_transport___0) <- "Bicycle"
+label(hh$hh_transport___1) <- "Motorcycle"
+label(hh$hh_transport___2) <- "Car"
+label(hh$hh_transport___3) <- "Tractor"
+label(hh$hh_transport___4) <- "None of the above"
+
+t2 <- hh %>%
+  select(hh_transport___0, hh_transport___1, hh_transport___2, hh_transport___3, hh_transport___4) %>%
+   tbl_summary(percent="column",
+              digits = all_categorical() ~ 1,
+              missing="no") %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("**Table 2: Ownership of transport modes (Row %).**")
+t2
+```
+## Number of animals owned 
+```{r, echo=FALSE}
+temp2 <- c("hh_grazing", "hh_poultry", "hh_pig")
+boxplot(hh[,temp2])
+
+# grazing animals
+# poultry
+# pigs
+```
+## Animal touch, injury, cook
+```{r, echo=FALSE}
+temp5 <- c("animal_touch___0","animal_touch___1","animal_touch___2","animal_touch___3",
+           "animal_touch___4","animal_touch___5","animal_touch___6","animal_touch___7")
+           # "animal_touch___8")#,"animal_touch_other")
+label(hh$animal_touch___0) <- "Contact with chicken, ducks, geese"
+label(hh$animal_touch___1) <- "Contact with cows, rabbit, pigs, goats, sheep"
+label(hh$animal_touch___2) <- "Contact with cats and dogs"
+label(hh$animal_touch___3) <- "Contact with rodents"
+label(hh$animal_touch___4) <- "Contact with primates"
+label(hh$animal_touch___5) <- "Contact with bats"
+label(hh$animal_touch___6) <- "Contact with antelope"
+label(hh$animal_touch___7) <- "Contact with other animals"
+label(hh$animal_touch___8) <- "Contact with none of the above"
+ 
+# hh <- hh %>%
+#   rename(touch_poultry = animal_touch___0,
+#          touch_grazers = animal_touch___1,
+#          touch_pets = animal_touch___2,
+#          touch_rodent = animal_touch___3,
+#          touch_primate = animal_touch___4,
+#          touch_bat = animal_touch___5,
+#          touch_antelope = animal_touch___6,
+#          touch_other = animal_touch___7 | animal_touch_other,
+#          touch_none = animal_touch___8
+#          )
+
+temp6 <- c("animal_injury___0","animal_injury___1","animal_injury___2","animal_injury___3",
+           "animal_injury___4","animal_injury___5","animal_injury___6","animal_injury___7")
+           # "animal_injury___8", "animal_injury_other")
+label(hh$animal_injury___0) <- "Injury from chicken, ducks, geese"
+label(hh$animal_injury___1) <- "Injury from cows, rabbit, pigs, goats, sheep"
+label(hh$animal_injury___2) <- "Injury from cats and dogs"
+label(hh$animal_injury___3) <- "Injury from rodents"
+label(hh$animal_injury___4) <- "Injury from primates"
+label(hh$animal_injury___5) <- "Injury from bats"
+label(hh$animal_injury___6) <- "Injury from antelope"
+label(hh$animal_injury___7) <- "Injury from other animals"
+label(hh$animal_injury___8) <- "Injury from none of the above"
+ 
+# hh <- hh %>%
+#   rename(injury_poultry = animal_injury___0,
+#          injury_grazers = animal_injury___1,
+#          injury_pets = animal_injury___2,
+#          injury_rodent = animal_injury___3,
+#          injury_primate = animal_injury___4,
+#          injury_bat = animal_injury___5,
+#          injury_antelope = animal_injury___6,
+#          injury_other = animal_injury___7,
+#          injury_none = animal_injury___8
+#          )
+
+temp7 <- c("animal_cook___0","animal_cook___1","animal_cook___2","animal_cook___3",
+           "animal_cook___4","animal_cook___5","animal_cook___6","animal_cook___7")
+           # "animal_cook___8") #,"animal_cook_other"
+label(hh$animal_cook___0) <- "Cooked chicken, ducks, geese"
+label(hh$animal_cook___1) <- "Cooked cows, rabbit, pigs, goats, sheep"
+label(hh$animal_cook___2) <- "Cooked cats and dogs"
+label(hh$animal_cook___3) <- "Cooked rodents"
+label(hh$animal_cook___4) <- "Cooked primates"
+label(hh$animal_cook___5) <- "Cooked bats"
+label(hh$animal_cook___6) <- "Cooked antelope"
+label(hh$animal_cook___7) <- "Cooked other animals"
+label(hh$animal_cook___8) <- "Cooked none of the above"
+# hh <- hh %>%
+#   rename(cook_poultry = animal_cook___0,
+#          cook_grazers = animal_cook___1,
+#          cook_pets = animal_cook___2,
+#          cook_rodent = animal_cook___3,
+#          cook_primate = animal_cook___4,
+#          cook_bat = animal_cook___5,
+#          cook_antelope = animal_cook___6,
+#          cook_other = animal_cook___7,
+#          cook_none = animal_cook___8
+#          )
+
+t3 <- hh %>%
+  select(all_of(c(temp5, temp6, temp7))) %>%
+   tbl_summary(percent="column",
+              digits = all_categorical() ~ 1,
+              missing="no") %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("**Table 3: Contact with animals (Row %).**")
+t3
+```
+
+## Water
+```{r water, echo=FALSE}
+# What is the source of water for members of your household for purposes such as cooking and handwashing?
+temp8 <- c("water_source___0","water_source___1","water_source___2","water_source___3",
+           "water_source___4", "water_source___5","water_source___6","water_source___7",
+           "water_source___8","water_source___9","water_source___10", "water_source___11") #"water_source_other")
+label(hh$water_source___0) <- "Piped water (indoors, outside, in the yard, at neighbor's house)"
+label(hh$water_source___1) <- "Public fountain water"
+label(hh$water_source___2) <- "Protected dug well/hole water (with or without hand pump)"
+label(hh$water_source___3) <- "Unprotected dug well"
+label(hh$water_source___4) <- "Water from protected spring"
+label(hh$water_source___5) <- "Water from unprotected spring"
+label(hh$water_source___6) <- "Rainwater"
+label(hh$water_source___7) <- "Lorry tank water/Water Tanker"
+label(hh$water_source___8) <- "Water loaded in drums/barrels"
+label(hh$water_source___9) <- "Surface water (River/Lake/Water Pan)"
+label(hh$water_source___10) <- "Bottled or Packed Water/Mineral Water"
+label(hh$water_source___11) <- "Other"
+
+# What is the source of drinking water for members of your household?
+temp9 <- c("water_drink___0","water_drink___1","water_drink___2","water_drink___3",
+           "water_drink___4","water_drink___5","water_drink___6","water_drink___7",
+           "water_drink___8","water_drink___9","water_drink___10", "water_drink___11") #"water_drink_other")
+label(hh$water_drink___0) <- "Piped water (indoors, outside, in the yard, at neighbor's house)"
+label(hh$water_drink___1) <- "Public fountain water"
+label(hh$water_drink___2) <- "Protected dug well/hole water (with or without hand pump)"
+label(hh$water_drink___3) <- "Unprotected dug well"
+label(hh$water_drink___4) <- "Water from protected spring"
+label(hh$water_drink___5) <- "Water from unprotected spring"
+label(hh$water_drink___6) <- "Rainwater"
+label(hh$water_drink___7) <- "Lorry tank water/Water Tanker"
+label(hh$water_drink___8) <- "Water loaded in drums/barrels"
+label(hh$water_drink___9) <- "Surface water (River/Lake/Water Pan)"
+label(hh$water_drink___10) <- "Bottled or Packed Water/Mineral Water"
+label(hh$water_drink___11) <- "Other"
+
+# 
+# If yes, what does your household usually do to make the water safer to drink? (select multiple)
+hh = hh %>% 
+  dplyr::mutate(water_purifylbl = case_when(water_purify == 0 ~ "No",
+                                         water_purify == 1 ~ "Yes",
+                                         water_purify == 1 ~ "I don't know"))
+label(hh$water_purifylbl) <- "Does your household do anything to the water to make it safer to drink?"
+temp10 <- c("water_purifylbl","water_purify_method___1","water_purify_method___2","water_purify_method___3",
+           "water_purify_method___4","water_purify_method___5","water_purify_method___6","water_purify_method___7",
+           "water_purify_method___8") #, "water_purify_method_other")
+
+label(hh$water_purify_method___1) <- "Boil"
+label(hh$water_purify_method___2) <- "Add bleach/chlorine"
+label(hh$water_purify_method___3) <- "Strain through cloth"
+label(hh$water_purify_method___4) <- "Use water filter"
+label(hh$water_purify_method___5) <- "Solar disinfection"
+label(hh$water_purify_method___6) <- "Let it stand and settle"
+label(hh$water_purify_method___7) <- "Other"
+label(hh$water_purify_method___8) <- "I don't know/none of the above"
+
+t4 <- hh %>%
+  select(all_of(c(temp8, temp9, temp10))) %>%
+   tbl_summary(percent="column",
+              digits = all_categorical() ~ 1,
+              missing="no") %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("**Table 3: Water (Row %).**")
+t4
+```
+
+```{r wash_hands, echo=FALSE}
+temp11 <- c("wash_hands_defecate","wash_hands_food","wash_hands_toilet")
+```
+
+```{r toilet, echo=FALSE}
+temp12 <- c("hh_toilet","hh_toilet_other","hh_toilet_location","hh_toilet_location_other",
+            "child_stool_disposal","child_stool_disposal_other")
+```
+
+```{r smoke_exposure, echo=FALSE}
+temp13 <- c("hh_smoking","hh_cook", "hh_fuel___0","hh_fuel___1",
+            "hh_fuel___2","hh_fuel___3","hh_fuel_other",)
+```
+
+```{r resp_illness, echo=FALSE}
+temp14 <- c("hh_asthma","hh_tb")
+```
