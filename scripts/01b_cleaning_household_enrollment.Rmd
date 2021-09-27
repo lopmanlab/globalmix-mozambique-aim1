@@ -20,13 +20,13 @@ opts_chunk$set(comment = NA,
 
 ```{r imports, echo=FALSE, message = FALSE}
 # Load packages
-source("scripts/00_load_libraries.R")
+source("../scripts/00_load_libraries.R")
 
 # load data
 data = rio::import("../raw/all_data_09242021.csv")
 
 # filter
-household_enrolment = data %>% 
+hh = data %>% 
   dplyr::filter(redcap_event_name == "household_survey_arm_1") %>% 
   dplyr::select("rec_id", "redcap_event_name", "redcap_repeat_instrument","redcap_repeat_instance", "interview_date","enumerator_id100","study_site","aim","hh","hoh_id","site_do_estudo_complete","hh_id","date_hohconsent","hh_head_gender","hh_head_gender_other", "hh_occupants","hh_slept","hh_room_num","hh_bedroom_num","hh_roof_material","hh_roof_material_other","hh_wall_material", "hh_wall_material_other","hh_ac","hh_fan","hh_amenities___0","hh_amenities___1","hh_amenities___2","hh_amenities___3", "hh_amenities___4","hh_transport___0","hh_transport___1","hh_transport___2","hh_transport___3","hh_transport___4","hh_grazing", "hh_poultry","hh_pig","hh_improvements","animal_touch___0","animal_touch___1","animal_touch___2","animal_touch___3", "animal_touch___4","animal_touch___5","animal_touch___6","animal_touch___7","animal_touch___8","animal_touch_other", "animal_injury___0","animal_injury___1","animal_injury___2","animal_injury___3","animal_injury___4","animal_injury___5", "animal_injury___6","animal_injury___7","animal_injury___8","animal_injury_other","animal_cook___0","animal_cook___1", "animal_cook___2","animal_cook___3","animal_cook___4","animal_cook___5","animal_cook___6","animal_cook___7","animal_cook___8", "animal_cook_other","water_source___0","water_source___1","water_source___2","water_source___3","water_source___4", "water_source___5","water_source___6","water_source___7","water_source___8","water_source___9","water_source___10", "water_source___11","water_source_other","water_drink___0","water_drink___1","water_drink___2","water_drink___3", "water_drink___4","water_drink___5","water_drink___6","water_drink___7","water_drink___8","water_drink___9","water_drink___10", "water_drink___11","water_drink_other","water_purify","water_purify_method___1","water_purify_method___2","water_purify_method___3", "water_purify_method___4","water_purify_method___5","water_purify_method___6","water_purify_method___7","water_purify_method___8", "water_purify_method_other","wash_hands_defecate","wash_hands_food","wash_hands_toilet","hh_toilet","hh_toilet_other", "hh_toilet_location","child_stool_disposal","child_stool_disposal_other","hh_smoking","hh_cook", "hh_fuel___0","hh_fuel___1","hh_fuel___2","hh_fuel___3","hh_fuel_other","hh_asthma","hh_tb", "informaes_de_agregado_familiar_e_casa_complete") %>% 
   # ,"site_do_estudo_timestamp","individual_id","informaes_sobre_os_membros_da_famlia_timestamp", "informaes_de_agregado_familiar_e_casa_timestamp","hh_toilet_location_other",
