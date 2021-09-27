@@ -66,8 +66,54 @@ ind$agelb = factor(ind$agelb,
 
 
 ```{r}
-# individual enrollment has sensor_id, household_enrol has aim. merge these two, then filter.
-sensor <- data %>% 
+# individual enrollment has sensor_id, household_enrol has aim 2. merge these two, then filter.
+sensor1 <- data %>% 
   dplyr::filter(redcap_event_name == "individual_enrollm_arm_1") %>%
-  dplyr::select("rec_id", "sensor_id", "age", "sex", "aim")
+  dplyr::select("rec_id", "sensor_id", "age", "sex")
+
+
+sensor2 <- data %>% 
+  dplyr::filter(redcap_event_name == "household_survey_arm_1") %>%
+  dplyr::select("redcap_repeat_instrument","redcap_event_name","aim","individual_id","rec_id","study_site","hh","hh_id","hoh_id", 
+                "hh_head_gender","hh_occupants") %>%
+  dplyr::filter(aim == 1) %>%
+  dplyr::filter(redcap_repeat_instrument == "")
+
+sensor <- dplyr::inner_join(sensor1, sensor2, by="rec_id")
+
+# for now, after visually eyeballing, drop sensors with incorrect ID
+drop_sensors <- c("1109", "1110","1111","1121","249","1026","1140","478","942",
+                  "867","737","738","739","595","596","597","598","1004")
+sensor <- sensor[!sensor$rec_id %in% drop_sensors, ]
+
+# Some summary stats
+##1. How many people with sensors? By site and age and sex?
+n <- dim(sensor[1])
+
+sensor <- sensor %>% 
+  dplyr::mutate(agegp = case_when(age < 1 ~ "<1", 
+                                  age >=1 & age <= 4 ~ "1-4y", 
+                                  age >=5 & age <=9 ~ "5-9y", 
+                                  age >=10 & age <=14 ~ "10-14y", 
+                                  age >=15 & age <=19 ~ "15-19y", 
+                                  age >=20 & age <=29 ~ "20-29y", 
+                                  age >=30 & age <=39 ~ "30-39y", 
+                                  age >=40 & age <=59 ~ "40-59y", 
+                                  age >=60 ~ "60y+"))
+sensor$agegp = factor(sensor$agegp, 
+                   levels = c("<1", "1-4y", "5-9y", "10-14y", "15-19y", "20-29y", "30-39y", "40-59y", "60y+"))
+
+
+# graph of agegp by site
+p <- sensor %>% 
+  ggplot(aes(x=agegp, color=study_site, fill=study_site)) +
+  geom_histogram(stat = 'count') +
+  facet_wrap(~study_site)
+p
+
+##2. How many households and participants by site?
+
+##3. Average household size by site
+
+
 ```
