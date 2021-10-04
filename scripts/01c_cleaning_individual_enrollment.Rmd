@@ -151,26 +151,32 @@ n <- dim(sensor[1])
 
 sensor <- sensor %>% 
   dplyr::mutate(agegp = case_when(age < 1 ~ "<1", 
-                                  age >=1 & age <= 4 ~ "1-4y", 
-                                  age >=5 & age <=9 ~ "5-9y", 
-                                  age >=10 & age <=14 ~ "10-14y", 
-                                  age >=15 & age <=19 ~ "15-19y", 
-                                  age >=20 & age <=29 ~ "20-29y", 
-                                  age >=30 & age <=39 ~ "30-39y", 
-                                  age >=40 & age <=59 ~ "40-59y", 
-                                  age >=60 ~ "60y+"))
+                                  age >=1 & age <= 4 ~ "1-4", 
+                                  age >=5 & age <=9 ~ "5-9", 
+                                  age >=10 & age <=14 ~ "10-14", 
+                                  age >=15 & age <=19 ~ "15-19", 
+                                  age >=20 & age <=29 ~ "20-29", 
+                                  age >=30 & age <=39 ~ "30-39", 
+                                  age >=40 & age <=59 ~ "40-59", 
+                                  age >=60 ~ "60+"))
 sensor$agegp = factor(sensor$agegp, 
-                   levels = c("<1", "1-4y", "5-9y", "10-14y", "15-19y", "20-29y", "30-39y", "40-59y", "60y+"))
+                   levels = c("<1", "1-4", "5-9", "10-14", "15-19", "20-29", "30-39", "40-59", "60+"))
 
 
 # graph of agegp by site
 p <- sensor %>% 
   ggplot(aes(x=agegp, color=study_site, fill=study_site)) +
   geom_histogram(stat = 'count') +
+  # theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.5, "lines"),
+    strip.text.x = element_text(size = 8)) +
   facet_wrap(~study_site)
-p
+# p
 
 ##2. How many households and participants by site?
+
 
 ##3. Average household size by site
 
