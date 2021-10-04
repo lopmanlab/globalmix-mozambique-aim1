@@ -1,0 +1,226 @@
+---
+title: "Global Mix Mozambique cleaning"
+author: "Holin Chen"
+date: "10/1/2021"
+output: html_document
+---
+
+```{r}
+# Load packages
+source("../scripts/00_load_libraries.R")
+
+# load data
+data = rio::import("../raw/all_data_09242021.csv")
+```
+
+```{r}
+## Exit interview data
+exit = data %>% 
+  dplyr::filter(redcap_event_name == "exit_interview_arm_1") %>% dplyr::select("rec_id","individual_id","contacts_completedby","all_contacts","contact_compare","behavior_change","movement_change","days_left_home", "activities___1","activities___2","activities___3","activities___4","activities___5","activities___6","activities___7","activities___8", "activities_work","activities_school","activities_other","yesterday_left_home","quarantine","quarantine_behavior","self_isolation", "self_isolation_location","self_isolation_home","self_isolation_away","isolation_ability","mask_use","mask_use_location___0", "mask_use_location___1","mask_use_location___2","mask_use_location___3","mask_use_location___4","mask_use_location___5", "mask_use_location___6","mask_use_location___7","mask_use_location_other","covid_contact___0","covid_contact___1","covid_contact___2", "covid_contact___3","covid_contact___4","covid_contact___5","covid_contact___6","covid_contact___7","covid_contact_other", "current_symptoms___0","current_symptoms___1","current_symptoms___2","current_symptoms___3","current_symptoms___4","current_symptoms___5", "current_symptoms___6","current_symptoms___7","current_symptoms___8","current_symptoms___9","current_symptoms___10","current_symptoms___11", "contact_with_infected","self_covid_test","family_covid","family_covid_symptoms","family_covid_test","family_covid_number", "phone_access", "phone_ownership","phone_function","phone_comm_mode","phone_provider___0","phone_provider___1","phone_provider___2","phone_provider___3", "phone_provider_other","phone_signal","phone_use","entrevista_de_sada_complete") 
+# 
+```
+
+```{r}
+exit = exit %>% 
+  dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "alone during day 1 and 2",
+                                                            contacts_completedby == 1 ~ "by fieldworker at collection day"))
+label(exit$contacts_completedbylb) <- "Did the participant complete the contact diaries alone throughout day 1 and day 2 or were the contact diaries completed with the Field Worker on the day of collection?"
+
+exit = exit %>% 
+  dplyr::mutate(all_contactslb = case_when(all_contacts == 0 ~ "No",
+                                           all_contacts == 1 ~ "Yes",
+                                           all_contacts == 2 ~ "I don't know"))
+label(exit$all_contactslb) <- "Were you able to include every single contact?"
+
+exit = exit %>% 
+  dplyr::mutate(contact_comparelb = case_when(contact_compare == 1 ~ "1 - Much fewer contacts then usual",
+                                           contact_compare == 2 ~ "2 - Fewer contacts than usual",
+                                           contact_compare == 3 ~ "3 - About the same as usual",
+                                           contact_compare == 4 ~ "4 - More contacts than usual",
+                                           contact_compare == 5 ~ "5 - Much more contacts than usual"))
+label(exit$contact_comparelb) <- "On a scale of 1-5, how did the 2 days on which you reported your contact compare to a typical day?"
+
+exit = exit %>% 
+  dplyr::mutate(behavior_changelb = case_when(behavior_change == 1 ~ "No change. I interact with people the same way that I used to before",
+                                           behavior_change == 2 ~ "My interactions have increased",
+                                           behavior_change == 3 ~ "My interactions have reduced",
+                                           behavior_change == 4 ~ "I don't know"))
+label(exit$behavior_changelb) <- "Do you think your social behavior has changed following the start of COVID-19? Social behavior refers to your interactions with other people, such as talking face-to-face, visiting their homes, meeting outside the home, etc."
+
+exit = exit %>% 
+  dplyr::mutate(movement_changelb = case_when(movement_change == 1 ~ "No change. I still move around the same way that I used to before",
+                                           movement_change == 2 ~ "My movements have increased",
+                                           movement_change == 3 ~ "My movements have have reduced",
+                                           movement_change == 4 ~ "I don't know"))
+label(exit$movement_changelb) <- "How do you think your movements have changed following the start of COVID-19?"
+
+exit = exit %>% 
+  dplyr::mutate(days_left_homelb = case_when(days_left_home == 0 ~ "0",
+                                           days_left_home == 1 ~ "1-3 times",
+                                           days_left_home == 2 ~ "4-7 times",
+                                           days_left_home == 3 ~ "More than 7 times",
+                                           days_left_home == 4 ~ "I don't know",
+                                           days_left_home == 5 ~ "I prefer not to answer"))
+label(exit$days_left_homelb) <- "During the past 14 days, how many days did you leave your home?"
+
+label(exit$activities___1) <- "Go to work"
+label(exit$activities___2) <- "Go to school"
+label(exit$activities___3) <-  "Attend religious service"
+label(exit$activities___4) <-  "Seek health care"
+label(exit$activities___5) <-  "Go to the market"
+label(exit$activities___6) <-  "Visiting family/friends"
+label(exit$activities___7) <-  "Did not leave home"
+label(exit$activities___8) <-  "Other"
+
+exit = exit %>% 
+  dplyr::mutate(yesterday_left_homelb = case_when(yesterday_left_home == 0 ~ "No",
+                                           yesterday_left_home == 1 ~ "Yes"))
+label(exit$yesterday_left_homelb) <- "Did you leave your home yesterday?"
+
+exit = exit %>% 
+  dplyr::mutate(quarantinelb = case_when(quarantine == 0 ~ "No",
+                                           quarantine == 1 ~ "Yes",
+                                           quarantine == 2 ~ "I prefer not to answer"))
+label(exit$quarantinelb) <- "Have you been required to go into quarantine due to COVID-19 in the last 14 days?"
+
+exit = exit %>% 
+  dplyr::mutate(quarantine_behaviorlb = case_when(quarantine_behavior == 0 ~ "Continued to mingle with other family members",
+                                           quarantine_behavior == 1 ~ "Stayed in separate room away from other family members",
+                                           quarantine_behavior == 2 ~ "Went out of the house",
+                                           quarantine_behavior == 3 ~ "Prefer not to answer"))
+label(exit$quarantine_behaviorlb) <- "How was your social behavior during quarantine?"
+
+exit = exit %>% 
+  dplyr::mutate(self_isolationlb = case_when(self_isolation == 0 ~ "No",
+                                           self_isolation == 1 ~ "Yes",
+                                           self_isolation == 2 ~ "I prefer not to answer"))
+label(exit$self_isolationlb) <- "Have you been required to isolate yourself in the last 14 days?"
+
+exit = exit %>% 
+  dplyr::mutate(self_isolation_locationlb = case_when(self_isolation_location == 0 ~ "At home",
+                                                            self_isolation_location == 1 ~ "Away from home"))
+label(exit$self_isolation_locationlb) <- "If yes, where did the isolation happen?"
+
+exit = exit %>% 
+  dplyr::mutate(self_isolation_homelb = case_when(self_isolation_home == 0 ~ "Continued to mingle with other family members",
+                                           self_isolation_home == 1 ~ "Stayed in separate room away from other family members",
+                                           self_isolation_home == 2 ~ "Went out of the house",
+                                           self_isolation_home == 3 ~ "Prefer not to answer"))
+label(exit$self_isolation_homelb) <- "How was your social behavior during isolation at home?"
+
+exit = exit %>% 
+  dplyr::mutate(self_isolation_awaylb = case_when(self_isolation_away == 0 ~ "Continued to mingle with other individuals",
+                                           self_isolation_away == 1 ~ "Stayed in separate room away from other individuals",
+                                           self_isolation_away == 2 ~ "Went out of the isolation facility",
+                                           self_isolation_away == 3 ~ "Prefer not to answer"))
+label(exit$self_isolation_awaylb) <- "How was your social behavior at the isolation facility?"
+
+exit = exit %>% 
+  dplyr::mutate(isolation_abilitylb = case_when(isolation_ability == 0 ~ "No",
+                                           isolation_ability == 1 ~ "Yes"))
+label(exit$isolation_abilitylb) <- "If you were diagnosed with COVID-19 now, would you be able to isolate yourself from other members of the home?"
+
+exit = exit %>% 
+  dplyr::mutate(mask_uselb = case_when(mask_use == 0 ~ "No",
+                                           mask_use == 1 ~ "Yes",
+                                           mask_use == 2 ~ "I prefer not to answer"))
+label(exit$mask_uselb) <- "Did you wear a face mask in the last 14 days?"
+
+label(exit$mask_use_location___0) <- "At home"
+label(exit$mask_use_location___1) <- "Everywhere outside my house"
+label(exit$mask_use_location___2) <- "When walking on the street"
+label(exit$mask_use_location___3) <- "On public transport"
+label(exit$mask_use_location___4) <- "In supermarkets/shops"
+label(exit$mask_use_location___5) <- "In cinema/bar/restaurant"
+label(exit$mask_use_location___6) <- "At work/school/college/university"
+label(exit$mask_use_location___7) <- "Other"
+  
+label(exit$covid_contact___0) <- "None that I know of"
+label(exit$covid_contact___1) <- "Member of my household"
+label(exit$covid_contact___2) <- "Close friend"
+label(exit$covid_contact___3) <- "Coworker"
+label(exit$covid_contact___4) <- "Patient (in case of a health care worker)"
+label(exit$covid_contact___5) <- "Client/Customer"
+label(exit$covid_contact___6) <- "Other"
+label(exit$covid_contact___7) <- "Rather not respond"  
+ 
+label(exit$current_symptoms___0) <- "Difficulty in breathing"
+label(exit$current_symptoms___1) <- "Chest discomfort"
+label(exit$current_symptoms___2) <- "Chills"
+label(exit$current_symptoms___3) <- "Cough"
+label(exit$current_symptoms___4) <- "Fever"
+label(exit$current_symptoms___5) <- "Sore throat"
+label(exit$current_symptoms___6) <- "Loss of taste or smell"
+label(exit$current_symptoms___7) <- "Muscle or joint pains"
+label(exit$current_symptoms___8) <- "Tiredness or exhaustion"
+label(exit$current_symptoms___9) <- "Nausea or vomiting"
+label(exit$current_symptoms___10) <- "Diarrhea"
+label(exit$current_symptoms___11) <- "None of these"
+
+exit = exit %>% 
+  dplyr::mutate(contact_with_infectedlb = case_when(contact_with_infected == 0 ~ "No",
+                                           contact_with_infected == 1 ~ "Yes",
+                                           contact_with_infected == 2 ~ "I prefer not to answer"))
+label(exit$contact_with_infectedlb) <- "Did you visit a health care facility for any of these symptoms?"
+  
+exit = exit %>% 
+  dplyr::mutate(self_covid_testlb = case_when(self_covid_test == 0 ~ "No, I don't think I need it",
+                                           self_covid_test == 1 ~ "No, I didn't have the opportunity",
+                                           self_covid_test == 2 ~ "Yes, I tested positive",
+                                           self_covid_test == 3 ~ "Yes, I tested negative",
+                                           self_covid_test == 4 ~ "Yes, waiting for results",
+                                           self_covid_test == 5 ~ "I prefer not to answer"))
+label(exit$self_covid_testlb) <- "Have you been tested for COVID-19?"  
+  
+exit = exit %>% 
+  dplyr::mutate(family_covid_symptomslb = case_when(family_covid_symptoms == 0 ~ "No",
+                                           family_covid_symptoms == 1 ~ "Yes",
+                                           family_covid_symptoms == 2 ~ "I prefer not to answer"))
+label(exit$family_covid_symptomslb) <- "Has anyone else in your household exhibited COVID-19 symptoms in the last 14 days?"
+
+exit = exit %>% 
+  dplyr::mutate(family_covid_testlb = case_when(family_covid_test == 0 ~ "No",
+                                           family_covid_test == 1 ~ "Yes",
+                                           family_covid_test == 2 ~ "I prefer not to answer"))
+label(exit$family_covid_testlb) <- "Has anyone else in your household been tested for COVID-19?"
+
+exit = exit %>% 
+  dplyr::mutate(phone_accesslb = case_when(phone_access == 0 ~ "No",
+                                           phone_access == 1 ~ "Yes"))
+label(exit$phone_accesslb) <- "Do you have access to a mobile phone?"
+
+exit = exit %>% 
+  dplyr::mutate(phone_ownershiplb = case_when(phone_ownership == 0 ~ "No",
+                                           phone_ownership == 1 ~ "Yes"))
+label(exit$phone_ownershiplb) <- "If yes, do you own it?"
+
+exit = exit %>% 
+  dplyr::mutate(phone_functionlb = case_when(phone_function == 1 ~ "Basic feature phone (no internet)",
+                                           phone_function == 2 ~ "Smart phone (internet enabled)"))
+label(exit$phone_functionlb) <- "If you use (own or borrow) a mobile phone, what is the functionality? "
+
+exit = exit %>% 
+  dplyr::mutate(phone_comm_modelb = case_when(phone_comm_mode == 1 ~ "Normal call and text",
+                                           phone_comm_mode == 2 ~ "Internet calls and text e.g. via Whatsapp"))
+label(exit$phone_comm_modelb) <- "If smartphone, what is your preferred mode of communication?" 
+
+label(exit$phone_provider___0) <- "Movitel"
+label(exit$phone_provider___1) <- "Vodacom"
+label(exit$phone_provider___2) <- "TMcel"
+label(exit$phone_provider___3) <- "Other"
+
+exit = exit %>% 
+  dplyr::mutate(phone_signallb = case_when(phone_signal == 0 ~ "Poor",
+                                           phone_signal == 1 ~ "Normal",
+                                           phone_signal == 2 ~ "Good"))
+label(exit$phone_signallb) <- "If you use a mobile phone, rate the signal in most locations that you visit during the day. "
+
+exit = exit %>% 
+  dplyr::mutate(phone_uselb = case_when(phone_use == 0 ~ "Never",
+                                           phone_use == 1 ~ "1-5 times",
+                                           phone_use == 2 ~ "6-10 times",
+                                           phone_use == 3 ~ "More than 10 times"))
+label(exit$phone_uselb) <- "In the last day/ 24 hours, how often did you call/ text using your mobile phone?"
+
+
+```
