@@ -171,19 +171,22 @@ hh_member = data %>%
   dplyr::select("rec_id",'redcap_repeat_instrument',hh_member_hoh,hh_member_name,hh_member_id,hh_member_sensor,hh_member_sex,hh_member_sex_outro,hh_member_age,hh_member_relationship,hh_member_relationship_other,share_room,share_bed,cook_food,hh_member_hhform,hh_member_instance,informaes_de_agregado_familiar_e_casa_complete) %>% 
   dplyr::filter(redcap_repeat_instrument == "informaes_sobre_os_membros_da_famlia")
 
-contact_hh_all <- contact_hh_all %>% left_join(hh_member, by=c("rec_id","hh_member_name"))
+contact_hh_all <- contact_hh_all %>% 
+  left_join(hh_member, by=c("rec_id","hh_member_name")) %>%
+  distinct(rec_id, hh_member_id.y, Day1or2, .keep_all = TRUE) %>%
+  filter(!is.na(hh_member_name))
+
 
 contact_hh_repeat <- contact_hh_all %>%
-  group_by(rec_id, hh_member_name) %>%
+  group_by(rec_id, hh_member_name, hh_member_id.y) %>%
   summarise(contact_count=n())
 
 study_site <- data %>%
   filter(redcap_event_name=="household_survey_arm_1") %>%
-  select(rec_id, study_site, aim) %>%
-  filter(!is.na(study_site))
+  select(rec_id, study_site, aim)
 
 contact_hh_all <- contact_hh_all %>%
-  left_join(contact_hh_repeat, by=c("rec_id","hh_member_name")) %>%
+  left_join(contact_hh_repeat, by=c("rec_id","hh_member_name","hh_member_id.y")) %>%
   mutate(repeat_contact_d2 = ifelse(contact_count == 2 & Day1or2 == 2, "repeat", 
                                        ifelse(contact_count == 1 & Day1or2 == 2, "unique", NA))) %>%
   left_join(study_site, by="rec_id") %>%
@@ -287,14 +290,23 @@ cont_repeat <- cont_all %>%
   group_by(rec_id, contact_id) %>%
   summarise(contact_count=n())
 
+
+
 cont_all <- cont_all %>%
   left_join(study_site, by="rec_id") %>% 
   left_join(cont_repeat, by=c("rec_id","contact_id")) %>%
   mutate(fromdayone = ifelse(((contact_count == 2 & Day1or2 == 2) | (Day1or2 == 1 & contact_count == 2)), "Both Days",
-                             ifelse(contact_count == 1 & Day1or2 == 2, "Day2 Only",
-                                    ifelse(contact_count == 1 & Day1or2 == 1, "Day1 Only", NA))))
+                             ifelse(((contact_count == 1 & Day1or2 == 2)), "Day2 Only", 
+                                    ifelse((Day1or2 == 1 & contact_count == 1), "Day1 Only", NA))))
+
+cont_all$fromdayone[which(cont_all$contact_count>2 & cont_all$repeat_contact_d2=="unique" & cont_all$Day1or2==2)] <- "Day2 Only"
+cont_all$fromdayone[which(cont_all$contact_count>2 & cont_all$repeat_contact_d2=="repeat" & cont_all$Day1or2==2)] <- "Both Days"
 
 
+cont_repeat_dup <- cont_all %>%
+  filter(contact_count > 2) %>%
+  group_by(rec_id, redcap_repeat_instance, Day1or2, contact_id, fromdayone) %>%
+  summarise(contact_count=n())
 
 ```
 
@@ -541,8 +553,16 @@ contact_summary <- cont_rural %>%
 ind <- data %>% 
   dplyr::filter(redcap_event_name == "individual_enrollm_arm_1") %>% 
   dplyr::select("rec_id", "date_enrolled", "sex", "sex_other", "birthdate","age", "read_write", "occupation___0", "occupation___1", "occupation___2", "occupation___3", "occupation___4", "occupation___5", "occupation___6", "occupation___7", "occupation___8", "occupation___9", "occupation_other", "enrolled_school", "highest_educ", "school_level", "transport_use", "hh_resp_exposure", "child_breastfeed", "num_simbling", "inscrio_complete", "sensor_id","child", "redcap_repeat_instrument") %>%
-    dplyr::filter(redcap_repeat_instrument == "")
+    dplyr::filter(redcap_repeat_instrument == "") %>%
+  left_join(study_site, by="rec_id")
 ## Individual enrollment records
+
+ind = ind %>% 
+  dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
+                                         study_site == 2 ~ "Polana Caniço")) 
+ind = ind %>% 
+  dplyr::mutate(aim = case_when(aim == 0 ~ 1,
+                                 aim == 1 ~ 2)) 
 ind  = ind %>% 
   dplyr::mutate(highest_educ = case_when(highest_educ == 0 ~ "No schooling", 
                                            highest_educ == 1 ~ "Primary School (1-7)", 
@@ -630,14 +650,13 @@ ind  = ind %>%
 label(ind$child) <- "Do you have a infant ?"
 
 ind_contact_hh <- contact_hh_all %>%
-  left_join(ind, by = "rec_id")
+  left_join(ind[,-which(names(ind) %in% c("aim","study_site"))], by = "rec_id")
 
 ind_contact <- cont_all %>%
-  left_join(ind, by = "rec_id")
+  left_join(ind[,-which(names(ind) %in% c("aim","study_site"))], by = "rec_id")
 
 ind_summary <- ind %>%
-  left_join(study_site, by="rec_id") %>%
-  filter(study_site == 1) %>%
+  filter(study_site == "Manhiça") %>%
   select("sex", "sex_other", "birthdate","age", "read_write", "occupation___0", "occupation___1", "occupation___2", "occupation___3", "occupation___4", "occupation___5", "occupation___6", "occupation___7", "occupation___8", "occupation___9", "occupation_other", "enrolled_school", "highest_educ", "school_level", "transport_use", "hh_resp_exposure", "child_breastfeed", "num_simbling","child") %>%
   tbl_summary(percent="column",
               digits = all_categorical() ~ 1) %>%
@@ -659,6 +678,7 @@ ind_contact$aim[which(ind_contact$aim==0)] <- 1
 ind_contact_hh$aim[which(ind_contact_hh$aim==1)] <- 2
 ind_contact_hh$aim[which(ind_contact_hh$aim==0)] <- 1 
 
+saveRDS(ind, "../Data/individual_info.RDS")
 saveRDS(ind_contact_hh, "../Data/ind_contact_hh_rural.RDS")
 saveRDS(ind_contact, "../Data/ind_contact_nonhh_rural.RDS")
 ```
