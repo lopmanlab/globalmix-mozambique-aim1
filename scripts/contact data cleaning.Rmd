@@ -16,7 +16,7 @@ opts_chunk$set(comment = NA,
 ```
 
 
-```{r imports, echo=FALSE, message = FALSE}
+```{r imports, echo=FALSE, message = FALSE, warning=FALSE}
 # Load packages
 source("../scripts/00_load_libraries.R")
 library(stringr)
@@ -54,9 +54,12 @@ for (i in 1:30) {
   nam <- paste("c", i, sep = ".")
   assign(nam, data %>%
            dplyr::filter(redcap_event_name == "day_1_diary_arm_1") %>%
-           dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument","redcap_repeat_instance", ends_with(paste0("_d1_hh_",i)), starts_with(paste0("location_contact_d1_hh_",i, "___")), paste0("location_contact_other_d1_", i)) %>%
-    dplyr::filter(is.na(redcap_repeat_instrument)) %>%
-    left_join(contact_name_full[which(contact_name_full$hh_member_id==i),], by="rec_id"))
+           dplyr::select("rec_id","individual_id","redcap_event_name",
+                         "redcap_repeat_instrument","redcap_repeat_instance", 
+                         ends_with(paste0("_d1_hh_",i)), 
+                         starts_with(paste0("location_contact_d1_hh_",i, "___")), paste0("location_contact_other_d1_", i)) %>%
+           dplyr::filter(is.na(redcap_repeat_instrument)) %>%
+           left_join(contact_name_full[which(contact_name_full$hh_member_id==i),], by="rec_id"))
 }
 
 
@@ -103,7 +106,10 @@ for (i in 1:30) {
   nam <- paste("c", i, sep = ".")
   assign(nam, data %>%
            dplyr::filter(redcap_event_name == "day_2_diary_arm_1") %>%
-           dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument","redcap_repeat_instance", ends_with(paste0("_d2_hh_",i)), starts_with(paste0("location_contact_d2_hh_",i, "___")), paste0("location_contact_other_d2_", i)) %>%
+           dplyr::select("rec_id","individual_id","redcap_event_name",
+                         "redcap_repeat_instrument","redcap_repeat_instance", 
+                         ends_with(paste0("_d2_hh_",i)), 
+                         starts_with(paste0("location_contact_d2_hh_",i, "___")), paste0("location_contact_other_d2_", i)) %>%
     dplyr::filter(is.na(redcap_repeat_instrument)) %>%
     left_join(contact_name_full[which(contact_name_full$hh_member_id==i),], by="rec_id"))
 }
@@ -150,17 +156,15 @@ rm(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
    c.27,c.28,c.29,c.30)
 ```
 
-
-
-
-
 ```{r}
 cont_d1_hh <- cont_d1_hh[which(cont_d1_hh$contact_id_d1_hh == 1),]
 cont_d2_hh <- cont_d2_hh[which(cont_d2_hh$contact_id_d2_hh == 1),]
 
-names(cont_d1_hh)[grep("_d1_hh", names(cont_d1_hh))] <-  gsub("_d1_hh", "", names(cont_d1_hh)[grep("_d1_hh", names(cont_d1_hh))])
+names(cont_d1_hh)[grep("_d1_hh", names(cont_d1_hh))] <-  gsub("_d1_hh", "", 
+                                                              names(cont_d1_hh)[grep("_d1_hh", names(cont_d1_hh))])
 names(cont_d1_hh)[25] <- "location_contact_other"
-names(cont_d2_hh)[grep("_d2_hh", names(cont_d2_hh))] <-  gsub("_d2_hh", "", names(cont_d2_hh)[grep("_d2_hh", names(cont_d2_hh))])
+names(cont_d2_hh)[grep("_d2_hh", names(cont_d2_hh))] <-  gsub("_d2_hh", "", 
+                                                              names(cont_d2_hh)[grep("_d2_hh", names(cont_d2_hh))])
 names(cont_d2_hh)[25] <- "location_contact_other"
 
 #names(cont_d1_hh);names(cont_d2_hh)
@@ -179,7 +183,12 @@ contact_hh_all <- contact_hh_all %>%
   distinct(rec_id, hh_member_name, Day1or2, .keep_all = TRUE)
 
 hh_member = data %>% 
-  dplyr::select("rec_id",'redcap_repeat_instrument',hh_member_hoh,hh_member_name,hh_member_id,hh_member_sensor,hh_member_sex,hh_member_sex_outro,hh_member_age,hh_member_relationship,hh_member_relationship_other,share_room,share_bed,cook_food,hh_member_hhform,hh_member_instance,informaes_de_agregado_familiar_e_casa_complete) %>% 
+  dplyr::select("rec_id",'redcap_repeat_instrument',hh_member_hoh,
+                hh_member_name,hh_member_id,hh_member_sensor,hh_member_sex,
+                hh_member_sex_outro,hh_member_age,hh_member_relationship,
+                hh_member_relationship_other,share_room,share_bed,cook_food,
+                hh_member_hhform,hh_member_instance,
+                informaes_de_agregado_familiar_e_casa_complete) %>% 
   dplyr::filter(redcap_repeat_instrument == "informaes_sobre_os_membros_da_famlia") %>%
   distinct(rec_id, hh_member_name,.keep_all = TRUE)
 
@@ -206,9 +215,9 @@ contact_hh_all <- contact_hh_all %>%
 ```
 
 ```{r}
-cont_d1 = data %>% dplyr::filter(redcap_repeat_instrument == "dirio_de_contato_dia_1") %>% dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance","redcap_repeat_instrument","contact_id_d1","contact_age_yn_d1","age_contact_d1","age_group_contact_d1","sex_contact_d1","touch_contact_d1","where_contact_d1","location_contact_d1___0","location_contact_d1___1","location_contact_d1___2","location_contact_d1___3","location_contact_d1___4","location_contact_d1___5","location_contact_d1___6","location_contact_d1___7","location_contact_d1___8","location_contact_d1___9","location_contact_d1___10","location_contact_d1___11","location_contact_other_d1","contact_mask_d1","duration_contact_d1","frequency_contact_d1","known_contact_d1","dirio_de_contato_dia_1_complete")
+cont_d1 = data %>% dplyr::filter(redcap_repeat_instrument == "dirio_de_contato_dia_1") %>% dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance", "redcap_repeat_instrument","contact_id_d1","contact_age_yn_d1","age_contact_d1", "age_group_contact_d1","sex_contact_d1","touch_contact_d1","where_contact_d1", "location_contact_d1___0","location_contact_d1___1","location_contact_d1___2", "location_contact_d1___3","location_contact_d1___4","location_contact_d1___5", "location_contact_d1___6","location_contact_d1___7","location_contact_d1___8", "location_contact_d1___9","location_contact_d1___10","location_contact_d1___11", "location_contact_other_d1","contact_mask_d1","duration_contact_d1", "frequency_contact_d1","known_contact_d1","dirio_de_contato_dia_1_complete")
 
-cont_d2 = data %>% dplyr::filter(redcap_repeat_instrument == "dirio_de_contato_dia_2") %>% dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance","redcap_repeat_instrument","contact_id_d2","contact_age_yn_d2","age_contact_d2","age_group_contact_d2","sex_contact_d2","touch_contact_d2","where_contact_d2","location_contact_d2___0","location_contact_d2___1","location_contact_d2___2","location_contact_d2___3","location_contact_d2___4","location_contact_d2___5","location_contact_d2___6","location_contact_d2___7","location_contact_d2___8","location_contact_d2___9","location_contact_d2___10","location_contact_d2___11","location_contact_other_d2","contact_mask_d2","duration_contact_d2","frequency_contact_d2","known_contact_d2","dirio_de_contato_dia_1_complete")
+cont_d2 = data %>% dplyr::filter(redcap_repeat_instrument == "dirio_de_contato_dia_2") %>% dplyr::select("rec_id","individual_id","redcap_event_name", "redcap_repeat_instance","redcap_repeat_instrument","contact_id_d2", "contact_age_yn_d2","age_contact_d2","age_group_contact_d2","sex_contact_d2", "touch_contact_d2","where_contact_d2","location_contact_d2___0", "location_contact_d2___1","location_contact_d2___2","location_contact_d2___3", "location_contact_d2___4","location_contact_d2___5","location_contact_d2___6", "location_contact_d2___7","location_contact_d2___8","location_contact_d2___9", "location_contact_d2___10","location_contact_d2___11","location_contact_other_d2", "contact_mask_d2","duration_contact_d2","frequency_contact_d2","known_contact_d2", "dirio_de_contato_dia_1_complete")
 
 names(cont_d1)[grep("_d1", names(cont_d1))] <-  gsub("_d1", "", names(cont_d1)[grep("_d1", names(cont_d1))])
 names(cont_d2)[grep("_d2", names(cont_d2))] <-  gsub("_d2", "", names(cont_d2)[grep("_d2", names(cont_d2))])
@@ -221,13 +230,13 @@ cont_d1$repeat_contact_d2 <- NA
 cont_d1d2_norep <- rbind(cont_d1, cont_d2)
 
 cont_d1d2_norep <- cont_d1d2_norep %>%
-  select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument","redcap_repeat_instance","contact_id","touch_contact","where_contact","contact_mask","duration_contact","frequency_contact","known_contact","location_contact___0","location_contact___1","location_contact___2","location_contact___3","location_contact___4","location_contact___5","location_contact___6","location_contact___7","location_contact___8","location_contact___9","location_contact___10","location_contact___11","location_contact_other","Day1or2","repeat_contact_d2","contact_age_yn","age_contact","age_group_contact","sex_contact")
+  select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument", "redcap_repeat_instance","contact_id","touch_contact","where_contact", "contact_mask","duration_contact","frequency_contact","known_contact", "location_contact___0","location_contact___1","location_contact___2", "location_contact___3","location_contact___4","location_contact___5", "location_contact___6","location_contact___7","location_contact___8", "location_contact___9","location_contact___10","location_contact___11", "location_contact_other","Day1or2","repeat_contact_d2","contact_age_yn", "age_contact","age_group_contact","sex_contact")
 ```
 
 ```{r}
 contact_name_d1 <- data %>% filter(redcap_repeat_instrument == "dirio_de_contato_dia_1") %>%
              group_by(rec_id) %>%
-             select(rec_id, contact_id_d1,"contact_age_yn_d1","age_contact_d1","age_group_contact_d1","sex_contact_d1")
+             select(rec_id, contact_id_d1,"contact_age_yn_d1","age_contact_d1", "age_group_contact_d1","sex_contact_d1")
 
 contact_name_d1$contact_sequence_id <- NA
 for (i in unique(contact_name_d1$rec_id)) {
@@ -245,7 +254,7 @@ for (i in 1:20) {
   nam <- paste("c", i, sep = ".")
   assign(nam, data %>%
            dplyr::filter(redcap_event_name == "day_2_diary_arm_1") %>% 
-           dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument","redcap_repeat_instance", ends_with(paste0("_d2_rep_",i)), starts_with(paste0("location_contact_d2_rep_",i)))%>%
+           dplyr::select("rec_id","individual_id","redcap_event_name", "redcap_repeat_instrument","redcap_repeat_instance", ends_with(paste0("_d2_rep_",i)), starts_with(paste0("location_contact_d2_rep_",i)))%>%
     dplyr::filter(is.na(redcap_repeat_instrument))%>%
     left_join(contact_name_d1_full[which(contact_name_d1_full$contact_sequence_id==i),], by="rec_id"))
 }
@@ -290,7 +299,7 @@ names(cont_d2_rep)[grep("_d2_rep", names(cont_d2_rep))] <-  gsub("_d2_rep", "", 
 names(cont_d2_rep)[grep("_d1", names(cont_d2_rep))] <-  gsub("_d1", "", names(cont_d2_rep)[grep("_d1", names(cont_d2_rep))])
 
 cont_d2_rep <- cont_d2_rep %>%
-  select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument","redcap_repeat_instance","contact_id","touch_contact","where_contact","contact_mask","duration_contact","frequency_contact","known_contact","location_contact___0","location_contact___1","location_contact___2","location_contact___3","location_contact___4","location_contact___5","location_contact___6","location_contact___7","location_contact___8","location_contact___9","location_contact___10","location_contact___11","location_contact_other","Day1or2","repeat_contact_d2","contact_age_yn","age_contact","age_group_contact","sex_contact")
+  select("rec_id","individual_id","redcap_event_name","redcap_repeat_instrument", "redcap_repeat_instance","contact_id","touch_contact","where_contact", "contact_mask","duration_contact","frequency_contact","known_contact", "location_contact___0","location_contact___1","location_contact___2", "location_contact___3","location_contact___4","location_contact___5", "location_contact___6","location_contact___7","location_contact___8", "location_contact___9","location_contact___10","location_contact___11", "location_contact_other","Day1or2","repeat_contact_d2","contact_age_yn", "age_contact","age_group_contact","sex_contact")
 
 
 #names(cont_d2_rep)==names(cont_d1d2_norep)
@@ -320,24 +329,54 @@ cont_repeat_dup <- cont_all %>%
 
 ```
 
-
 ```{r}
+contact_hh_all = contact_hh_all %>% 
+  dplyr::mutate(age_group_contact = case_when(hh_member_age == 0 ~ "< 6 months",
+                                               hh_member_age == 1 ~ "6-11 months",
+                                               hh_member_age == 2 ~ "1-4 yrs",
+                                               hh_member_age == 3 ~ "5-9 yrs",
+                                               hh_member_age == 4 ~ "10-19 yrs",
+                                               hh_member_age == 5 ~ "20-29 yrs",
+                                               hh_member_age == 6 ~ "30-39 yrs",
+                                               hh_member_age == 7 ~ "40-49 yrs",
+                                               hh_member_age == 8 ~ "50-59 yrs",
+                                               hh_member_age == 9 ~ "60+ yrs",
+                                               hh_member_age == 10 ~ "I don't know",
+                                               hh_member_age == 0 ~ "6-11 months",
+                                               hh_member_age %in% 1:4 ~ "1-4 yrs",
+                                               hh_member_age %in% 5:9 ~ "5-9 yrs",
+                                               hh_member_age %in% 10:19 ~ "10-19 yrs",
+                                               hh_member_age %in% 20:29 ~ "20-29 yrs",
+                                               hh_member_age %in% 30:39 ~ "30-39 yrs",
+                                               hh_member_age %in% 40:49 ~ "40-49 yrs",
+                                               hh_member_age %in% 50:59 ~ "50-59 yrs",
+                                               hh_member_age >=60 ~ "60+ yrs"))
+contact_hh_all$age_group_contact = factor(contact_hh_all$age_group_contact, 
+                   levels = c("< 6 months", "6-11 months", "1-4 yrs", "5-9 yrs", 
+                              "10-19 yrs", "20-29 yrs", "30-39 yrs", 
+                              "40-49 yrs", "50-59 yrs", "60+ yrs", "I don't know"))
+label(contact_hh_all$age_group_contact) <- "Age group"
+
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(contact_id = case_when(contact_id == 0 ~ "No",
                                          contact_id == 1 ~ "Yes",
-                                         contact_id == 2 ~ "Not applicable")) #the data dic only says 0, No | 1, Yes, but actually there are 3 levels in this variable 
+                                         contact_id == 2 ~ "Not applicable")) # the data dict only says 0, No | 1, Yes, but actually there are 3 levels in this variable 
 label(contact_hh_all$contact_id) <- "Did you have contact with [household_survey_arm_1][hh_member_name][1]?"
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(touch_contact = case_when(touch_contact == 0 ~ "No",
                                          touch_contact == 1 ~ "Yes",
-                                         touch_contact == 2 ~ "Do not remember")) 
+                                         touch_contact == 2 ~ "Do not remember"))
+contact_hh_all$touch_contact = factor(contact_hh_all$touch_contact, 
+                   levels = c("Yes", "No", "Do not remember"))
 label(contact_hh_all$touch_contact) <- "Did you touch?"
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(where_contact = case_when(where_contact == 0 ~ "Indoors",
                                          where_contact == 1 ~ "Outdoors",
-                                         where_contact == 2 ~ "Both")) 
+                                         where_contact == 2 ~ "Both"))
+contact_hh_all$where_contact <- factor(contact_hh_all$where_contact,
+                                       levels = c("Indoors", "Outdoors", "Both"))
 label(contact_hh_all$where_contact) <- "Did the contact occur indoors or outdoors?"
 
 label(contact_hh_all$location_contact___0) <- "My home"
@@ -357,7 +396,12 @@ contact_hh_all = contact_hh_all %>%
   dplyr::mutate(contact_mask = case_when(contact_mask == 0 ~ "No, no mask was worn during the encounter",
                                         contact_mask == 1 ~ "Yes, for the entire encounter",
                                         contact_mask == 2 ~ "Yes, during parts of encounter",
-                                        contact_mask == 3 ~ "I don't remember"))  
+                                        contact_mask == 3 ~ "I don't remember"))
+contact_hh_all$contact_mask <- factor(contact_hh_all$contact_mask,
+                                      levels = c("No, no mask was worn during the encounter",
+                                                 "Yes, for the entire encounter",
+                                                 "Yes, during parts of encounter",
+                                                 "I don't remember"))
 label(contact_hh_all$contact_mask) <- "Was this individual wearing a mask when you had contact?"
 
 contact_hh_all = contact_hh_all %>%
@@ -367,6 +411,10 @@ contact_hh_all = contact_hh_all %>%
                                                duration_contact == 3 ~ "31 mins - 1 hr",
                                                duration_contact == 4 ~ "1-4 hrs",
                                                duration_contact == 5 ~ ">4 hrs"))
+contact_hh_all$duration_contact <- factor(contact_hh_all$duration_contact,
+                                          levels = c("< 5 mins", "5-15 mins", 
+                                                     "16-30 mins", "31 mins - 1 hr",
+                                                     "1-4 hrs", ">4 hrs"))
 label(contact_hh_all$duration_contact) <- "What was the total time spent with the contact on this day?"
 
 contact_hh_all = contact_hh_all %>%
@@ -377,6 +425,11 @@ contact_hh_all = contact_hh_all %>%
                                                frequency_contact == 4 ~ "Once every 2 weeks",
                                                frequency_contact == 5 ~ "Once per month",
                                                frequency_contact == 6 ~ "Once every 3 months"))
+contact_hh_all$frequency_contact <- factor(contact_hh_all$frequency_contact,
+                                           levels = c("Never met before", "Rarely",
+                                                      "Daily or almost daily","1-3 times per week",
+                                                      "Once every 2 weeks", "Once per month",
+                                                      "Once every 3 months"))
 label(contact_hh_all$frequency_contact) <- "In the past 6 months, how often have you had contact with this person?"
 
 contact_hh_all = contact_hh_all %>%
@@ -386,6 +439,10 @@ contact_hh_all = contact_hh_all %>%
                                                known_contact == 3 ~ "3-5 years",
                                                known_contact == 4 ~ "6-10 years",
                                                known_contact == 5 ~ "More than 10 years"))
+contact_hh_all$known_contact <- factor(contact_hh_all$known_contact,
+                                       levels = c("Never met before", "Less than a year",
+                                                  "1-2 years", "3-5 years", "6-10 years",
+                                                  "More than 10 years"))
 label(contact_hh_all$known_contact) <- "How long have you known this person?"
 
 contact_hh_all = contact_hh_all %>% 
@@ -393,7 +450,7 @@ contact_hh_all = contact_hh_all %>%
                                          study_site == 2 ~ "Polana Caniço")) 
 
 contact_hh_all = contact_hh_all %>% 
-  dplyr::mutate(hh_member_sex = case_when(hh_member_sex == 0 ~ "Female",
+  dplyr::mutate(contact_sex = case_when(hh_member_sex == 0 ~ "Female",
                                         hh_member_sex == 1 ~ "Male",
                                         hh_member_sex == 2 ~ "Transsexual Female",
                                         hh_member_sex == 3 ~ "Transsexual Male",
@@ -410,7 +467,7 @@ contact_hh_all = contact_hh_all %>%
                                         hh_member_relationship == 7 ~ "Nephew",
                                         hh_member_relationship == 8 ~ "Other relative",
                                         hh_member_relationship == 9 ~ "Not relative",
-                                        hh_member_relationship == 10 ~ "Not applicable (it is the head of the household himself)"))
+                                        hh_member_relationship == 10 ~ "Self (HoH)"))
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(share_room = case_when(share_room == 0 ~ "No",
@@ -435,8 +492,10 @@ label(cont_all$touch_contact) <- "Did you touch?"
 
 cont_all = cont_all %>% 
   dplyr::mutate(where_contact = case_when(where_contact == 0 ~ "Indoors",
-                                         where_contact == 1 ~ "Outdoors",
-                                         where_contact == 2 ~ "Both")) 
+                                          where_contact == 1 ~ "Outdoors",
+                                          where_contact == 2 ~ "Both"))
+cont_all$where_contact <- factor(cont_all$where_contact,
+                                       levels = c("Indoors", "Outdoors", "Both"))
 label(cont_all$where_contact) <- "Did the contact occur indoors or outdoors?"
 
 label(cont_all$location_contact___0) <- "My home"
@@ -456,7 +515,12 @@ cont_all = cont_all %>%
   dplyr::mutate(contact_mask = case_when(contact_mask == 0 ~ "No, no mask was worn during the encounter",
                                         contact_mask == 1 ~ "Yes, for the entire encounter",
                                         contact_mask == 2 ~ "Yes, during parts of encounter",
-                                        contact_mask == 3 ~ "I don't remember"))  
+                                        contact_mask == 3 ~ "I don't remember"))
+cont_all$cont_mask <- factor(cont_all$contact_mask,
+                                   levels = c("No, no mask was worn during the encounter",
+                                              "Yes, for the entire encounter",
+                                              "Yes, during parts of encounter",
+                                              "I don't remember"))
 label(cont_all$contact_mask) <- "Was this individual wearing a mask when you had contact?"
 
 cont_all = cont_all %>%
@@ -466,6 +530,10 @@ cont_all = cont_all %>%
                                                duration_contact == 3 ~ "31 mins - 1 hr",
                                                duration_contact == 4 ~ "1-4 hrs",
                                                duration_contact == 5 ~ ">4 hrs"))
+cont_all$duration_cont <- factor(cont_all$duration_contact,
+                                       levels = c("< 5 mins", "5-15 mins", 
+                                                  "16-30 mins", "31 mins - 1 hr",
+                                                  "1-4 hrs", ">4 hrs"))
 label(cont_all$duration_contact) <- "What was the total time spent with the contact on this day?"
 
 cont_all = cont_all %>%
@@ -476,6 +544,11 @@ cont_all = cont_all %>%
                                                frequency_contact == 4 ~ "Once every 2 weeks",
                                                frequency_contact == 5 ~ "Once per month",
                                                frequency_contact == 6 ~ "Once every 3 months"))
+cont_all$frequency_contact <- factor(cont_all$frequency_contact,
+                                        levels = c("Never met before", "Rarely",
+                                                   "Daily or almost daily","1-3 times per week",
+                                                   "Once every 2 weeks", "Once per month",
+                                                   "Once every 3 months"))
 label(cont_all$frequency_contact) <- "In the past 6 months, how often have you had contact with this person?"
 
 cont_all = cont_all %>%
@@ -485,15 +558,20 @@ cont_all = cont_all %>%
                                                known_contact == 3 ~ "3-5 years",
                                                known_contact == 4 ~ "6-10 years",
                                                known_contact == 5 ~ "More than 10 years"))
+cont_all$known_contact <- factor(cont_all$known_contact,
+                                    levels = c("Never met before", "Less than a year",
+                                               "1-2 years", "3-5 years", "6-10 years",
+                                               "More than 10 years"))
+
 label(cont_all$known_contact) <- "How long have you known this person?"
 
 cont_all = cont_all %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
-                                         study_site == 2 ~ "Polana Caniço")) 
+                                       study_site == 2 ~ "Polana Caniço")) 
 
 cont_all = cont_all %>% 
   dplyr::mutate(contact_age_yn = case_when(contact_age_yn == 0 ~ "No",
-                                         	contact_age_yn == 1 ~ "Yes")) 
+                                           contact_age_yn == 1 ~ "Yes")) 
 label(cont_all$contact_age_yn) <- "Do you know the contact age?"
 
 cont_all = cont_all %>% 
@@ -517,12 +595,13 @@ cont_all = cont_all %>%
                                                age_contact %in% 40:49 ~ "40-49 yrs",
                                                age_contact %in% 50:59 ~ "50-59 yrs",
                                                age_contact >=60 ~ "60+ yrs"))
-
 cont_all$age_group_contact = factor(cont_all$age_group_contact, 
-                   levels = c("< 6 months", "6-11 months", "1-4 yrs", "5-9 yrs", "10-19 yrs", "20-29 yrs", "30-39 yrs", "40-49 yrs", "50-59 yrs", "60+ yrs", "I don't know"))
+                   levels = c("< 6 months", "6-11 months", "1-4 yrs", "5-9 yrs", 
+                              "10-19 yrs", "20-29 yrs", "30-39 yrs", 
+                              "40-49 yrs", "50-59 yrs", "60+ yrs", "I don't know"))
 
 cont_all = cont_all %>% 
-  dplyr::mutate(sex_contact = case_when(sex_contact == 0 ~ "Female",
+  dplyr::mutate(contact_sex = case_when(sex_contact == 0 ~ "Female",
                                         sex_contact == 1 ~ "Male",
                                         sex_contact == 2 ~ "Transsexual Female",
                                         sex_contact == 3 ~ "Transsexual Male",
@@ -534,28 +613,68 @@ contact_hh_rural <- contact_hh_all[which(contact_hh_all$study_site=="Manhiça"),
 
 library(gtsummary)
 contact_hh_summary <- contact_hh_rural %>%
-  select("hh_member_sex","hh_member_age","hh_member_relationship","fromdayone","touch_contact","where_contact","contact_mask","duration_contact","frequency_contact","known_contact","location_contact___0","location_contact___1","location_contact___2","location_contact___3","location_contact___4","location_contact___5","location_contact___6","location_contact___7","location_contact___8","location_contact___9","location_contact___10","location_contact___11") %>%
+  select("contact_sex","age_group_contact","hh_member_relationship","fromdayone",
+         "touch_contact","where_contact","contact_mask","duration_contact",
+         "frequency_contact","known_contact","location_contact___0",
+         "location_contact___1","location_contact___2","location_contact___3",
+         "location_contact___4","location_contact___5","location_contact___6",
+         "location_contact___7","location_contact___8","location_contact___9",
+         "location_contact___10","location_contact___11") %>%
   tbl_summary(percent="column",
               digits = all_categorical() ~ 1) %>%
   bold_labels() %>%
   modify_header(label = "**Variable**") %>%
   modify_caption("**Household Contact Information in Manhiça**")
-#contact_hh_summary
+contact_hh_summary
 ```
-```{r}
-cont_rural <- cont_all[which(cont_all$study_site=="Manhiça"),]
 
-contact_summary <- cont_rural %>%
-  select("sex_contact","age_contact","age_group_contact","fromdayone","touch_contact","where_contact","contact_mask","duration_contact","frequency_contact","known_contact","location_contact___0","location_contact___1","location_contact___2","location_contact___3","location_contact___4","location_contact___5","location_contact___6","location_contact___7","location_contact___8","location_contact___9","location_contact___10","location_contact___11") %>%
+```{r}
+contact_nonhh_rural <- cont_all[which(cont_all$study_site=="Manhiça"),]
+
+contact_summary <- contact_nonhh_rural %>%
+  select("contact_sex","age_group_contact","fromdayone",
+         "touch_contact","where_contact","contact_mask","duration_contact",
+         "frequency_contact","known_contact","location_contact___0",
+         "location_contact___1","location_contact___2","location_contact___3",
+         "location_contact___4","location_contact___5","location_contact___6",
+         "location_contact___7","location_contact___8","location_contact___9",
+         "location_contact___10","location_contact___11") %>%
   tbl_summary(percent="column",
               digits = all_categorical() ~ 1) %>%
   bold_labels() %>%
   modify_header(label = "**Variable**") %>%
   modify_caption("**Non-Household Contact Information in Manhiça**")
-#contact_summary
+contact_summary
 ```
 
 
+```{r}
+# Merge household and hon-household contacts for Manhica only
+contact_nonhh_rural$hh_membership <- "Non-member"
+contact_hh_rural$hh_membership <- "Member"
+
+keep_vars <- c("rec_id", "age_group_contact", "contact_sex","touch_contact", "fromdayone",
+               "where_contact","contact_mask", "duration_contact", "frequency_contact",
+               "known_contact", "hh_membership",
+               "location_contact___0","location_contact___1","location_contact___2",
+               "location_contact___3", "location_contact___4", "location_contact___5",
+               "location_contact___6", "location_contact___7","location_contact___8",
+               "location_contact___9", "location_contact___10", "location_contact___11")
+contact_hh_rural <- contact_hh_rural %>%
+  select(any_of(keep_vars))
+contact_nonhh_rural <- contact_nonhh_rural %>%
+  select(any_of(keep_vars))
+
+# keep only ids that are common in both data sets. this should move up in cleaning, 
+# to keep only ids that are in participant file. 
+intersect_ids <- intersect(unique(contact_hh_rural$rec_id),
+                           unique(contact_nonhh_rural$rec_id))
+contact_hh_rural <- contact_hh_rural[contact_hh_rural$rec_id %in% intersect_ids,]
+contact_nonhh_rural <- contact_nonhh_rural[contact_nonhh_rural$rec_id %in% intersect_ids,]
+
+
+contact_rural_all <- rbind(contact_hh_rural, contact_nonhh_rural)
+```
 
 
 ## Individual enrolment
@@ -573,32 +692,69 @@ ind = ind %>%
 ind = ind %>% 
   dplyr::mutate(aim = case_when(aim == 0 ~ 1,
                                  aim == 1 ~ 2)) 
-ind  = ind %>% 
+ind = ind %>% 
   dplyr::mutate(highest_educ = case_when(highest_educ == 0 ~ "No schooling", 
                                            highest_educ == 1 ~ "Primary School (1-7)", 
                                            highest_educ == 2 ~ "Basic Secondary school (8-10)",
                                            highest_educ == 3 ~ "Middle Secondary (11-12)", 
                                            highest_educ == 4 ~ "1-3 years of college/university", 
                                            highest_educ == 5 ~ "Bacherols",
-                                           highest_educ == 6 ~ "More than Bachelors")) ## check spelling, initially "Bacherols"
+                                           highest_educ == 6 ~ "More than Bachelors")) ## check spelling, initially "Bachelors"
 label(ind$highest_educ) <- "What is the highest level of education that you have attained?"
 
-ind = ind %>% 
-  dplyr::mutate(age_cat = case_when(age < 1 ~ "<1", 
-                                  age >=1 & age <= 4 ~ "1 - 4y", 
-                                  age >=5 & age <=9 ~ "5 - 9y", 
-                                  age >=10 & age <=14 ~ "10 - 14y", 
-                                  age >=15 & age <=19 ~ "15 - 19y", 
-                                  age >=20 & age <=29 ~ "20 - 29y", 
-                                  age >=30 & age <=39 ~ "30 - 39y", 
-                                  age >=40 & age <=59 ~ "40 - 59y", 
-                                  age >=60 ~ "60y+"))
+# ind = ind %>% 
+#   dplyr::mutate(age_cat = case_when(age < 1 ~ "<1", 
+#                                   age >=1 & age <= 4 ~ "1 - 4y", 
+#                                   age >=5 & age <=9 ~ "5 - 9y", 
+#                                   age >=10 & age <=14 ~ "10 - 14y", 
+#                                   age >=15 & age <=19 ~ "15 - 19y", 
+#                                   age >=20 & age <=29 ~ "20 - 29y", 
+#                                   age >=30 & age <=39 ~ "30 - 39y", 
+#                                   age >=40 & age <=59 ~ "40 - 59y", 
+#                                   age >=60 ~ "60y+"))
 
+## age categories
+ind$age_weeks = round(difftime(strptime(as.Date(ind$date_enrolled), format = "%Y-%m-%d"), 
+                               strptime(ind$birthdate, format = "%Y-%m-%d"),units="weeks"),2)
+ind$months = interval(ind$birthdate, ind$date_enrolled) %/% months(1) 
+df_mths = subset(ind, ind$months < 12)
+df_years = subset(ind, ind$months >= 12)
+df_years$age <- as.numeric(df_years$age)
+df_mths = df_mths %>% 
+  dplyr::mutate(group = case_when(months < 6 ~ 1, 
+                                  months >= 6  ~ 2))
+df_years = df_years %>% 
+  dplyr::mutate(group = case_when(
+    age < 5 ~ 3, 
+    age >= 5 & age < 10 ~ 4, 
+    age >= 10 & age < 15 ~ 5, 
+    age >= 15 & age < 20 ~ 6, 
+    age >= 20 & age < 30 ~ 7, 
+    age >= 30 & age < 40 ~ 8,
+    age >= 40 & age < 60 ~ 9, 
+    age >= 60 ~ 10))
+
+ind <- rbind(df_mths, df_years)
+
+ind$age_cat <- NA
+ind <- ind %>% dplyr::mutate(age_cat = case_when(group == 1 ~ "< 6 months", 
+                                          group == 2 ~ "6 - 11 months", 
+                                          group == 3 ~ "1 - 4y", 
+                                          group == 4 ~ "5 - 9y", 
+                                          group == 5 ~ "10 - 14y", 
+                                          group == 6 ~ "15 - 19y", 
+                                          group == 7 ~ "20 - 29y", 
+                                          group == 8 ~ "30 - 39y", 
+                                          group == 9 ~ "40 - 59y", 
+                                          group == 10 ~ "60y+"))
+ind$age_cat <- factor(ind$age_cat, 
+                   levels = c("< 6 months", "6 - 11 months", "1 - 4y", "5 - 9y", 
+                              "10 - 14y", "15 - 19y", "20 - 29y", "30 - 39y", 
+                              "40 - 59y", "60y+"))
+
+## sex
 ind = ind %>% 
   dplyr::mutate(sex = case_when(sex == 0 ~ "Female", sex == 1 ~ "Male"))
-
-ind$age_cat = factor(ind$age_cat, 
-                   levels = c("<1", "1 - 4y", "5 - 9y", "10 - 14y", "15 - 19y", "20 - 29y", "30 - 39y", "40 - 59y", "60y+"))
 
 
 ind  = ind %>% 
@@ -629,7 +785,7 @@ ind  = ind %>%
                                            school_level == 2 ~ "Basic Secondary school (8-10)",
                                            school_level == 3 ~ "Middle Secondary (11-12)", 
                                            school_level == 4 ~ "1-3 years of college/university", 
-                                           school_level == 5 ~ "Bacherols",
+                                           school_level == 5 ~ "Bachelors",
                                            school_level == 6 ~ "More than Bachelors"))
 label(ind$school_level) <- "What school level are you in?"
 
@@ -667,7 +823,7 @@ ind_contact <- cont_all %>%
 
 ind_summary <- ind %>%
   filter(study_site == "Manhiça") %>%
-  select("sex", "sex_other", "birthdate","age", "read_write", "occupation___0", "occupation___1", "occupation___2", "occupation___3", "occupation___4", "occupation___5", "occupation___6", "occupation___7", "occupation___8", "occupation___9", "occupation_other", "enrolled_school", "highest_educ", "school_level", "transport_use", "hh_resp_exposure", "child_breastfeed", "num_simbling","child") %>%
+  select("sex", "sex_other", "birthdate","age_cat", "read_write", "occupation___0", "occupation___1", "occupation___2", "occupation___3", "occupation___4", "occupation___5", "occupation___6", "occupation___7", "occupation___8", "occupation___9", "occupation_other", "enrolled_school", "highest_educ", "school_level", "transport_use", "hh_resp_exposure", "child_breastfeed", "num_simbling","child") %>%
   tbl_summary(percent="column",
               digits = all_categorical() ~ 1) %>%
   bold_labels() %>%
@@ -692,4 +848,6 @@ ind_contact_hh$aim[which(ind_contact_hh$aim==0)] <- 1
 saveRDS(ind, "../Data/individual_info.RDS")
 saveRDS(ind_contact_hh, "../Data/ind_contact_hh.RDS")
 saveRDS(ind_contact, "../Data/ind_contact_nonhh.RDS")
+
+saveRDS(contact_rural_all, "../Data/contact_rural_all.RDS")
 ```
