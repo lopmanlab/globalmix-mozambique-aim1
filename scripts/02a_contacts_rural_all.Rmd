@@ -34,14 +34,28 @@ participant <- readRDS("../Data/individual_info.RDS")
 # study site
 participant$study_site <- as.factor(participant$study_site)
 
-# participation week
-participant$week_enrolled <- weekdays(participant$date_enrolled)
-participant$week_enrolled <- factor(participant$week_enrolled,
+# participation day, weekday/weekend, weeknumber
+participant$day_of_week <- weekdays(participant$date_enrolled)
+participant$day_of_week <- factor(participant$day_of_week,
                                     levels = c("Monday", "Tuesday", "Wednesday", 
                                                "Thursday", "Friday","Saturday","Sunday"),
                                     labels = c("Mon", "Tue", "Wed", "Thur", "Fri",
                                                "Sat","Sun"))
-label(participant$week_enrolled) <- "Week enrolled"
+label(participant$day_of_week) <- "Day of week enrolled"
+
+participant <- participant %>%
+  dplyr::mutate(weekday = case_when(day_of_week == "Mon" ~ "Weekday",
+                                    day_of_week == "Tue" ~ "Weekday",
+                                    day_of_week == "Wed" ~ "Weekday",
+                                    day_of_week == "Thur" ~ "Weekday",
+                                    day_of_week == "Fri" ~ "Weekday",
+                                    day_of_week == "Sat" ~ "Weekend",
+                                    day_of_week == "Sun" ~ "Weekend"))
+participant$weekday <- factor(participant$weekday,
+                              levels = c("Weekday", "Weekend"))
+  
+participant$weeknum <- lubridate::week(ymd(participant$date_enrolled))
+participant$year <- lubridate::year(ymd(participant$date_enrolled)) # check enrollment dates in 2020
 
 # occupation
 participant <- participant %>%
@@ -90,10 +104,13 @@ label(participant$highest_educ) <- "Highest education level attained (currently 
 label(participant$school_level) <- "School level (currently in school)"
 label(participant$transport_use) <- "Transport use last 3 months"
 label(participant$occupation) <- "Occupation"
+label(participant$weekday) <- "Day of week"
+label(participant$weeknum) <- "Enrollment week number"
+label(participant$year) <- "Enrollment year"
 
 t1 <- participant %>%
   filter(aim==1) %>%
-  select(sex, age_cat, read_write, enrolled_school, school_level, highest_educ, study_site, occupation) %>%
+  select(sex, age_cat, day_of_week, year, read_write, enrolled_school, school_level, highest_educ, study_site, occupation) %>%
   tbl_summary(by=study_site, 
               percent="column",
               digits = all_categorical() ~ 0,
@@ -106,7 +123,7 @@ t1 <- participant %>%
 
 t2 <- participant %>%
   filter(aim==2) %>%
-  select(sex, age_cat, read_write, enrolled_school, school_level, highest_educ, study_site, occupation) %>%
+  select(sex, age_cat, day_of_week, year, read_write, enrolled_school, school_level, highest_educ, study_site, occupation) %>%
   tbl_summary(by=study_site, 
               percent="column",
               digits = all_categorical() ~ 0,
@@ -132,7 +149,9 @@ t2
 contact_rural_all <- readRDS("../Data/contact_rural_all.RDS")
 
 contact_rural_all$hh_membership <- factor(contact_rural_all$hh_membership,
-                                          levels = c("Member", "Non-member")) 
+                                          levels = c("Member", "Non-member"))
+# relationship
+
 t3 <- contact_rural_all %>%
   # filter(aim==1) %>%
   select(age_group_contact, contact_sex, contact_mask, known_contact, duration_contact, 
@@ -147,4 +166,34 @@ t3 <- contact_rural_all %>%
   # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") %>%
   modify_caption("**Table 3: Baseline characteristics of contacts**")
 t3
+```
+
+```{r}
+# contact boxplots
+# 1. age
+
+# 2. sex
+
+# 3. day of week
+
+# 4. weekday/ weekend
+
+# 5. week
+
+# 6. household vs nonhousehold member
+```
+
+```{r}
+# contact matrix
+# 1. age
+
+# 2. sex
+
+# 3. day of week
+
+# 4. weekday/ weekend
+
+# 5. week
+
+# 6. household vs nonhousehold member
 ```
