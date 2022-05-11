@@ -284,6 +284,7 @@ cont_d1d2_norep <- cont_d1d2_norep %>%
          "age_contact","age_group_contact","sex_contact")
 ```
 
+
 ```{r}
 contact_name_d1 <- data %>% filter(redcap_repeat_instrument == "dirio_de_contato_dia_1") %>%
              group_by(rec_id) %>%
@@ -385,36 +386,43 @@ cont_repeat_dup <- cont_all %>%
 
 ```
 
+
 ```{r}
+###!!! I need to know how the age categories for hh_members was done.
 
 contact_hh_all <- contact_hh_all %>%
   full_join(cont_d2_diarydate, by="rec_id")
 
+table(contact_hh_all$hh_member_age, useNA = "always")
 contact_hh_all = contact_hh_all %>% 
-  dplyr::mutate(age_group_contact = case_when(hh_member_age == 0 ~ "< 6 months",
-                                               hh_member_age == 1 ~ "6-11 months",
-                                               hh_member_age == 2 ~ "1-4 yrs",
-                                               hh_member_age == 3 ~ "5-9 yrs",
-                                               hh_member_age == 4 ~ "10-19 yrs",
-                                               hh_member_age == 5 ~ "20-29 yrs",
-                                               hh_member_age == 6 ~ "30-39 yrs",
-                                               hh_member_age == 7 ~ "40-49 yrs",
-                                               hh_member_age == 8 ~ "50-59 yrs",
-                                               hh_member_age == 9 ~ "60+ yrs",
+  dplyr::mutate(age_group_contact = case_when(hh_member_age == 0 ~ "<6mo",
+                                               hh_member_age == 1 ~ "6-11mo",
+                                               hh_member_age == 2 ~ "1-4y",
+                                               hh_member_age == 3 ~ "5-9y",
+                                               hh_member_age == 4 ~ "10-19y",
+                                               hh_member_age == 5 ~ "20-29y",
+                                               hh_member_age == 6 ~ "30-39y",
+                                               hh_member_age == 7 ~ "40-49y",
+                                               hh_member_age == 8 ~ "50-59y",
+                                               hh_member_age == 9 ~ "60+y",
                                                hh_member_age == 10 ~ "I don't know",
-                                               hh_member_age == 0 ~ "6-11 months",
-                                               hh_member_age %in% 1:4 ~ "1-4 yrs",
-                                               hh_member_age %in% 5:9 ~ "5-9 yrs",
-                                               hh_member_age %in% 10:19 ~ "10-19 yrs",
-                                               hh_member_age %in% 20:29 ~ "20-29 yrs",
-                                               hh_member_age %in% 30:39 ~ "30-39 yrs",
-                                               hh_member_age %in% 40:49 ~ "40-49 yrs",
-                                               hh_member_age %in% 50:59 ~ "50-59 yrs",
-                                               hh_member_age >=60 ~ "60+ yrs"))
+                                               hh_member_age == 0 ~ "6-11mo",
+                                               hh_member_age %in% 1:4 ~ "1-4y",
+                                               hh_member_age %in% 5:9 ~ "5-9y",
+                                               hh_member_age %in% 10:19 ~ "10-19y",
+                                               hh_member_age %in% 20:29 ~ "20-29y",
+                                               hh_member_age %in% 30:39 ~ "30-39y",
+                                               hh_member_age %in% 40:49 ~ "40-49y",
+                                               hh_member_age %in% 50:59 ~ "50-59y",
+                                               hh_member_age >=60 ~ "60+y"))
+table(contact_hh_all$age_group_contact, useNA = "always")
+contact_hh_all <- contact_hh_all %>%
+  subset(age_group_contact != "I don't know") 
+
 contact_hh_all$age_group_contact = factor(contact_hh_all$age_group_contact, 
-                   levels = c("< 6 months", "6-11 months", "1-4 yrs", "5-9 yrs", 
-                              "10-19 yrs", "20-29 yrs", "30-39 yrs", 
-                              "40-49 yrs", "50-59 yrs", "60+ yrs", "I don't know"))
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                              "10-19y", "20-29y", "30-39y", 
+                              "40-49y", "50-59y", "60+y")) #, "I don't know")) <- drop this and NA
 label(contact_hh_all$age_group_contact) <- "Age group"
 
 contact_hh_all = contact_hh_all %>% 
@@ -635,30 +643,30 @@ cont_all = cont_all %>%
 label(cont_all$contact_age_yn) <- "Do you know the contact age?"
 
 cont_all = cont_all %>% 
-  dplyr::mutate(age_group_contact = case_when(age_group_contact == 0 ~ "< 6 months",
-                                               age_group_contact == 1 ~ "6-11 months",
-                                               age_group_contact == 2 ~ "1-4 yrs",
-                                               age_group_contact == 3 ~ "5-9 yrs",
-                                               age_group_contact == 4 ~ "10-19 yrs",
-                                               age_group_contact == 5 ~ "20-29 yrs",
-                                               age_group_contact == 6 ~ "30-39 yrs",
-                                               age_group_contact == 7 ~ "40-49 yrs",
-                                               age_group_contact == 8 ~ "50-59 yrs",
-                                               age_group_contact == 9 ~ "60+ yrs",
+  dplyr::mutate(age_group_contact = case_when(age_group_contact == 0 ~ "<6mo",
+                                               age_group_contact == 1 ~ "6-11mo",
+                                               age_group_contact == 2 ~ "1-4y",
+                                               age_group_contact == 3 ~ "5-9y",
+                                               age_group_contact == 4 ~ "10-19y",
+                                               age_group_contact == 5 ~ "20-29y",
+                                               age_group_contact == 6 ~ "30-39y",
+                                               age_group_contact == 7 ~ "40-49y",
+                                               age_group_contact == 8 ~ "50-59y",
+                                               age_group_contact == 9 ~ "60+y",
                                                age_group_contact == 10 ~ "I don't know",
                                                age_contact == 0 ~ "6-11 months",
-                                               age_contact %in% 1:4 ~ "1-4 yrs",
-                                               age_contact %in% 5:9 ~ "5-9 yrs",
-                                               age_contact %in% 10:19 ~ "10-19 yrs",
-                                               age_contact %in% 20:29 ~ "20-29 yrs",
-                                               age_contact %in% 30:39 ~ "30-39 yrs",
-                                               age_contact %in% 40:49 ~ "40-49 yrs",
-                                               age_contact %in% 50:59 ~ "50-59 yrs",
-                                               age_contact >=60 ~ "60+ yrs"))
+                                               age_contact %in% 1:4 ~ "1-4y",
+                                               age_contact %in% 5:9 ~ "5-9y",
+                                               age_contact %in% 10:19 ~ "10-19y",
+                                               age_contact %in% 20:29 ~ "20-29y",
+                                               age_contact %in% 30:39 ~ "30-39y",
+                                               age_contact %in% 40:49 ~ "40-49y",
+                                               age_contact %in% 50:59 ~ "50-59y",
+                                               age_contact >=60 ~ "60+y"))
 cont_all$age_group_contact = factor(cont_all$age_group_contact, 
-                   levels = c("< 6 months", "6-11 months", "1-4 yrs", "5-9 yrs", 
-                              "10-19 yrs", "20-29 yrs", "30-39 yrs", 
-                              "40-49 yrs", "50-59 yrs", "60+ yrs", "I don't know"))
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                              "10-19y", "20-29y", "30-39y", 
+                              "40-49y", "50-59y", "60+y", "I don't know"))
 
 cont_all = cont_all %>% 
   dplyr::mutate(contact_sex = case_when(sex_contact == 0 ~ "Female",
@@ -706,6 +714,7 @@ contact_nonhh_rural <- contact_nonhh_rural[contact_nonhh_rural$rec_id %in% inter
 
 contact_rural_all <- rbind(contact_hh_rural, contact_nonhh_rural)
 ```
+
 
 ```{r}
 
@@ -796,20 +805,20 @@ df_years = df_years %>%
 ind <- rbind(df_mths, df_years)
 
 ind$age_cat <- NA
-ind <- ind %>% dplyr::mutate(age_cat = case_when(group == 1 ~ "< 6 months", 
-                                          group == 2 ~ "6 - 11 months", 
-                                          group == 3 ~ "1 - 4y", 
-                                          group == 4 ~ "5 - 9y", 
-                                          group == 5 ~ "10 - 14y", 
-                                          group == 6 ~ "15 - 19y", 
-                                          group == 7 ~ "20 - 29y", 
-                                          group == 8 ~ "30 - 39y", 
-                                          group == 9 ~ "40 - 59y", 
-                                          group == 10 ~ "60y+"))
+ind <- ind %>% dplyr::mutate(age_cat = case_when(group == 1 ~ "<6mo", 
+                                          group == 2 ~ "6-11mo", 
+                                          group == 3 ~ "1-4y", 
+                                          group == 4 ~ "5-9y", 
+                                          group == 5 ~ "10-14y", 
+                                          group == 6 ~ "15-19y", 
+                                          group == 7 ~ "20-29y", 
+                                          group == 8 ~ "30-39y", 
+                                          group == 9 ~ "40-59y", 
+                                          group == 10 ~ "60+y"))
 ind$age_cat <- factor(ind$age_cat, 
-                   levels = c("< 6 months", "6 - 11 months", "1 - 4y", "5 - 9y", 
-                              "10 - 14y", "15 - 19y", "20 - 29y", "30 - 39y", 
-                              "40 - 59y", "60y+"))
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                              "10-14y", "15-19y", "20-29y", "30-39y", 
+                              "40-59y", "60+y"))
 
 ## sex
 ind = ind %>% 
