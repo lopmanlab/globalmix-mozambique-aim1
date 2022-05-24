@@ -1410,3 +1410,16 @@ ind_exit <- exit %>%
 
 saveRDS(ind_exit, "../Data/ind_exit.RDS")
 ```
+
+```{r}
+#add index participants from aim2 to aim1 data for analysis
+ind_contact_aim1 <- ind_contact %>% filter(aim==1) 
+ind_contact_aim2_index <- ind_contact %>% filter(aim==2, age_cat %in% c("<6mo","6-11mo", "1-4y"))
+ind_contact_aim1_final <- rbind(ind_contact_aim1, ind_contact_aim2_index)
+saveRDS(ind_contact_aim1_final, "../Data/ind_contact_aim1_final.RDS")
+
+ind_contact_hh_aim1 <- ind_contact_hh %>% filter(aim==1) 
+ind_contact_hh_aim2_index <- ind_contact_hh %>% filter(aim==2, age_cat %in% c("<6mo","6-11mo", "1-4y"))
+ind_contact_hh_aim1_final <- rbind(ind_contact_hh_aim1, ind_contact_hh_aim2_index)
+saveRDS(ind_contact_hh_aim1_final, "../Data/ind_contact_hh_aim1_final.RDS")
+```
