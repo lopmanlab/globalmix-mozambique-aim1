@@ -8,6 +8,10 @@ data <- redcap_read(batch_size = 500L, interbatch_delay = 0.5, continue_on_error
                    records_collapsed = "", fields_collapsed = "")$data
 
 # save file
+<<<<<<< HEAD
+rio::export(data, "raw/all_data_09242021.csv") ##### Save the file in your preferred directory
+=======
 rio::export(data, "raw/all_data_03022022.csv") ##### Save the file in your preferred directory
 
 
+>>>>>>> cc7c3454b49acdff9c6b5e5f76f571e4a8f220c9
