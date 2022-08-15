@@ -1,0 +1,57 @@
+---
+title: "CL_contact matrix"
+output: html_document
+date: "2022-08-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+```
+
+## Read in data
+```{r}
+ind <- readRDS("../data/clean/individual_info.RDS")
+contact_hh <- readRDS("../data/clean/ind_contact_hh.RDS")
+contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
+
+
+```
+
+Subset to aim 1 only
+```{r}
+ind <- ind %>% filter(
+  aim ==1
+)
+
+contact_hh <- contact_hh%>%
+              filter(rec_id %in% unlist(ind$rec_id))
+
+contact_nonhh <- contact_nonhh %>%
+              filter(rec_id %in% unlist(ind$rec_id))
+```
+
+Check to see if there are any IDs with no contact
+```{r}
+sum(!ind$rec_id %in% contact_hh$rec_id)
+sum(!ind$rec_id %in% contact_nonhh$rec_id)
+
+##Figure out which ones
+missing_hh_nonhh <- ind %>% filter(
+                        !rec_id %in% unlist(contact_hh$rec_id) 
+                    ) %>% filter(
+                      !rec_id %in% unlist(contact_nonhh$rec_id)
+                    ) %>% arrange(rec_id)
+missing_hh <- ind %>% filter(
+                  !rec_id %in% unlist(contact_hh$rec_id)
+)
+
+missing_nonhh <- ind %>% filter(
+                  !rec_id %in% unlist(contact_nonhh$rec_id)
+)
+missing_hh$rec_id[!missing_hh$rec_id %in% missing_nonhh$rec_id]
+```
+
