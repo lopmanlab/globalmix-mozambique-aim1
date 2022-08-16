@@ -23,13 +23,16 @@ contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
 
 Subset to aim 1 only
 ```{r}
+## Subset individual_info to those included in aim1 only
 ind <- ind %>% filter(
   aim ==1
 )
 
+## Subset household contact to the IDs from aim 1 only
 contact_hh <- contact_hh%>%
               filter(rec_id %in% unlist(ind$rec_id))
 
+## Subset non HH contact to the IDs from aim 1 only
 contact_nonhh <- contact_nonhh %>%
               filter(rec_id %in% unlist(ind$rec_id))
 ```
