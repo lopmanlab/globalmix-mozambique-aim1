@@ -599,7 +599,8 @@ mat_r1 <- reshape2::melt(mr_r1, varnames = c("age1", "age_cont"), value.name = "
 ggplot(mat_r1, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
     scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
     xlab("Age of participant")+ylab("Age of contact")+
-    geom_tile()+ theme()
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE) + theme()
 ```
 
 ```{r}
