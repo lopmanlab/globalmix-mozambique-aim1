@@ -540,7 +540,7 @@ df_r <- survey(
 ```{r}
 ## urban
 m_u <- contact_matrix(df_u, age.limits = c(0,18,50,99),symmetric=T, missing.contact.age="sample",estimated.contact.age = "sample",
-                     weights= df_u$weights,n=1000)
+                     weights= df_u$participants$weights,n=1000)
 
 
 mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
@@ -552,7 +552,7 @@ mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "co
 
 
 m_r <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T, missing.contact.age="sample",estimated.contact.age = "sample",
-                     weights= df_r$weights,n=1000)
+                     weights= df_r$participants$weights,n=1000)
 
 
 mr_r <- Reduce("+", lapply(m_r$matrices, function(x) {x$matrix})) / length(m_r$matrices)
@@ -591,7 +591,15 @@ m_r1 <- contact_matrix(df_r, age.limits = c(0,10,20,30,40,50,60),symmetric=T, mi
 
 
 mr_r1 <- Reduce("+", lapply(m_r1$matrices, function(x) {x$matrix})) / length(m_r1$matrices)
-mat_r1 <- reshape2::melt(mr_r1, varnames = c("age1", "age_cont"), value.name = "contacts") 
+mat_r1 <- reshape2::melt(mr_r1, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c(1,2,3,4,5,6,7),
+                            age_part = c("[0,10)","[10,20)","[20,30)","[30-40)","[40-50)","[50-60)","60+")),
+                            by="age1")
+
+ggplot(mat_r1, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+ theme()
 ```
 
 ```{r}
