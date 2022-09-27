@@ -1,409 +1,286 @@
-"","rec_id","aim","sensor_id","sex","age_cat","enrolled_school","highest_educ","school_level","study_site"
-"1",409,2,"B4085BC6","Male","6-11mo",NA,NA,NA,"Manhiça"
-"2",416,2,"74AB3804","Female","<6mo",NA,NA,NA,"Manhiça"
-"3",419,2,"74289254","Female","<6mo",NA,NA,NA,"Manhiça"
-"4",446,2,"92C8407A","Female","<6mo",NA,NA,NA,"Manhiça"
-"5",469,2,"0D9F0693","Male","6-11mo",NA,NA,NA,"Manhiça"
-"6",477,2,"DAFFE02B","Female","<6mo",NA,NA,NA,"Manhiça"
-"7",485,2,"E1A6B1DE","Male","<6mo",NA,NA,NA,"Manhiça"
-"8",522,2,"CDBO1555","Female","<6mo",NA,NA,NA,"Manhiça"
-"9",714,2,"FEF743B7","Male","6-11mo",NA,NA,NA,"Manhiça"
-"10",722,2,"92C8407A","Male","<6mo",NA,NA,NA,"Manhiça"
-"11",764,2,"0D9F0693","Female","<6mo",NA,NA,NA,"Manhiça"
-"12",787,2,"D5401F13","Male","<6mo",NA,NA,NA,"Manhiça"
-"13",825,2,"F43FE559","Female","<6mo",NA,NA,NA,"Manhiça"
-"14",826,2,"3EA3B441","Male","<6mo",NA,NA,NA,"Manhiça"
-"15",837,2,"70A31CC7","Female","6-11mo",NA,NA,NA,"Manhiça"
-"16",847,2,"9FDAO8E8","Male","<6mo",NA,NA,NA,"Manhiça"
-"17",851,2,"E8CD7648","Male","6-11mo",NA,NA,NA,"Manhiça"
-"18",857,2,"2BCCD1C5","Male","6-11mo",NA,NA,NA,"Manhiça"
-"20",877,2,"DAFFE02B","Female","6-11mo",NA,NA,NA,"Manhiça"
-"21",881,2,"3777B3F2","Female","<6mo",NA,NA,NA,"Manhiça"
-"22",883,2,"5AE89A51","Female","<6mo","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"23",892,2,"F17A9446","Male","6-11mo",NA,NA,NA,"Manhiça"
-"24",927,2,"0C0516EA","Female","<6mo",NA,NA,NA,"Manhiça"
-"25",929,2,"53068F21","Female","6-11mo",NA,NA,NA,"Manhiça"
-"26",938,2,"FEBB80F9","Female","<6mo",NA,NA,NA,"Manhiça"
-"27",987,2,"E743747F","Male","6-11mo",NA,NA,NA,"Manhiça"
-"28",1000,2,"B84335BO","Male","6-11mo",NA,NA,NA,"Manhiça"
-"29",1051,2,"7D0FAB23","Female","<6mo",NA,NA,NA,"Manhiça"
-"30",1069,2,"DEF297AF","Male","6-11mo",NA,NA,NA,"Manhiça"
-"31",1092,2,"E40CEEDE","Female","<6mo",NA,NA,NA,"Manhiça"
-"32",1097,2,"3777B3F2","Female","<6mo",NA,NA,NA,"Manhiça"
-"33",1169,2,"FFEFD46D","Female","<6mo",NA,NA,NA,"Manhiça"
-"34",1207,2,"3EA3B441","Female","6-11mo",NA,NA,NA,"Manhiça"
-"35",1212,2,"24F443FB","Female","<6mo",NA,NA,NA,"Manhiça"
-"36",1235,2,"25085364","Male","<6mo",NA,NA,NA,"Manhiça"
-"37",1268,2,"E96B3013","Female","6-11mo",NA,NA,NA,"Manhiça"
-"38",1295,2,"834238CE","Male","<6mo",NA,NA,NA,"Manhiça"
-"39",1299,2,"43BE9338","Female","<6mo",NA,NA,NA,"Manhiça"
-"40",1331,2,"6F809378","Female","<6mo",NA,NA,NA,"Manhiça"
-"41",1353,2,"F7AA9B6A","Female","6-11mo",NA,NA,NA,"Manhiça"
-"42",1362,2,"70A31CC7","Female","<6mo",NA,NA,NA,"Manhiça"
-"43",1377,2,"ADD8D142","Female","6-11mo",NA,NA,NA,"Manhiça"
-"44",1402,2,"ED88F3BC","Male","<6mo",NA,NA,NA,"Manhiça"
-"45",1408,2,"3EA3B441","Male","<6mo",NA,NA,NA,"Manhiça"
-"46",1419,2,"B5349CD7","Male","6-11mo",NA,NA,NA,"Manhiça"
-"47",1420,2,"256E23CB","Male","<6mo",NA,NA,NA,"Manhiça"
-"48",1427,2,"3CCF6E22","Female","<6mo",NA,NA,NA,"Manhiça"
-"49",1438,2,"030D199D","Male","<6mo",NA,NA,NA,"Manhiça"
-"50",1439,2,"5AE89A51","Male","6-11mo",NA,NA,NA,"Manhiça"
-"51",1447,2,"D5401713",NA,"6-11mo",NA,NA,NA,"Manhiça"
-"52",1465,2,"295C4781","Female","<6mo",NA,NA,NA,"Manhiça"
-"53",1469,2,"25085364","Male","<6mo",NA,NA,NA,"Manhiça"
-"54",1480,2,"E743747F","Male","<6mo",NA,NA,NA,"Manhiça"
-"55",1558,2,"67B99933","Male","<6mo",NA,NA,NA,"Manhiça"
-"56",1574,2,"ADD16571","Female","6-11mo",NA,NA,NA,"Manhiça"
-"57",1580,2,"FFEFD46D","Female","6-11mo",NA,NA,NA,"Manhiça"
-"58",1591,2,"2D2EAFAA","Male","<6mo",NA,NA,NA,"Manhiça"
-"59",1647,2,"43BE9338","Male","6-11mo",NA,NA,NA,"Manhiça"
-"60",1659,2,"7074A528","Male","6-11mo",NA,NA,NA,"Manhiça"
-"61",1669,2,"4A4AADA5","Male","6-11mo",NA,NA,NA,"Manhiça"
-"62",1676,2,"25085364","Male","6-11mo",NA,NA,NA,"Manhiça"
-"63",1695,2,"645D507B","Male","<6mo",NA,NA,NA,"Manhiça"
-"64",1700,2,"63DD40BD","Female","6-11mo",NA,NA,NA,"Manhiça"
-"65",1815,2,"60573963","Male","<6mo",NA,NA,NA,"Manhiça"
-"66",1822,2,"0D9F0693","Male","<6mo","No","Middle Secondary (11-12)",NA,"Manhiça"
-"67",1830,2,"E743747F","Female","<6mo",NA,NA,NA,"Manhiça"
-"68",6844,2,"B84335B0","Male","<6mo",NA,NA,NA,"Manhiça"
-"69",6845,2,"E40CEEDE","Female","<6mo",NA,NA,NA,"Manhiça"
-"70",6848,2,"DAFFE02B","Female","<6mo",NA,NA,NA,"Manhiça"
-"71",6850,2,"74AB3804","Male","<6mo",NA,NA,NA,"Manhiça"
-"72",405,2,"25085364","Male","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"73",406,2,"ADD8D142","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"74",407,2,"FA7EB708","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"75",408,2,"946F180C","Male","1-4y",NA,NA,NA,"Manhiça"
-"76",411,2,"E40CEEDE","Male","40-59y","No","No schooling",NA,"Manhiça"
-"77",412,2,"4A4AADA5","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"78",413,2,"67B99933","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"79",414,2,"E4A60DBA","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"80",415,2,"030D199D","Male","60+y","No","No schooling",NA,"Manhiça"
-"81",420,2,"144BFE90","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"82",421,2,"70A31CC7","Female","60+y","No","No schooling",NA,"Manhiça"
-"83",422,2,"645D507B","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"84",423,2,"802D79CE","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"85",424,2,"F17A9446","Male","10-14y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"86",443,2,"2B163D28","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"87",444,2,"837D4926","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"88",445,2,"37623D02","Male","1-4y",NA,NA,NA,"Manhiça"
-"89",466,2,"24F443FB","Female","60+y","No","Primary School (1-7)",NA,"Manhiça"
-"90",467,2,"D2510EC4","Male","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"91",468,2,"6F809378","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"92",470,2,"256E23CB","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"93",471,2,"E8CD7648","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"94",472,2,"B84335B0","Male","1-4y",NA,NA,NA,"Manhiça"
-"95",473,2,"ED88F3BC","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"96",474,2,"5AE89A51","Male","60+y","No","Primary School (1-7)",NA,"Manhiça"
-"97",475,2,"5AE89A51","Female","60+y","No","No schooling",NA,"Manhiça"
-"98",476,2,"F7C6FA98","Female","30-39y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"100",479,2,"77AD067C","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"101",480,2,"43BE9338","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"102",481,2,"B5349CD7","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"103",482,2,"C9590E30","Male","5-9y",NA,NA,NA,"Manhiça"
-"104",483,2,"E743747F","Female","5-9y",NA,NA,NA,"Manhiça"
-"105",484,2,"D5401F13","Male","1-4y",NA,NA,NA,"Manhiça"
-"106",486,2,"90E21EEC","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"107",487,2,"351AF43F","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"108",523,2,"3023EF9B","Female","60+y","No","Primary School (1-7)",NA,"Manhiça"
-"109",524,2,"E7BCC7A6","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"110",525,2,"DEF297AF","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"111",526,2,"97BE8FF3","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"112",527,2,"53068F21","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"113",528,2,"B2F44820","Female","1-4y",NA,NA,NA,"Manhiça"
-"114",529,2,"096B42CF","Female","1-4y",NA,NA,NA,"Manhiça"
-"115",530,2,"EB1D0ABF","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"117",712,2,"F17A9446","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"118",713,2,"ADD16571","Male","5-9y","No","No schooling",NA,"Manhiça"
-"119",715,2,"D360933D","Female","5-9y",NA,NA,NA,"Manhiça"
-"120",716,2,"B4085BC6","Male","60+y","Yes",NA,"Primary School (1-7)","Manhiça"
-"121",717,2,"096B42CF","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"122",718,2,"74AB3804","Female","20-29y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"123",719,2,"70A31CC7","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"124",720,2,"946F180C","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"125",721,2,"37623D02","Male","1-4y",NA,NA,NA,"Manhiça"
-"126",756,2,"0C0516EA","Male","30-39y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"127",757,2,"6B4F691B","Female","30-39y","Yes",NA,"Bachelors","Manhiça"
-"128",758,2,"53068F21","Female","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"129",759,2,"4A4AADA5","Male","15-19y","Yes",NA,"1-3 years of college/university","Manhiça"
-"130",761,2,"F7AA9B6A","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"131",762,2,"63DD40BD","Female","15-19y","Yes",NA,"Middle Secondary (11-12)","Manhiça"
-"132",763,2,"732DFD29","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"133",776,2,"B2F44820","Male","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"134",777,2,"6F809378","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"135",778,2,"B5349CD7","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"136",779,2,"90E21EEC","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"137",780,2,"834238CE","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"138",781,2,"FA7EB708","Male","1-4y",NA,NA,NA,"Manhiça"
-"139",782,2,"1CF914E0","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"140",783,2,"EB1D0ABF","Female","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"141",784,2,"D2510EC4","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"142",785,2,"E1A6B1DE","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"143",786,2,"CDB01555","Female","5-9y",NA,NA,NA,"Manhiça"
-"144",820,2,"92C8407A","Female","60+y","No","No schooling",NA,"Manhiça"
-"145",821,2,"D360933D","Male","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"146",822,2,"F7C6FA98","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"147",823,2,"43BE9338","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"148",824,2,"6O4842FC","Male","1-4y",NA,NA,NA,"Manhiça"
-"149",827,2,"67B99933","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"150",828,2,"144BFE90","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"151",829,2,"837D4926","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"152",830,2,"24F443FB","Male","1-4y",NA,NA,NA,"Manhiça"
-"153",838,2,"2D2EAFAA","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"154",839,2,"71E15B45","Female","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"155",840,2,"7074A528","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"156",844,2,"9B94F05O","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"157",845,2,"74289254","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"158",846,2,"802D79CE","Female","5-9y",NA,NA,NA,"Manhiça"
-"159",848,2,"3CCF6E22","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"160",849,2,"256E23CB","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"161",850,2,"D26BEBBE","Male","1-4y",NA,NA,NA,"Manhiça"
-"162",855,2,"295C4781","Male","20-29y","Yes",NA,"Middle Secondary (11-12)","Manhiça"
-"163",856,2,"E4A60DBA","Female","20-29y","Yes",NA,"Primary School (1-7)","Manhiça"
-"164",868,2,"645D507B","Female","60+y","No","No schooling",NA,"Manhiça"
-"165",869,2,"C9590E30","Female","60+y","No","No schooling",NA,"Manhiça"
-"166",870,2,"E40CEEDE","Female","30-39y","No","No schooling",NA,"Manhiça"
-"167",871,2,"25085364","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"168",872,2,"DEF297AF","Male","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"169",873,2,"7D0FAB23","Male","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"170",874,2,"E743747F","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"171",875,2,"O3OD199D","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"172",876,2,"ADD8D142","Male","1-4y",NA,NA,NA,"Manhiça"
-"173",878,2,"ED88F3BC","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"174",879,2,"77AD067C","Male","1-4y",NA,NA,NA,"Manhiça"
-"175",882,2,"B84335B0","Male","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"176",889,2,"E96B3013","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"177",890,2,"37623D02","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"178",891,2,"74AB3804","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"179",920,2,"FA7EB708","Male","60+y","No","Primary School (1-7)",NA,"Manhiça"
-"180",921,2,"1CF914E0","Female","40-59y","No","No schooling",NA,"Manhiça"
-"181",922,2,"FEF743B7","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"182",923,2,"63DD40BD","Female","15-19y","Yes",NA,"Primary School (1-7)","Manhiça"
-"183",924,2,"645D507B","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"184",925,2,"7B94F050","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"185",926,2,"F7AA9B6A","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"186",928,2,"096B42CF","Male","1-4y",NA,NA,NA,"Manhiça"
-"187",935,2,"3023EF9B","Male","30-39y","No","No schooling",NA,"Manhiça"
-"188",936,2,"6F809378","Female","40-59y","No","No schooling",NA,"Manhiça"
-"189",937,2,"732DFD29","Female","20-29y","No","No schooling",NA,"Manhiça"
-"190",940,2,"0D9F0693","Male","1-4y",NA,NA,NA,"Manhiça"
-"191",941,2,"E1A6B1DE","Female","30-39y","Yes",NA,"Middle Secondary (11-12)","Manhiça"
-"193",984,2,"ADD8D142","Female","60+y","No","No schooling",NA,"Manhiça"
-"194",985,2,"802D79CE","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"195",986,2,"6B4F691B","Male","1-4y",NA,NA,NA,"Manhiça"
-"196",989,2,"7O74A528","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"197",990,2,"74AB3804","Female","10-14y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"198",991,2,"F7C6FA98","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"199",992,2,"F43FE559","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"200",993,2,"D54O1F13","Female","1-4y",NA,NA,NA,"Manhiça"
-"201",994,2,"E4A60DBA","Female","1-4y",NA,NA,NA,"Manhiça"
-"202",995,2,"6O4842FC","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"203",996,2,"5AE89A51","Female","20-29y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"204",997,2,"4A4AADA5","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"205",998,2,"43BE9338","Female","1-4y",NA,NA,NA,"Manhiça"
-"206",999,2,"834238CE","Male","1-4y",NA,NA,NA,"Manhiça"
-"207",1001,2,"O3OD199D","Female","40-59y","No","No schooling",NA,"Manhiça"
-"208",1002,2,"144BFE9O","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"209",1003,2,"3CCF6E22","Female","15-19y","Yes",NA,"Primary School (1-7)","Manhiça"
-"211",1005,2,"D26BEBBE","Male","5-9y",NA,NA,NA,"Manhiça"
-"212",1006,2,"EB1D0ABF","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"213",1007,2,"24F443FB","Female","1-4y",NA,NA,NA,"Manhiça"
-"214",1008,2,"71E15B45","Male","1-4y",NA,NA,NA,"Manhiça"
-"215",1048,2,"2D2EAFAA","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"216",1049,2,"E8CD7648","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"217",1050,2,"3EA3B441","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"218",1052,2,"2BCCD1C5","Female","60+y","No","No schooling",NA,"Manhiça"
-"219",1060,2,"37623D02","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"220",1061,2,"B5349CD7","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"221",1062,2,"ED88F3BC","Male","15-19y","Yes",NA,"Primary School (1-7)","Manhiça"
-"222",1063,2,"DAFFE02B","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"223",1064,2,"D36O933D","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"224",1065,2,"837D4926","Female","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"225",1066,2,"E96B3013","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"226",1067,2,"ADD16571","Female","1-4y",NA,NA,NA,"Manhiça"
-"227",1068,2,"92C8407A","Male","1-4y",NA,NA,NA,"Manhiça"
-"228",1070,2,"B2F44820","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"229",1089,2,"70A31CC7","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"230",1090,2,"ADD16571","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"231",1091,2,"256E25CB","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"232",1093,2,"6D573963","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"233",1094,2,"9FDAO8E8","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"234",1095,2,"25O85364","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"235",1096,2,"295C4781","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"236",1159,2,"90E21EEC","Female","1-4y",NA,NA,NA,"Manhiça"
-"237",1160,2,"62D78CD2","Female","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"238",1161,2,"946F180C","Male","20-29y","Yes",NA,"Middle Secondary (11-12)","Manhiça"
-"239",1162,2,"74289254","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"240",1163,2,"CDB01555","Female","1-4y",NA,NA,NA,"Manhiça"
-"241",1168,2,"3E46FA85","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"242",1203,2,"6F809378","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"243",1204,2,"70A31CC7","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"244",1205,2,"E743747F","Male","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"245",1206,2,"E1A6B1DE","Female","1-4y",NA,NA,NA,"Manhiça"
-"246",1208,2,"E8CD7648","Female","30-39y","No","No schooling",NA,"Manhiça"
-"247",1209,2,"2BCCD1C5","Female","15-19y","No","No schooling",NA,"Manhiça"
-"248",1210,2,"53068F21","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"249",1211,2,"9FDA08E8","Female","1-4y",NA,NA,NA,"Manhiça"
-"250",1219,2,"EB1D0ABF","Male","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"251",1220,2,"D36O933D","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"252",1221,2,"FEF743B7","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"253",1222,2,"645D5O7B","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"254",1223,2,"DAFFE02B","Male","1-4y",NA,NA,NA,"Manhiça"
-"255",1224,2,"84085BC6","Female","40-59y","No","No schooling",NA,"Manhiça"
-"256",1225,2,"837D4926","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"257",1226,2,"74AB3804","Male","1-4y",NA,NA,NA,"Manhiça"
-"258",1227,2,"ED88F3BC","Male","15-19y","Yes",NA,"Primary School (1-7)","Manhiça"
-"259",1228,2,"DEF297AF","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"260",1229,2,"O3OD199D","Female","1-4y",NA,NA,NA,"Manhiça"
-"261",1236,2,"3777B3F2","Male","40-59y","No","No schooling",NA,"Manhiça"
-"262",1237,2,"7D0FAB23","Female","30-39y","Yes",NA,"Primary School (1-7)","Manhiça"
-"263",1238,2,"D5401F13","Male","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"264",1239,2,"E4A60DBA","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"265",1240,2,"ADF8D142","Female","5-9y",NA,NA,NA,"Manhiça"
-"266",1261,2,"67B99933","Female","1-4y",NA,NA,NA,"Manhiça"
-"267",1262,2,"0C0516EA","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"269",1264,2,"295C4781","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"270",1265,2,"6B4F691B","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"271",1266,2,"604842FC","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"272",1267,2,"D26BEBBE","Male","1-4y",NA,NA,NA,"Manhiça"
-"273",1288,2,"3CCF6E22","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"274",1289,2,"92C8407A","Male","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"275",1290,2,"2D2EAFAA","Male","10-14y","No","Primary School (1-7)",NA,"Manhiça"
-"276",1291,2,"256E23CB","Male","10-14y","No","Primary School (1-7)",NA,"Manhiça"
-"277",1292,2,"B5349CD7","Male","5-9y","No","Primary School (1-7)",NA,"Manhiça"
-"278",1293,2,"6AA77C79","Male","5-9y",NA,NA,NA,"Manhiça"
-"279",1294,2,"63DD4OBD","Male","1-4y",NA,NA,NA,"Manhiça"
-"280",1297,2,"096B42CF","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"281",1298,2,"37623DO2","Male","1-4y",NA,NA,NA,"Manhiça"
-"282",1323,2,"732DFD29","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"283",1324,2,"F43FE559","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"284",1325,2,"D2510EC4","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"285",1326,2,"F7C6FA98","Male","5-9y",NA,NA,NA,"Manhiça"
-"286",1327,2,"E40CEEDE","Female","1-4y",NA,NA,NA,"Manhiça"
-"287",1332,2,"CDB01555","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"288",1333,2,"3E46FA85","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"289",1334,2,"74289254","Female","5-9y",NA,NA,NA,"Manhiça"
-"290",1335,2,"E1A6B1DE","Male","1-4y",NA,NA,NA,"Manhiça"
-"291",1350,2,"4A4AADA5","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"292",1351,2,"144BFE90","Female","5-9y",NA,NA,NA,"Manhiça"
-"293",1352,2,"6D573963","Female","1-4y",NA,NA,NA,"Manhiça"
-"294",1357,2,"FFEFD46D","Female","40-59y","No","No schooling",NA,"Manhiça"
-"295",1358,2,"802D79CE","Female","20-29y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"296",1359,2,"E743747F","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"297",1360,2,"90E21EEC","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"298",1361,2,"3EA3B441","Female","1-4y",NA,NA,NA,"Manhiça"
-"299",1374,2,"E96B3013","Female","30-39y","Yes",NA,"Primary School (1-7)","Manhiça"
-"300",1375,2,"096B42CF","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"301",1376,2,"67B99933","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"303",1379,2,"3777B3F2","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"304",1398,2,"24F443FB","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"305",1399,2,"645D507B","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"306",1400,2,"E8CD7648","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"307",1401,2,"53068F21","Female","1-4y",NA,NA,NA,"Manhiça"
-"308",1409,2,"CDB01555","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"309",1410,2,"2BCCD1C5","Female","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"310",1411,2,"70A31CC7","Female","40-59y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"311",1417,2,"D360933D","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"312",1418,2,"90E21EEC","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"313",1421,2,"7B94F050","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"314",1422,2,"4A4AADA5","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"315",1423,2,"3E46FA85","Male","15-19y","No","No schooling","No schooling","Manhiça"
-"316",1424,2,"F7AA9B6A","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"317",1425,2,"92C8407A","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"318",1426,2,"E1A6B1DE","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"319",1433,2,"946F180C","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"320",1434,2,"37623D02","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"321",1435,2,"DAFFE02B","Female","5-9y",NA,NA,NA,"Manhiça"
-"322",1436,2,"EB1D0ABF","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"323",1437,2,"43BE9338","Female","1-4y",NA,NA,NA,"Manhiça"
-"324",1443,2,"62D78CD2","Female","60+y","No","No schooling",NA,"Manhiça"
-"325",1444,2,"B4085BC6","Female","20-29y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"326",1445,2,"7D0FAB23","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"327",1446,2,"FEBB80F9","Female","5-9y",NA,NA,NA,"Manhiça"
-"328",1461,2,"604842FC","Female","20-29y","Yes",NA,"Primary School (1-7)","Manhiça"
-"329",1462,2,"D26BEBBE","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"331",1464,2,"6B4F691B","Female","1-4y",NA,NA,NA,"Manhiça"
-"332",1466,2,"B2F44820","Male","20-29y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"333",1467,2,"74AB3804","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"334",1468,2,"FA7EB708","Female","1-4y",NA,NA,NA,"Manhiça"
-"335",1477,2,"74289254","Female","40-59y","No","No schooling",NA,"Manhiça"
-"336",1478,2,"6D573963","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"337",1479,2,"63DD40BD","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"338",1554,2,"F43FE559","Female","40-59y","No","No schooling",NA,"Manhiça"
-"339",1555,2,"2B163D28","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"340",1556,2,"F7C6FA98","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"341",1557,2,"834238CE","Male","5-9y",NA,NA,NA,"Manhiça"
-"342",1570,2,"FEF743B7","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"343",1571,2,"FEF743B7","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"344",1572,2,"9FDA08E8","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"345",1573,2,"6AA77C79","Male","1-4y",NA,NA,NA,"Manhiça"
-"346",1578,2,"E4A60DBA","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"347",1579,2,"732DFD29","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"348",1592,2,"E96B3013","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"349",1593,2,"802D79CE","Female","30-39y","Yes",NA,"Primary School (1-7)","Manhiça"
-"350",1594,2,"ADD8D142","Male","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"351",1595,2,"1CF914E0","Male","20-29y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"352",1596,2,"3777B3F2","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"353",1597,2,"6F809378","Female","15-19y","No","Primary School (1-7)",NA,"Manhiça"
-"354",1598,2,"D2510EC4","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"355",1599,2,"096B42CF","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"357",1642,2,"0C0516EA","Male","1-4y",NA,NA,NA,"Manhiça"
-"358",1643,2,"946F180C","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"359",1644,2,"D5401F13","Male","40-59y","Yes",NA,"Primary School (1-7)","Manhiça"
-"360",1645,2,"7D0FAB23","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"361",1646,2,"3CCF6E22","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"362",1648,2,"E8CD7648","Male","20-29y","Yes",NA,"Primary School (1-7)","Manhiça"
-"363",1649,2,"030D199D","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"364",1660,2,"OD9F0693","Male","20-29y","Yes",NA,"1-3 years of college/university","Manhiça"
-"365",1661,2,"B84335B0","Female","20-29y","Yes",NA,"Bachelors","Manhiça"
-"366",1662,2,"FEBB80F9","Female","10-14y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"367",1666,2,"B2F44820","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"368",1667,2,"295C4781","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"369",1668,2,"B4085BC6","Female","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"370",1670,2,"E1A6B1DE","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"371",1671,2,"DEF297AF","Male","60+y","No","Primary School (1-7)",NA,"Manhiça"
-"372",1672,2,"ED88F3BC","Female","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"373",1673,2,"604842FC","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"374",1674,2,"6B4F691B","Male","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"375",1675,2,"DAFFE02B","Male","1-4y",NA,NA,NA,"Manhiça"
-"376",1677,2,"D26BEBBE","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"377",1678,2,"7B94F050","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"378",1679,2,"CDB01555","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"379",1680,2,"256E23CB","Female","1-4y",NA,NA,NA,"Manhiça"
-"380",1682,2,"62D78CD2","Female","60+y","No","No schooling",NA,"Manhiça"
-"381",1683,2,"FA7EB708","Male","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"382",1684,2,"D360933D","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"383",1685,2,"3E46FA85","Female","10-14y","No","No schooling",NA,"Manhiça"
-"384",1687,2,"2BCCD1C5","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"385",1688,2,"2D2EAFAA","Male","1-4y",NA,NA,NA,"Manhiça"
-"386",1689,2,"3023EF9B","Male","5-9y",NA,NA,NA,"Manhiça"
-"387",1692,2,"92C8407A","Female","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"388",1693,2,"3EA3B441","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"389",1694,2,"74AB3804","Male","5-9y",NA,NA,NA,"Manhiça"
-"390",1696,2,"2B163D28","Female","40-59y","Yes",NA,"Primary School (1-7)","Manhiça"
-"391",1697,2,"E743747F","Male","20-29y","Yes",NA,"1-3 years of college/university","Manhiça"
-"392",1698,2,"53068F21","Female","20-29y","Yes",NA,"1-3 years of college/university","Manhiça"
-"393",1699,2,"74289254","Female","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"394",1763,2,"90E21EEC","Male","40-59y",NA,NA,NA,"Manhiça"
-"395",1764,2,"D2510EC4","Female","30-39y","No","Primary School (1-7)",NA,"Manhiça"
-"396",1765,2,"67B99933","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"397",1766,2,"F43FE559","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"398",1767,2,"3777B3F2","Female","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"399",1768,2,"B5349CD7","Female","1-4y",NA,NA,NA,"Manhiça"
-"400",1813,2,"53068F21","Male","40-59y","No","Primary School (1-7)",NA,"Manhiça"
-"401",1814,2,"802D79CE","Female","15-19y","Yes",NA,"Basic Secondary school (8-10)","Manhiça"
-"402",1816,2,"256E23CB","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"403",1817,2,"D360933D","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"404",1818,2,"2BCCD1C5","Male","5-9y","Yes",NA,"Primary School (1-7)","Manhiça"
-"405",1823,2,"3777B3F2","Female","20-29y","No","Primary School (1-7)",NA,"Manhiça"
-"406",1824,2,"096B42CF","Male","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"407",1826,2,"F7AA9B6A","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"408",1827,2,"0C0516EA","Female","10-14y","Yes",NA,"Primary School (1-7)","Manhiça"
-"409",1828,2,"62D78CD2","Female","15-19y","Yes","Basic Secondary school (8-10)","Basic Secondary school (8-10)","Manhiça"
-"410",1829,2,"E4A60DBA","Female","15-19y","Yes","Middle Secondary (11-12)","Basic Secondary school (8-10)","Manhiça"
-"411",6843,2,"EB1D0ABF","Female","20-29y","Yes",NA,"Primary School (1-7)","Manhiça"
-"412",6846,2,"FFEFD46D","Female","20-29y","Yes",NA,"Primary School (1-7)","Manhiça"
-"413",6847,2,"D26BEBBE","Female","1-4y",NA,NA,NA,"Manhiça"
-"414",6849,2,"7D0FAB23","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Manhiça"
-"415",6851,2,"2D2EAFAA","Female","20-29y","No","Middle Secondary (11-12)",NA,"Manhiça"
-"416",6852,2,"92C8407A","Female","40-59y","No","No schooling",NA,"Manhiça"
-"418",6854,2,"2D2EAFAA","Female","5-9y",NA,NA,NA,"Manhiça"
+"","rec_id","study_site","aim","sensor_id","hwid","sex","age_cat","enrolled_school","highest_educ","school_level"
+"1",419,"Manhica",2,"74289254",1948815956,"Female","<6mo",NA,NA,NA
+"2",446,"Manhica",2,"92C8407A",2462597242,"Female","<6mo",NA,NA,NA
+"3",469,"Manhica",2,"0D9F0693",228525715,"Male","6-11mo",NA,NA,NA
+"4",485,"Manhica",2,"E1A6B1DE",3785798110,"Male","<6mo",NA,NA,NA
+"5",714,"Manhica",2,"FEF743B7",4277617591,"Male","6-11mo",NA,NA,NA
+"6",722,"Manhica",2,"92C8407A",2462597242,"Male","<6mo",NA,NA,NA
+"7",764,"Manhica",2,"0D9F0693",228525715,"Female","<6mo",NA,NA,NA
+"8",787,"Manhica",2,"D5401F13",3577749267,"Male","<6mo",NA,NA,NA
+"9",825,"Manhica",2,"F43FE559",4097828185,"Female","<6mo",NA,NA,NA
+"10",826,"Manhica",2,"3EA3B441",1050915905,"Male","<6mo",NA,NA,NA
+"11",837,"Manhica",2,"70A31CC7",1889737927,"Female","6-11mo",NA,NA,NA
+"12",857,"Manhica",2,"2BCCD1C5",734843333,"Male","6-11mo",NA,NA,NA
+"13",881,"Manhica",2,"3777B3F2",930591730,"Female","<6mo",NA,NA,NA
+"14",883,"Manhica",2,"5AE89A51",1525193297,"Female","<6mo","No","Basic Secondary school (8-10)",NA
+"15",929,"Manhica",2,"53068F21",1392938785,"Female","6-11mo",NA,NA,NA
+"16",987,"Manhica",2,"E743747F",3879957631,"Male","6-11mo",NA,NA,NA
+"17",1051,"Manhica",2,"7D0FAB23",2098178851,"Female","<6mo",NA,NA,NA
+"18",1069,"Manhica",2,"DEF297AF",3740440495,"Male","6-11mo",NA,NA,NA
+"19",1092,"Manhica",2,"E40CEEDE",3826052830,"Female","<6mo",NA,NA,NA
+"20",1097,"Manhica",2,"3777B3F2",930591730,"Female","<6mo",NA,NA,NA
+"21",1169,"Manhica",2,"FFEFD46D",4293907565,"Female","<6mo",NA,NA,NA
+"22",1207,"Manhica",2,"3EA3B441",1050915905,"Female","6-11mo",NA,NA,NA
+"23",1212,"Manhica",2,"24F443FB",619987963,"Female","<6mo",NA,NA,NA
+"24",1268,"Manhica",2,"E96B3013",3916115987,"Female","6-11mo",NA,NA,NA
+"25",1295,"Manhica",2,"834238CE",2202155214,"Male","<6mo",NA,NA,NA
+"26",1299,"Manhica",2,"43BE9338",1136563000,"Female","<6mo",NA,NA,NA
+"27",1353,"Manhica",2,"F7AA9B6A",4155153258,"Female","6-11mo",NA,NA,NA
+"28",1362,"Manhica",2,"70A31CC7",1889737927,"Female","<6mo",NA,NA,NA
+"29",1377,"Manhica",2,"ADD8D142",291666774,"Female","6-11mo",NA,NA,NA
+"30",1408,"Manhica",2,"3EA3B441",1050915905,"Male","<6mo",NA,NA,NA
+"31",1419,"Manhica",2,"B5349CD7",3040124119,"Male","6-11mo",NA,NA,NA
+"32",1420,"Manhica",2,"256E23CB",627975115,"Male","<6mo",NA,NA,NA
+"33",1427,"Manhica",2,"3CCF6E22",1020227106,"Female","<6mo",NA,NA,NA
+"34",1438,"Manhica",2,"030D199D",51190173,"Male","<6mo",NA,NA,NA
+"35",1439,"Manhica",2,"5AE89A51",1525193297,"Male","6-11mo",NA,NA,NA
+"36",1465,"Manhica",2,"295C4781",693913473,"Female","<6mo",NA,NA,NA
+"37",1480,"Manhica",2,"E743747F",3879957631,"Male","<6mo",NA,NA,NA
+"38",1558,"Manhica",2,"67B99933",1740216627,"Male","<6mo",NA,NA,NA
+"39",1574,"Manhica",2,"ADD16571",2916181361,"Female","6-11mo",NA,NA,NA
+"40",1580,"Manhica",2,"FFEFD46D",4293907565,"Female","6-11mo",NA,NA,NA
+"41",1591,"Manhica",2,"2D2EAFAA",758034346,"Male","<6mo",NA,NA,NA
+"42",1647,"Manhica",2,"43BE9338",1136563000,"Male","6-11mo",NA,NA,NA
+"43",1659,"Manhica",2,"7074A528",1886692648,"Male","6-11mo",NA,NA,NA
+"44",1669,"Manhica",2,"4A4AADA5",1246408101,"Male","6-11mo",NA,NA,NA
+"45",1700,"Manhica",2,"63DD40BD",1675444413,"Female","6-11mo",NA,NA,NA
+"46",1822,"Manhica",2,"0D9F0693",228525715,"Male","<6mo","No","Middle Secondary (11-12)",NA
+"47",1830,"Manhica",2,"E743747F",3879957631,"Female","<6mo",NA,NA,NA
+"48",6844,"Manhica",2,"B84335B0",3091412400,"Male","<6mo",NA,NA,NA
+"49",6845,"Manhica",2,"E40CEEDE",3826052830,"Female","<6mo",NA,NA,NA
+"50",406,"Manhica",2,"ADD8D142",291666774,"Female","20-29y","No","Primary School (1-7)",NA
+"51",408,"Manhica",2,"946F180C",2490308620,"Male","1-4y",NA,NA,NA
+"52",411,"Manhica",2,"E40CEEDE",3826052830,"Male","40-59y","No","No schooling",NA
+"53",412,"Manhica",2,"4A4AADA5",1246408101,"Female","30-39y","No","Primary School (1-7)",NA
+"54",413,"Manhica",2,"67B99933",1740216627,"Female","15-19y","No","Primary School (1-7)",NA
+"55",414,"Manhica",2,"E4A60DBA",3836087738,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"56",415,"Manhica",2,"030D199D",51190173,"Male","60+y","No","No schooling",NA
+"57",420,"Manhica",2,"144BFE90",340524688,"Female","40-59y","No","Primary School (1-7)",NA
+"58",421,"Manhica",2,"70A31CC7",1889737927,"Female","60+y","No","No schooling",NA
+"59",423,"Manhica",2,"802D79CE",2150463950,"Female","15-19y","No","Basic Secondary school (8-10)",NA
+"60",444,"Manhica",2,"837D4926",2206026022,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"61",466,"Manhica",2,"24F443FB",619987963,"Female","60+y","No","Primary School (1-7)",NA
+"62",467,"Manhica",2,"D2510EC4",3528524556,"Male","20-29y","No","Middle Secondary (11-12)",NA
+"63",470,"Manhica",2,"256E23CB",627975115,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"64",472,"Manhica",2,"B84335B0",3091412400,"Male","1-4y",NA,NA,NA
+"65",474,"Manhica",2,"5AE89A51",1525193297,"Male","60+y","No","Primary School (1-7)",NA
+"66",475,"Manhica",2,"5AE89A51",1525193297,"Female","60+y","No","No schooling",NA
+"67",476,"Manhica",2,"F7C6FA98",4157012632,"Female","30-39y","No","Middle Secondary (11-12)",NA
+"68",480,"Manhica",2,"43BE9338",1136563000,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"69",481,"Manhica",2,"B5349CD7",3040124119,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"70",483,"Manhica",2,"E743747F",3879957631,"Female","5-9y",NA,NA,NA
+"71",484,"Manhica",2,"D5401F13",3577749267,"Male","1-4y",NA,NA,NA
+"72",486,"Manhica",2,"90E21EEC",2430738156,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"73",487,"Manhica",2,"351AF43F",890958911,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"74",524,"Manhica",2,"E7BCC7A6",3887908774,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"75",525,"Manhica",2,"DEF297AF",3740440495,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"76",526,"Manhica",2,"97BE8FF3",2545848307,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"77",527,"Manhica",2,"53068F21",1392938785,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"78",529,"Manhica",2,"096B42CF",158024399,"Female","1-4y",NA,NA,NA
+"79",713,"Manhica",2,"ADD16571",2916181361,"Male","5-9y","No","No schooling",NA
+"80",715,"Manhica",2,"D360933D",3546321725,"Female","5-9y",NA,NA,NA
+"81",717,"Manhica",2,"096B42CF",158024399,"Female","40-59y","No","Primary School (1-7)",NA
+"82",719,"Manhica",2,"70A31CC7",1889737927,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"83",720,"Manhica",2,"946F180C",2490308620,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"84",757,"Manhica",2,"6B4F691B",1800366363,"Female","30-39y","Yes",NA,"Bachelors"
+"85",758,"Manhica",2,"53068F21",1392938785,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"86",759,"Manhica",2,"4A4AADA5",1246408101,"Male","15-19y","Yes",NA,"1-3 years of college/university"
+"87",761,"Manhica",2,"F7AA9B6A",4155153258,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"88",762,"Manhica",2,"63DD40BD",1675444413,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
+"89",763,"Manhica",2,"732DFD29",1932393769,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"90",778,"Manhica",2,"B5349CD7",3040124119,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"91",779,"Manhica",2,"90E21EEC",2430738156,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"92",780,"Manhica",2,"834238CE",2202155214,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"93",782,"Manhica",2,"1CF914E0",486085856,"Female","30-39y","No","Primary School (1-7)",NA
+"94",784,"Manhica",2,"D2510EC4",3528524556,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"95",785,"Manhica",2,"E1A6B1DE",3785798110,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"96",786,"Manhica",2,"CDB01555",3450869077,"Female","5-9y",NA,NA,NA
+"97",820,"Manhica",2,"92C8407A",2462597242,"Female","60+y","No","No schooling",NA
+"98",821,"Manhica",2,"D360933D",3546321725,"Male","30-39y","No","Primary School (1-7)",NA
+"99",822,"Manhica",2,"F7C6FA98",4157012632,"Female","20-29y","No","Primary School (1-7)",NA
+"100",823,"Manhica",2,"43BE9338",1136563000,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"101",827,"Manhica",2,"67B99933",1740216627,"Female","20-29y","No","Primary School (1-7)",NA
+"102",828,"Manhica",2,"144BFE90",340524688,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"103",829,"Manhica",2,"837D4926",2206026022,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"104",830,"Manhica",2,"24F443FB",619987963,"Male","1-4y",NA,NA,NA
+"105",838,"Manhica",2,"2D2EAFAA",758034346,"Female","40-59y","No","Primary School (1-7)",NA
+"106",840,"Manhica",2,"7074A528",1886692648,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"107",845,"Manhica",2,"74289254",1948815956,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"108",846,"Manhica",2,"802D79CE",2150463950,"Female","5-9y",NA,NA,NA
+"109",848,"Manhica",2,"3CCF6E22",1020227106,"Female","20-29y","No","Primary School (1-7)",NA
+"110",849,"Manhica",2,"256E23CB",627975115,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"111",850,"Manhica",2,"D26BEBBE",3560288062,"Male","1-4y",NA,NA,NA
+"112",855,"Manhica",2,"295C4781",693913473,"Male","20-29y","Yes",NA,"Middle Secondary (11-12)"
+"113",856,"Manhica",2,"E4A60DBA",3836087738,"Female","20-29y","Yes",NA,"Primary School (1-7)"
+"114",870,"Manhica",2,"E40CEEDE",3826052830,"Female","30-39y","No","No schooling",NA
+"115",872,"Manhica",2,"DEF297AF",3740440495,"Male","20-29y","No","Primary School (1-7)",NA
+"116",873,"Manhica",2,"7D0FAB23",2098178851,"Male","20-29y","No","Primary School (1-7)",NA
+"117",874,"Manhica",2,"E743747F",3879957631,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"118",876,"Manhica",2,"ADD8D142",291666774,"Male","1-4y",NA,NA,NA
+"119",882,"Manhica",2,"B84335B0",3091412400,"Male","20-29y","No","Primary School (1-7)",NA
+"120",889,"Manhica",2,"E96B3013",3916115987,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"121",921,"Manhica",2,"1CF914E0",486085856,"Female","40-59y","No","No schooling",NA
+"122",922,"Manhica",2,"FEF743B7",4277617591,"Female","15-19y","No","Basic Secondary school (8-10)",NA
+"123",923,"Manhica",2,"63DD40BD",1675444413,"Female","15-19y","Yes",NA,"Primary School (1-7)"
+"124",926,"Manhica",2,"F7AA9B6A",4155153258,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"125",928,"Manhica",2,"096B42CF",158024399,"Male","1-4y",NA,NA,NA
+"126",937,"Manhica",2,"732DFD29",1932393769,"Female","20-29y","No","No schooling",NA
+"127",940,"Manhica",2,"0D9F0693",228525715,"Male","1-4y",NA,NA,NA
+"128",941,"Manhica",2,"E1A6B1DE",3785798110,"Female","30-39y","Yes",NA,"Middle Secondary (11-12)"
+"129",984,"Manhica",2,"ADD8D142",291666774,"Female","60+y","No","No schooling",NA
+"130",985,"Manhica",2,"802D79CE",2150463950,"Female","20-29y","No","Primary School (1-7)",NA
+"131",986,"Manhica",2,"6B4F691B",1800366363,"Male","1-4y",NA,NA,NA
+"132",991,"Manhica",2,"F7C6FA98",4157012632,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"133",992,"Manhica",2,"F43FE559",4097828185,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"134",994,"Manhica",2,"E4A60DBA",3836087738,"Female","1-4y",NA,NA,NA
+"135",996,"Manhica",2,"5AE89A51",1525193297,"Female","20-29y","Yes",NA,"Basic Secondary school (8-10)"
+"136",997,"Manhica",2,"4A4AADA5",1246408101,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"137",998,"Manhica",2,"43BE9338",1136563000,"Female","1-4y",NA,NA,NA
+"138",999,"Manhica",2,"834238CE",2202155214,"Male","1-4y",NA,NA,NA
+"139",1003,"Manhica",2,"3CCF6E22",1020227106,"Female","15-19y","Yes",NA,"Primary School (1-7)"
+"140",1005,"Manhica",2,"D26BEBBE",3560288062,"Male","5-9y",NA,NA,NA
+"141",1007,"Manhica",2,"24F443FB",619987963,"Female","1-4y",NA,NA,NA
+"142",1048,"Manhica",2,"2D2EAFAA",758034346,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"143",1050,"Manhica",2,"3EA3B441",1050915905,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"144",1052,"Manhica",2,"2BCCD1C5",734843333,"Female","60+y","No","No schooling",NA
+"145",1061,"Manhica",2,"B5349CD7",3040124119,"Female","20-29y","No","Primary School (1-7)",NA
+"146",1065,"Manhica",2,"837D4926",2206026022,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"147",1066,"Manhica",2,"E96B3013",3916115987,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"148",1067,"Manhica",2,"ADD16571",2916181361,"Female","1-4y",NA,NA,NA
+"149",1068,"Manhica",2,"92C8407A",2462597242,"Male","1-4y",NA,NA,NA
+"150",1089,"Manhica",2,"70A31CC7",1889737927,"Female","20-29y","No","Primary School (1-7)",NA
+"151",1090,"Manhica",2,"ADD16571",2916181361,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"152",1093,"Manhica",2,"6D573963",1834432867,"Female","30-39y","No","Primary School (1-7)",NA
+"153",1096,"Manhica",2,"295C4781",693913473,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"154",1159,"Manhica",2,"90E21EEC",2430738156,"Female","1-4y",NA,NA,NA
+"155",1161,"Manhica",2,"946F180C",2490308620,"Male","20-29y","Yes",NA,"Middle Secondary (11-12)"
+"156",1162,"Manhica",2,"74289254",1948815956,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"157",1163,"Manhica",2,"CDB01555",3450869077,"Female","1-4y",NA,NA,NA
+"158",1168,"Manhica",2,"3E46FA85",1044839045,"Female","20-29y","No","Primary School (1-7)",NA
+"159",1204,"Manhica",2,"70A31CC7",1889737927,"Female","20-29y","No","Primary School (1-7)",NA
+"160",1205,"Manhica",2,"E743747F",3879957631,"Male","15-19y","No","Primary School (1-7)",NA
+"161",1206,"Manhica",2,"E1A6B1DE",3785798110,"Female","1-4y",NA,NA,NA
+"162",1209,"Manhica",2,"2BCCD1C5",734843333,"Female","15-19y","No","No schooling",NA
+"163",1210,"Manhica",2,"53068F21",1392938785,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"164",1211,"Manhica",2,"9FDA08E8",2681866472,"Female","1-4y",NA,NA,NA
+"165",1221,"Manhica",2,"FEF743B7",4277617591,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"166",1225,"Manhica",2,"837D4926",2206026022,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"167",1228,"Manhica",2,"DEF297AF",3740440495,"Female","20-29y","No","Primary School (1-7)",NA
+"168",1236,"Manhica",2,"3777B3F2",930591730,"Male","40-59y","No","No schooling",NA
+"169",1237,"Manhica",2,"7D0FAB23",2098178851,"Female","30-39y","Yes",NA,"Primary School (1-7)"
+"170",1238,"Manhica",2,"D5401F13",3577749267,"Male","20-29y","No","Middle Secondary (11-12)",NA
+"171",1239,"Manhica",2,"E4A60DBA",3836087738,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"172",1261,"Manhica",2,"67B99933",1740216627,"Female","1-4y",NA,NA,NA
+"173",1264,"Manhica",2,"295C4781",693913473,"Female","20-29y","No","Primary School (1-7)",NA
+"174",1265,"Manhica",2,"6B4F691B",1800366363,"Female","15-19y","No","Primary School (1-7)",NA
+"175",1266,"Manhica",2,"604842FC",1615348476,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"176",1267,"Manhica",2,"D26BEBBE",3560288062,"Male","1-4y",NA,NA,NA
+"177",1288,"Manhica",2,"3CCF6E22",1020227106,"Female","30-39y","No","Primary School (1-7)",NA
+"178",1289,"Manhica",2,"92C8407A",2462597242,"Male","15-19y","No","Primary School (1-7)",NA
+"179",1290,"Manhica",2,"2D2EAFAA",758034346,"Male","10-14y","No","Primary School (1-7)",NA
+"180",1291,"Manhica",2,"256E23CB",627975115,"Male","10-14y","No","Primary School (1-7)",NA
+"181",1292,"Manhica",2,"B5349CD7",3040124119,"Male","5-9y","No","Primary School (1-7)",NA
+"182",1293,"Manhica",2,"6AA77C79",1789361273,"Male","5-9y",NA,NA,NA
+"183",1297,"Manhica",2,"096B42CF",158024399,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"184",1323,"Manhica",2,"732DFD29",1932393769,"Female","30-39y","No","Primary School (1-7)",NA
+"185",1324,"Manhica",2,"F43FE559",4097828185,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"186",1325,"Manhica",2,"D2510EC4",3528524556,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"187",1326,"Manhica",2,"F7C6FA98",4157012632,"Male","5-9y",NA,NA,NA
+"188",1327,"Manhica",2,"E40CEEDE",3826052830,"Female","1-4y",NA,NA,NA
+"189",1332,"Manhica",2,"CDB01555",3450869077,"Female","30-39y","No","Primary School (1-7)",NA
+"190",1333,"Manhica",2,"3E46FA85",1044839045,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"191",1334,"Manhica",2,"74289254",1948815956,"Female","5-9y",NA,NA,NA
+"192",1335,"Manhica",2,"E1A6B1DE",3785798110,"Male","1-4y",NA,NA,NA
+"193",1350,"Manhica",2,"4A4AADA5",1246408101,"Female","20-29y","No","Primary School (1-7)",NA
+"194",1351,"Manhica",2,"144BFE90",340524688,"Female","5-9y",NA,NA,NA
+"195",1352,"Manhica",2,"6D573963",1834432867,"Female","1-4y",NA,NA,NA
+"196",1357,"Manhica",2,"FFEFD46D",4293907565,"Female","40-59y","No","No schooling",NA
+"197",1358,"Manhica",2,"802D79CE",2150463950,"Female","20-29y","Yes",NA,"Basic Secondary school (8-10)"
+"198",1359,"Manhica",2,"E743747F",3879957631,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"199",1360,"Manhica",2,"90E21EEC",2430738156,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"200",1361,"Manhica",2,"3EA3B441",1050915905,"Female","1-4y",NA,NA,NA
+"201",1374,"Manhica",2,"E96B3013",3916115987,"Female","30-39y","Yes",NA,"Primary School (1-7)"
+"202",1375,"Manhica",2,"096B42CF",158024399,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"203",1376,"Manhica",2,"67B99933",1740216627,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"204",1379,"Manhica",2,"3777B3F2",930591730,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"205",1398,"Manhica",2,"24F443FB",619987963,"Female","30-39y","No","Primary School (1-7)",NA
+"206",1401,"Manhica",2,"53068F21",1392938785,"Female","1-4y",NA,NA,NA
+"207",1409,"Manhica",2,"CDB01555",3450869077,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"208",1410,"Manhica",2,"2BCCD1C5",734843333,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"209",1411,"Manhica",2,"70A31CC7",1889737927,"Female","40-59y","Yes",NA,"Basic Secondary school (8-10)"
+"210",1417,"Manhica",2,"D360933D",3546321725,"Female","20-29y","No","Primary School (1-7)",NA
+"211",1418,"Manhica",2,"90E21EEC",2430738156,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"212",1422,"Manhica",2,"4A4AADA5",1246408101,"Female","15-19y","No","Primary School (1-7)",NA
+"213",1423,"Manhica",2,"3E46FA85",1044839045,"Male","15-19y","No","No schooling","No schooling"
+"214",1424,"Manhica",2,"F7AA9B6A",4155153258,"Female","15-19y","No","Primary School (1-7)",NA
+"215",1425,"Manhica",2,"92C8407A",2462597242,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"216",1426,"Manhica",2,"E1A6B1DE",3785798110,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"217",1433,"Manhica",2,"946F180C",2490308620,"Female","20-29y","No","Primary School (1-7)",NA
+"218",1437,"Manhica",2,"43BE9338",1136563000,"Female","1-4y",NA,NA,NA
+"219",1445,"Manhica",2,"7D0FAB23",2098178851,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"220",1461,"Manhica",2,"604842FC",1615348476,"Female","20-29y","Yes",NA,"Primary School (1-7)"
+"221",1462,"Manhica",2,"D26BEBBE",3560288062,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"222",1464,"Manhica",2,"6B4F691B",1800366363,"Female","1-4y",NA,NA,NA
+"223",1477,"Manhica",2,"74289254",1948815956,"Female","40-59y","No","No schooling",NA
+"224",1478,"Manhica",2,"6D573963",1834432867,"Female","15-19y","No","Basic Secondary school (8-10)",NA
+"225",1479,"Manhica",2,"63DD40BD",1675444413,"Female","15-19y","No","Primary School (1-7)",NA
+"226",1554,"Manhica",2,"F43FE559",4097828185,"Female","40-59y","No","No schooling",NA
+"227",1556,"Manhica",2,"F7C6FA98",4157012632,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"228",1557,"Manhica",2,"834238CE",2202155214,"Male","5-9y",NA,NA,NA
+"229",1570,"Manhica",2,"FEF743B7",4277617591,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"230",1571,"Manhica",2,"FEF743B7",4277617591,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"231",1572,"Manhica",2,"9FDA08E8",2681866472,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"232",1573,"Manhica",2,"6AA77C79",1789361273,"Male","1-4y",NA,NA,NA
+"233",1578,"Manhica",2,"E4A60DBA",3836087738,"Female","20-29y","No","Primary School (1-7)",NA
+"234",1579,"Manhica",2,"732DFD29",1932393769,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"235",1592,"Manhica",2,"E96B3013",3916115987,"Female","40-59y","No","Primary School (1-7)",NA
+"236",1593,"Manhica",2,"802D79CE",2150463950,"Female","30-39y","Yes",NA,"Primary School (1-7)"
+"237",1594,"Manhica",2,"ADD8D142",291666774,"Male","30-39y","No","Primary School (1-7)",NA
+"238",1595,"Manhica",2,"1CF914E0",486085856,"Male","20-29y","Yes",NA,"Basic Secondary school (8-10)"
+"239",1596,"Manhica",2,"3777B3F2",930591730,"Female","20-29y","No","Primary School (1-7)",NA
+"240",1598,"Manhica",2,"D2510EC4",3528524556,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"241",1599,"Manhica",2,"096B42CF",158024399,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"242",1643,"Manhica",2,"946F180C",2490308620,"Female","30-39y","No","Primary School (1-7)",NA
+"243",1644,"Manhica",2,"D5401F13",3577749267,"Male","40-59y","Yes",NA,"Primary School (1-7)"
+"244",1645,"Manhica",2,"7D0FAB23",2098178851,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"245",1646,"Manhica",2,"3CCF6E22",1020227106,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"246",1649,"Manhica",2,"030D199D",51190173,"Female","20-29y","No","Primary School (1-7)",NA
+"247",1661,"Manhica",2,"B84335B0",3091412400,"Female","20-29y","Yes",NA,"Bachelors"
+"248",1667,"Manhica",2,"295C4781",693913473,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"249",1670,"Manhica",2,"E1A6B1DE",3785798110,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"250",1671,"Manhica",2,"DEF297AF",3740440495,"Male","60+y","No","Primary School (1-7)",NA
+"251",1673,"Manhica",2,"604842FC",1615348476,"Female","30-39y","No","Primary School (1-7)",NA
+"252",1674,"Manhica",2,"6B4F691B",1800366363,"Male","15-19y","No","Basic Secondary school (8-10)",NA
+"253",1677,"Manhica",2,"D26BEBBE",3560288062,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"254",1679,"Manhica",2,"CDB01555",3450869077,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"255",1680,"Manhica",2,"256E23CB",627975115,"Female","1-4y",NA,NA,NA
+"256",1684,"Manhica",2,"D360933D",3546321725,"Female","20-29y","No","Primary School (1-7)",NA
+"257",1685,"Manhica",2,"3E46FA85",1044839045,"Female","10-14y","No","No schooling",NA
+"258",1687,"Manhica",2,"2BCCD1C5",734843333,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"259",1688,"Manhica",2,"2D2EAFAA",758034346,"Male","1-4y",NA,NA,NA
+"260",1692,"Manhica",2,"92C8407A",2462597242,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"261",1693,"Manhica",2,"3EA3B441",1050915905,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"262",1697,"Manhica",2,"E743747F",3879957631,"Male","20-29y","Yes",NA,"1-3 years of college/university"
+"263",1698,"Manhica",2,"53068F21",1392938785,"Female","20-29y","Yes",NA,"1-3 years of college/university"
+"264",1699,"Manhica",2,"74289254",1948815956,"Female","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"265",1763,"Manhica",2,"90E21EEC",2430738156,"Male","40-59y",NA,NA,NA
+"266",1764,"Manhica",2,"D2510EC4",3528524556,"Female","30-39y","No","Primary School (1-7)",NA
+"267",1765,"Manhica",2,"67B99933",1740216627,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"268",1766,"Manhica",2,"F43FE559",4097828185,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"269",1767,"Manhica",2,"3777B3F2",930591730,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"270",1768,"Manhica",2,"B5349CD7",3040124119,"Female","1-4y",NA,NA,NA
+"271",1813,"Manhica",2,"53068F21",1392938785,"Male","40-59y","No","Primary School (1-7)",NA
+"272",1814,"Manhica",2,"802D79CE",2150463950,"Female","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"273",1816,"Manhica",2,"256E23CB",627975115,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"274",1817,"Manhica",2,"D360933D",3546321725,"Female","15-19y","No","Basic Secondary school (8-10)",NA
+"275",1818,"Manhica",2,"2BCCD1C5",734843333,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"276",1823,"Manhica",2,"3777B3F2",930591730,"Female","20-29y","No","Primary School (1-7)",NA
+"277",1824,"Manhica",2,"096B42CF",158024399,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"278",1826,"Manhica",2,"F7AA9B6A",4155153258,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"279",1829,"Manhica",2,"E4A60DBA",3836087738,"Female","15-19y","Yes","Middle Secondary (11-12)","Basic Secondary school (8-10)"
+"280",6846,"Manhica",2,"FFEFD46D",4293907565,"Female","20-29y","Yes",NA,"Primary School (1-7)"
+"281",6847,"Manhica",2,"D26BEBBE",3560288062,"Female","1-4y",NA,NA,NA
+"282",6849,"Manhica",2,"7D0FAB23",2098178851,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"283",6851,"Manhica",2,"2D2EAFAA",758034346,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"284",6852,"Manhica",2,"92C8407A",2462597242,"Female","40-59y","No","No schooling",NA
+"285",6854,"Manhica",2,"2D2EAFAA",758034346,"Female","5-9y",NA,NA,NA

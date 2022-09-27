@@ -1,312 +1,260 @@
-"","rec_id","aim","sensor_id","sex","age_cat","enrolled_school","highest_educ","school_level","study_site"
-"2",433,2,"F029ABE0","Male","<6mo","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"3",503,2,"57B92915","Male","<6mo","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"4",504,2,"72A9B167","Male","<6mo","No","Primary School (1-7)",NA,"Polana Caniço"
-"5",505,2,"0F0AC00E","Female","<6mo","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"7",617,2,"B093D42E","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"8",723,2,"6375E09A","Female","<6mo","No","Primary School (1-7)",NA,"Polana Caniço"
-"10",1037,2,"2F66CF32","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"11",1038,2,"D5207DD4","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"12",1040,2,"57B92915","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"14",1119,2,"D0130626","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"15",1145,2,"E2C58AE4","Female","<6mo","No","Primary School (1-7)",NA,"Polana Caniço"
-"16",1183,2,"565F06C9","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"17",1202,2,"6CECD070","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"18",1260,2,"775F3576","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"19",1285,2,"01964B1A","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"20",1305,2,"950CC02A","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"21",1347,2,"1C4E9633","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"22",1367,2,"0249F49D","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"23",1382,2,"73A0D657","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"24",1387,2,"05A700AC","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"25",1390,2,"B287D42A","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"26",1452,2,"FDF97280","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"27",1487,2,"ADC6D682","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"28",1502,2,"6579D37C","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"33",1527,2,"6373E09A","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"34",1528,2,"E290C8BD","Male","<6mo",NA,NA,NA,"Polana Caniço"
-"35",1529,2,"B287D42A","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"36",1541,2,"73A0D657","Male","<6mo",NA,NA,NA,"Polana Caniço"
-"38",1604,2,"57B92915","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"39",1615,2,"63137977","Male","<6mo",NA,NA,NA,"Polana Caniço"
-"40",1617,2,"335C4283","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"41",1620,2,"7DF19AC4","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"42",1623,2,"0249F49D","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"43",1626,2,"7AEECBB1","Male","6-11mo",NA,NA,NA,"Polana Caniço"
-"44",1638,2,"0746B936","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"45",1658,2,"98EB9A65","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"47",1727,2,"5DA335CD","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"48",1733,2,"05A700AC","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"49",1736,2,"7AEECBB1","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"50",1739,2,"A44C5E76","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"51",1746,2,"30DEADD1","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"52",1747,2,"335C4283","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"53",1782,2,"B6514945","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"54",1955,2,"67FD60EB","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"55",2257,2,"E290C8BD","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"56",2259,2,"73AOD657","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"57",2261,2,"775F3576","Female","<6mo",NA,NA,NA,"Polana Caniço"
-"58",5796,2,"7AEECBB1","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"59",5800,2,"7FDE60EB","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"60",5801,2,"7ADEB947","Female","6-11mo",NA,NA,NA,"Polana Caniço"
-"62",432,2,"90CBF595","Female","60+y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"63",434,2,"0746B936","Female","15-19y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"64",435,2,"0DD5BD3F","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"65",455,2,"48DDBBF4","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"66",456,2,"6CECD070","Female","15-19y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"67",457,2,"7705947E","Female","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"68",458,2,"E691CC38","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"69",506,2,"73A0D657","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"70",507,2,"FC5ABD81","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"71",508,2,"71C626ED","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"72",509,2,"79DFDC16","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"73",510,2,"93EF89E6","Female","30-39y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"74",511,2,"6D72292C","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"75",578,2,"041802E2","Male","40-59y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"76",579,2,"BFAAAFE9","Female","30-39y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"77",580,2,"7201E52B","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"81",610,2,"30DEADD1","Female","40-59y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"82",611,2,"B6514945","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"83",612,2,"F75B23E1","Female","15-19y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"84",613,2,"CF152F0F","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"85",614,2,"6F673A12","Male","5-9y","No","Primary School (1-7)",NA,"Polana Caniço"
-"86",615,2,"565F06C9","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"87",616,2,"993564AB","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"88",661,2,"FC1DE353","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"89",662,2,"7FDE60EB","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"90",663,2,"EDC58AE4","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"91",703,2,"90CBF595","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"92",704,2,"FDF97280","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"93",705,2,"B287D42A","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"94",706,2,"775F3576","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"95",707,2,"05A700AC","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"96",708,2,"E691CC38","Female","5-9y",NA,NA,NA,"Polana Caniço"
-"97",709,2,"5BAC9680","Female","60+y","No","No schooling",NA,"Polana Caniço"
-"98",710,2,"01964B1A","Male","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"99",724,2,"3C114B9E","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"100",725,2,"E290C8BD","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"101",726,2,"D6CFBE70","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"102",730,2,"7ADEB947","Male","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"103",731,2,"D2495E9F","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"104",732,2,"1B6E7DC6","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"105",733,2,"3F3453F3","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"106",735,2,"ADC6D682","Female","40-59y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"107",736,2,"16D7EAB20","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"111",745,2,"567140F0","Female","30-39y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"112",746,2,"612540B1","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"113",747,2,"7DF19AC4","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"114",748,2,"C179A589","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"115",773,2,"B648ADEB","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"116",774,2,"6A9FB5EB","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"117",775,2,"1C4E9633","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"118",806,2,"1BF0AB62","Male","40-59y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"119",807,2,"950CC02A","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"120",808,2,"59FA6AFD","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"121",809,2,"63137977","Female","15-19y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"122",810,2,"A26CC63","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"123",811,2,"F029ABE0","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"124",812,2,"E8286A9D","Male","20-29y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"125",899,2,"99FF6D3B","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"126",900,2,"0746B936","Female","20-29y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"127",901,2,"D4D84F97","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"128",902,2,"272EBC2B","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"129",903,2,"A498A0A5","Male","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"130",904,2,"F554A006","Female","30-39y","No","No schooling",NA,"Polana Caniço"
-"131",905,2,"B0834C7E","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"132",906,2,"6B592F7D","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"133",907,2,"5DA335CD","Male","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"134",908,2,"E7317FFF","Female","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"135",909,2,"DFB00C63","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"136",910,2,"9BC8EB99","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"137",965,2,"612514B1","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"138",966,2,"93GF89E6","Female","15-19y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"139",967,2,"B648ADGB","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"140",968,2,"6F673A12","Female","15-19y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"141",969,2,"077075CE","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"142",970,2,"73A0D657","Male","5-9y","No","No schooling",NA,"Polana Caniço"
-"143",971,2,"567140F0","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"144",972,2,"7201G52B","Male","30-39y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"145",973,2,"B6514945","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"146",974,2,"993564AB","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"147",975,2,"0249F49D","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"148",976,2,"E2C584E4","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"149",977,2,"0F0AC00E","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"150",978,2,"B093D42E","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"151",979,2,"6CECD070","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"152",980,2,"565706C9","Female","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"153",981,2,"48DDBBF4","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"154",1017,2,"ADC6D682","Male","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"155",1018,2,"BB211C8C","Female","30-39y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"156",1025,2,"CF152F0F","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"157",1030,2,"8D46A482","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"158",1031,2,"C5410CE6","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"159",1032,2,"FC1DE353","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"160",1033,2,"BD848166","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"161",1034,2,"595D34C5","Female","60+y","No","No schooling",NA,"Polana Caniço"
-"162",1035,2,"3F3453F3","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"163",1036,2,"98ED9A65","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"164",1039,2,"C179A589","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"165",1041,2,"BFAAAFE9","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"168",1116,2,"6579D37C","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"169",1117,2,"45B9CEA9","Female","5-9y",NA,NA,NA,"Polana Caniço"
-"170",1118,2,"7FDE60EB","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"172",1122,2,"E8286A9D","Male","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"173",1123,2,"1B6E7DC6","Male","20-29y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"174",1124,2,"63137977","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"175",1125,2,"7ADEB947","Female","20-29y","Yes",NA,"1-3 years of college/university","Polana Caniço"
-"176",1126,2,"EC52843D","Male","15-19y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"177",1129,2,"F58E44EB","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"178",1130,2,"777F3576","Female","20-29y","No","No schooling",NA,"Polana Caniço"
-"179",1131,2,"59FA6AFD","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"180",1132,2,"D0130626","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"182",1141,2,"7FDE60EB","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"183",1142,2,"6579D37C","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"184",1146,2,"6CECD070","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"185",1147,2,"B648ADEB","Female","15-19y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"186",1148,2,"612514B1","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"187",1180,2,"7201E52B","Male","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"188",1182,2,"FDF97280","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"189",1184,2,"93EF89E9","Male","15-19y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"191",1190,2,"05A700AC","Male","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"193",1192,2,"0746B936","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"194",1193,2,"5BAC9680","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"195",1194,2,"7705947E","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"196",1195,2,"6BDA8DED","Female","5-9y",NA,NA,NA,"Polana Caniço"
-"197",1196,2,"6375E09A","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"198",1199,2,"D2495E9F","Male","40-59y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"199",1200,2,"1B6E7DC6","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"200",1201,2,"B648ADEB","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"201",1249,2,"90CBF595","Male","60+y","No","Primary School (1-7)",NA,"Polana Caniço"
-"202",1250,2,"126DCF62","Female","60+y","No","Primary School (1-7)",NA,"Polana Caniço"
-"203",1251,2,"272EBC2B","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"204",1252,2,"1C4E9633","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"205",1253,2,"99FF6D3B","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"206",1254,2,"F029ABE0","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"207",1255,2,"1BF0AB62","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"208",1256,2,"BB211C8C","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"209",1257,2,"A264CC63","Male","30-39y","No","No schooling",NA,"Polana Caniço"
-"210",1258,2,"D0130626","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"211",1259,2,"63137977","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"212",1269,2,"3F3453F3","Male","30-39y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"213",1270,2,"335C4283","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"214",1271,2,"2F66CF32","Male","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"215",1272,2,"D5207DD4","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"216",1273,2,"993564AB","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"217",1274,2,"48DDBBF4","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"218",1277,2,"6A9FB5EB","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"219",1278,2,"BO93D42E","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"220",1279,2,"BFAAAFE9","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"221",1283,2,"595D34C5","Male","60+y","No","No schooling",NA,"Polana Caniço"
-"222",1284,2,"C5410CE6","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"223",1303,2,"B6514945","Male","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"224",1304,2,"CF152F0F","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"227",1343,2,"77DE60EB","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"228",1344,2,"6375E09A","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"229",1345,2,"126DCF62","Male","15-19y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"230",1346,2,"D2495E9F","Male","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"231",1366,2,"7705947E","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"232",1368,2,"6CECD070","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"233",1369,2,"D4D84F9F","Male","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"234",1370,2,"272EBC2B","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"235",1371,2,"BB211C8C","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"237",1381,2,"68CF2EA5","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"238",1385,2,"3C114B9E","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"239",1386,2,"612514B1","Female","15-19y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"240",1388,2,"C179A589","Male","5-9y","No","Primary School (1-7)",NA,"Polana Caniço"
-"241",1389,2,"D6CFBE70","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"242",1391,2,"E290C8BD","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"244",1451,2,"565F06C9","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"245",1484,2,"5BAC9680","Female","40-59y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"246",1485,2,"1B6E7DC6","Male","15-19y","Yes",NA,"Bachelors","Polana Caniço"
-"247",1486,2,"FQ29ABE0","Female","20-29y","No","Bachelors",NA,"Polana Caniço"
-"248",1488,2,"7FDE60EB","Male","30-39y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"249",1489,2,"567140F0","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"250",1490,2,"D2495E9F","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"251",1491,2,"0249F49D","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"252",1492,2,"D4D84F97","Male","40-59y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"256",1496,2,"D0130626","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"257",1497,2,"B6514945","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"258",1498,2,"335C4283",NA,"1-4y",NA,NA,NA,"Polana Caniço"
-"259",1499,2,"2F66CF32","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"260",1500,2,"63137977","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"261",1501,2,"D5207DD4","Female","15-19y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"262",1503,2,"0746B936","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"263",1504,2,"A264CC63","Male","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"264",1505,2,"BB211C8C","Female","30-39y","No","No schooling",NA,"Polana Caniço"
-"265",1506,2,"1C4E9633","Female","5-9y",NA,NA,NA,"Polana Caniço"
-"266",1507,2,"595D34C5","Female","15-19y","No","Primary School (1-7)",NA,"Polana Caniço"
-"273",1519,2,"7DF19AC4","Male","15-19y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"274",1520,2,"126DCF62","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"277",1523,2,"6CECD070","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"278",1524,2,"45B9CEA9","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"280",1526,2,"272EBC2B","Female","30-39y","No","No schooling",NA,"Polana Caniço"
-"281",1530,2,"B93D42E","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"282",1539,2,"F75B23E1","Male","30-39y","Yes",NA,"Bachelors","Polana Caniço"
-"283",1540,2,"5DA335CD","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"284",1542,2,"9BC8EB99","Male","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"286",1567,2,"68CF2EA5","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"287",1568,2,"E7317FFF","Male","10-14y","No","No schooling",NA,"Polana Caniço"
-"288",1569,2,"CF152F0F","Female","5-9y",NA,NA,NA,"Polana Caniço"
-"291",1605,2,"ADC6D682","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"292",1606,2,"6CECD070","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"293",1607,2,"567140F0","Female","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"294",1608,2,"950CC02A","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"295",1609,2,"0249F49D","Female","5-9y",NA,NA,NA,"Polana Caniço"
-"296",1610,2,"6A9FB5EB","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"297",1611,2,"6579D37C","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"299",1613,2,"A264CC63","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"300",1614,2,"D5207DD4","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"301",1616,2,"FDF97280","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"302",1618,2,"D2495E9F","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"303",1619,2,"7DF19AC4","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"304",1624,2,"0F0AC00E","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"305",1625,2,"C5410CE6","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"306",1627,2,"3C114B9E","Male","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"307",1629,2,"90CBF595","Female","20-29y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"308",1630,2,"2F66CF32","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"310",1632,2,"7FDE60EB","Male","15-19y","Yes",NA,"1-3 years of college/university","Polana Caniço"
-"311",1633,2,"93EF89E6","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"312",1634,2,"7201E52B","Female","10-14y","Yes",NA,"Basic Secondary school (8-10)","Polana Caniço"
-"313",1635,2,"E290C8BD","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"314",1636,2,"BB211C8C","Male","30-39y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"315",1637,2,"0F0AC00E","Female","20-29y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"317",1656,2,"6375E09A","Female","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"318",1657,2,"F029ABE0","Male","1-4y",NA,NA,NA,"Polana Caniço"
-"319",1686,2,"F7C6FA98","Male","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"320",1716,2,"98ED9A65","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"321",1717,2,"48DDBBF4","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"327",1726,2,"48DDBBF4","Female","20-29y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"328",1728,2,"1C4E9633","Male","60+y","No","Primary School (1-7)",NA,"Polana Caniço"
-"329",1729,2,"D4D84F97","Female","60+y","No","No schooling",NA,"Polana Caniço"
-"330",1730,2,"01964B1A","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"331",1731,2,"7705947E","Female","20-29y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"332",1732,2,"B6514945","Female","15-19y","Yes",NA,"Bachelors","Polana Caniço"
-"333",1734,2,"595D34C5","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"334",1735,2,"59FA6AFD","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"335",1737,2,"D0130626","Male","20-29y","No","Primary School (1-7)",NA,"Polana Caniço"
-"336",1738,2,"B287D421","Female","30-39y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"337",1740,2,"A264CC63","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"339",1742,2,"D5207DD4","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"340",1743,2,"6579D37C","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"342",1745,2,"FDF97280","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"343",1778,2,"3F3453F3","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"344",1780,2,"D4D84F97","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"345",1781,2,"7705947E","Female","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"348",1950,2,"272EBC2B","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"349",1951,2,"90CBF595","Female","10-14y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"350",1952,2,"3C114B9E","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"351",1953,2,"05A700AC","Male","20-29y","Yes",NA,"Middle Secondary (11-12)","Polana Caniço"
-"352",1954,2,"5BAC9680","Female","1-4y",NA,NA,NA,"Polana Caniço"
-"353",1979,2,"F58E44EB","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"355",2229,2,"5BAC9680","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"356",2230,2,"7029ABE0","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"358",2256,2,"3C114B9C","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"359",2258,2,"3F3453F3","Female","15-19y","No","Middle Secondary (11-12)",NA,"Polana Caniço"
-"360",5794,2,"D0130626","Male","20-29y","No","Basic Secondary school (8-10)",NA,"Polana Caniço"
-"361",5795,2,"126DCF62","Male","5-9y",NA,NA,NA,"Polana Caniço"
-"362",5799,2,"59FA6AFD","Female","40-59y","No","Primary School (1-7)",NA,"Polana Caniço"
-"363",5804,2,"7201E52B","Male","30-39y","No","Primary School (1-7)",NA,"Polana Caniço"
-"364",5805,2,"90CBF595","Female","20-29y","No","No schooling",NA,"Polana Caniço"
-"365",5806,2,"C5410CE6","Female","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"366",5807,2,"C179A589","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
-"367",5826,2,"5BAC9680","Male","5-9y","Yes",NA,"Primary School (1-7)","Polana Caniço"
+"","rec_id","study_site","aim","sensor_id","hwid","sex","age_cat","enrolled_school","highest_educ","school_level"
+"1",433,"Polana Canico",2,"F029ABE0",4029262816,"Male","<6mo","No","Middle Secondary (11-12)",NA
+"2",503,"Polana Canico",2,"57B92915",1471752469,"Male","<6mo","No","Middle Secondary (11-12)",NA
+"3",505,"Polana Canico",2,"0F0AC00E",252362766,"Female","<6mo","No","Basic Secondary school (8-10)",NA
+"4",617,"Polana Canico",2,"B093D42E",2962478126,"Female","6-11mo",NA,NA,NA
+"5",723,"Polana Canico",2,"6375E09A",1668669594,"Female","<6mo","No","Primary School (1-7)",NA
+"6",1037,"Polana Canico",2,"2F66CF32",795266866,"Female","<6mo",NA,NA,NA
+"7",1038,"Polana Canico",2,"D5207DD4",3575676372,"Female","6-11mo",NA,NA,NA
+"8",1040,"Polana Canico",2,"57B92915",1471752469,"Female","<6mo",NA,NA,NA
+"9",1119,"Polana Canico",2,"D0130626",3490907686,"Female","6-11mo",NA,NA,NA
+"10",1145,"Polana Canico",2,"E2C58AE4",3804596964,"Female","<6mo","No","Primary School (1-7)",NA
+"11",1183,"Polana Canico",2,"565F06C9",1449068233,"Male","6-11mo",NA,NA,NA
+"12",1202,"Polana Canico",2,"6CECD070",1827459184,"Female","<6mo",NA,NA,NA
+"13",1260,"Polana Canico",2,"775F3576",2002728310,"Female","6-11mo",NA,NA,NA
+"14",1285,"Polana Canico",2,"01964B1A",26626842,"Male","6-11mo",NA,NA,NA
+"15",1305,"Polana Canico",2,"950CC02A",2500640810,"Female","6-11mo",NA,NA,NA
+"16",1347,"Polana Canico",2,"1C4E9633",474912307,"Male","6-11mo",NA,NA,NA
+"17",1367,"Polana Canico",2,"0249F49D",38401181,"Male","6-11mo",NA,NA,NA
+"18",1382,"Polana Canico",2,"73A0D657",1939920471,"Female","6-11mo",NA,NA,NA
+"19",1387,"Polana Canico",2,"05A700AC",94830764,"Female","<6mo",NA,NA,NA
+"20",1390,"Polana Canico",2,"B287D42A",2995246122,"Female","<6mo",NA,NA,NA
+"21",1452,"Polana Canico",2,"FDF97280",4260983424,"Female","6-11mo",NA,NA,NA
+"22",1487,"Polana Canico",2,"ADC6D682",2915489410,"Male","6-11mo",NA,NA,NA
+"23",1502,"Polana Canico",2,"6579D37C",1702482812,"Female","<6mo",NA,NA,NA
+"24",1528,"Polana Canico",2,"E290C8BD",3801139389,"Male","<6mo",NA,NA,NA
+"25",1529,"Polana Canico",2,"B287D42A",2995246122,"Male","6-11mo",NA,NA,NA
+"26",1541,"Polana Canico",2,"73A0D657",1939920471,"Male","<6mo",NA,NA,NA
+"27",1604,"Polana Canico",2,"57B92915",1471752469,"Female","6-11mo",NA,NA,NA
+"28",1615,"Polana Canico",2,"63137977",1662220663,"Male","<6mo",NA,NA,NA
+"29",1617,"Polana Canico",2,"335C4283",861684355,"Female","6-11mo",NA,NA,NA
+"30",1620,"Polana Canico",2,"7DF19AC4",2112985796,"Male","6-11mo",NA,NA,NA
+"31",1623,"Polana Canico",2,"0249F49D",38401181,"Male","6-11mo",NA,NA,NA
+"32",1626,"Polana Canico",2,"7AEECBB1",2062470065,"Male","6-11mo",NA,NA,NA
+"33",1638,"Polana Canico",2,"0746B936",122075446,"Female","6-11mo",NA,NA,NA
+"34",1727,"Polana Canico",2,"5DA335CD",1570977229,"Female","6-11mo",NA,NA,NA
+"35",1733,"Polana Canico",2,"05A700AC",94830764,"Female","<6mo",NA,NA,NA
+"36",1736,"Polana Canico",2,"7AEECBB1",2062470065,"Female","6-11mo",NA,NA,NA
+"37",1739,"Polana Canico",2,"A44C5E76",2756468342,"Female","6-11mo",NA,NA,NA
+"38",1746,"Polana Canico",2,"30DEADD1",819899857,"Female","<6mo",NA,NA,NA
+"39",1747,"Polana Canico",2,"335C4283",861684355,"Female","<6mo",NA,NA,NA
+"40",1782,"Polana Canico",2,"B6514945",3058780485,"Female","6-11mo",NA,NA,NA
+"41",2257,"Polana Canico",2,"E290C8BD",3801139389,"Female","6-11mo",NA,NA,NA
+"42",2261,"Polana Canico",2,"775F3576",2002728310,"Female","<6mo",NA,NA,NA
+"43",5796,"Polana Canico",2,"7AEECBB1",2062470065,"Female","6-11mo",NA,NA,NA
+"44",5800,"Polana Canico",2,"7FDE60EB",2145280235,"Female","6-11mo",NA,NA,NA
+"45",5801,"Polana Canico",2,"7ADEB947",2061416775,"Female","6-11mo",NA,NA,NA
+"46",432,"Polana Canico",2,"90CBF595",2429285781,"Female","60+y","Yes",NA,"Primary School (1-7)"
+"47",434,"Polana Canico",2,"0746B936",122075446,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
+"48",455,"Polana Canico",2,"48DDBBF4",1222491124,"Female","30-39y","No","Primary School (1-7)",NA
+"49",456,"Polana Canico",2,"6CECD070",1827459184,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
+"50",457,"Polana Canico",2,"7705947E",1996854398,"Female","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"51",506,"Polana Canico",2,"73A0D657",1939920471,"Female","1-4y",NA,NA,NA
+"52",510,"Polana Canico",2,"93EF89E6",3474272015,"Female","30-39y","No","Middle Secondary (11-12)",NA
+"53",580,"Polana Canico",2,"7201E52B",1912726827,"Female","1-4y",NA,NA,NA
+"54",610,"Polana Canico",2,"30DEADD1",819899857,"Female","40-59y","No","Middle Secondary (11-12)",NA
+"55",611,"Polana Canico",2,"B6514945",3058780485,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"56",612,"Polana Canico",2,"F75B23E1",4149945313,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
+"57",613,"Polana Canico",2,"CF152F0F",3474272015,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"58",614,"Polana Canico",2,"6F673A12",1869036050,"Male","5-9y","No","Primary School (1-7)",NA
+"59",615,"Polana Canico",2,"565F06C9",1449068233,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"60",616,"Polana Canico",2,"993564AB",2570413227,"Female","1-4y",NA,NA,NA
+"61",662,"Polana Canico",2,"7FDE60EB",2145280235,"Female","40-59y","No","Primary School (1-7)",NA
+"62",703,"Polana Canico",2,"90CBF595",2429285781,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"63",704,"Polana Canico",2,"FDF97280",4260983424,"Male","1-4y",NA,NA,NA
+"64",705,"Polana Canico",2,"B287D42A",2995246122,"Female","20-29y","No","Primary School (1-7)",NA
+"65",706,"Polana Canico",2,"775F3576",2002728310,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"66",707,"Polana Canico",2,"05A700AC",94830764,"Female","20-29y","No","Primary School (1-7)",NA
+"67",709,"Polana Canico",2,"5BAC9680",1487705728,"Female","60+y","No","No schooling",NA
+"68",710,"Polana Canico",2,"01964B1A",26626842,"Male","20-29y","No","Primary School (1-7)",NA
+"69",724,"Polana Canico",2,"3C114B9E",1007766430,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"70",725,"Polana Canico",2,"E290C8BD",3801139389,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"71",726,"Polana Canico",2,"D6CFBE70",3603938928,"Male","1-4y",NA,NA,NA
+"72",730,"Polana Canico",2,"7ADEB947",2061416775,"Male","20-29y","No","Primary School (1-7)",NA
+"73",731,"Polana Canico",2,"D2495E9F",3528023711,"Female","20-29y","No","Primary School (1-7)",NA
+"74",732,"Polana Canico",2,"1B6E7DC6",460225990,"Male","5-9y",NA,NA,NA
+"75",733,"Polana Canico",2,"3F3453F3",1060393971,"Female","1-4y",NA,NA,NA
+"76",735,"Polana Canico",2,"ADC6D682",2915489410,"Female","40-59y","No","Basic Secondary school (8-10)",NA
+"77",745,"Polana Canico",2,"567140F0",1450262768,"Female","30-39y","Yes",NA,"Basic Secondary school (8-10)"
+"78",747,"Polana Canico",2,"7DF19AC4",2112985796,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"79",748,"Polana Canico",2,"C179A589",3245974921,"Male","1-4y",NA,NA,NA
+"80",773,"Polana Canico",2,"B648ADEB",3058216427,"Female","20-29y","No","Primary School (1-7)",NA
+"81",774,"Polana Canico",2,"6A9FB5EB",1788851688,"Male","5-9y",NA,NA,NA
+"82",775,"Polana Canico",2,"1C4E9633",474912307,"Male","1-4y",NA,NA,NA
+"83",807,"Polana Canico",2,"950CC02A",2500640810,"Female","40-59y","No","Primary School (1-7)",NA
+"84",808,"Polana Canico",2,"59FA6AFD",1509583613,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"85",809,"Polana Canico",2,"63137977",1662220663,"Female","15-19y","Yes",NA,"Primary School (1-7)"
+"86",811,"Polana Canico",2,"F029ABE0",4029262816,"Female","1-4y",NA,NA,NA
+"87",900,"Polana Canico",2,"0746B936",122075446,"Female","20-29y","Yes",NA,"Basic Secondary school (8-10)"
+"88",901,"Polana Canico",2,"D4D84F97",3570945943,"Female","1-4y",NA,NA,NA
+"89",902,"Polana Canico",2,"272EBC2B",657374251,"Female","1-4y",NA,NA,NA
+"90",907,"Polana Canico",2,"5DA335CD",1570977229,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"91",908,"Polana Canico",2,"E7317FFF",3878780927,"Female","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"92",910,"Polana Canico",2,"9BC8EB99",2613635993,"Male","5-9y",NA,NA,NA
+"93",965,"Polana Canico",2,"612514B1",1629820081,"Female","40-59y","No","Primary School (1-7)",NA
+"94",968,"Polana Canico",2,"6F673A12",1869036050,"Female","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"95",970,"Polana Canico",2,"73A0D657",1939920471,"Male","5-9y","No","No schooling",NA
+"96",971,"Polana Canico",2,"567140F0",1450262768,"Male","1-4y",NA,NA,NA
+"97",973,"Polana Canico",2,"B6514945",3058780485,"Female","40-59y","No","Primary School (1-7)",NA
+"98",974,"Polana Canico",2,"993564AB",2570413227,"Male","30-39y","No","Primary School (1-7)",NA
+"99",975,"Polana Canico",2,"0249F49D",38401181,"Female","20-29y","No","Primary School (1-7)",NA
+"100",977,"Polana Canico",2,"0F0AC00E",252362766,"Male","1-4y",NA,NA,NA
+"101",978,"Polana Canico",2,"B093D42E",2962478126,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"102",979,"Polana Canico",2,"6CECD070",1827459184,"Male","5-9y",NA,NA,NA
+"103",981,"Polana Canico",2,"48DDBBF4",1222491124,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"104",1017,"Polana Canico",2,"ADC6D682",2915489410,"Male","30-39y","No","Basic Secondary school (8-10)",NA
+"105",1018,"Polana Canico",2,"BB211C8C",3139509388,"Female","30-39y","No","Middle Secondary (11-12)",NA
+"106",1025,"Polana Canico",2,"CF152F0F",3474272015,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"107",1030,"Polana Canico",2,"8D46A482",2370217090,"Female","20-29y","No","Primary School (1-7)",NA
+"108",1031,"Polana Canico",2,"C5410CE6",3309374694,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"109",1034,"Polana Canico",2,"595D34C5",1499280581,"Female","60+y","No","No schooling",NA
+"110",1035,"Polana Canico",2,"3F3453F3",1060393971,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"111",1036,"Polana Canico",2,"98ED9A65",2565708389,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"112",1039,"Polana Canico",2,"C179A589",3245974921,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"113",1116,"Polana Canico",2,"6579D37C",1702482812,"Female","40-59y","No","Primary School (1-7)",NA
+"114",1117,"Polana Canico",2,"45B9CEA9",1169804969,"Female","5-9y",NA,NA,NA
+"115",1118,"Polana Canico",2,"7FDE60EB",2145280235,"Female","20-29y","No","Primary School (1-7)",NA
+"116",1123,"Polana Canico",2,"1B6E7DC6",460225990,"Male","20-29y","Yes",NA,"Basic Secondary school (8-10)"
+"117",1124,"Polana Canico",2,"63137977",1662220663,"Male","5-9y",NA,NA,NA
+"118",1125,"Polana Canico",2,"7ADEB947",2061416775,"Female","20-29y","Yes",NA,"1-3 years of college/university"
+"119",1129,"Polana Canico",2,"F58E44EB",4119741675,"Male","30-39y","No","Primary School (1-7)",NA
+"120",1131,"Polana Canico",2,"59FA6AFD",1509583613,"Female","1-4y",NA,NA,NA
+"121",1132,"Polana Canico",2,"D0130626",3490907686,"Male","5-9y",NA,NA,NA
+"122",1141,"Polana Canico",2,"7FDE60EB",2145280235,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"123",1142,"Polana Canico",2,"6579D37C",1702482812,"Male","1-4y",NA,NA,NA
+"124",1146,"Polana Canico",2,"6CECD070",1827459184,"Female","20-29y","No","Primary School (1-7)",NA
+"125",1147,"Polana Canico",2,"B648ADEB",3058216427,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
+"126",1148,"Polana Canico",2,"612514B1",1629820081,"Male","1-4y",NA,NA,NA
+"127",1180,"Polana Canico",2,"7201E52B",1912726827,"Male","40-59y","No","Primary School (1-7)",NA
+"128",1182,"Polana Canico",2,"FDF97280",4260983424,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"129",1190,"Polana Canico",2,"05A700AC",94830764,"Male","40-59y","No","Primary School (1-7)",NA
+"130",1192,"Polana Canico",2,"0746B936",122075446,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"131",1193,"Polana Canico",2,"5BAC9680",1487705728,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"132",1194,"Polana Canico",2,"7705947E",1996854398,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"133",1195,"Polana Canico",2,"6BDA8DED",1809485293,"Female","5-9y",NA,NA,NA
+"134",1196,"Polana Canico",2,"6375E09A",1668669594,"Male","1-4y",NA,NA,NA
+"135",1199,"Polana Canico",2,"D2495E9F",3528023711,"Male","40-59y","Yes",NA,"Primary School (1-7)"
+"136",1200,"Polana Canico",2,"1B6E7DC6",460225990,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"137",1201,"Polana Canico",2,"B648ADEB",3058216427,"Male","1-4y",NA,NA,NA
+"138",1249,"Polana Canico",2,"90CBF595",2429285781,"Male","60+y","No","Primary School (1-7)",NA
+"139",1250,"Polana Canico",2,"126DCF62",309186402,"Female","60+y","No","Primary School (1-7)",NA
+"140",1251,"Polana Canico",2,"272EBC2B",657374251,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"141",1252,"Polana Canico",2,"1C4E9633",474912307,"Female","1-4y",NA,NA,NA
+"142",1254,"Polana Canico",2,"F029ABE0",4029262816,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"143",1256,"Polana Canico",2,"BB211C8C",3139509388,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"144",1257,"Polana Canico",2,"A264CC63",2724514915,"Male","30-39y","No","No schooling",NA
+"145",1258,"Polana Canico",2,"D0130626",3490907686,"Female","20-29y","No","Primary School (1-7)",NA
+"146",1259,"Polana Canico",2,"63137977",1662220663,"Female","1-4y",NA,NA,NA
+"147",1269,"Polana Canico",2,"3F3453F3",1060393971,"Male","30-39y","No","Middle Secondary (11-12)",NA
+"148",1270,"Polana Canico",2,"335C4283",861684355,"Female","30-39y","No","Basic Secondary school (8-10)",NA
+"149",1271,"Polana Canico",2,"2F66CF32",795266866,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"150",1272,"Polana Canico",2,"D5207DD4",3575676372,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"151",1273,"Polana Canico",2,"993564AB",2570413227,"Male","5-9y",NA,NA,NA
+"152",1274,"Polana Canico",2,"48DDBBF4",1222491124,"Male","1-4y",NA,NA,NA
+"153",1277,"Polana Canico",2,"6A9FB5EB",1788851688,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"154",1283,"Polana Canico",2,"595D34C5",1499280581,"Male","60+y","No","No schooling",NA
+"155",1284,"Polana Canico",2,"C5410CE6",3309374694,"Female","30-39y","No","Primary School (1-7)",NA
+"156",1303,"Polana Canico",2,"B6514945",3058780485,"Male","40-59y","No","Primary School (1-7)",NA
+"157",1304,"Polana Canico",2,"CF152F0F",3474272015,"Female","30-39y","No","Primary School (1-7)",NA
+"158",1344,"Polana Canico",2,"6375E09A",1668669594,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"159",1345,"Polana Canico",2,"126DCF62",309186402,"Male","15-19y","Yes",NA,"Primary School (1-7)"
+"160",1346,"Polana Canico",2,"D2495E9F",3528023711,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"161",1366,"Polana Canico",2,"7705947E",1996854398,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"162",1368,"Polana Canico",2,"6CECD070",1827459184,"Female","40-59y","No","Primary School (1-7)",NA
+"163",1370,"Polana Canico",2,"272EBC2B",657374251,"Female","40-59y","No","Primary School (1-7)",NA
+"164",1371,"Polana Canico",2,"BB211C8C",3139509388,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"165",1381,"Polana Canico",2,"68CF2EA5",1758408357,"Female","30-39y","No","Primary School (1-7)",NA
+"166",1385,"Polana Canico",2,"3C114B9E",1007766430,"Female","15-19y","No","Basic Secondary school (8-10)",NA
+"167",1386,"Polana Canico",2,"612514B1",1629820081,"Female","15-19y","Yes",NA,"Primary School (1-7)"
+"168",1388,"Polana Canico",2,"C179A589",3245974921,"Male","5-9y","No","Primary School (1-7)",NA
+"169",1389,"Polana Canico",2,"D6CFBE70",3603938928,"Female","20-29y","No","Primary School (1-7)",NA
+"170",1391,"Polana Canico",2,"E290C8BD",3801139389,"Female","1-4y",NA,NA,NA
+"171",1451,"Polana Canico",2,"565F06C9",1449068233,"Female","20-29y","No","Primary School (1-7)",NA
+"172",1484,"Polana Canico",2,"5BAC9680",1487705728,"Female","40-59y","No","Middle Secondary (11-12)",NA
+"173",1485,"Polana Canico",2,"1B6E7DC6",460225990,"Male","15-19y","Yes",NA,"Bachelors"
+"174",1488,"Polana Canico",2,"7FDE60EB",2145280235,"Male","30-39y","No","Middle Secondary (11-12)",NA
+"175",1489,"Polana Canico",2,"567140F0",1450262768,"Female","30-39y","No","Primary School (1-7)",NA
+"176",1490,"Polana Canico",2,"D2495E9F",3528023711,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"177",1491,"Polana Canico",2,"0249F49D",38401181,"Female","1-4y",NA,NA,NA
+"178",1492,"Polana Canico",2,"D4D84F97",3570945943,"Male","40-59y","No","Basic Secondary school (8-10)",NA
+"179",1496,"Polana Canico",2,"D0130626",3490907686,"Female","40-59y","No","Primary School (1-7)",NA
+"180",1497,"Polana Canico",2,"B6514945",3058780485,"Male","30-39y","No","Primary School (1-7)",NA
+"181",1498,"Polana Canico",2,"335C4283",861684355,NA,"1-4y",NA,NA,NA
+"182",1499,"Polana Canico",2,"2F66CF32",795266866,"Male","1-4y",NA,NA,NA
+"183",1500,"Polana Canico",2,"63137977",1662220663,"Female","30-39y","No","Primary School (1-7)",NA
+"184",1501,"Polana Canico",2,"D5207DD4",3575676372,"Female","15-19y","No","Basic Secondary school (8-10)",NA
+"185",1503,"Polana Canico",2,"0746B936",122075446,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"186",1504,"Polana Canico",2,"A264CC63",2724514915,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"187",1505,"Polana Canico",2,"BB211C8C",3139509388,"Female","30-39y","No","No schooling",NA
+"188",1506,"Polana Canico",2,"1C4E9633",474912307,"Female","5-9y",NA,NA,NA
+"189",1507,"Polana Canico",2,"595D34C5",1499280581,"Female","15-19y","No","Primary School (1-7)",NA
+"190",1519,"Polana Canico",2,"7DF19AC4",2112985796,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
+"191",1520,"Polana Canico",2,"126DCF62",309186402,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"192",1523,"Polana Canico",2,"6CECD070",1827459184,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"193",1524,"Polana Canico",2,"45B9CEA9",1169804969,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"194",1526,"Polana Canico",2,"272EBC2B",657374251,"Female","30-39y","No","No schooling",NA
+"195",1539,"Polana Canico",2,"F75B23E1",4149945313,"Male","30-39y","Yes",NA,"Bachelors"
+"196",1540,"Polana Canico",2,"5DA335CD",1570977229,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"197",1542,"Polana Canico",2,"9BC8EB99",2613635993,"Male","20-29y","No","Middle Secondary (11-12)",NA
+"198",1567,"Polana Canico",2,"68CF2EA5",1758408357,"Female","1-4y",NA,NA,NA
+"199",1568,"Polana Canico",2,"E7317FFF",3878780927,"Male","10-14y","No","No schooling",NA
+"200",1569,"Polana Canico",2,"CF152F0F",3474272015,"Female","5-9y",NA,NA,NA
+"201",1605,"Polana Canico",2,"ADC6D682",2915489410,"Male","1-4y",NA,NA,NA
+"202",1606,"Polana Canico",2,"6CECD070",1827459184,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"203",1607,"Polana Canico",2,"567140F0",1450262768,"Female","20-29y","No","Primary School (1-7)",NA
+"204",1608,"Polana Canico",2,"950CC02A",2500640810,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"205",1609,"Polana Canico",2,"0249F49D",38401181,"Female","5-9y",NA,NA,NA
+"206",1610,"Polana Canico",2,"6A9FB5EB",1788851688,"Female","1-4y",NA,NA,NA
+"207",1611,"Polana Canico",2,"6579D37C",1702482812,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"208",1613,"Polana Canico",2,"A264CC63",2724514915,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"209",1614,"Polana Canico",2,"D5207DD4",3575676372,"Female","1-4y",NA,NA,NA
+"210",1616,"Polana Canico",2,"FDF97280",4260983424,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"211",1618,"Polana Canico",2,"D2495E9F",3528023711,"Female","30-39y","No","Primary School (1-7)",NA
+"212",1619,"Polana Canico",2,"7DF19AC4",2112985796,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"213",1624,"Polana Canico",2,"0F0AC00E",252362766,"Male","5-9y",NA,NA,NA
+"214",1625,"Polana Canico",2,"C5410CE6",3309374694,"Female","1-4y",NA,NA,NA
+"215",1627,"Polana Canico",2,"3C114B9E",1007766430,"Male","30-39y","No","Basic Secondary school (8-10)",NA
+"216",1629,"Polana Canico",2,"90CBF595",2429285781,"Female","20-29y","Yes",NA,"Basic Secondary school (8-10)"
+"217",1630,"Polana Canico",2,"2F66CF32",795266866,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"218",1632,"Polana Canico",2,"7FDE60EB",2145280235,"Male","15-19y","Yes",NA,"1-3 years of college/university"
+"219",1633,"Polana Canico",2,"93EF89E6",3474272015,"Male","10-14y","Yes",NA,"Primary School (1-7)"
+"220",1634,"Polana Canico",2,"7201E52B",1912726827,"Female","10-14y","Yes",NA,"Basic Secondary school (8-10)"
+"221",1635,"Polana Canico",2,"E290C8BD",3801139389,"Female","1-4y",NA,NA,NA
+"222",1636,"Polana Canico",2,"BB211C8C",3139509388,"Male","30-39y","No","Middle Secondary (11-12)",NA
+"223",1637,"Polana Canico",2,"0F0AC00E",252362766,"Female","20-29y","No","Middle Secondary (11-12)",NA
+"224",1656,"Polana Canico",2,"6375E09A",1668669594,"Female","30-39y","No","Primary School (1-7)",NA
+"225",1657,"Polana Canico",2,"F029ABE0",4029262816,"Male","1-4y",NA,NA,NA
+"226",1716,"Polana Canico",2,"98ED9A65",2565708389,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"227",1717,"Polana Canico",2,"48DDBBF4",1222491124,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"228",1726,"Polana Canico",2,"48DDBBF4",1222491124,"Female","20-29y","Yes",NA,"Middle Secondary (11-12)"
+"229",1728,"Polana Canico",2,"1C4E9633",474912307,"Male","60+y","No","Primary School (1-7)",NA
+"230",1729,"Polana Canico",2,"D4D84F97",3570945943,"Female","60+y","No","No schooling",NA
+"231",1730,"Polana Canico",2,"01964B1A",26626842,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"232",1731,"Polana Canico",2,"7705947E",1996854398,"Female","20-29y","Yes",NA,"Middle Secondary (11-12)"
+"233",1732,"Polana Canico",2,"B6514945",3058780485,"Female","15-19y","Yes",NA,"Bachelors"
+"234",1734,"Polana Canico",2,"595D34C5",1499280581,"Male","30-39y","No","Primary School (1-7)",NA
+"235",1735,"Polana Canico",2,"59FA6AFD",1509583613,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"236",1737,"Polana Canico",2,"D0130626",3490907686,"Male","20-29y","No","Primary School (1-7)",NA
+"237",1740,"Polana Canico",2,"A264CC63",2724514915,"Male","30-39y","No","Primary School (1-7)",NA
+"238",1742,"Polana Canico",2,"D5207DD4",3575676372,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"239",1743,"Polana Canico",2,"6579D37C",1702482812,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"240",1745,"Polana Canico",2,"FDF97280",4260983424,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"241",1778,"Polana Canico",2,"3F3453F3",1060393971,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"242",1780,"Polana Canico",2,"D4D84F97",3570945943,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"243",1781,"Polana Canico",2,"7705947E",1996854398,"Female","20-29y","No","Basic Secondary school (8-10)",NA
+"244",1950,"Polana Canico",2,"272EBC2B",657374251,"Female","40-59y","No","Primary School (1-7)",NA
+"245",1951,"Polana Canico",2,"90CBF595",2429285781,"Female","10-14y","Yes",NA,"Primary School (1-7)"
+"246",1952,"Polana Canico",2,"3C114B9E",1007766430,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"247",1953,"Polana Canico",2,"05A700AC",94830764,"Male","20-29y","Yes",NA,"Middle Secondary (11-12)"
+"248",1954,"Polana Canico",2,"5BAC9680",1487705728,"Female","1-4y",NA,NA,NA
+"249",1979,"Polana Canico",2,"F58E44EB",4119741675,"Male","30-39y","No","Primary School (1-7)",NA
+"250",2229,"Polana Canico",2,"5BAC9680",1487705728,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"251",2258,"Polana Canico",2,"3F3453F3",1060393971,"Female","15-19y","No","Middle Secondary (11-12)",NA
+"252",5794,"Polana Canico",2,"D0130626",3490907686,"Male","20-29y","No","Basic Secondary school (8-10)",NA
+"253",5795,"Polana Canico",2,"126DCF62",309186402,"Male","5-9y",NA,NA,NA
+"254",5799,"Polana Canico",2,"59FA6AFD",1509583613,"Female","40-59y","No","Primary School (1-7)",NA
+"255",5804,"Polana Canico",2,"7201E52B",1912726827,"Male","30-39y","No","Primary School (1-7)",NA
+"256",5805,"Polana Canico",2,"90CBF595",2429285781,"Female","20-29y","No","No schooling",NA
+"257",5806,"Polana Canico",2,"C5410CE6",3309374694,"Female","5-9y","Yes",NA,"Primary School (1-7)"
+"258",5807,"Polana Canico",2,"C179A589",3245974921,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"259",5826,"Polana Canico",2,"5BAC9680",1487705728,"Male","5-9y","Yes",NA,"Primary School (1-7)"
