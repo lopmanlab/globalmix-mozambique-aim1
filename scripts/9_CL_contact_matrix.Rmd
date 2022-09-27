@@ -8,14 +8,17 @@ date: "2022-08-15"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r load_libs, include=FALSE, warnings=FALSE}
 library(dplyr)
+library(tidyr)
 library(socialmixr)
 library(ggplot2)
+library(table1)
+library(gtsummary)
 ```
 
 ## Read in data
-```{r}
+```{r read_data, include=FALSE, warnings=FALSE}
 ind <- readRDS("../data/clean/individual_info.RDS")
 ind_exit <- readRDS("../data/clean/ind_exit.RDS")
 contact_hh <- readRDS("../data/clean/ind_contact_hh.RDS")
@@ -25,16 +28,14 @@ hh_survey <- readRDS("../data/clean/household_survey.RDS")
 ```
 
 Subset to aim 1 only
-```{r}
+```{r subset_aim1, include=FALSE, warnings=FALSE}
 ## Subset individual_info to those included in aim1 only and only those who compelted exit interview
-ind <- ind %>% filter(
-  aim ==1    ## retain 1328 from aim 1
-) %>% filter(
-  rec_id %in% unlist(ind_exit$rec_id) ##retain 1270 with exit survey
-)
+ind <- ind %>% 
+  filter(aim ==1) %>% ## retain 1328 from aim 1
+  filter(rec_id %in% unlist(ind_exit$rec_id)) ## retain 1270, only those with exit survey ie completed survey
 
 ## Subset household contact to the IDs from aim 1 only
-contact_hh <- contact_hh%>%
+contact_hh <- contact_hh %>%
               filter(rec_id %in% unlist(ind$rec_id))
 
 ## Subset non HH contact to the IDs from aim 1 only
@@ -42,96 +43,106 @@ contact_nonhh <- contact_nonhh %>%
               filter(rec_id %in% unlist(ind$rec_id))
 ```
 
-Check to see if there are any IDs with no contact
-```{r}
-sum(!ind$rec_id %in% contact_hh$rec_id)
-sum(!ind$rec_id %in% contact_nonhh$rec_id)
+Check to see if there are any IDs with no contacts reported
+```{r no_contacts, include=FALSE, warnings=FALSE}
+sum(!ind$rec_id %in% contact_hh$rec_id) # 84
+sum(!ind$rec_id %in% contact_nonhh$rec_id) # 28
 
-##Figure out which ones
-missing_hh_nonhh <- ind %>% filter(
-                        !rec_id %in% unlist(contact_hh$rec_id) 
-                    ) %>% filter(
-                      !rec_id %in% unlist(contact_nonhh$rec_id)
-                    ) %>% arrange(rec_id)
-missing_hh <- ind %>% filter(
-                  !rec_id %in% unlist(contact_hh$rec_id)
-)
+## Figure out which ones
+# missing_hh_nonhh <- ind %>%
+#   filter(!rec_id %in% unlist(contact_hh$rec_id)) %>%
+#   filter(!rec_id %in% unlist(contact_nonhh$rec_id)) %>%
+#   arrange(rec_id)
 
-missing_nonhh <- ind %>% filter(
-                  !rec_id %in% unlist(contact_nonhh$rec_id)
-)
-missing_hh$rec_id[!missing_hh$rec_id %in% missing_nonhh$rec_id]
+missing_hh <- ind %>% 
+  filter(!rec_id %in% unlist(contact_hh$rec_id)) %>% 
+  arrange(rec_id)
+
+missing_nonhh <- ind %>% 
+  filter(!rec_id %in% unlist(contact_nonhh$rec_id)) %>% 
+  arrange(rec_id)
+
+missing_both <- missing_hh$rec_id[!missing_hh$rec_id %in% missing_nonhh$rec_id]
+length((missing_both)) # 56 missing in both
 ```
 
 
 Remove those with exit interviews but without contact diaries
-```{r}
+```{r, , include=FALSE, warnings=FALSE}
 ind <- ind %>%
-    filter(!rec_id %in% unlist(missing_hh_nonhh$rec_id)) ## Dropped an additional 28 without any diaries (but had exit interviews, all from polana canico)
+    filter(!rec_id %in% unlist(missing_nonhh$rec_id)) 
+## Dropped an additional 28 without any diaries (but had exit interviews, all from polana canico)
 ```
 
 
-Check those without household contact but have other contacts live alone
-```{r}
+Check if those without household contact but have other contacts live alone
+```{r, , include=FALSE, warnings=FALSE}
 
-live_alone <- hh_survey %>% filter(rec_id %in% unlist(ind$rec_id)) %>%
-              filter(hh_occupants==1) 
-##One person who lived alone apparently reported hh contacts, probably fine
-missing_hh %>% filter(
-  rec_id %in% unlist(live_alone$rec_id)
-)
+live_alone <- hh_survey %>% 
+  filter(rec_id %in% unlist(ind$rec_id)) %>%
+  filter(hh_occupants==1) 
+## One person who lived alone apparently reported hh contacts, probably fine
+missing_hh %>% filter(rec_id %in% unlist(live_alone$rec_id))
 
-##15 people had household members but no reported household contacts
+## 15 people had household members but no reported household contacts
 ## Retain these for now
-missing_hh%>% filter(
-  !rec_id %in% unlist(missing_hh_nonhh$rec_id)
-) %>%
-  filter(
-    !rec_id %in% live_alone$rec_id
-  )
+missing_hh %>% 
+  filter(!rec_id %in% unlist(missing_hh_nonhh$rec_id)) %>%
+  filter(!rec_id %in% live_alone$rec_id)
 
 ```
 
-```{r}
-## Note that self refers to HoH not the participant, it looks like the entry for the partiicpant has already been removed from the HH contacts
+```{r, include=FALSE, warnings=FALSE}
+## Note that self refers to HoH not the participant, it looks like the entry for the participant has already been removed from the HH contacts
 contact_hh %>% select(rec_id, individual_id, contact_id:study_site)
 
 ##Combine HH and nonhh contact and figure out the day/dates
 
 
-contact_all <- plyr::rbind.fill(
-  contact_nonhh %>% select(rec_id,survey_date, study_site, Day1or2, contact_age_yn, age_contact, age_group_contact, touch_contact, where_contact, contact_mask, duration_contact, location_contact___0:location_contact___11)%>%
-  arrange(rec_id, Day1or2),
-
-contact_hh %>% select(rec_id, survey_date,study_site, Day1or2, hh_member_age, age_group_contact, touch_contact, where_contact, contact_mask, duration_contact, location_contact___0:location_contact___11, hh_member_relationship)%>%
-  rename(age_contact = hh_member_age))
+contact_all <- plyr::rbind.fill(contact_nonhh %>% 
+                                  select(rec_id,survey_date, study_site, Day1or2, 
+                                         contact_age_yn, age_contact,age_group_contact, 
+                                         touch_contact, where_contact, contact_mask, duration_contact,
+                                         location_contact___0:location_contact___11) %>%
+                                  arrange(rec_id, Day1or2),
+                                
+                                contact_hh %>% 
+                                  select(rec_id, survey_date,study_site, Day1or2, hh_member_age, 
+                                         age_group_contact, touch_contact, where_contact, contact_mask,
+                                         duration_contact, location_contact___0:location_contact___11,
+                                         hh_member_relationship) %>%
+                                  rename(age_contact = hh_member_age))
 
 ## Get age of the participant
 contact_all <- contact_all %>%
                 left_join(ind%>%select(rec_id, age,age_cat), by = c("rec_id"="rec_id"))%>%
-                rename(age_part =age)
+                rename(age_part = age)
 
 ## Recategorize location
 contact_all <- contact_all %>%
-              mutate(cnt_home = ifelse(location_contact___0==1,1,0),
-                     cnt_school = ifelse(location_contact___2==1,1,0),
-                     cnt_work = ifelse(location_contact___3==1,1,0),
-                     cnt_otherplace = ifelse(location_contact___1==1|location_contact___4==1|location_contact___5==1|location_contact___6==1|location_contact___7==1|location_contact___8==1|location_contact___9==1|location_contact___10==1|location_contact___11==1,1,0))
+              mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
+                     cnt_school = ifelse(location_contact___2==1, 1,0),
+                     cnt_work = ifelse(location_contact___3==1, 1,0),
+                     cnt_otherplace = ifelse(location_contact___1==1 | 
+                                               location_contact___4==1 | 
+                                               location_contact___5==1 | 
+                                               location_contact___6==1 | 
+                                               location_contact___7==1 |
+                                               location_contact___8==1 | 
+                                               location_contact___9==1 |
+                                               location_contact___10==1 | 
+                                               location_contact___11==1,1,0))
 
 ## recat relationship
 contact_all <- contact_all %>%
-                mutate(
-                  rel = case_when(
-                    is.na(hh_member_relationship) ~"non_hh",
+                mutate(rel = case_when(is.na(hh_member_relationship) ~"non_hh",
                     #hh_member_relationship %in% c("Nephew", "Not relative","Other relative","Uncle/Aunt") ~ "ext_hh",
-                    TRUE ~ "hh"
-                  )
-                )
+                    TRUE ~ "hh"))
 
 ```
 
 ```{r}
-t1 <- ind %>%
+diariest1 <- ind %>%
   mutate(read_write = case_when(
                     read_write == "Yes"~"Y",
                     read_write == "No"~"N",
@@ -141,8 +152,7 @@ t1 <- ind %>%
                    age <= 4 ~"Not applicable",
                    enrolled_school == "Yes"~"Y",
                     enrolled_school == "No"~"N",
-                    TRUE ~ NA_character_)
-         ) %>%
+                    TRUE ~ NA_character_)) %>%
   
   select(sex, age_cat,  read_write, enrolled_school, 
          school_level, highest_educ, study_site, occupation, transport_use) %>% # day_of_week, year,
@@ -156,44 +166,39 @@ t1 <- ind %>%
   # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") %>%
   modify_caption("**Table 1: Baseline characteristics of Aim 1 participants across sites**")
 
-t1
+diariest1
 
-table(ind$read_write)
+# table(ind$read_write)
 ```
 
-```{r}
+```{r, include=FALSE, warnings=FALSE}
 ## summarize diary date
 ## Are there differences in contact over time?
 ## Not readily detectable
 
-##Looks like some issues with this where surveydate not matching exactly with Day 1 or2
+## Looks like some issues with this where surveydate not matching exactly with Day 1 or2
 first_survey_date <- contact_all %>%
                     select(rec_id, survey_date)%>%
                     arrange(rec_id, survey_date) %>%
                     group_by(rec_id) %>%
                     slice(n=1)%>%
                     rename(dt_diaryd1 = survey_date) %>%
-              mutate(
-                pand_period = case_when(
-                  dt_diaryd1 <= as.Date("2021-6-1") ~ "lull1",
-                  dt_diaryd1 <= as.Date("2021-7-31") ~ "inc_delta",
-                  dt_diaryd1 <= as.Date("2021-9-28") ~ "dec_delta",
-                  dt_diaryd1 <= as.Date("2021-12-8") ~ "lull2",
-                  dt_diaryd1 <= as.Date("2022-1-6") ~ "inc_omi",
-                  dt_diaryd1 <= as.Date("2022-2-6") ~ "dec_omi",
-                  dt_diaryd1 <= as.Date("2022-6-1") ~ "lull3",
-                  TRUE ~ NA_character_
-                ),
-                   pand_period_simp = case_when(
-                  dt_diaryd1 <= as.Date("2021-6-1") ~ "lull",
-                  dt_diaryd1 <= as.Date("2021-7-31") ~ "wave",
-                  dt_diaryd1 <= as.Date("2021-9-28") ~ "wave",
-                  dt_diaryd1 <= as.Date("2021-12-8") ~ "lull",
-                  dt_diaryd1 <= as.Date("2022-1-6") ~ "wave",
-                  dt_diaryd1 <= as.Date("2022-2-6") ~ "wave",
-                  dt_diaryd1 <= as.Date("2022-6-1") ~ "lull",
-                  TRUE ~ NA_character_
-                ), 
+  mutate(pand_period = case_when(dt_diaryd1 <= as.Date("2021-6-1") ~ "lull1",
+                                 dt_diaryd1 <= as.Date("2021-7-31") ~ "inc_delta",
+                                 dt_diaryd1 <= as.Date("2021-9-28") ~ "dec_delta",
+                                 dt_diaryd1 <= as.Date("2021-12-8") ~ "lull2",
+                                 dt_diaryd1 <= as.Date("2022-1-6") ~ "inc_omi",
+                                 dt_diaryd1 <= as.Date("2022-2-6") ~ "dec_omi",
+                                 dt_diaryd1 <= as.Date("2022-6-1") ~ "lull3",
+                                 TRUE ~ NA_character_),
+         pand_period_simp = case_when(dt_diaryd1 <= as.Date("2021-6-1") ~ "lull",
+                                      dt_diaryd1 <= as.Date("2021-7-31") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2021-9-28") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2021-12-8") ~ "lull",
+                                      dt_diaryd1 <= as.Date("2022-1-6") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2022-2-6") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2022-6-1") ~ "lull",
+                                      TRUE ~ NA_character_), 
                 
                  pand_period_simp1 = case_when(
                   dt_diaryd1 <= as.Date("2021-6-1") ~ "lull",
@@ -265,7 +270,7 @@ contact_all_summary <- contact_all %>%
                                                     levels = c("lull1","inc_delta","dec_delta","lull2","inc_omi","dec_omi","lull3")))
                         
 
-ggplot(contact_all_summary, aes(x =pand_period, y = num_contact, fill = study_site))+
+ggplot(contact_all_summary, aes(x =pand_period, y = num_contact, fill = study_site)) +
 
   geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
   theme_bw() +
@@ -276,14 +281,14 @@ ggplot(contact_all_summary, aes(x =pand_period, y = num_contact, fill = study_si
        y = "Number of contacts" ) +
   theme(legend.title = element_text(size=15),
         legend.text = element_text(size = 12),
-        legend.position = c(0.1,0.9)) +
+        legend.position = c(0.15,0.85)) +
   theme(plot.title = element_text(size = 20), 
         axis.title.x = element_text(size=18, face="bold"),
         axis.title.y = element_text(size=18, face="bold"),
         axis.text.x = element_text(size = 12, angle=0), # changed from txt_size (MK)
         axis.text.y = element_text(size= 16))
 
-ggplot(contact_all_summary, aes(x =pand_period_simp, y = num_contact, fill = study_site))+
+ggplot(contact_all_summary, aes(x =pand_period_simp, y = num_contact, fill = study_site)) +
 
   geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
   theme_bw() +
@@ -294,7 +299,7 @@ ggplot(contact_all_summary, aes(x =pand_period_simp, y = num_contact, fill = stu
        y = "Number of contacts" ) +
   theme(legend.title = element_text(size=15),
         legend.text = element_text(size = 12),
-        legend.position = c(0.1,0.9)) +
+        legend.position = c(0.15,0.85)) +
   theme(plot.title = element_text(size = 20), 
         axis.title.x = element_text(size=18, face="bold"),
         axis.title.y = element_text(size=18, face="bold"),
@@ -312,7 +317,7 @@ ggplot(contact_all_summary, aes(x =pand_period_simp1, y = num_contact, fill = st
        y = "Number of contacts" ) +
   theme(legend.title = element_text(size=15),
         legend.text = element_text(size = 12),
-        legend.position = c(0.1,0.9)) +
+        legend.position = c(0.15,0.85)) +
   theme(plot.title = element_text(size = 20), 
         axis.title.x = element_text(size=18, face="bold"),
         axis.title.y = element_text(size=18, face="bold"),
@@ -322,9 +327,10 @@ ggplot(contact_all_summary, aes(x =pand_period_simp1, y = num_contact, fill = st
 
 Not much difference in behavior over time either.. 
 ```{r}
-contact_behav <- contact_all %>% select(study_site, pand_period, touch_contact, where_contact, contact_mask, duration_contact)%>%
-                        mutate(pand_period = factor(pand_period, 
-                                                    levels = c("lull1","inc_delta","dec_delta","lull2","inc_omi","dec_omi","lull3")))%>%
+contact_behav <- contact_all %>% select(study_site, pand_period, touch_contact, 
+                                        where_contact, contact_mask, duration_contact) %>%
+  mutate(pand_period = factor(pand_period,
+                              levels = c("lull1","inc_delta","dec_delta","lull2","inc_omi","dec_omi","lull3"))) %>%
               mutate(where_contact = as.character(where_contact),
                      touch_contact = as.character(touch_contact),
                      contact_mask = as.character(contact_mask),
@@ -334,7 +340,8 @@ contact_behav <- contact_all %>% select(study_site, pand_period, touch_contact, 
               summarise(n=n()) %>% 
               left_join(contact_all %>% 
                           group_by(pand_period, study_site) %>%
-                          summarise(tot_contacts=n()), by = c("pand_period"="pand_period", "study_site" = "study_site")) %>%
+                          summarise(tot_contacts=n()), by = c("pand_period"="pand_period", 
+                                                              "study_site" = "study_site")) %>%
               mutate(prop = n/tot_contacts)
 
 contact_behav %>% filter(var=="contact_mask") %>% 
@@ -423,13 +430,12 @@ contact_behav %>% filter(var=="where_contact") %>%
 
 ##Matrix
 One urban and one rural
-```{r}
+```{r, include=FALSE, warnings=FALSE}
 contact_all <- contact_all %>%
                 rename(part_id = rec_id)%>%
                 rename(part_age = age_part)
 
 contact_all <- contact_all %>%
-  
   mutate(age_cat = as.character(age_cat),
         weight_cat = case_when(
           age_cat =="<6mo" ~ "0",
@@ -444,68 +450,65 @@ pop_dist <- read.csv("../data/pop_dist_ines_2021.csv") %>%
                         urb_rur == "rural"~"Manhiça"
             ))
 pop_weight <- contact_all %>%
-                select(part_id, study_site, weight_cat)%>% unique()%>%
+                select(part_id, study_site, weight_cat) %>% unique() %>%
                 group_by(study_site, weight_cat) %>%
                 summarise(n=n())
 
-pop_weight <- pop_weight %>% left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
+pop_weight <- pop_weight %>% 
+  left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
   mutate(part_weight = 1/(n/tot_pop))
 
 ##join weights into participant data
 contact_all <- contact_all %>%
-              
-              left_join(
-                pop_weight %>% select(study_site, weight_cat, part_weight,tot_pop),
-                by = c("study_site"="study_site", "weight_cat"="weight_cat")
-              ) %>% rename(population.count = tot_pop)
+  left_join(pop_weight %>% select(study_site, weight_cat, part_weight,tot_pop),
+                by = c("study_site"="study_site", "weight_cat"="weight_cat")) %>% 
+  rename(population.count = tot_pop)
 
          
 ```
 
-```{r}
-contact_all <- contact_all %>%
-              
-                mutate(
-                  part_age = as.numeric(part_age),
-                  age_contact = as.numeric(age_contact),
-                  age_group_contact = as.character(age_group_contact),
-                  
-                  cnt_age_est_min = age_contact,
-                  cnt_age_est_max = age_contact,
-                  
-                  cnt_age_est_min = case_when(
-                    !is.na(cnt_age_est_min) ~ cnt_age_est_min,
-                    age_group_contact == "<6mo" ~0,
-                    age_group_contact == "6-11mo"~0,
-                    age_group_contact == "1-4y" ~1,
-                    age_group_contact == "5-9y" ~ 5,
-                    age_group_contact == "10-19y"~10,
-                    age_group_contact == "20-29y"~20,
-                    age_group_contact == "30-39y"~30,
-                    age_group_contact == "40-49y"~40,
-                    age_group_contact == "50-59y"~50,
-                    age_group_contact == "60+y"~60,
-                    age_group_contact== "I don't know" ~ NA_real_,
-                    is.na(age_group_contact) ~ NA_real_
-                  ),
-                  
-                  cnt_age_est_max= case_when(
-                    !is.na(cnt_age_est_max) ~ cnt_age_est_max,
-                    age_group_contact == "<6mo" ~0,
-                    age_group_contact == "6-11mo"~1,
-                    age_group_contact == "1-4y" ~4,
-                    age_group_contact == "5-9y" ~ 9,
-                    age_group_contact == "10-19y"~19,
-                    age_group_contact == "20-29y"~29,
-                    age_group_contact == "30-39y"~39,
-                    age_group_contact == "40-49y"~49,
-                    age_group_contact == "50-59y"~59,
-                    age_group_contact == "60+y"~99,
-                    age_group_contact== "I don't know" ~ NA_real_,
-                    is.na(age_group_contact) ~ NA_real_
-                  )
-                ) 
-  
+```{r, include=FALSE, warnings=FALSE}
+contact_all <- contact_all %>% 
+  mutate(part_age = as.numeric(part_age),
+         age_contact = as.numeric(age_contact),
+         age_group_contact = as.character(age_group_contact),
+         
+         cnt_age_est_min = age_contact,
+         cnt_age_est_max = age_contact,
+         
+         cnt_age_est_min = case_when(
+           !is.na(cnt_age_est_min) ~ cnt_age_est_min,
+           age_group_contact == "<6mo" ~0,
+           age_group_contact == "6-11mo"~0,
+           age_group_contact == "1-4y" ~1,
+           age_group_contact == "5-9y" ~ 5,
+           age_group_contact == "10-19y"~10,
+           age_group_contact == "20-29y"~20,
+           age_group_contact == "30-39y"~30,
+           age_group_contact == "40-49y"~40,
+           age_group_contact == "50-59y"~50,
+           age_group_contact == "60+y"~60,
+           age_group_contact== "I don't know" ~ NA_real_,
+           is.na(age_group_contact) ~ NA_real_
+         ),
+         
+         cnt_age_est_max= case_when(
+           !is.na(cnt_age_est_max) ~ cnt_age_est_max,
+           age_group_contact == "<6mo" ~0,
+           age_group_contact == "6-11mo"~1,
+           age_group_contact == "1-4y" ~4,
+           age_group_contact == "5-9y" ~ 9,
+           age_group_contact == "10-19y"~19,
+           age_group_contact == "20-29y"~29,
+           age_group_contact == "30-39y"~39,
+           age_group_contact == "40-49y"~49,
+           age_group_contact == "50-59y"~59,
+           age_group_contact == "60+y"~99,
+           age_group_contact== "I don't know" ~ NA_real_,
+           is.na(age_group_contact) ~ NA_real_
+         )
+  ) 
+
 
 cnt_u <- contact_all %>% filter(
                   study_site == "Polana Caniço"
@@ -539,8 +542,9 @@ df_r <- survey(
 ###Matrices
 ```{r}
 ## urban
-m_u <- contact_matrix(df_u, age.limits = c(0,18,50,99),symmetric=T, missing.contact.age="sample",estimated.contact.age = "sample",
-                     weights= df_u$participants$weights,n=1000)
+m_u <- contact_matrix(df_u, age.limits = c(0,18,50,99), symmetric=T, 
+                      missing.contact.age="sample", estimated.contact.age = "sample",
+                     weights= df_u$participants$weights, n=1000)
 
 
 mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
@@ -551,8 +555,9 @@ mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "co
 
 
 
-m_r <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T, missing.contact.age="sample",estimated.contact.age = "sample",
-                     weights= df_r$participants$weights,n=1000)
+m_r <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T, 
+                      missing.contact.age="sample",estimated.contact.age = "sample",
+                      weights= df_r$participants$weights,n=1000)
 
 
 mr_r <- Reduce("+", lapply(m_r$matrices, function(x) {x$matrix})) / length(m_r$matrices)
@@ -561,8 +566,9 @@ mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "co
                             age_part = c("[0,17)","[18,50)","50+")),
                             by="age1")
 
-m_r1 <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T, missing.contact.age="sample",estimated.contact.age = "sample",
-                     n=1000)
+m_r1 <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T, 
+                       missing.contact.age="sample",estimated.contact.age = "sample",
+                       n=1000)
 
 
 mr_r1 <- Reduce("+", lapply(m_r1$matrices, function(x) {x$matrix})) / length(m_r1$matrices)
@@ -576,6 +582,7 @@ ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.p
     scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
     xlab("Age of participant")+ylab("Age of contact")+
     geom_tile()+ theme()
+
 ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
     scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
     xlab("Age of participant")+ylab("Age of contact")+

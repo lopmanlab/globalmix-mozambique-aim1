@@ -1,0 +1,835 @@
+---
+title: "Initial analysis of Mozambique Aim 1 data."
+author: "M. Kiti & H. Chen"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    # number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, comment = NA)
+
+rm(list=ls())
+
+source("../scripts/00_load_libraries.R")
+# source("../scripts/00b_useful_functions.R")
+```
+
+```{r participant, include=FALSE, warning=FALSE}
+participant <- readRDS("../data/individual_info.RDS")
+# participant <- readRDS("../Data/ind_contact_aim1_final.RDS")
+
+# DataExplorer::create_report(participant)
+
+# cols with 100% missing data, to drop: redcap_repeat_instrument, sex_other.
+
+# cols to be checked: child_breastfeed, occupation_other
+```
+
+```{r factorize, echo=FALSE, include=FALSE}
+# study site
+participant$study_site <- as.factor(participant$study_site)
+
+participant <- participant %>%
+  rename(participant_age = age_cat,
+         participant_sex = sex)
+
+participant$participant_age2 <- participant$participant_age
+participant$participant_age2 <- recode_factor(participant$participant_age2,
+                                                "10-14y"="10-19y", "15-19y"="10-19y")
+participant$participant_age2 = factor(participant$participant_age2,
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y",
+                              "10-19y", "20-29y", "30-39y",
+                              "40-59y", "60+y")) #, "I don't know")) # drop I dont know
+
+# # participation day, weekday/weekend, weeknumber
+# participant$day_of_week <- weekdays(participant$date_enrolled)
+# participant$day_of_week <- factor(participant$day_of_week,
+#                                     levels = c("Monday", "Tuesday", "Wednesday", 
+#                                                "Thursday", "Friday","Saturday","Sunday"),
+#                                     labels = c("Mon", "Tue", "Wed", "Thur", "Fri",
+#                                                "Sat","Sun"))
+# label(participant$day_of_week) <- "Day of week enrolled"
+# 
+# participant <- participant %>%
+#   dplyr::mutate(weekday = case_when(day_of_week == "Mon" ~ "Weekday",
+#                                     day_of_week == "Tue" ~ "Weekday",
+#                                     day_of_week == "Wed" ~ "Weekday",
+#                                     day_of_week == "Thur" ~ "Weekday",
+#                                     day_of_week == "Fri" ~ "Weekday",
+#                                     day_of_week == "Sat" ~ "Weekend",
+#                                     day_of_week == "Sun" ~ "Weekend"))
+# participant$weekday <- factor(participant$weekday,
+#                               levels = c("Weekday", "Weekend"))
+#   
+# participant$weeknum <- lubridate::week(ymd(participant$date_enrolled))
+# participant$year <- lubridate::year(ymd(participant$date_enrolled)) # check enrollment dates in 2020
+# 
+# participant$weekyear <- paste(participant$year, participant$weeknum, sep = "-")
+
+# occupation
+# participant <- participant %>%
+#   dplyr::mutate(occupation = case_when(occupation___0 == 1 ~ "Unemployed",
+#                                        occupation___1 == 1 ~ "Student",
+#                                        occupation___2 == 1 ~ "Office worker",
+#                                        occupation___3 == 1 ~ "Business person",
+#                                        occupation___4 == 1 ~ "Casual labor",
+#                                        occupation___5 == 1 ~ "Farmer",
+#                                        occupation___6 == 1 ~ "Fishing",
+#                                        occupation___7 == 1 ~ "Retired",
+#                                        occupation___8 == 1 ~ "Homemaker/ Housewife",
+#                                        occupation___9 == 1 ~ "Other"))
+# participant$occupation <- factor(participant$occupation,
+#                                  levels = c("Unemployed","Student","Homemaker/ Housewife",
+#                                             "Casual labor", "Farmer", "Fishing",
+#                                             "Business person","Office worker",
+#                                             "Retired", "Other"))
+# label(participant$occupation) <- "Occupation"
+
+# school level
+participant$school_level <- factor(participant$school_level,
+                                   levels = c("No schooling", "Primary School (1-7)",
+                                              "Basic Secondary school (8-10)",
+                                              "Middle Secondary (11-12)",
+                                              "1-3 years of college/university",
+                                              "Bachelors","More than Bachelors"))
+
+# highest education level
+participant$highest_educ <- factor(participant$highest_educ,
+                                   levels = c("No schooling", "Primary School (1-7)",
+                                              "Basic Secondary school (8-10)",
+                                              "Middle Secondary (11-12)",
+                                              "1-3 years of college/university",
+                                              "Bachelors","More than Bachelors"))
+
+participant <- participant %>%
+  select("rec_id", "study_site", "aim", "participant_sex", "participant_age", 
+         "read_write", "enrolled_school", "school_level", "highest_educ","occupation", 
+         "num_sibling") 
+         # "child", "group", "participant_age2", "transport_use", "hh_resp_exposure",
+  # "child_breastfeed", "day_of_week", "weekday", "weeknum", "year", "weekyear",
+```
+
+## Tables
+```{r baseline, echo=FALSE, warning=FALSE}
+label(participant$participant_sex) <- "Sex"
+# label(participant$participant_age) <- "Age"
+label(participant$participant_age) <- "Age group"
+# label(participant$participant_age2) <- "Age group"
+label(participant$read_write) <- "Can you read and write?"
+label(participant$enrolled_school) <- "Currently enrolled in school"
+label(participant$highest_educ) <- "Highest education level attained (currently not in school)"
+label(participant$school_level) <- "School level (currently in school)"
+# label(participant$transport_use) <- "Transport use last 3 months"
+label(participant$occupation) <- "Occupation"
+# label(participant$weekday) <- "Day of week"
+# label(participant$weeknum) <- "Enrollment week number"
+# label(participant$year) <- "Enrollment year"
+
+t1 <- participant %>%
+  filter(aim==1) %>%
+  select(participant_sex, participant_age,  read_write, enrolled_school, 
+         school_level, highest_educ, study_site, occupation) %>% # day_of_week, year,
+  tbl_summary(by=study_site, 
+              percent="column",
+              digits = all_categorical() ~ 0,
+              missing="no") %>%
+  add_overall() %>%
+  bold_labels() %>%
+  modify_header(label = "") %>%
+  # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") %>%
+  modify_caption("**Table 1: Baseline characteristics of Aim 1 participants across sites**")
+
+t2 <- participant %>%
+  filter(aim==2) %>%
+  select(participant_sex, participant_age, read_write, enrolled_school, 
+         school_level, highest_educ, study_site, occupation) %>% #  day_of_week, year, 
+  tbl_summary(by=study_site, 
+              percent="column",
+              digits = all_categorical() ~ 0,
+              missing="no") %>%
+  add_overall() %>%
+  bold_labels() %>%
+  modify_header(label = "") %>%
+  # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") %>%
+  modify_caption("**Table 2: Baseline characteristics of Aim 2 participants across sites**")
+```
+\
+\
+
+### Table 1: Baseline characteristics of Aim 1 participants across sites in Mozambique
+```{r aim1_summary}
+t1
+# for ages <5 y, we need to include data from the participants in Aim 2.
+```
+\
+\
+
+### Table 2: Baseline characteristics of Aim 2 participants across sites in Mozambique
+```{r aim2_summary}
+t2
+```
+\
+\
+
+```{r}
+### Table 3: Contact distribution by covariates in Manhiça
+
+contact_rural_all <- readRDS("../data/contact_rural_all.RDS")
+
+# survey date
+# participation day, weekday/weekend, weeknumber
+contact_rural_all$day_of_week <- weekdays(contact_rural_all$survey_date)
+contact_rural_all$day_of_week <- factor(contact_rural_all$day_of_week,
+                                    levels = c("Monday", "Tuesday", "Wednesday", 
+                                               "Thursday", "Friday","Saturday","Sunday"),
+                                    labels = c("Mon", "Tue", "Wed", "Thur", "Fri",
+                                               "Sat","Sun"))
+label(contact_rural_all$day_of_week) <- "Survey date"
+
+contact_rural_all <- contact_rural_all %>%
+  dplyr::mutate(weekday = case_when(day_of_week == "Mon" ~ "Weekday",
+                                    day_of_week == "Tue" ~ "Weekday",
+                                    day_of_week == "Wed" ~ "Weekday",
+                                    day_of_week == "Thur" ~ "Weekday",
+                                    day_of_week == "Fri" ~ "Weekday",
+                                    day_of_week == "Sat" ~ "Weekend",
+                                    day_of_week == "Sun" ~ "Weekend"))
+contact_rural_all$weekday <- factor(contact_rural_all$weekday,
+                              levels = c("Weekday", "Weekend"))
+  
+contact_rural_all$weeknum <- lubridate::week(ymd(contact_rural_all$survey_date))
+contact_rural_all$year <- lubridate::year(ymd(contact_rural_all$survey_date)) # check enrollment dates in 2020
+
+contact_rural_all$weekyear <- paste(contact_rural_all$year, contact_rural_all$weeknum, sep = "-")
+
+
+# relationship
+contact_rural_all$hh_membership <- factor(contact_rural_all$hh_membership,
+                                          levels = c("Member", "Non-member"))
+# rename contact age group
+contact_rural_all <- contact_rural_all %>%
+  rename(contact_age = age_group_contact)
+# table(contact_rural_all$contact_age, useNA = "always")
+# drop 182+283=  645 contacts with missing age values
+contact_rural_all <- contact_rural_all %>%
+  subset(contact_age != "I don't know")
+
+contact_rural_all$contact_age <- recode_factor(contact_rural_all$contact_age,
+                                                "40-49y"="40-59y")
+contact_rural_all$contact_age = factor(contact_rural_all$contact_age,
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y",
+                              "10-19y", "20-29y", "30-39y",
+                              "40-59y", "60+y"))
+contact_rural_all$contact_age <- droplevels(contact_rural_all$contact_age)
+
+label(contact_rural_all$contact_sex) <- "Sex"
+label(contact_rural_all$contact_age) <- "Age"
+label(contact_rural_all$contact_mask) <- "Was the mask wearing a contact?"
+label(contact_rural_all$known_contact) <- "How long have you known this contact?"
+label(contact_rural_all$duration_contact) <- "How long did the contact last?"
+label(contact_rural_all$frequency_contact) <- "How many times do you have a contact with this person?"
+label(contact_rural_all$where_contact) <- "Where did the contact occur?"
+label(contact_rural_all$hh_membership) <- "Is this a member of your household?"
+
+# summary table for rural contacts
+t3 <- contact_rural_all %>%
+  # filter(aim==1) %>%
+  select(contact_age, contact_sex, contact_mask, known_contact, duration_contact,
+         frequency_contact, where_contact, hh_membership) %>%
+  tbl_summary(by=hh_membership,
+              percent="row",
+              digits = all_categorical() ~ 0,
+              missing="no") %>%
+  add_overall() %>%
+  bold_labels() %>%
+  modify_header(label = "") %>%
+  # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") %>%
+  modify_caption("**Table 3: Contact distribution by covariates in Manhiça**")
+t3
+```
+\
+\
+
+```{r}
+# distribution of all rural contacts, household and non-household contacts
+
+all_contacts <- contact_rural_all %>%
+  group_by(rec_id) %>%
+  dplyr::summarize(all_contacts = n())
+
+hh_contacts <- contact_rural_all %>%
+  filter(hh_membership == "Member") %>%
+  group_by(rec_id) %>%
+  dplyr::summarize(hh_contacts = n())
+
+nonhh_contacts <- contact_rural_all %>%
+  filter(hh_membership == "Non-member") %>%
+  group_by(rec_id) %>%
+  dplyr::summarize(nonhh_contacts = n())
+
+```
+
+
+```{r, include=FALSE}
+# merge rural participant and contact data
+length(unique(participant$rec_id)) # 2114
+
+rural_participant <- participant %>%
+  filter(study_site == "Polana Canhiço")
+length(unique(rural_participant$rec_id)) # 1043
+
+aim1_rural_participant <- rural_participant %>%
+  filter(aim == "1")
+length(unique(aim1_rural_participant$rec_id)) # 625
+
+length(unique(contact_rural_all$rec_id)) # 660
+
+
+aim1_rural_contacts <- dplyr::left_join(aim1_rural_participant, contact_rural_all, by = "rec_id")
+length(unique(aim1_rural_contacts$rec_id)) # 625 records
+```
+
+\
+\
+
+### Table 3: Contacts in Manhiça only by household membership
+```{r}
+# this contains contacts when we merge participant and contact data.
+
+t4 <- aim1_rural_contacts %>%
+  # filter(aim==1) %>%
+  select(contact_age, contact_sex, day_of_week, weekday, contact_mask, known_contact, duration_contact, frequency_contact, where_contact, hh_membership) %>%
+  tbl_summary(by=hh_membership, 
+              percent="col",
+              digits = all_categorical() ~ 0,
+              missing="no") %>%
+  add_overall() %>%
+  bold_labels() %>%
+  modify_header(label = "") %>%
+  # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") %>%
+  modify_caption("**Table 4: Baseline characteristics of aim 1 contacts in Manhiça.**")
+t4
+```
+
+
+```{r, warning=FALSE, include=FALSE}
+# contact boxplots
+
+# overall distribution
+contacts_overall_rural <- aim1_rural_contacts %>%
+  group_by(rec_id) %>%
+  dplyr::summarize(num_contacts = n())
+
+# 1. age
+contacts_age_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, participant_age) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+contacts_age_hh_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, participant_age, hh_membership) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+# 2. sex
+# table(aim1_rural_contacts$participant_sex)
+contacts_sex_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, participant_age, participant_sex) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+# 3. enrolled in school
+contacts_education_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, enrolled_school) %>%   # group by id and count number of contacts
+  drop_na(enrolled_school) %>%
+  dplyr::summarize(num_contacts = n())
+
+# 4. day of week
+contacts_dayweek_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, participant_age, participant_sex, day_of_week) %>%
+  dplyr::summarize(num_contacts = n()) %>%
+  na.omit()
+
+# 5. weekday/weekend
+contacts_weekday_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, weekday) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n()) %>%
+  na.omit()
+  
+
+# 6. year of the week
+contacts_weekyear_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, weekyear) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+# 6. household vs nonhousehold member
+contacts_hhmember_rural <- aim1_rural_contacts %>%
+  group_by(rec_id, participant_age, participant_sex, hh_membership) %>%   
+  drop_na(hh_membership) %>%
+  dplyr::summarize(num_contacts = n())
+```
+\
+\
+
+```{r}
+library(cowplot)
+
+all_median_rural <- median(contacts_overall_rural$num_contacts)
+# agelabs <- c("< 6 months"="0-6mo", "6 - 11 months"="6-11mo", "1 - 4y"="1-4y", 
+#              "1 - 5y"="5-9y", "10 - 14y"="10-14y", "15 - 19y"="15-19y", 
+#              "20 - 29y"="20-29y", "30 - 39y"="30-39y", "40 - 59y"="40-59y", 
+#              "60+y"="60+y")
+means <- quantile(contacts_overall_rural$num_contacts, c(.25, .50, .75))
+
+box1 <- ggplot(contacts_age_rural, aes(x = participant_age, y = num_contacts)) # , fill=round
+box1 <- box1 +
+  geom_boxplot(fill="#bdbdbd", width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  labs(fill="", # Round
+       x = "Age group",
+       y = "Number of contacts" ) +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.1,0.9)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=18, face="bold"),
+        axis.title.y = element_text(size=18, face="bold"),
+        axis.text.x = element_text(size = 12, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 16))
+# box1
+
+
+# age and sex
+box2 <- ggplot(contacts_sex_rural, aes(x = participant_age, y = num_contacts, fill=participant_sex))
+box2 <- box2 +
+  geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  scale_fill_manual(values = c("#ef8a62","#67a9cf")) +
+  # scale_x_discrete(labels = agelabs) +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  labs(fill="", # Round
+       x = "Age group",
+       y = "Number of contacts" ) +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.05,1)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=18, face="bold"),
+        axis.title.y = element_text(size=18, face="bold"),
+        axis.text.x = element_text(size = 12, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 16))
+# box2
+
+
+# enrolled in school
+box3 <- ggplot(contacts_education_rural, aes(x = enrolled_school, y = num_contacts)) # , fill=round
+box3 <- box3 +
+  geom_boxplot(fill="#bdbdbd", width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  # scale_fill_manual(labels = agelabs) + # values = box_colors, 
+  labs(fill="", # Round
+       y = "Number of contacts",
+       x = "Currently enrolled in school" ) +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.05,1)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=24, face="bold"),
+        axis.title.y = element_text(size=24, face="bold"),
+        axis.text.x = element_text(size = 22, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 22))
+# box3
+
+
+# day of the week
+box4 <- ggplot(contacts_dayweek_rural, aes(x = day_of_week, y = num_contacts)) # , fill=round
+box4 <- box4 +
+  geom_boxplot(fill="#bdbdbd", width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  # scale_fill_manual(labels = agelabs) + # values = box_colors, 
+  labs(fill="", # Round
+       y = "Number of contacts",
+       x = "Day of the week" ) +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.05,1)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=24, face="bold"),
+        axis.title.y = element_text(size=24, face="bold"),
+        axis.text.x = element_text(size = 22, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 22))
+# box4
+
+
+# contacts_weekday
+box5 <- ggplot(contacts_weekday_rural, aes(x = weekday, y = num_contacts)) # , fill=round
+box5 <- box5 +
+  geom_boxplot(fill="#bdbdbd", width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  # scale_fill_manual(labels = agelabs) + # values = box_colors, 
+  labs(fill="", # Round
+       x = "Weekday vs weekend",
+       y = "Number of contacts") +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.05,1)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=24, face="bold"),
+        axis.title.y = element_text(size=24, face="bold"),
+        axis.text.x = element_text(size = 22, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 22))
+# box5
+
+# 
+# contacts_weekyear
+contacts_weekyear_rural$weekyear <-  factor(contacts_weekyear_rural$weekyear,
+                             levels = c("2021-13", "2021-14", "2021-15", "2021-16",
+                                        "2021-17", "2021-18","2021-19", "2021-20",
+                                        "2021-21", "2021-22", "2021-23", "2021-24",
+                                        "2021-25", "2021-26", "2021-27", "2021-28",
+                                        "2021-29", "2021-30","2021-31", "2021-32",
+                                        "2021-33", "2021-34", "2021-35", "2021-36",
+                                        "2021-37", "2021-38", "2021-39", "2021-40",
+                                        "2021-41", "2021-42","2021-43", "2021-44",
+                                        "2021-45", "2021-46", "2021-47", "2021-48",
+                                        "2021-49", "2021-50", "2022-2",  "2022-4",  
+                                        "2022-6",  "2022-7","2022-8",  "2022-9", 
+                                        "2022-10"))
+box6 <- ggplot(contacts_weekyear_rural, aes(x = weekyear, y = num_contacts)) # , fill=round
+box6 <- box6 +
+  geom_boxplot(fill="#bdbdbd", width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  # scale_fill_manual(labels = agelabs) + # values = box_colors, 
+  labs(fill="", # Round
+       x = "Week",
+       y = "Number of contacts" ) +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.05,1)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=18, face="bold"),
+        axis.title.y = element_text(size=18, face="bold"),
+        axis.text.x = element_text(size = 10, angle=90), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 16))
+# box6
+
+
+# contacts_hhmember
+box7 <- ggplot(contacts_hhmember_rural, aes(x = participant_age, y = num_contacts, fill=hh_membership))
+box7 <- box7 +
+  geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+  theme_half_open() +
+  scale_fill_manual(values = c("#d8b365","#5ab4ac")) +
+  # scale_x_discrete(labels = agelabs) +
+  geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 40)) +
+  labs(fill="", # Round
+       x = "Age group",
+       y = "Number of contacts" ) +
+  theme(legend.title = element_text(size=15),
+        legend.text = element_text(size = 12),
+        legend.position = c(0.05,.9)) +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=18, face="bold"),
+        axis.title.y = element_text(size=18, face="bold"),
+        axis.text.x = element_text(size = 12, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 16))
+# box7
+```
+\
+\
+
+## Figures
+```{r, warning=FALSE, include=FALSE}
+box1
+ggsave("../output/figs/rural_aim1_overall_contacts.pdf", device = "pdf", dpi = 150)
+
+box2
+ggsave("../output/figs/rural_aim1_agesex_contacts.pdf", device = "pdf", dpi = 150)
+
+box3
+ggsave("../output/figs/rural_aim1_school_contacts.pdf", device = "pdf", dpi = 150)
+
+box4
+ggsave("../output/figs/rural_aim1_day_contacts.pdf", device = "pdf", dpi = 150)
+
+box5
+ggsave("../output/figs/rural_aim1_weekday_contacts.pdf", device = "pdf", dpi = 150)
+
+box6
+ggsave("../output/figs/rural_aim1_weekyear_contacts.pdf", device = "pdf", dpi = 150)
+
+box7
+ggsave("../output/figs/rural_aim1_hhmember_contacts.pdf", device = "pdf", dpi = 150)
+
+dev.off()
+# box8 <- plot_grid(box1, NULL,
+#                   box2, box3,
+#                   box4, box5,
+#                   box6, box7,
+#                   nrow=4, ncol=2,
+#                   align="h",rel_heights = c(1,1,1))
+# box8
+```
+\
+\
+
+### Figure 1. Distribution of participants by age and sex. 
+```{r}
+# devtools::install_github('bbc/bbplot')
+pacman::p_load('ggalt',
+               'forcats', 'R.utils', 'png', 
+               'grid', 'ggpubr', 'scales',
+               'bbplot')
+
+# distribution of age and sex
+df_pyramid <- participant %>%
+  select(participant_age, participant_sex) %>%
+  group_by(participant_age, participant_sex) %>%   # group by id and count number of contacts
+  dplyr::summarize(population = n()) %>%
+  na.omit()
+df_pyramid$population <- df_pyramid$population / sum(df_pyramid$population) * 100
+  
+rur_pop_pyramid <- ggplot(df_pyramid, aes(x = participant_age, fill = participant_sex,
+                                          y = ifelse(test = participant_sex == "Female",
+                                                     yes = -population, no = population))) + 
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = abs, limits = max(df_pyramid$population) * c(-1,1)) +
+  coord_flip() +
+  bbc_style() +
+  geom_label(aes(x = participant_age, 
+                 y = ifelse(test = participant_sex == "Female",
+                            yes = -population, no = population),
+                 label = round(population, 0)),
+             hjust = 0.8, 
+             vjust = 0.5, 
+             colour = "black", 
+             fill = NA, 
+             label.size = NA, 
+             family="Helvetica", 
+             size = 4)
+rur_pop_pyramid
+ggsave("../output/figs/rural_aim1_pop_pyramid.pdf", device = "pdf", dpi = 300)
+```
+\
+\
+
+### Figure 2. Distribution of contact characteristics by household membership
+```{r}
+df_contact_pyramid <- contact_rural_all %>%
+  select(contact_age, hh_membership) %>%
+  group_by(contact_age, hh_membership) %>%   # group by id and count number of contacts
+  dplyr::summarize(contacts = n()) %>%
+  na.omit()
+df_contact_pyramid$contacts <- df_contact_pyramid$contacts / sum(df_contact_pyramid$contacts) * 100
+  
+rur_contact_pyramid <- ggplot(df_contact_pyramid, aes(x = contact_age, fill = hh_membership,
+                                          y = ifelse(test = hh_membership == "Member",
+                                                     yes = -contacts, no = contacts))) + 
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = abs, limits = max(df_contact_pyramid$contacts) * c(-1,1)) +
+  coord_flip() +
+  bbc_style() # +
+  # geom_label(aes(x = contact_age, 
+  #                y = ifelse(test = contact_age == "Member",
+  #                           yes = -contacts, no = contacts),
+  #                label = round(contacts, 0)),
+  #            hjust = 2,
+  #            vjust = 0.5, 
+  #            colour = "black", 
+  #            fill = NA, 
+  #            label.size = NA, 
+  #            family="Helvetica", 
+  #            size = 4)
+rur_contact_pyramid
+ggsave("../output/figs/rural_aim1_contact_hh_pyramid.pdf", device = "pdf", dpi = 300)  
+
+```
+
+
+### Figure 3: Contact matrices in Manhiça
+```{r}
+# contact matrices
+
+# recategorise participant age
+# table(aim1_rural_contacts$participant_age)
+
+source("../scripts/00b_useful_functions.R")
+
+aim1_rural_contacts$participant_age <- aim1_rural_contacts$participant_age
+aim1_rural_contacts$participant_age <- recode_factor(aim1_rural_contacts$participant_age, 
+                                                "10-14y"="10-19y", "15-19y"="10-19y")
+aim1_rural_contacts$participant_age = factor(aim1_rural_contacts$participant_age, 
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                              "10-19y", "20-29y", "30-39y", 
+                              "40-59y", "60+y")) #, "I don't know")) # drop I don't know
+aim1_rural_contacts$participant_age <- droplevels(aim1_rural_contacts$participant_age)
+# table(aim1_rural_contacts$participant_age)
+
+# table(aim1_rural_contacts$contact_age, useNA="always")
+aim1_rural_contacts$contact_age = factor(aim1_rural_contacts$contact_age, 
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                              "10-19y", "20-29y", "30-39y", 
+                              "40-59y", "60+y"))
+aim1_rural_contacts <- filter(aim1_rural_contacts, !is.na(contact_age)) # drop na in contact_age. check where they come from.
+aim1_rural_contacts$contact_age <- droplevels(aim1_rural_contacts$contact_age)
+
+standard_str <- data.frame(participant_age = rep(unique(aim1_rural_contacts$participant_age), each=9),
+                            contact_age = rep(unique(aim1_rural_contacts$participant_age),each = 9))
+# table(standard_str$participant_age)
+# table(standard_str$contact_age)
+# standard_str$contact_age <- as.character(standard_str$contact_age)
+# standard_str$participant_age <- as.character(standard_str$participant_age)
+
+
+## Number participants by age group
+table(aim1_rural_participant$participant_age)
+aim1_rural_participant$participant_age <- as.character(aim1_rural_participant$participant_age)
+aim1_rural_participant$participant_age[aim1_rural_participant$participant_age=="10-14y"] <- "10-19y"
+aim1_rural_participant$participant_age[aim1_rural_participant$participant_age=="15-19y"] <- "10-19y"
+aim1_rural_participant$participant_age = factor(aim1_rural_participant$participant_age,
+                                                levels = c("<6mo", "6-11mo", "1-4y", "5-9y",
+                                                           "10-19y", "20-29y", "30-39y",
+                                                           "40-59y", "60+y"))
+
+aim1_n <- aim1_rural_participant %>%
+  group_by(participant_age) %>%
+  dplyr::summarize(n=n()) 
+aim1_n$participant_age = factor(aim1_n$participant_age,
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y",
+                              "10-19y", "20-29y", "30-39y",
+                              "40-59y", "60+y")) #, "I don't know"))
+
+
+# 1. overall matrix
+aim1_matrix_all <- make_matrix(aim1_rural_contacts,
+                          title = "Overall contact matrix",
+                          legendpos ="none") +
+  theme(plot.title = element_text(size = 20), 
+        axis.title.x = element_text(size=18, face="bold"),
+        axis.title.y = element_text(size=18, face="bold"),
+        axis.text.x = element_text(size = 12, angle=0), # changed from txt_size (MK)
+        axis.text.y = element_text(size= 16)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 4)
+
+
+# 2. by sex
+aim1_matrix_male <- aim1_rural_contacts %>%
+  filter(participant_sex == "Male") %>%
+  make_matrix(aim1_rural_contacts,
+                          title = "Male",
+                          legendpos ="none") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 2)
+
+aim1_matrix_female <- aim1_rural_contacts %>%
+  filter(participant_sex == "Female") %>%
+  make_matrix(aim1_rural_contacts,
+                          title = "Female",
+                          legendpos ="none") +  
+  theme(axis.text.x = element_text(angle = 90)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 2)
+
+
+# 3. by day of week
+aim1_matrix_weekday <- aim1_rural_contacts %>%
+  filter(weekday == "Weekday") %>%
+  make_matrix(aim1_rural_contacts,
+                          title = "Weekday",
+                          legendpos ="none") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 2)
+# aim1_matrix_weekday
+
+aim1_matrix_weekend<- aim1_rural_contacts %>%
+  filter(weekday == "Weekend") %>%
+  make_matrix(aim1_rural_contacts,
+                          title = "Weekend",
+                          legendpos ="none") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 2)
+# aim1_matrix_weekend
+
+
+# 4. by household vs nonhousehold member
+aim1_matrix_member <- aim1_rural_contacts %>%
+  filter(hh_membership == "Member") %>%
+  make_matrix(aim1_rural_contacts,
+                          title = "Member",
+                          legendpos ="none") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 2)
+# aim1_matrix_weekday
+
+aim1_matrix_nonmember <- aim1_rural_contacts %>%
+  filter(hh_membership == "Non-member") %>%
+  make_matrix(aim1_rural_contacts,
+                          title = "Non-member",
+                          legendpos ="none") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  geom_text(aes(participant_age, contact_age, label = round(avg_cont, digits=1)),
+            color = "black", size = 2)
+```
+#### A. Overall contact matrix
+```{r}
+aim1_matrix_all
+ggsave("../output/figs/rural_aim1_overall_matrix.pdf", device = "pdf", dpi = 300)
+
+```
+\
+\
+
+#### B. Contact matrix by sex (male vs female)
+```{r}
+sex_matrix <- plot_grid(aim1_matrix_male, aim1_matrix_female,
+                  nrow=1, ncol=2,
+                  align="h",rel_heights = c(1,1))
+sex_matrix
+```
+\
+\
+
+#### C. Contact matrix by day of week (weekday vs weekend)
+```{r}
+weekday_matrix <- plot_grid(aim1_matrix_weekday, aim1_matrix_weekend,
+                  nrow=1, ncol=2,
+                  align="h",rel_heights = c(1,1))
+weekday_matrix
+```
+\
+\
+
+#### D. Contact matrix by household membership (member vs non-member)
+```{r}
+membership_matrix <- plot_grid(aim1_matrix_member, aim1_matrix_nonmember,
+                  nrow=1, ncol=2,
+                  align="h",rel_heights = c(1,1))
+membership_matrix
+```
+\
+\
+
+```{r, include=FALSE}
+temp <- participant %>%
+  filter(aim==1) %>%
+  filter(study_site=="Polana Canhiço")
+table(temp$participant_age, temp$read_write)
+```
