@@ -38,11 +38,9 @@ contactmatrix_viz <- function(matrix1, title, txt_size, mid, max, legendpos) {
 
 make_matrix <- function(df1, title, txt_size=12, mid=8, max = 15, legendpos="top") {
   df1 %>%
-    # select(-c(participant_age)) %>%
     group_by(participant_age, contact_age) %>%
-    rename(participant_age = participant_age) %>%
     dplyr::summarize(tot_contacts = n()) %>% 
-    full_join(standard_str, by= c("participant_age","contact_age"), keep=F) %>%
+    full_join(standard_str, by= c("participant_age", "contact_age"), keep=F) %>%
     replace(is.na(.), 0) %>%
     left_join(aim1_n, by="participant_age") %>%
     mutate(avg_cont = (tot_contacts/n),
