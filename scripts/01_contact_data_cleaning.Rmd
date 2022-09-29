@@ -62,24 +62,22 @@ ind <- data %>%
   rename(num_sibling = num_simbling) %>%
     dplyr::filter(is.na(redcap_repeat_instrument)) %>%
   left_join(study_site, by="rec_id")
+
+
 ## Individual enrollment records
 
+# study site
 ind <- ind %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
-                                         study_site == 2 ~ "Polana Caniço")) 
+                                         study_site == 2 ~ "Polana Caniço"))
+ind$study_site <- factor(ind$study_site, levels = c("Manhiça", "Polana Caniço"),
+         labels = c("Rural", "Urban"))
+
+# aims
 ind <- ind %>% 
   dplyr::mutate(aim = case_when(aim == 0 ~ 1,
                                  aim == 1 ~ 2)) 
 
-ind <- ind %>% 
-  dplyr::mutate(highest_educ = case_when(highest_educ == 0 ~ "No schooling", 
-                                           highest_educ == 1 ~ "Primary School (1-7)", 
-                                           highest_educ == 2 ~ "Basic Secondary school (8-10)",
-                                           highest_educ == 3 ~ "Middle Secondary (11-12)", 
-                                           highest_educ == 4 ~ "1-3 years of college/university", 
-                                           highest_educ == 5 ~ "Bachelors",
-                                           highest_educ == 6 ~ "More than Bachelors")) 
-label(ind$highest_educ) <- "What is the highest level of education that you have attained?"
 
 ## age categories
 ind$age_weeks <- round(difftime(strptime(as.Date(ind$date_enrolled), format = "%Y-%m-%d"), 
@@ -101,7 +99,6 @@ df_years <- df_years %>%
     age >= 30 & age < 40 ~ 8,
     age >= 40 & age < 60 ~ 9, 
     age >= 60 ~ 10))
-
 ind <- rbind(df_mths, df_years)
 
 ind$age_cat <- NA
@@ -120,17 +117,61 @@ ind$age_cat <- factor(ind$age_cat,
                               "10-14y", "15-19y", "20-29y", "30-39y", 
                               "40-59y", "60+y"))
 
-## sex
+# sex
 ind <- ind %>% 
   dplyr::mutate(sex = case_when(sex == 0 ~ "Female", sex == 1 ~ "Male"))
+ind$sex <- factor(ind$sex, levels = c("Female", "Male"))
 
-
+# literacy 
 ind <- ind %>% 
   dplyr::mutate(read_write = case_when(read_write == 0 ~ "No", 
                                          read_write == 1 ~ "Yes"))
+ind$read_write <- factor(ind$read_write, 
+                         levels = c("Yes", "No"),
+                         labels = c("Yes", "No"))
 label(ind$read_write) <- "Can the participant read and write on their own?"
 
 
+# schooling
+ind <- ind %>% 
+  dplyr::mutate(enrolled_school = case_when(enrolled_school == 0 ~ "No", 
+                                         enrolled_school == 1 ~ "Yes"))
+ind$enrolled_school <- factor(ind$enrolled_school, 
+                   levels = c("Yes", "No"),
+                   labels = c("Yes", "No"))
+label(ind$enrolled_school) <- "Are you currently enrolled in school?"
+
+ind <- ind %>% 
+  dplyr::mutate(school_level = case_when(school_level == 0 ~ "None", 
+                                           school_level == 1 ~ "Primary", #Primary School (1-7) 
+                                           school_level == 2 ~ "Secondary", # "Basic Secondary school (8-10)",
+                                           school_level == 3 ~ "Secondary", # Middle Secondary (11-12)
+                                           school_level == 4 ~ "1-3 years of college/university", 
+                                           school_level == 5 ~ "Bachelors or more",
+                                           school_level == 6 ~ "Bachelors or more")) # More than Bachelors
+ind$school_level <- factor(ind$school_level, 
+                   levels = c("None", "Primary", "Secondary", "1-3 years of college/university", 
+                              "Bachelors or more"),
+                   labels = c("None", "Primary", "Secondary", "College",
+                              "Bachelors or more"))
+label(ind$school_level) <- "What school level are you in?"
+ind <- ind %>% 
+  dplyr::mutate(highest_educ = case_when(highest_educ == 0 ~ "None", 
+                                           highest_educ == 1 ~ "Primary", # Primary School (1-7)
+                                           highest_educ == 2 ~ "Secondary", # Basic Secondary school (8-10)
+                                           highest_educ == 3 ~ "Secondary", # Middle Secondary (11-12) 
+                                           highest_educ == 4 ~ "College/University", # 1-3 years of college/university
+                                           highest_educ == 5 ~ "Bachelors or more", # Bachelors
+                                           highest_educ == 6 ~ "Bachelors or more")) # More than Bachelors
+ind$highest_educ <- factor(ind$highest_educ, 
+                   levels = c("None", "Primary", "Secondary", "College/University", 
+                              "Bachelors or more"),
+                   labels = c("None", "Primary", "Secondary", "College",
+                              "Bachelors or more"))
+label(ind$highest_educ) <- "What is the highest level of education that you have attained?"
+
+
+# occupation
 label(ind$occupation___0) <- "Unemployed"
 label(ind$occupation___1) <- "Student"
 label(ind$occupation___2) <- "Office worker"
@@ -154,48 +195,58 @@ ind <- ind %>%
                                        occupation___7 == 1 ~ "Retired",
                                        occupation___8 == 1 ~ "Homemaker/ Housewife",
                                        occupation___9 == 1 ~ "Other"))
+ind$occupation <- factor(ind$occupation, 
+                   levels = c("Unemployed", "Student", "Homemaker/Housewife",
+                              "Casual laboror", "Farmer", "Fishing", 
+                              "Business person", "Office worker", "Retired",
+                              "Other"),
+                   labels = c("Unemployed", "Student", "Homemaker",
+                              "Casual laboror", "Farmer", "Fishing", 
+                              "Business person", "Office worker", "Retired",
+                              "Other"))
 label(ind$occupation) <- "What is your occupation?"
 
-ind <- ind %>% 
-  dplyr::mutate(enrolled_school = case_when(enrolled_school == 0 ~ "No", 
-                                         enrolled_school == 1 ~ "Yes"))
-label(ind$enrolled_school) <- "Are you currently enrolled in school?"
 
-ind <- ind %>% 
-  dplyr::mutate(school_level = case_when(school_level == 0 ~ "No schooling", 
-                                           school_level == 1 ~ "Primary School (1-7)", 
-                                           school_level == 2 ~ "Basic Secondary school (8-10)",
-                                           school_level == 3 ~ "Middle Secondary (11-12)", 
-                                           school_level == 4 ~ "1-3 years of college/university", 
-                                           school_level == 5 ~ "Bachelors",
-                                           school_level == 6 ~ "More than Bachelors"))
-label(ind$school_level) <- "What school level are you in?"
-
+# transport use
 ind <- ind %>% 
   dplyr::mutate(transport_use = case_when(transport_use == 0 ~ "Never", 
                                             transport_use == 1 ~ "Rarely", 
                                             transport_use == 2 ~ "Daily or almost daily",
                                             transport_use == 3 ~ "1-3 times per week", 
                                             transport_use == 4 ~ "1 time per month"))
+ind$transport_use <- factor(ind$transport_use, 
+                            levels = c("Never", "Rarely", "Daily or almost daily",
+                                       "1-3 times per week", "1 time per month"),
+                            labels = c("Never", "Rarely", "Daily",
+                                       "≤3 times per week", "Once monthly"))
 label(ind$transport_use) <- "How often did you use mass transport in the past 3 months?"
 
+
+# exposure to respiratory infections
 ind <- ind %>% 
   dplyr::mutate(hh_resp_exposure = case_when(hh_resp_exposure == 0 ~ "No", 
                                                hh_resp_exposure == 1 ~ "Yes",
                                                hh_resp_exposure == 2 ~ "Unnown"))
+ind$hh_resp_exposure <- factor(ind$hh_resp_exposure, levels = c("Yes", "No", 
+                                                                "Unknown"))
 label(ind$hh_resp_exposure) <- "Were you exposed to persons with respiratory complaints within your household in the past one week?"
  
-ind <- ind %>% 
-  dplyr::mutate(child_breastfeed = case_when(child_breastfeed == 0 ~ "No", 
-                                               child_breastfeed == 1 ~ "Yes",
-                                               child_breastfeed == 2 ~ "Not applicable"))
-label(ind$child_breastfeed) <- "Are you breastfeeding?"
-
+# child
 ind <- ind %>% 
   dplyr::mutate(child = case_when(child == 0 ~ "No", 
                                     child == 1 ~ "Yes",
                                     child == 2 ~ "Not applicable"))
+ind$child <- factor(ind$child, levels = c("Yes", "No", "Not applicable"))
 label(ind$child) <- "Do you have an infant ?"
+
+ind <- ind %>% 
+  dplyr::mutate(child_breastfeed = case_when(child_breastfeed == 0 ~ "No", 
+                                               child_breastfeed == 1 ~ "Yes",
+                                               child_breastfeed == 2 ~ "Not applicable"))
+ind$child_breastfeed<- factor(ind$child_breastfeed, levels = c("Yes", "No", 
+                                                                "Not applicable"))
+label(ind$child_breastfeed) <- "Are you breastfeeding?"
+
 
 # ind_contact_hh <- contact_hh_all %>%
 #   left_join(ind[,-which(names(ind) %in% c("aim","study_site"))], by = "rec_id")
@@ -241,7 +292,9 @@ exit <- data %>%
 # study site and aim
 exit <- exit %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
-                                         study_site == 2 ~ "Polana Caniço")) 
+                                         study_site == 2 ~ "Polana Caniço"))
+exit$study_site <- factor(exit$study_site, levels = c("Manhiça", "Polana Caniço"),
+                          labels = c("Rural", "Urban"))
 exit <- exit %>% 
   dplyr::mutate(aim = case_when(aim == 0 ~ 1,
                                  aim == 1 ~ 2)) 
@@ -249,49 +302,61 @@ exit <- exit %>%
 exit <- exit %>% 
   dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "Self, # during day 1 and 2",
                                                             contacts_completedby == 1 ~ "By fieldworker)) # at collection day"))
-label(exit$contacts_completedbylb) <- "Did the participant complete the contact diaries alone? 
+exit$contacts_completedby <- factor(exit$contacts_completedby, levels = c("Self", "By fieldworker"))
+label(exit$contacts_completedbylb) <- "Who filled the diary?" 
 # throughout day 1 and day 2 or were the contact diaries completed with the Field Worker on the day of collection?"
 
 exit <- exit %>% 
   dplyr::mutate(all_contactslb = case_when(all_contacts == 0 ~ "No",
                                            all_contacts == 1 ~ "Yes",
                                            all_contacts == 2 ~ "Unnown"))
+exit$all_contactslb <- factor(exit$all_contactslb, levels = c("Yes", "No", 
+                                                                "Unknown"))
 label(exit$all_contactslb) <- "Were you able to include every single contact?"
 
 exit <- exit %>% 
-  dplyr::mutate(contact_comparelb = case_when(contact_compare == 1 ~ "Much fewer contacts then usual",
-                                           contact_compare == 2 ~ "Fewer contacts than usual",
-                                           contact_compare == 3 ~ "About the same as usual",
-                                           contact_compare == 4 ~ "More contacts than usual",
-                                           contact_compare == 5 ~ "Much more contacts than usual"))
-label(exit$contact_comparelb) <- "On a scale of 1-5, how did the 2 days on which you reported your contact compare to a typical day?"
+  dplyr::mutate(contact_comparelb = case_when(contact_compare == 1 ~ "Fewer", # Much fewer contacts then usual
+                                           contact_compare == 2 ~ "Fewer", #Fewer contacts than usual
+                                           contact_compare == 3 ~ "Same", # About the same as usual
+                                           contact_compare == 4 ~ "More", # More contacts than usual
+                                           contact_compare == 5 ~ "More")) #Much more contacts than usual"))
+exit$contact_comparelb <- factor(exit$contact_comparelb, levels = c("Fewer", "Same", "More"))
+label(exit$contact_comparelb) <- "How did the 2 days on which you reported your contact compare to a typical day?"
+# "On a scale of 1-5, how did the 2 days on which you reported your contact compare to a typical day?"
 
 exit <- exit %>% 
   dplyr::mutate(behavior_changelb = case_when(behavior_change == 1 ~ "No change", 
                                               #I interact with people the same way that I used to before",
-                                              behavior_change == 2 ~ "My interactions have increased",
-                                              behavior_change == 3 ~ "My interactions have reduced",
-                                              behavior_change == 4 ~ "Unnown"))
-label(exit$behavior_changelb) <- "Do you think your social behavior has changed following the start of COVID-19? 
+                                              behavior_change == 2 ~ "Increased", # My interactions have increased
+                                              behavior_change == 3 ~ "Reduced", # My interactions have reduced
+                                              behavior_change == 4 ~ "Unknown"))
+exit$behavior_changelb <- factor(exit$behavior_changelb, levels = c("Increased", "No change",  
+                                                                    "Reduced", "Unknown"))
+label(exit$behavior_changelb) <- "How has your social behavior has changed following the start of COVID-19?" 
 # Social behavior refers to your interactions with other people, such as talking face-to-face, visiting their homes, meeting outside # the home, etc."
 
 exit <- exit %>% 
   dplyr::mutate(movement_changelb = case_when(movement_change == 1 ~ "No change",
                                               #I still move around the same way that I used to before",
-                                              movement_change == 2 ~ "My movements have increased",
-                                              movement_change == 3 ~ "My movements have have reduced",
-                                              movement_change == 4 ~ "Unnown"))
+                                              movement_change == 2 ~ "Increased",
+                                              movement_change == 3 ~ "Reduced",
+                                              movement_change == 4 ~ "Unknown"))
+exit$movement_changelb <- factor(exit$movement_changelb, levels = c("Increased", "No change",  
+                                                                    "Reduced", "Unknown"))
 label(exit$movement_changelb) <- "How do you think your movements have changed following the start of COVID-19?"
 
 exit <- exit %>% 
   dplyr::mutate(days_left_homelb = case_when(days_left_home == 0 ~ "0",
-                                           days_left_home == 1 ~ "1-3 times",
-                                           days_left_home == 2 ~ "4-7 times",
-                                           days_left_home == 3 ~ ">7 times",
-                                           days_left_home == 4 ~ "Unnown",
-                                           days_left_home == 5 ~ "I prefer not to answer"))
+                                           days_left_home == 1 ~ "1-3",
+                                           days_left_home == 2 ~ "4-7",
+                                           days_left_home == 3 ~ ">7",
+                                           days_left_home == 4 ~ "Unknown",
+                                           days_left_home == 5 ~ "Unknown")) #No response
+exit$days_left_homelb <- factor(exit$days_left_homelb, levels = c("0", "1-3", "4-7", 
+                                                                  ">7", "Unknown"))
 label(exit$days_left_homelb) <- "During the past 14 days, how many days did you leave your home?"
 
+# activities
 label(exit$activities___1) <- "Go to work"
 label(exit$activities___2) <- "Go to school"
 label(exit$activities___3) <-  "Attend religious service"
@@ -304,25 +369,33 @@ label(exit$activities___8) <-  "Other"
 exit <- exit %>% 
   dplyr::mutate(yesterday_left_homelb = case_when(yesterday_left_home == 0 ~ "No",
                                            yesterday_left_home == 1 ~ "Yes"))
+exit$yesterday_left_homelb <- factor(exit$yesterday_left_homelb, 
+                                     levels = c("Yes", "No"))
 label(exit$yesterday_left_homelb) <- "Did you leave your home yesterday?"
 
+# quarantine
 exit <- exit %>% 
   dplyr::mutate(quarantinelb = case_when(quarantine == 0 ~ "No",
                                            quarantine == 1 ~ "Yes",
-                                           quarantine == 2 ~ "I prefer not to answer"))
+                                           quarantine == 2 ~ "No response"))
+exit$quarantinelb <- factor(exit$quarantinelb, levels = c("Yes", "No",
+                                                            "No response"))
 label(exit$quarantinelb) <- "Have you been required to go into quarantine due to COVID-19 in the last 14 days?"
 
 exit <- exit %>% 
   dplyr::mutate(quarantine_behaviorlb = case_when(quarantine_behavior == 0 ~ "Continued to mingle with other family members",
                                            quarantine_behavior == 1 ~ "Stayed in separate room away from other family members",
                                            quarantine_behavior == 2 ~ "Went out of the house",
-                                           quarantine_behavior == 3 ~ "Prefer not to answer"))
+                                           quarantine_behavior == 3 ~ "No response"))
 label(exit$quarantine_behaviorlb) <- "How was your social behavior during quarantine?"
 
+# isolation
 exit <- exit %>% 
   dplyr::mutate(self_isolationlb = case_when(self_isolation == 0 ~ "No",
                                            self_isolation == 1 ~ "Yes",
-                                           self_isolation == 2 ~ "I prefer not to answer"))
+                                           self_isolation == 2 ~ "No response"))
+exit$self_isolationlb <- factor(exit$self_isolationlb, levels = c("Yes", "No",
+                                                                    "No response"))
 label(exit$self_isolationlb) <- "Have you been required to isolate yourself in the last 14 days?"
 
 exit <- exit %>% 
@@ -347,12 +420,14 @@ label(exit$self_isolation_awaylb) <- "How was your social behavior at the isolat
 exit <- exit %>% 
   dplyr::mutate(isolation_abilitylb = case_when(isolation_ability == 0 ~ "No",
                                            isolation_ability == 1 ~ "Yes"))
+exit$isolation_abilitylb <- factor(exit$isolation_abilitylb, levels = c("Yes", "No"))
 label(exit$isolation_abilitylb) <- "If you were diagnosed with COVID-19 now, would you be able to isolate yourself from other members of the home?"
 
 exit <- exit %>% 
   dplyr::mutate(mask_uselb = case_when(mask_use == 0 ~ "No",
                                            mask_use == 1 ~ "Yes",
-                                           mask_use == 2 ~ "I prefer not to answer"))
+                                           mask_use == 2 ~ "No response"))
+exit$mask_uselb <- factor(exit$mask_uselb, levels = c("Yes", "No", "No response"))
 label(exit$mask_uselb) <- "Did you wear a face mask in the last 14 days?"
 
 label(exit$mask_use_location___0) <- "At home"
@@ -363,7 +438,8 @@ label(exit$mask_use_location___4) <- "In supermarkets/shops"
 label(exit$mask_use_location___5) <- "In cinema/bar/restaurant"
 label(exit$mask_use_location___6) <- "At work/school/college/university"
 label(exit$mask_use_location___7) <- "Other"
-  
+
+# possible contacts with SARS-COV-2 infected individuals
 label(exit$covid_contact___0) <- "None that I know of"
 label(exit$covid_contact___1) <- "Member of my household"
 label(exit$covid_contact___2) <- "Close friend"
@@ -389,7 +465,9 @@ label(exit$current_symptoms___11) <- "None of these"
 exit <- exit %>% 
   dplyr::mutate(contact_with_infectedlb = case_when(contact_with_infected == 0 ~ "No",
                                            contact_with_infected == 1 ~ "Yes",
-                                           contact_with_infected == 2 ~ "I prefer not to answer"))
+                                           contact_with_infected == 2 ~ "No response"))
+exit$contact_with_infectedlb <- factor(exit$contact_with_infectedlb, levels = c("Yes", "No",
+                                                                                 "No response"))
 label(exit$contact_with_infectedlb) <- "Did you visit a health care facility for any of these symptoms?"
   
 exit <- exit %>% 
@@ -398,29 +476,42 @@ exit <- exit %>%
                                            self_covid_test == 2 ~ "Yes, I tested positive",
                                            self_covid_test == 3 ~ "Yes, I tested negative",
                                            self_covid_test == 4 ~ "Yes, waiting for results",
-                                           self_covid_test == 5 ~ "I prefer not to answer"))
+                                           self_covid_test == 5 ~ "No response"))
+exit$self_covid_testlb <- factor(exit$self_covid_testlb, 
+                                 levels = c("No, I don't think I need it",
+                                            "No, I didn't have the opportunity",
+                                            "Yes, I tested positive",
+                                            "Yes, waiting for results",
+                                            "No response"))
 label(exit$self_covid_testlb) <- "Have you been tested for COVID-19?"  
   
 exit <- exit %>% 
   dplyr::mutate(family_covid_symptomslb = case_when(family_covid_symptoms == 0 ~ "No",
                                            family_covid_symptoms == 1 ~ "Yes",
-                                           family_covid_symptoms == 2 ~ "I prefer not to answer"))
+                                           family_covid_symptoms == 2 ~ "No response"))
+exit$family_covid_symptomslb <- factor(exit$family_covid_symptomslb, levels = c("Yes", "No",
+                                                                                 "No response"))
 label(exit$family_covid_symptomslb) <- "Has anyone else in your household exhibited COVID-19 symptoms in the last 14 days?"
 
 exit <- exit %>% 
   dplyr::mutate(family_covid_testlb = case_when(family_covid_test == 0 ~ "No",
                                            family_covid_test == 1 ~ "Yes",
-                                           family_covid_test == 2 ~ "I prefer not to answer"))
+                                           family_covid_test == 2 ~ "No response"))
+exit$family_covid_testlb <- factor(exit$family_covid_testlb, levels = c("Yes", "No",
+                                                                                 "No response"))
 label(exit$family_covid_testlb) <- "Has anyone else in your household been tested for COVID-19?"
 
 exit <- exit %>% 
   dplyr::mutate(phone_accesslb = case_when(phone_access == 0 ~ "No",
                                            phone_access == 1 ~ "Yes"))
+exit$phone_accesslb <- factor(exit$phone_accesslb, levels = c("Yes", "No"))
+
 label(exit$phone_accesslb) <- "Do you have access to a mobile phone?"
 
 exit <- exit %>% 
   dplyr::mutate(phone_ownershiplb = case_when(phone_ownership == 0 ~ "No",
                                            phone_ownership == 1 ~ "Yes"))
+exit$phone_ownershiplb <- factor(exit$phone_ownershiplb, levels = c("Yes", "No"))
 label(exit$phone_ownershiplb) <- "If yes, do you own it?"
 
 exit <- exit %>% 
@@ -434,6 +525,8 @@ exit <- exit %>%
   dplyr::mutate(phone_comm_modelb = case_when(phone_comm_mode == 1 ~ "Normal call and text",
                                            phone_comm_mode == 2 ~ "Internet calls and text"))
                                            #e.g. via Whatsapp"))
+exit$phone_comm_modelb <- factor(exit$phone_comm_mode, levels = c("Normal call and text",
+                                                                  "Internet calls and text"))
 label(exit$phone_comm_modelb) <- "If smartphone, what is your preferred mode of communication?" 
 
 label(exit$phone_provider___0) <- "Movitel"
@@ -445,19 +538,22 @@ exit <- exit %>%
   dplyr::mutate(phone_signallb = case_when(phone_signal == 0 ~ "Poor",
                                            phone_signal == 1 ~ "Normal",
                                            phone_signal == 2 ~ "Good"))
+exit$phone_signallb <- factor(exit$phone_signallb, levels = c("Poor", "Normal", "Good"))
 label(exit$phone_signallb) <- "If you use a mobile phone, rate the signal in most locations that you visit during the day. "
 
 exit <- exit %>% 
   dplyr::mutate(phone_uselb = case_when(phone_use == 0 ~ "Never",
                                            phone_use == 1 ~ "1-5 times",
                                            phone_use == 2 ~ "6-10 times",
-                                           phone_use == 3 ~ "More than 10 times"))
+                                           phone_use == 3 ~ ">10 times"))
+exit$phone_uselb <- factor(exit$phone_uselb, levels = c("Never", "1-5 times", 
+                                                        "6-10 times", ">10 times"))
 label(exit$phone_uselb) <- "In the last day/ 24 hours, how often did you call/ text using your mobile phone?"
 
 ```
 
 
-```{r completed-participants, echo=FALSE}
+```{r completed-participants, echo=FALSE, include=FALSE}
 library(readxl)
 
 # drop all rec_ids in list given by Nilzio.these are 53 individuals in PC who did not complete the study.
@@ -500,7 +596,7 @@ length(unique(data$rec_id))
 ```
 
 # Summary of participant details by site
-```{r participant-summary, echo=FALSE}
+```{r participant-summary-aim1, echo=FALSE, include=FALSE}
 aim1_summary <- ind %>%
   select("aim", "sex", "age_cat", "read_write", "study_site", 
          "enrolled_school", "highest_educ", "school_level", "occupation") %>%
@@ -517,7 +613,7 @@ aim1_summary
 # this excludes aim 2 index participants, so the numbers are lower.
 ```
 
-```{r participant-summary, echo=FALSE}
+```{r participant-summary-aim2, echo=FALSE, include=FALSE}
 aim2_summary <- ind %>%
   select("aim", "sex","age_cat", "read_write", "study_site", 
          "enrolled_school", "highest_educ", "school_level", "occupation") %>%
@@ -532,6 +628,7 @@ aim2_summary <- ind %>%
 
 aim2_summary
 ```
+
 
 ```{r contact_id}
 contact_name <- data %>%
@@ -751,8 +848,8 @@ names(cont_d2_hh)[25] <- "location_contact_other"
 # names(cont_d1_hh) == names(cont_d2_hh)
 
 # specify contact day and merge d1 and d2 data
-cont_d1_hh$Day1or2 <- 1
-cont_d2_hh$Day1or2 <- 2
+cont_d1_hh$study_day <- 1
+cont_d2_hh$study_day <- 2
 
 contact_hh_all <- rbind(cont_d1_hh, cont_d2_hh) # 15445
 contact_hh_all <- contact_hh_all[-which(is.na(contact_hh_all$hh_member_name)),]
@@ -762,8 +859,8 @@ contact_hh_all$hh_membership <- "Member"
 
 # delete duplicated contact records
 contact_hh_all <- contact_hh_all %>%
-  distinct(rec_id, hh_member_id2, Day1or2, .keep_all = TRUE) # n=15445, hh_member_id, 
-  # distinct(rec_id, Day1or2, .keep_all = TRUE) # initially, this was the code, but only retains one hh member.
+  distinct(rec_id, hh_member_id2, study_day, .keep_all = TRUE) # n=15445, hh_member_id, 
+  # distinct(rec_id, study_day, .keep_all = TRUE) # initially, this was the code, but only retains one hh member.
 
 
 # merge hh contact data with household member data
@@ -790,17 +887,17 @@ contact_hh_repeat <- contact_hh_all %>%
 contact_hh_all <- contact_hh_all %>%
   left_join(contact_hh_repeat, by=c("rec_id","hh_member_name","hh_member_id.y")) %>%
   # label repeat and unique contacts
-  mutate(repeat_contact_d2 = ifelse(contact_count == 2 & Day1or2 == 2, "repeat", 
-                                       ifelse(contact_count == 1 & Day1or2 == 2, "unique", "unique"))) %>%
+  mutate(repeat_contact_d2 = ifelse(contact_count == 2 & study_day == 2, "repeat", 
+                                       ifelse(contact_count == 1 & study_day == 2, "unique", "unique"))) %>%
   left_join(study_site, by="rec_id") %>%
-  mutate(fromdayone = ifelse(((contact_count == 2 & Day1or2 == 2) | 
-                                (Day1or2 == 1 & contact_count == 2)), "Both Days",
-                             ifelse(contact_count == 1 & Day1or2 == 2, "Day2 Only",
-                                    ifelse(contact_count == 1 & Day1or2 == 1, "Day1 Only", NA)))) %>%
+  mutate(fromdayone = ifelse(((contact_count == 2 & study_day == 2) | 
+                                (study_day == 1 & contact_count == 2)), "Both Days",
+                             ifelse(contact_count == 1 & study_day == 2, "Day2 Only",
+                                    ifelse(contact_count == 1 & study_day == 1, "Day1 Only", NA)))) %>%
   # keep select variables
   select("rec_id","study_site", "hh_membership", "hh_member_hoh", "hh_member_id2",
          "hh_member_sex", "hh_member_age", "hh_member_relationship", "hh_member_relationship_other",
-         "had_contact", "Day1or2", "known_contact", "touch_contact", "where_contact", 
+         "had_contact", "study_day", "known_contact", "touch_contact", "where_contact", 
          "contact_mask", "duration_contact", "frequency_contact", "share_room", 
          "share_bed", "cook_food", "contact_count", "repeat_contact_d2",    
          "study_site", "aim", "isindex", "fromdayone", "location_contact___0", 
@@ -815,7 +912,7 @@ contact_hh_all <- contact_hh_all %>%
 \
 \
 
-```{r nonhh_contacts, echo=False}
+```{r nonhh_contacts, echo=FALSE}
 # Non-household contacts
 cont_d1_nonhh <- data %>% 
   dplyr::filter(redcap_repeat_instrument == "dirio_de_contato_dia_1") %>%
@@ -874,8 +971,8 @@ names(cont_d2_nonhh)[grep("_d2", names(cont_d2_nonhh))] <-  gsub("_d2", "",
 
 
 # names(cont_d1) == names(cont_d2)
-cont_d1_nonhh$Day1or2 <- 1
-cont_d2_nonhh$Day1or2 <- 2
+cont_d1_nonhh$study_day <- 1
+cont_d2_nonhh$study_day <- 2
 cont_d2_nonhh$repeat_contact_d2 <- "unique"
 cont_d1_nonhh$repeat_contact_d2 <- NA
 
@@ -891,7 +988,7 @@ cont_d1d2_norep <- cont_d1d2_norep %>%
          "location_contact___3","location_contact___4","location_contact___5",
          "location_contact___6","location_contact___7","location_contact___8",
          "location_contact___9","location_contact___10","location_contact___11",
-         "location_contact_other","Day1or2","repeat_contact_d2","contact_age_yn",
+         "location_contact_other","study_day","repeat_contact_d2","contact_age_yn",
          "age_contact","age_group_contact","sex_contact") # "individual_id",
 
 ```
@@ -961,7 +1058,7 @@ cont_d2_rep <- cont_d2_rep[which(cont_d2_rep$repeat_contact_d2_rep == 1),]
 rm(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
    c.15,c.16,c.17,c.18,c.19,c.20)
 
-cont_d2_rep$Day1or2 <- 2
+cont_d2_rep$study_day <- 2
 cont_d2_rep$repeat_contact_d2 <- "repeat"
 
 names(cont_d2_rep)[grep("_d2_rep", names(cont_d2_rep))] <-  gsub("_d2_rep", "",
@@ -973,7 +1070,7 @@ names(cont_d2_rep)[grep("_d1", names(cont_d2_rep))] <-  gsub("_d1", "",
 
 
 cont_d2_rep <- cont_d2_rep %>%
-  select("rec_id","redcap_event_name","redcap_repeat_instrument", "redcap_repeat_instance","contact_id","touch_contact","where_contact", "contact_mask","duration_contact","frequency_contact","known_contact", "location_contact___0","location_contact___1","location_contact___2", "location_contact___3","location_contact___4","location_contact___5", "location_contact___6","location_contact___7","location_contact___8", "location_contact___9","location_contact___10","location_contact___11", "location_contact_other","Day1or2","repeat_contact_d2","contact_age_yn", "age_contact","age_group_contact","sex_contact")
+  select("rec_id","redcap_event_name","redcap_repeat_instrument", "redcap_repeat_instance","contact_id","touch_contact","where_contact", "contact_mask","duration_contact","frequency_contact","known_contact", "location_contact___0","location_contact___1","location_contact___2", "location_contact___3","location_contact___4","location_contact___5", "location_contact___6","location_contact___7","location_contact___8", "location_contact___9","location_contact___10","location_contact___11", "location_contact_other","study_day","repeat_contact_d2","contact_age_yn", "age_contact","age_group_contact","sex_contact")
 
 cont_d2_rep <- cont_d2_rep %>%
   left_join(cont_d2_diarydate, by="rec_id")
@@ -992,23 +1089,23 @@ cont_nonhh_repeat <- contact_nonhh_all %>%
 contact_nonhh_all <- contact_nonhh_all %>%
   left_join(study_site, by="rec_id") %>% 
   left_join(cont_nonhh_repeat, by=c("rec_id","contact_id")) %>%
-  mutate(fromdayone = ifelse(((contact_count == 2 & Day1or2 == 2) | 
-                                (Day1or2 == 1 & contact_count == 2)), "Both Days",
-                             ifelse(((contact_count == 1 & Day1or2 == 2)), "Day2 Only", 
-                                    ifelse((Day1or2 == 1 & contact_count == 1), "Day1 Only", NA))))
+  mutate(fromdayone = ifelse(((contact_count == 2 & study_day == 2) | 
+                                (study_day == 1 & contact_count == 2)), "Both Days",
+                             ifelse(((contact_count == 1 & study_day == 2)), "Day2 Only", 
+                                    ifelse((study_day == 1 & contact_count == 1), "Day1 Only", NA))))
 
 contact_nonhh_all$fromdayone[which(contact_nonhh_all$contact_count > 2 & 
                                   contact_nonhh_all$repeat_contact_d2=="unique" & 
-                                  contact_nonhh_all$Day1or2==2)] <- "Day2 Only"
+                                  contact_nonhh_all$study_day==2)] <- "Day2 Only"
 
 contact_nonhh_all$fromdayone[which(contact_nonhh_all$contact_count > 2 & 
                             contact_nonhh_all$repeat_contact_d2=="repeat" & 
-                            contact_nonhh_all$Day1or2==2)] <- "Both Days"
+                            contact_nonhh_all$study_day==2)] <- "Both Days"
 
 
 cont_repeat_dup <- contact_nonhh_all %>%
   filter(contact_count > 2) %>%
-  group_by(rec_id, Day1or2, contact_id, fromdayone) %>%
+  group_by(rec_id, study_day, contact_id, fromdayone) %>%
   summarise(contact_count=n())
 
 ```
@@ -1017,10 +1114,6 @@ cont_repeat_dup <- contact_nonhh_all %>%
 ```{r}
 # here, check ages 10-19 and convert to 10-14 and 15-19
 # 
-
-
-
-
 contact_hh_all <- contact_hh_all %>%
   full_join(cont_d2_diarydate, by="rec_id")
 
@@ -1063,8 +1156,7 @@ label(contact_hh_all$age_group_contact) <- "Age group"
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(contact_id = case_when(had_contact == 0 ~ "No",
                                          had_contact == 1 ~ "Yes",
-                                         had_contact == 2 ~ "Not applicable")) 
-# the data dict only says 0, No | 1, Yes, but actually there are 3 levels in this variable 
+                                         had_contact == 2 ~ "Not applicable"))
 label(contact_hh_all$had_contact) <- "Did you have contact with this household member?"
 
 contact_hh_all <- contact_hh_all %>% 
@@ -1150,8 +1242,10 @@ contact_hh_all$known_contact <- factor(contact_hh_all$known_contact,
 label(contact_hh_all$known_contact) <- "How long have you known this person?"
 
 contact_hh_all = contact_hh_all %>% 
-  dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
-                                         study_site == 2 ~ "Polana Caniço")) 
+  dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça", 
+                                         study_site == 2 ~ "Polana Caniço"))
+contact_hh_all$study_site <- factor(contact_hh_all$study_site, levels = c("Manhiça", "Polana Caniço"),
+                          labels = c("Rural", "Urban"))
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(contact_sex = case_when(hh_member_sex == 0 ~ "Female",
@@ -1160,7 +1254,6 @@ contact_hh_all = contact_hh_all %>%
                                         # hh_member_sex == 2 ~ "Transsexual Female",
                                         # hh_member_sex == 3 ~ "Transsexual Male",
                                         # hh_member_sex == 4 ~ "Other"))
-
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(hh_member_relationship = case_when(hh_member_relationship == 0 ~ "Spouse",
                                         hh_member_relationship == 1 ~ "Sibiling",
@@ -1171,8 +1264,8 @@ contact_hh_all = contact_hh_all %>%
                                         hh_member_relationship == 6 ~ "Grandchild",
                                         hh_member_relationship == 7 ~ "Nephew",
                                         hh_member_relationship == 8 ~ "Other relative",
-                                        hh_member_relationship == 9 ~ "Not relative",
-                                        hh_member_relationship == 10 ~ "Self (HoH)"))
+                                        hh_member_relationship == 9 ~ "Non-relative",
+                                        hh_member_relationship == 10 ~ "Self"))
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(share_room = case_when(share_room == 0 ~ "No",
@@ -1283,7 +1376,10 @@ label(contact_nonhh_all$known_contact) <- "How long have you known this person?"
 
 contact_nonhh_all = contact_nonhh_all %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
-                                       study_site == 2 ~ "Polana Caniço")) 
+                                       study_site == 2 ~ "Polana Caniço"))
+contact_nonhh_all$study_site <- factor(contact_nonhh_all$study_site, 
+                                       levels = c("Manhiça", "Polana Caniço"),
+                                       labels = c("Rural", "Urban"))
 
 contact_nonhh_all = contact_nonhh_all %>% 
   dplyr::mutate(contact_age_yn = case_when(contact_age_yn == 0 ~ "No",
@@ -1328,6 +1424,8 @@ contact_nonhh_all = contact_nonhh_all %>%
                                         # sex_contact == 2 ~ "Transsexual Female",
                                         # sex_contact == 3 ~ "Transsexual Male",
                                         # sex_contact == 4 ~ "Other"))
+
+contact_nonhh_all$hh_member_relationship <- "Non-relative"
 ```
 
 
@@ -1344,10 +1442,10 @@ contact_nonhh_all = contact_nonhh_all %>%
 #   rename(relationship = hh_member_relationship)
 
 
-contact_vars <- c("rec_id", "study_site", "survey_date", "age_group_contact", 
-               "contact_sex","touch_contact", "fromdayone",
-               "where_contact","contact_mask", "duration_contact", "frequency_contact",
-               "known_contact", "hh_membership", "relationship",
+contact_vars <- c("rec_id", "study_site", "survey_date", "study_day", "age_group_contact", 
+               "contact_sex","touch_contact", "fromdayone", "share_room", "share_bed", 
+               "cook_food", "where_contact","contact_mask", "duration_contact", "frequency_contact",
+               "known_contact", "hh_member_relationship", "hh_membership", "relationship",
                "location_contact___0","location_contact___1","location_contact___2",
                "location_contact___3", "location_contact___4", "location_contact___5",
                "location_contact___6", "location_contact___7","location_contact___8",
@@ -1386,39 +1484,33 @@ contact_all <- rbind(contact_hh_all, contact_nonhh_all) %>%
   subset(select = -c(study_site.y)) %>%
   rename(study_site = study_site.x) %>%
   drop_na(study_site)
-contact_all$study_site <-  factor(contact_all$study_site,
-  levels = c("Manhiça", "Polana Caniço")) 
-  
 
+  
 # keep only ids that are common in both contact and participant sets.
 contact_all <- contact_all %>%
   filter(rec_id %in% participant_ids)
+
+# factor vars
+contact_all$contact_sex <- factor(contact_all$contact_sex , levels = c("Female", "Male"))
+
+contact_all$hh_member_relationship <- factor(contact_all$hh_membership,
+                                             levels = c("Self", "Spouse", "Child",
+                                                        "Parent", "Grandparent",
+                                                        "Uncle/Aunt", "Nephew",
+                                                        "Grandchild", "Other relative",
+                                                        "Non-relative"))
+
+contact_all$share_room <- factor(contact_all$share_room, levels = c("Yes", "No"))
+
+contact_all$age_group_contact <- factor(contact_all$age_group_contact, 
+                   levels = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                              "10-14y", "15-19y", "20-29y", "30-39y", 
+                              "40-59y", "60+y"))
+
 ```
 
-
-```{r contact_summary}
-
-# library(gtsummary)
-contact_summary <- contact_all %>%
-  filter(aim==1) %>%
-  select("study_site","contact_sex","age_group_contact","fromdayone",
-         "touch_contact","where_contact","contact_mask","duration_contact",
-         "frequency_contact","known_contact","location_contact___0",
-         "location_contact___1","location_contact___2","location_contact___3",
-         "location_contact___4","location_contact___5","location_contact___6",
-         "location_contact___7","location_contact___8","location_contact___9",
-         "location_contact___10","location_contact___11") %>%
-  # fct_explicit_na(na_level = "Missing") %>%
-  tbl_summary(by=study_site,
-              percent="column",
-              digits = all_categorical() ~ 1) %>%
-  bold_labels() %>%
-  modify_header(label = "**Variable**") %>%
-  modify_caption("**Baseline contact information for aim 1 **")
-
-contact_summary
-```
-
+\
+\
 
 ```{r aim1_data}
 # Extract aim 1 data only
@@ -1478,9 +1570,10 @@ saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
 saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
 ```
 
+\
+\
 
-
-```{r}
+```{r participant-summary-aim1b}
 participant_summary_aim1 <- participants_aim1 %>%
   select("aim", "study_site", "participant_sex", "participant_age", "read_write", 
          "enrolled_school", "highest_education", "school_level", "occupation") %>%
@@ -1497,12 +1590,47 @@ participant_summary_aim1
 ```
 
 
-```{r}
+\
+\
+
+```{r contact-summary-all, echo=FALSE}
+
+# library(gtsummary)
+contact_summary_all <- contact_all %>%
+  # filter(aim==1) %>%
+  select("study_site","contact_sex","age_group_contact","fromdayone", 
+         "hh_member_relationship", "hh_membership",
+         "touch_contact","where_contact","contact_mask","duration_contact",
+         "frequency_contact","known_contact","location_contact___0",
+         "location_contact___1","location_contact___2","location_contact___3",
+         "location_contact___4","location_contact___5","location_contact___6",
+         "location_contact___7","location_contact___8","location_contact___9",
+         "location_contact___10","location_contact___11") %>%
+  # fct_explicit_na(na_level = "Missing") %>%
+  tbl_summary(by=study_site,
+              percent="column",
+              digits = all_categorical() ~ 0) %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("**Baseline contact data**")
+
+contact_summary_all
+```
+
+\
+\
+
+```{r contact-summary-aim1}
 contact_summary_aim1 <- contacts_aim1 %>%
-  # select("aim", "study_site", "participant_sex", "participant_age", "read_write", 
-  #        "enrolled_school", "highest_education", "school_level", "occupation") %>%
-  # filter(aim==0) %>%
-  tbl_summary(by = study_site,
+  select("study_site", "contact_sex","contact_age","fromdayone",
+         "touch_contact","where_contact","contact_mask","duration_contact",
+         "frequency_contact","known_contact","location_contact___0",
+         "location_contact___1","location_contact___2","location_contact___3",
+         "location_contact___4","location_contact___5","location_contact___6",
+         "location_contact___7","location_contact___8","location_contact___9",
+         "location_contact___10","location_contact___11") %>%
+  # filter(aim==1) %>%
+  tbl_summary(by="study_site",
               percent="column",
               digits = all_categorical() ~ 0) %>%
   bold_labels() %>%
@@ -1529,6 +1657,8 @@ hh_survey <- data %>%
 hh_survey <- hh_survey %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
                                          study_site == 2 ~ "Polana Caniço"),
+                factor(study_site, levels = c("Manhiça", "Polana Caniço"),
+                       labels = c("Rural", "Urban")),
                 aim = case_when(aim == 0 ~ 1,
                                 aim == 1 ~ 2),
                 hh_head_gender = case_when(hh_head_gender == 0 ~ 'Female',
@@ -1762,7 +1892,7 @@ label(loc_visit_d1$visited_frequency_d1) <- "Besides this visit, how many times 
 #                                                dirio_de_locais_visitados_dia_1_complete == 2 ~ "Complete"))
 # label(loc_visit_d1$dirio_de_locais_visitados_dia_1_complete) <- "Complete the location visit day 1 survey?"
 
-loc_visit_d1$Day1or2 <- 1
+loc_visit_d1$study_day <- 1
 ```
 
 
@@ -1814,7 +1944,7 @@ label(loc_visit_d2$visited_frequency_d2) <- "Besides this visit, how many times 
 #                                                dirio_de_locais_visitados_dia_2_complete == 2 ~ "Complete"))
 # label(loc_visit_d2$dirio_de_locais_visitados_dia_2_complete) <- "Complete the location visit day 2 survey?"
 
-loc_visit_d2$Day1or2 <- 2
+loc_visit_d2$study_day <- 2
 ```
 
 
