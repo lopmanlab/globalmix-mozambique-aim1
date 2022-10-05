@@ -1,7 +1,7 @@
 ---
-title: "Global Mix Mozambique cleaning"
-author: "Holin Chen"
-date: "9/30/2021"
+title: "GlobalMix Mozambique data cleaning"
+author: "H. Chen, M. Kiti"
+date: "9/30/2022"
 output: html_document
 ---
 
@@ -254,6 +254,7 @@ label(ind$child_breastfeed) <- "Are you breastfeeding?"
 # ind_contact_nonhh <- contact_nonhh_all %>%
 #   left_join(ind[,-which(names(ind) %in% c("aim","study_site"))], by = "rec_id")
 ```
+
 
 ```{r exit-interiew}
 ## Exit interview data
@@ -1644,6 +1645,7 @@ contact_summary_aim1
 
 ```{r hh_survey}
 # create the date for household information survey 
+
 hh_survey <- data %>% 
   dplyr::filter(redcap_event_name == "household_survey_arm_1",
                 is.na(redcap_repeat_instrument)) %>%
@@ -1659,12 +1661,16 @@ hh_survey <- hh_survey %>%
                                          study_site == 2 ~ "Polana Caniço"),
                 factor(study_site, levels = c("Manhiça", "Polana Caniço"),
                        labels = c("Rural", "Urban")),
+                
                 aim = case_when(aim == 0 ~ 1,
                                 aim == 1 ~ 2),
+                
                 hh_head_gender = case_when(hh_head_gender == 0 ~ 'Female',
                                            hh_head_gender == 1 ~ 'Male',
                                            TRUE ~ "Other"),
+                factor(hh_head_gender, levels = c("Female", "Male")),
                                           # hh_head_gender == 2 ~ 'Transsexual Female'),
+ 
                 hh_roof_material = case_when(hh_roof_material == 0 ~ "Natural", 
                                              #'Natural cover (Ex. Straw, palm leaf or grass)',
                                              hh_roof_material == 1 ~ "Rudimentary",
@@ -1672,6 +1678,7 @@ hh_survey <- hh_survey %>%
                                              hh_roof_material == 2 ~ "Modern", 
                                              #'Modern roofing (eg zinc sheet, concrete, ceramic, tiles)',
                                              hh_roof_material == 3 ~ 'Other'),
+                factor(hh_roof_material, levels = c("Rudimentary", "Natural", "Modern", "Other")),
                 
                 hh_wall_material = case_when(hh_wall_material == 0 ~ "Natural",
                                              # 'Natural walls (Ex. No wall, reeds, palm leaves, stakes)',
@@ -1680,13 +1687,18 @@ hh_survey <- hh_survey %>%
                                              hh_wall_material == 2 ~ "Modern",
                                              #'Modern walls (eg Cement, limestone/cement, bricks, cement blocks, cement-covered adobe, wooden planks/laths, burnt bricks, zinc sheet walls)',
                                              hh_wall_material == 3 ~ 'Other'),
+                factor(hh_wall_material, levels = c("Rudimentary", "Natural", "Modern", "Other")),
+                
                 hh_ac = case_when(hh_ac == 0 ~ 'No',
                                   hh_ac == 1 ~ 'Yes',
                                   hh_ac == 2 ~ "Unknown"),
+                factor(hh_ac, levels = c("Yes", "No", "Unknown")),
                 
                 hh_fan = case_when(hh_fan == 0 ~ 'No',
                                   hh_fan == 1 ~ 'Yes',
-                                  hh_fan == 2 ~ "Unknown")) 
+                                  hh_fan == 2 ~ "Unknown"),
+                factor(hh_fan, levels = c("Yes", "No", "Unknown")))
+
 
 label(hh_survey$hh_amenities___0) <- "Electricity"
 label(hh_survey$hh_amenities___1) <- "Refrigerator/Freezer"
@@ -1768,23 +1780,27 @@ label(hh_survey$water_purify_method___8) <- "Unnown"
 hh_survey <- hh_survey %>% 
   # Do you wash your hands after helping a child defecate?
   dplyr::mutate(wash_hands_defecatelb = case_when(wash_hands_defecate == 0 ~ "Never",
-                                         wash_hands_defecate == 1 ~ "Rarely",
-                                         wash_hands_defecate == 2 ~ "Sometimes",
-                                         wash_hands_defecate == 3 ~ "Always",
-                                         wash_hands_defecate == 4 ~ "Not applicable), 
-                                         # (does not help a child defecate)"),
+                                                  wash_hands_defecate == 1 ~ "Rarely",
+                                                  wash_hands_defecate == 2 ~ "Sometimes",
+                                                  wash_hands_defecate == 3 ~ "Always",
+                                                  wash_hands_defecate == 4 ~ "Not applicable"), 
+                # (does not help a child defecate)"
+                factor(wash_hands_defecatelb, levels = c("Never", "Rarely", "Sometimes",
+                                                         "Always", "Not applicable")),
                 
-  # Do members of your household wash their hands before touching food (Ex. cooking, preparing, before eating)?
+                # Do members of your household wash their hands before touching food (Ex. cooking, preparing, before eating)?
                 wash_hands_foodlb = case_when(wash_hands_food == 0 ~ "Never",
-                                         wash_hands_food == 1 ~ "Rarely",
-                                         wash_hands_food == 2 ~ "Sometimes",
-                                         wash_hands_food == 3 ~ "Always"),
+                                              wash_hands_food == 1 ~ "Rarely",
+                                              wash_hands_food == 2 ~ "Sometimes",
+                                              wash_hands_food == 3 ~ "Always"),
+                factor(wash_hands_foodlb, levels = c("Never", "Rarely", "Sometimes", "Always")),
                 
                 # Do members of your household wash their hands after using the toilet?
                 wash_hands_toiletlb = case_when(wash_hands_toilet == 0 ~ "Never",
                                          wash_hands_toilet == 1 ~ "Rarely",
                                          wash_hands_toilet == 2 ~ "Sometimes",
-                                         wash_hands_toilet == 3 ~ "Always"))
+                                         wash_hands_toilet == 3 ~ "Always"),
+                factor(wash_hands_toiletlb, levels = c("Never", "Rarely", "Sometimes", "Always")))
 
 label(hh_survey$wash_hands_defecatelb) <- "Do you wash your hands after helping a child defecate?"
 label(hh_survey$wash_hands_foodlb) <- "Do members of your household wash their hands before touching food?" 
@@ -1796,11 +1812,13 @@ hh_survey = hh_survey %>%
   dplyr::mutate(hh_smokinglb = case_when(hh_smoking == 0 ~ "No",
                                          hh_smoking == 1 ~ "Yes",
                                          hh_smoking == 2 ~ "Unknown"),
+                factor(hh_smokinglb, levels = c("Yes", "No", "Unknown")),
                 
                 #Do you cook food inside or outside the house?
                 hh_cooklb = case_when(hh_cook == 0 ~ "Inside",
                                          hh_cook == 1 ~ "Outside",
-                                         hh_cook == 2 ~ "Both"))
+                                         hh_cook == 2 ~ "Both"),
+                factor(hh_cooklb, levels = c("Inside", "Outside", "Both")))
 
 label(hh_survey$hh_smokinglb) <- "Does anyone in your household smoke tobacco products?"
 label(hh_survey$hh_cooklb) <- "Do you cook food inside/ outside the house?"
@@ -1816,11 +1834,13 @@ hh_survey <- hh_survey %>%
   dplyr::mutate(hh_asthmalb = case_when(hh_asthma == 0 ~ "No",
                                          hh_asthma == 1 ~ "Yes",
                                          hh_asthma == 2 ~ "Unknown"),
-                
-                #Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?
+                factor(hh_asthmalb, levels = c("Yes", "No", "Unknown")),
+
+                # Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?
                 hh_tblb = case_when(hh_tb == 0 ~ "No",
                                          hh_tb == 1 ~ "Yes",
-                                         hh_tb == 2 ~ "Unnown"))
+                                         hh_tb == 2 ~ "Unnown"),
+                factor(hh_tblb, levels = c("Yes", "No", "Unknown")))
 
 label(hh_survey$hh_asthmalb) -> "Does anyone in your household have asthma?"
 label(hh_survey$hh_tblb) -> "Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?"
@@ -1843,7 +1863,7 @@ saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
 ```
 
 
-```{r}
+```{r locations-visited-d1}
 # create the data for participants' location visit information in 2 days 
 loc_visit_d1 <- data %>%
   # filter(rec_id %in% participant_ids) %>%
@@ -1873,30 +1893,31 @@ loc_visit_d1 = loc_visit_d1 %>%
                                                time_visited_d1 == 2 ~ "16-30 mins",
                                                time_visited_d1 == 3 ~ "31 mins-1 hr",
                                                time_visited_d1 == 4 ~ "1-4 hrs",
-                                               time_visited_d1 == 5 ~ ">4 hrs"))
+                                               time_visited_d1 == 5 ~ ">4 hrs"),
+                factor(time_visited_d1, levels = c("<5 mins", "5-15 mins", "16-30 mins", 
+                                                   "31 mins-1 hr", "1-4 hrs", ">4 hrs")))
 label(loc_visit_d1$time_visited_d1) <- "How much time did you spend in this place?"
 
 loc_visit_d1 = loc_visit_d1 %>%
   dplyr::mutate(visited_frequency_d1 = case_when(visited_frequency_d1 == 0 ~ "Never met before",
                                                visited_frequency_d1 == 1 ~ "Rarely",
-                                               visited_frequency_d1 == 2 ~ "Daily or almost daily",
+                                               visited_frequency_d1 == 2 ~ "Daily/ almost daily",
                                                visited_frequency_d1 == 3 ~ "1-3 times per week",
                                                visited_frequency_d1 == 4 ~ "Once every 2 weeks",
                                                visited_frequency_d1 == 5 ~ "Once per month",
-                                               visited_frequency_d1 == 6 ~ "Once every 3 months"))
+                                               visited_frequency_d1 == 6 ~ "Once every 3 months"),
+                factor(visited_frequency_d1, c("Never met before", "Rarely", "Daily/ almost daily",
+                                               "1-3 times per week", "Once every 2 weeks",
+                                               "Once per month", "Once every 3 months")))
 label(loc_visit_d1$visited_frequency_d1) <- "Besides this visit, how many times have you visited this place in the last 6 months?"
 
-# loc_visit_d1 = loc_visit_d1 %>%
-#   dplyr::mutate(dirio_de_locais_visitados_dia_1_complete = case_when(dirio_de_locais_visitados_dia_1_complete == 0 ~ "Incomplete",
-#                                                dirio_de_locais_visitados_dia_1_complete == 1 ~ "Unverified",
-#                                                dirio_de_locais_visitados_dia_1_complete == 2 ~ "Complete"))
 # label(loc_visit_d1$dirio_de_locais_visitados_dia_1_complete) <- "Complete the location visit day 1 survey?"
 
 loc_visit_d1$study_day <- 1
 ```
 
 
-```{r}
+```{r locations-visited-d2}
 loc_visit_d2 <- data %>%
   # filter(rec_id %in% participant_ids) %>%
   dplyr::filter(redcap_repeat_instrument == "dirio_de_locais_visitados_dia_2") %>%
@@ -1925,7 +1946,9 @@ loc_visit_d2 <- loc_visit_d2 %>%
                                                time_visited_d2 == 2 ~ "16-30 mins",
                                                time_visited_d2 == 3 ~ "31 mins-1 hr",
                                                time_visited_d2 == 4 ~ "1-4 hrs",
-                                               time_visited_d2 == 5 ~ ">4 hrs"))
+                                               time_visited_d2 == 5 ~ ">4 hrs"),
+                factor(time_visited_d2, levels = c("<5 mins", "5-15 mins", "16-30 mins", 
+                                                   "31 mins-1 hr", "1-4 hrs", ">4 hrs")))
 label(loc_visit_d2$time_visited_d2) <- "How long did you spend in this place?"
 
 loc_visit_d2 <- loc_visit_d2 %>%
@@ -1935,20 +1958,19 @@ loc_visit_d2 <- loc_visit_d2 %>%
                                                visited_frequency_d2 == 3 ~ "1-3 times per week",
                                                visited_frequency_d2 == 4 ~ "Once every 2 weeks",
                                                visited_frequency_d2 == 5 ~ "Once per month",
-                                               visited_frequency_d2 == 6 ~ "Once every 3 months"))
+                                               visited_frequency_d2 == 6 ~ "Once every 3 months"),
+                factor(visited_frequency_d2, c("Never met before", "Rarely", "Daily/ almost daily",
+                                               "1-3 times per week", "Once every 2 weeks",
+                                               "Once per month", "Once every 3 months")))
 label(loc_visit_d2$visited_frequency_d2) <- "Besides this visit, how many times have you visited this place in the last 6 months?"
 
-# loc_visit_d2 <- loc_visit_d2 %>%
-#   dplyr::mutate(dirio_de_locais_visitados_dia_2_complete = case_when(dirio_de_locais_visitados_dia_2_complete == 0 ~ "Incomplete",
-#                                                dirio_de_locais_visitados_dia_2_complete == 1 ~ "Unverified",
-#                                                dirio_de_locais_visitados_dia_2_complete == 2 ~ "Complete"))
 # label(loc_visit_d2$dirio_de_locais_visitados_dia_2_complete) <- "Complete the location visit day 2 survey?"
 
 loc_visit_d2$study_day <- 2
 ```
 
 
-```{r}
+```{r locations-visited}
 # combine data for location visit day 1 and day 2 together
 names(loc_visit_d1)[grep("_d1", names(loc_visit_d1))] <-  gsub("_d1", "", 
                                                                names(loc_visit_d1)[grep("_d1", names(loc_visit_d1))])
@@ -1991,6 +2013,27 @@ exit_interview_aim2 <- exit %>%
   filter(rec_id %in% participants_aim2$rec_id)
 saveRDS(exit_interview_aim2, "../data/clean/exit_interview_aim2.RDS")
 
-rm(exit_interview_aim1, exit_interview_aim2)
+# rm(exit_interview_aim1, exit_interview_aim2)
+
+```
+
+
+```{r data-export-csv, echo=FALSE}
+EXPORT_PATH <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-data/Mozambique/aim_1/data"
+
+saveRDS(participants_aim1, paste0(EXPORT_PATH, "/participant_data_aim1.RDS"))
+saveRDS(participants_aim2, paste0(EXPORT_PATH, "/participant_data_aim2.RDS"))
+
+saveRDS(contacts_aim1, paste0(EXPORT_PATH, "/contact_data_aim1.RDS"))
+saveRDS(contacts_aim2, paste0(EXPORT_PATH, "/contact_data_aim2.RDS"))
+
+saveRDS(hh_survey_aim1, paste0(EXPORT_PATH, "/household_survey_aim1.RDS"))
+saveRDS(hh_survey_aim2, paste0(EXPORT_PATH, "/household_survey_aim2.RDS"))
+
+saveRDS(loc_visit_aim1, paste0(EXPORT_PATH, "/locations_visited_aim1.RDS"))
+saveRDS(loc_visit_aim2, paste0(EXPORT_PATH, "/locations_visited_aim2.RDS"))
+
+saveRDS(exit_interview_aim1, paste0(EXPORT_PATH, "/exit_interview_aim1.RDS"))
+saveRDS(exit_interview_aim2, paste0(EXPORT_PATH, "/exit_interview_aim2.RDS"))
 
 ```
