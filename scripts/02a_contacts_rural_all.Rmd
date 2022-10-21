@@ -29,35 +29,6 @@ participants <- readRDS("../data/clean/participant_data_aim1.RDS")
 # cols to be checked: child_breastfeed, occupation_other
 ```
 
-```{r factorize, echo=FALSE, include=FALSE}
-
-# # participation day, weekday/weekend, weeknumber
-# participants$day_of_week <- weekdays(participants$date_enrolled)
-# participants$day_of_week <- factor(participants$day_of_week,
-#                                     levels = c("Monday", "Tuesday", "Wednesday", 
-#                                                "Thursday", "Friday","Saturday","Sunday"),
-#                                     labels = c("Mon", "Tue", "Wed", "Thur", "Fri",
-#                                                "Sat","Sun"))
-# label(participants$day_of_week) <- "Day of week enrolled"
-# 
-# participants<- participants%>%
-#   dplyr::mutate(weekday = case_when(day_of_week == "Mon" ~ "Weekday",
-#                                     day_of_week == "Tue" ~ "Weekday",
-#                                     day_of_week == "Wed" ~ "Weekday",
-#                                     day_of_week == "Thur" ~ "Weekday",
-#                                     day_of_week == "Fri" ~ "Weekday",
-#                                     day_of_week == "Sat" ~ "Weekend",
-#                                     day_of_week == "Sun" ~ "Weekend"))
-# participants$weekday <- factor(participants$weekday,
-#                               levels = c("Weekday", "Weekend"))
-#   
-# participants$weeknum <- lubridate::week(ymd(participants$date_enrolled))
-# participants$year <- lubridate::year(ymd(participants$date_enrolled)) # check enrollment dates in 2020
-# 
-# participants$weekyear <- paste(participants$year, participants$weeknum, sep = "-")
-
-```
-
 
 ```{r baseline, echo=FALSE, warning=FALSE}
 label(participants$participant_sex) <- "Sex"
@@ -214,7 +185,7 @@ rural_median <- contacts %>%
   group_by(rec_id, study_site) %>%
   dplyr::summarize(num_contacts = n()) %>%
   group_by(study_site) %>%
-  summarize(q25 = quantile(num_contacts, probs = q[1]),
+  dplyr::summarize(q25 = quantile(num_contacts, probs = q[1]),
             q50 = quantile(num_contacts, probs = q[2]),
             q75 = quantile(num_contacts, probs = q[3]))
 urban_median <- contacts %>%
@@ -222,7 +193,7 @@ urban_median <- contacts %>%
   group_by(rec_id, study_site) %>%
   dplyr::summarize(num_contacts = n()) %>%
   group_by(study_site) %>%
-  summarize(q25 = quantile(num_contacts, probs = q[1]),
+  dplyr::summarize(q25 = quantile(num_contacts, probs = q[1]),
             q50 = quantile(num_contacts, probs = q[2]),
             q75 = quantile(num_contacts, probs = q[3]))
 medians <- rbind(rural_median, urban_median)
