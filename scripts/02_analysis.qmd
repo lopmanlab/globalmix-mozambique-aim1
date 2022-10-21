@@ -1,0 +1,371 @@
+---
+title: "Globalmix Mozambique analysis"
+author: "M. C. Kiti"
+format: 
+  html:
+    toc: true
+    code-fold: true
+    fig-align: left
+execute: 
+  echo: false
+editor: visual
+---
+
+```{r}
+#| label: load-environment
+#| include: false
+#| warning: false
+
+rm(list=ls())
+source("../scripts/00_load_libraries.R")
+
+participants <- readRDS("../data/clean/participant_data_aim1.RDS") 
+contacts <- readRDS("../data/clean/contact_data_aim1.RDS") 
+```
+
+## Background
+
+This is a summary of results from analysis of GlobalMix data collected in Mozambique. The project had two aims: 1. quantify social contact patterns among individuals data using paper diaries 2. quantify social contact patter within households using paper diaries and wearable proximity sensors
+
+This analysis focuses on aim 1 only. Data were collected from Manhica (rural site) and Polana Canhico (urban site) between April 2020 and April 2021. Individuals were identified from the health and demographic surveillance system available in each site. Participants were stratified into 10 age groups (\<6 months, 6-11 months, 1-4 years, 5-9 years, 10-14, 15-19, 20-29, 30-39, 40-59 and 60+ years) with a target of 63 individuals per age strata.
+
+## Results
+
+```{r additional-cleaning}
+#| include: false
+#| warning: false
+
+
+## Subset contacts to the IDs in participant list only
+contacts <- contacts %>%
+              filter(rec_id %in% unlist(participants$rec_id))
+
+
+# survey date
+# participation day, weekday/weekend, weeknumber
+contacts$day_of_week <- weekdays(contacts$survey_date)
+contacts$day_of_week <- factor(contacts$day_of_week,
+                                    levels = c("Monday", "Tuesday", "Wednesday", 
+                                               "Thursday", "Friday","Saturday","Sunday"),
+                                    labels = c("Mon", "Tue", "Wed", "Thu", "Fri",
+                                               "Sat","Sun"))
+label(contacts$day_of_week) <- "Survey date"
+
+contacts <- contacts %>%
+  dplyr::mutate(weekday = case_when(day_of_week == "Mon" ~ "Weekday",
+                                    day_of_week == "Tue" ~ "Weekday",
+                                    day_of_week == "Wed" ~ "Weekday",
+                                    day_of_week == "Thu" ~ "Weekday",
+                                    day_of_week == "Fri" ~ "Weekday",
+                                    day_of_week == "Sat" ~ "Weekend",
+                                    day_of_week == "Sun" ~ "Weekend"))
+contacts$weekday <- factor(contacts$weekday,
+                              levels = c("Weekday", "Weekend"))
+  
+contacts$weeknum <- lubridate::week(ymd(contacts$survey_date))
+contacts$year <- lubridate::year(ymd(contacts$survey_date)) # check enrollment dates in 2020
+
+contacts$weekyear <- paste(contacts$year, contacts$weeknum, sep = "-")
+
+
+# relationship
+contacts$hh_membership <- factor(contacts$hh_membership,
+                                          levels = c("Member", "Non-member"))
+
+
+# recategorize contact locations
+contacts <- contacts %>%
+              mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
+                     cnt_school = ifelse(location_contact___2==1, 1,0),
+                     cnt_work = ifelse(location_contact___3==1, 1,0),
+                     cnt_otherplace = ifelse(location_contact___1==1 | 
+                                               location_contact___4==1 | 
+                                               location_contact___5==1 | 
+                                               location_contact___6==1 | 
+                                               location_contact___7==1 |
+                                               location_contact___8==1 | 
+                                               location_contact___9==1 |
+                                               location_contact___10==1 | 
+                                               location_contact___11==1,1,0))
+
+# generate data strata by COVID-19 period
+## Looks like some issues with this where surveydate not matching exactly with Day 1 or2
+first_survey_date <- contacts %>%
+                    select(rec_id, survey_date)%>%
+                    arrange(rec_id, survey_date) %>%
+                    group_by(rec_id) %>%
+                    slice(n=1)%>%
+                    rename(dt_diaryd1 = survey_date) %>%
+  mutate(pand_period = case_when(dt_diaryd1 <= as.Date("2021-6-1") ~ "lull1",
+                                 dt_diaryd1 <= as.Date("2021-7-31") ~ "inc_delta",
+                                 dt_diaryd1 <= as.Date("2021-9-28") ~ "dec_delta",
+                                 dt_diaryd1 <= as.Date("2021-12-8") ~ "lull2",
+                                 dt_diaryd1 <= as.Date("2022-1-6") ~ "inc_omi",
+                                 dt_diaryd1 <= as.Date("2022-2-6") ~ "dec_omi",
+                                 dt_diaryd1 <= as.Date("2022-6-1") ~ "lull3",
+                                 TRUE ~ NA_character_),
+         pand_period_simp = case_when(dt_diaryd1 <= as.Date("2021-6-1") ~ "lull",
+                                      dt_diaryd1 <= as.Date("2021-7-31") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2021-9-28") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2021-12-8") ~ "lull",
+                                      dt_diaryd1 <= as.Date("2022-1-6") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2022-2-6") ~ "wave",
+                                      dt_diaryd1 <= as.Date("2022-6-1") ~ "lull",
+                                      TRUE ~ NA_character_), 
+                
+                 pand_period_simp1 = case_when(
+                  dt_diaryd1 <= as.Date("2021-6-1") ~ "lull",
+                  dt_diaryd1 <= as.Date("2021-7-31") ~ "inc",
+                  dt_diaryd1 <= as.Date("2021-9-28") ~ "dec",
+                  dt_diaryd1 <= as.Date("2021-12-8") ~ "lull",
+                  dt_diaryd1 <= as.Date("2022-1-6") ~ "inc",
+                  dt_diaryd1 <= as.Date("2022-2-6") ~ "dec",
+                  dt_diaryd1 <= as.Date("2022-6-1") ~ "lull",
+                  TRUE ~ NA_character_ )
+         )
+
+
+# merge participant and contact data
+## Get age of the participant
+df_contact <- contacts %>%
+  select(-study_site) %>%
+  left_join(participants, by=("rec_id"))
+```
+
+### Baseline summary
+
+```{r}
+#| label: participant-summary
+#| include: true
+#| warning: false
+
+label(participants$study_site) <- "Site"
+label(participants$aim) <- "Aim"
+label(participants$participant_sex) <- "Sex"
+label(participants$age) <- "Exact age"
+label(participants$participant_age) <- "Age"
+label(participants$read_write) <- "able to read and write"
+label(participants$enrolled_school) <- "Currently enrolled in school"
+label(participants$highest_educ) <- "Highest education level attained"
+label(participants$school_level) <- "Current school level"
+label(participants$transport_use) <- "Transport use last 3 months"
+label(participants$occupation) <- "Occupation"
+
+table1 <- participants %>%
+  # filter(aim==1) %>%
+  select(study_site, participant_sex, participant_age,  read_write, enrolled_school, 
+         school_level, highest_educ, occupation) %>% # day_of_week, year, study_site
+  tbl_summary(by=study_site, 
+              percent="column",
+              digits = all_categorical() ~ 0,
+              missing="no") %>%
+  add_overall() %>%
+  bold_labels() %>%
+  modify_header(label = "") %>%
+  modify_spanning_header(c("stat_1", "stat_2") ~ "**Site**") 
+# %>% modify_caption("**Table 1: Baseline characteristics of participants in Mozambique**")
+
+
+table1
+```
+
+### Characteristics of contacts reported
+
+```{r}
+#| label: contact-characteristics
+#| warning:  false
+
+label(contacts$contact_sex) <- "Contact sex"
+label(contacts$contact_age) <- "Contact age"
+label(contacts$contact_mask) <- "Was the mask wearing a contact?"
+label(contacts$known_contact) <- "How long have you known this contact?"
+label(contacts$duration_contact) <- "How long did the contact last?"
+label(contacts$frequency_contact) <- "How many times do you have a contact with this person?"
+label(contacts$where_contact) <- "Where did the contact occur?"
+label(contacts$hh_membership) <- "Is this a member of your household?"
+
+# summary table for rural contacts
+table2 <- contacts %>%
+  select(study_site, contact_age, contact_sex, , hh_membership, contact_mask, 
+         known_contact, duration_contact, frequency_contact, where_contact) %>%
+  tbl_summary(by="study_site",
+              percent="col",
+              digits = all_categorical() ~ 0,
+              missing="no") %>%
+  add_overall() %>%
+  bold_labels() %>%
+  modify_header(label = "")
+  # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") 
+  # %>% modify_caption("**Table 2: Contact distribution by covariates in Mozambique**")
+table2
+
+```
+
+#### Contact behavior
+
+```{r}
+#| label: contact-behavior
+#| include: false
+
+contact_behav <- df_contact %>% 
+  select(study_site, participant_age, touch_contact, where_contact, contact_mask, duration_contact) %>%
+  mutate(where_contact = as.character(where_contact),
+         touch_contact = as.character(touch_contact),
+         contact_mask = as.character(contact_mask),
+         duration_contact = as.character(duration_contact)) %>%
+  pivot_longer(cols = touch_contact:duration_contact, names_to="var", values_to="value") %>%
+  group_by(study_site, participant_age, var, value) %>%
+  summarise(n=n()) %>%
+  na.omit() %>%
+  left_join(df_contact %>% 
+              group_by(participant_age, study_site) %>%
+              summarise(tot_contacts=n()), by = c("participant_age"="participant_age", "study_site" = "study_site")) %>%
+  mutate(prop = n/tot_contacts)
+
+# function to plot behavior of contacts by age
+contact_behav_fun <- function(df, action){
+  df %>% 
+  filter(var == action) %>% 
+  ggplot(x = participant_age, y = prop, fill = value) +
+    geom_col(aes(x = participant_age, y = prop, fill = value), position = "fill") +
+    theme_bw() +
+    facet_wrap(~study_site) +
+    theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  ylab("Proportion of contacts") + xlab ("Participant age")
+  # 
+}
+
+```
+
+```{r}
+#| fig-cap: "Masking behavior among contacts"
+
+fig1_masking <- contact_behav_fun(contact_behav, "contact_mask")
+
+fig1_masking
+```
+
+```{r}
+fig2_duration <- contact_behav_fun(contact_behav, "duration_contact")
+fig2_duration 
+```
+
+```{r}
+fig3_touch <- contact_behav_fun(contact_behav, "touch_contact")
+
+fig3_touch 
+```
+
+```{r}
+fig4_location <- contact_behav_fun(contact_behav, "where_contact")
+
+fig4_location 
+```
+```{r}
+#| warning = false
+#| include = false
+
+# median (IQR) contacts by site
+q <- c(.25, .5, .75)
+
+median_contacts <- df_contact %>%
+  # filter(study_site == "Rural") %>%
+  group_by(rec_id, study_site) %>%
+  dplyr::summarize(num_contacts = n()) %>%
+  group_by(study_site) %>%
+  dplyr::summarize(q25 = quantile(num_contacts, probs = q[1]),
+            q50 = quantile(num_contacts, probs = q[2]),
+            q75 = quantile(num_contacts, probs = q[3]))
+
+
+# median by attributes
+# 1. age
+contacts_age <- df_contact %>%
+  group_by(rec_id, study_site, participant_age) %>%   # group by id and count number of df_contact
+  dplyr::summarize(num_contacts = n())
+
+contacts_age_hh <- df_contact %>%
+  group_by(rec_id, study_site, participant_age, hh_membership) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+# 2. sex
+# table(df_contact$participant_sex)
+contacts_sex <- df_contact %>%
+  group_by(rec_id, study_site, participant_age, participant_sex) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+# 3. enrolled in school
+contacts_education <- df_contact %>%
+  group_by(rec_id, study_site, enrolled_school) %>%   # group by id and count number of contacts
+  drop_na(enrolled_school) %>%
+  dplyr::summarize(num_contacts = n())
+
+# 4. day of week
+contacts_dayweek <- df_contact %>%
+  group_by(rec_id, study_site, participant_age, participant_sex, day_of_week) %>%
+  dplyr::summarize(num_contacts = n()) %>%
+  na.omit()
+
+# 5. weekday/weekend
+contacts_weekday <- df_contact %>%
+  group_by(rec_id, study_site, weekday) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n()) %>%
+  na.omit()
+
+# 6. year of the week
+contacts_weekyear <- df_contact %>%
+  group_by(rec_id, study_site, weekyear) %>%   # group by id and count number of contacts
+  dplyr::summarize(num_contacts = n())
+
+# 7. household vs nonhousehold member
+contacts_hhmember <- df_contact %>%
+  group_by(rec_id, study_site, participant_age, participant_sex, hh_membership) %>%   
+  drop_na(hh_membership) %>%
+  dplyr::summarize(num_contacts = n())
+```
+
+```{r}
+
+fig5_age_box <- contacts_age %>%
+  plotly::plot_ly(x=~participant_age,  y=~num_contacts,  color=~study_site,  
+                  type = 'box',  colors = 'Accent') %>%
+  plotly::layout(xaxis = list(title = xtitle),  
+                 yaxis = list(title = "Number of contacts")) %>%
+  plotly::layout(boxmode = "group")
+
+# sex
+fig6_sex_box <- contacts_sex %>% 
+  plotly::plot_ly(x=~participant_age,  y=~num_contacts,  color=~participant_sex,  
+                      type = 'box',  colors = 'Accent') %>%
+  plotly::layout(xaxis = list(title= 'Participant age'),  
+                 yaxis = list(title='Number of contacts')) %>%
+  plotly::layout(boxmode = "group")
+
+
+# education
+fig7_education_box <- contacts_education %>% 
+  plotly::plot_ly(x=~enrolled_school,  y=~num_contacts,  color=~study_site,  
+                      type = 'box',  colors = 'Accent') %>%
+  plotly::layout(xaxis = list(title= 'Enrolled in school'),  
+                 yaxis = list(title='Number of contacts')) %>%
+  plotly::layout(boxmode = "group")
+
+# weekday
+fig8_weekday_box <- contacts_dayweek %>% 
+  plotly::plot_ly(x=~day_of_week,  y=~num_contacts,  color=~study_site,  
+                      type = 'box',  colors = 'Accent') %>%
+  plotly::layout(xaxis = list(title= 'Day of week'),  
+                 yaxis = list(title='Number of contacts')) %>%
+  plotly::layout(boxmode = "group")
+# box4 
+# 
+
+fig9_weekend_box <- contacts_weekday %>% 
+  plotly::plot_ly(x=~weekday,  y=~num_contacts,  color=~study_site,  
+                      type = 'box',  colors = 'Accent') %>%
+  plotly::layout(xaxis = list(title= 'Day of week'),  
+                 yaxis = list(title='Number of contacts')) %>%
+  plotly::layout(boxmode = "group")
+
+
+```
