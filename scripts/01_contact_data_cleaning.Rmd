@@ -184,7 +184,7 @@ label(participant$occupation___4) <- "Casual laboror"
 label(participant$occupation___5) <- "Farmer"
 label(participant$occupation___6) <- "Fisherman"
 label(participant$occupation___7) <- "Retired"
-label(participant$occupation___8) <- "Homemaker/ Housewife"
+label(participant$occupation___8) <- "Homemaker/Housewife"
 label(participant$occupation___9) <- "Other"
 
 participant$occupation <- "Other"
@@ -195,17 +195,17 @@ participant <- participant %>%
                                        occupation___3 == 1 ~ "Business person",
                                        occupation___4 == 1 ~ "Casual laboror",
                                        occupation___5 == 1 ~ "Farmer",
-                                       occupation___6 == 1 ~ "Fishing",
+                                       occupation___6 == 1 ~ "Fisherman",
                                        occupation___7 == 1 ~ "Retired",
-                                       occupation___8 == 1 ~ "Homemaker/ Housewife",
+                                       occupation___8 == 1 ~ "Homemaker/Housewife",
                                        occupation___9 == 1 ~ "Other"))
 participant$occupation <- factor(participant$occupation, 
                    levels = c("Unemployed", "Student", "Homemaker/Housewife",
-                              "Casual laboror", "Farmer", "Fishing", 
+                              "Casual laboror", "Farmer", "Fisherman", 
                               "Business person", "Office worker", "Retired",
                               "Other"),
                    labels = c("Unemployed", "Student", "Homemaker",
-                              "Casual laboror", "Farmer", "Fishing", 
+                              "Casual laboror", "Farmer", "Fisherman", 
                               "Business person", "Office worker", "Retired",
                               "Other"))
 label(participant$occupation) <- "What is your occupation?"
