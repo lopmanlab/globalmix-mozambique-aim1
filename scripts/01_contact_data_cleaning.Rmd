@@ -1582,7 +1582,7 @@ participants_aim1 <- rbind(participants_aim1, participants_aim2_index) %>%
     # participant_sex = sex,
     # participant_age = participant_age,
     highest_education = highest_educ,
-    number_subling = num_sibling) %>%
+    number_sibling = num_sibling) %>%
   mutate(aim = case_when(aim == 2 ~ 1,
                          TRUE ~ 1))
 
@@ -2066,7 +2066,7 @@ saveRDS(exit_interview_aim2, "../data/clean/exit_interview_aim2.RDS")
 
 
 ```{r data-export-rds, echo=FALSE}
-EXPORT_PATH <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-data/Mozambique/aim_1/data"
+EXPORT_PATH <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-country-data/Mozambique/aim_1/data"
 
 saveRDS(participants_aim1, paste0(EXPORT_PATH, "/participant_data_aim1.RDS"))
 saveRDS(participants_aim2, paste0(EXPORT_PATH, "/participant_data_aim2.RDS"))
