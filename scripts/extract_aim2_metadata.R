@@ -65,8 +65,10 @@ rural_summary_final <- aim2_rural_final %>%
   modify_header(label = "**Variable**") %>%
   modify_caption("**Particiant information in Manhiça (all records ok)**")
 rural_summary_final
+
 # out of 408, we can only analyze 285 (70%) records since these have matching hwids.
 # 5 damaged sensors + 123 records dropped due to missing hwid.
+# 
 write.csv(aim2_rural_final,"./data/sensor_metadata/mozambique_aim2_rural_participants.csv" )
 
 # check characterisrics of dropped sensors
