@@ -35,7 +35,6 @@ This analysis focuses on aim 1 only. Data were collected from Manhica (rural sit
 
 # Analysis
 
-
 # Results {#sec-results}
 
 ```{r additional-cleaning}
@@ -199,6 +198,7 @@ table1
 ```
 
 ## Summary of number of contacts reported
+
 ```{r}
 tot_contacts <- nrow(contacts)
 tot_rural_contacts <- nrow(contacts %>% filter(study_site == "Rural"))
@@ -206,7 +206,7 @@ tot_urban_contacts <- nrow(contacts %>% filter(study_site == "Urban"))
 
 ```
 
-@tbl-contact-characteristics shows the characteristics of the number of contacts per site. Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with only 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban).
+@tbl-contact-characteristics shows the characteristics of the number of contacts per site. Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban).
 
 The highest number of contacts were reported with children aged 10-14 yrs (26% rural, 21% urban). Overall, more contacts were reported with women (54%) with no difference between sites.
 
@@ -227,11 +227,13 @@ label(contacts$duration_contact) <- "How long did the contact last?"
 label(contacts$frequency_contact) <- "How many times do you have a contact with this person?"
 label(contacts$where_contact) <- "Where did the contact occur?"
 label(contacts$hh_membership) <- "Is this a member of your household?"
+label(contacts$hh_member_relationship) <- "Relationship to household member"
 
 # summary table for rural contacts
 table2 <- contacts %>%
-  dplyr::select(study_site, contact_age, contact_sex, hh_membership, contact_mask, 
-         known_contact, duration_contact, frequency_contact, where_contact) %>%
+  dplyr::select(study_site, contact_age, contact_sex, hh_membership, 
+                hh_member_relationship, contact_mask, known_contact, 
+                duration_contact, frequency_contact, where_contact) %>%
   tbl_summary(by = study_site,
               percent = "col",
               digits = all_categorical() ~ 0,
@@ -272,7 +274,7 @@ df_contact_urban <- df_contact %>%
 # contacts by site
 contacts_site <- df_contact %>%
   dplyr::group_by(rec_id, study_site) %>%
-  dplyr::summarize(num_contacts = n())
+  dplyr::summarize(num_contacts = n(), .groups = "drop")
 
 # median (IQR) limits
 q <- c(.25, .5, .75)
@@ -281,11 +283,13 @@ median_contacts_site <- contacts_site %>%
   dplyr::group_by(study_site) %>%
   dplyr::summarize(q25 = quantile(num_contacts, probs = q[1]),
                    q50 = quantile(num_contacts, probs = q[2]),
-                   q75 = quantile(num_contacts, probs = q[3]))
+                   q75 = quantile(num_contacts, probs = q[3]),
+                   .groups = "drop")
 
 mean_contacts_site <- contacts_site %>%
   dplyr::group_by(study_site) %>%
-  dplyr::summarize(mean = round(mean(num_contacts),1))
+  dplyr::summarize(mean = round(mean(num_contacts),1), 
+                   .groups = "drop")
 
 
 ci_contacts_rural <- contacts_site %>%
@@ -299,8 +303,8 @@ ci_contacts_urban <- lm(num_contacts ~ 1, ci_contacts_urban)
 ci_contacts_urban <- as.data.frame(round(confint(ci_contacts_urban), 1))
 
 ```
-@fig-contact-distribution-overall shows the distribution of all reported contacts over the two days. 
 
+@fig-contact-distribution-overall shows the distribution of all reported contacts over the two days.
 
 ::: callout-note
 Conduct statistical tests.
@@ -350,9 +354,6 @@ hist_urban <- contacts_site %>%
 subplot(hist_rural, hist_urban, nrows=2, shareX = TRUE)
 ```
 
-
-
-
 ```{r}
 #| echo: false
 #| warning: false
@@ -367,14 +368,14 @@ df_contact_d1 <- df_contact %>%
 df_contact_d2 <- df_contact %>%
   dplyr::filter(study_day==2)
 
-# day 1 contacts
+# day 1 overall contacts per person
 day1_num_contacts <- df_contact_d1 %>%
   dplyr::group_by(rec_id, study_site) %>%
   dplyr::summarize(num_contacts = n()) %>%
   dplyr::select(rec_id, num_contacts)
 df_contact_d1 <- left_join(df_contact_d1, day1_num_contacts, by="rec_id" )
 
-# day 2 contacts
+# day 2 overall contacts per person
 day2_num_contacts <- df_contact_d2 %>%
   dplyr::group_by(rec_id, study_site) %>%
   dplyr::summarize(num_contacts = n()) %>%
@@ -384,6 +385,7 @@ df_contact_d2 <- left_join(df_contact_d2, day2_num_contacts, by="rec_id" )
 ```
 
 ### Rural contacts
+
 @tbl-rural-contact-table shows a the median (IQR) contacts in the rural area on day 1 and day 2 separately.
 
 ```{r}
@@ -412,14 +414,19 @@ variables <- data.frame(var=c("participant_sex","participant_age", "hh_member_re
 
 
 for (i in 1:nrow(variables)){
-  x <- df_contact_rural[,variables$var[[i]]]
+  x <- df_contact_rural[,variables$var[[i]]] 
+  # include another variable n as the number of participants per strata
+  n <- length(unique(df_contact_rural[rec_id[i]]))
   variables$var[[i]]
-
-# Number and proportion of participants in each strata
+  print(n)
+}
+# Number and proportion of contacts in each strata
   
   t0 <- as.data.frame(cbind(table(x), # Total 
-                            round(prop.table(table(x))*100, digits=0))) # Proportion
-  
+                            round(prop.table(table(x))*100, digits=0) # Proportion
+                            ) # number of participants
+                      ) 
+}  
   colnames(t0)[1:2] <- c("Total","Col") 
   Tot <- rep("",5)
   
@@ -479,6 +486,7 @@ table3
 ```
 
 ### Urban contacts
+
 @tbl-urban-contact-table shows a summary of the median (IQR) contacts in the urban area on day 1 and day 2 separately.
 
 ```{r}
@@ -674,7 +682,6 @@ hist_d1
 
 \
 \
-
 
 ```{r}
 #| warning: false
@@ -947,7 +954,6 @@ urban_matrix <- fun_matrix1_plot(m1_urban, "Urban site")
 # ggplotly(urban_matrix, tooltip = "text")
 ```
 
-
 ```{r}
 #| label: crude-site-matrix
 crude_matrix <- subplot(style(rural_matrix, showlegend = F), urban_matrix, shareY = TRUE) %>%
@@ -971,8 +977,8 @@ crude_matrix <- subplot(style(rural_matrix, showlegend = F), urban_matrix, share
 crude_matrix
 ```
 
-
 ### Weighted contact matrix
+
 ```{r}
 # col_names <- c("60+y","40-59y","30-39y","20-29y","15-19y","10-14y","5-9y","1-4y","6-11mo","<6mo") 
 # row_names <- c("60+y","40-59y","30-39y","20-29y","15-19y","10-14y","5-9y","1-4y","6-11mo","<6mo")
@@ -1420,34 +1426,32 @@ for(i in gee_psex){
 #   # save values
 #   mean.i$mean_contact <- as.character(paste(mean.i$t0, " (",lower.ci, "-", upper.ci,")", sep=""))
 #   print("-----------------------------------------------------------")
-}
+# }
 ```
 
 #### Overall mean contact rate by site
 
+| Variable | Mean (95% CI)    |
+|----------|------------------|
+| Rural    | 13.0 (12.8-13.2) |
+| Urban    | 9.5 (9.4-9.7)    |
 
-| Variable        | Mean (95% CI)   |
-|-----------------|-----------------|
-| Rural           |13.0 (12.8-13.2) |
-| Urban           |9.5 (9.4-9.7)    |
-
-
-|     |Variable|Rural           |Urban           |
-|-----|--------|----------------|----------------|
-|Sex  |        |                |                |
-|     |Female  |9.0 (8.4-9.7)   | 6.8 (6.3-7.2)  |
-|     |Male    |9.2 (8.6-9.8)   | 7.4 (7-7.9)    |
-|Age  |        |                |                |
-|     |0-6mo   |4.8 (3.8-5.9)   | 5.2 (4.4-6.3)  |
-|     |6-11mo  |7.0 (6-8.1)     | 5.8 (4.8-6.9)  |
-|     |1-4y    |6.1 (5.3-7.1)   | 5.7 (4.7-7)    |
-|     |5-9y    |10.1 (8.9-11.9) | 7.5 (6.5-8.7)  |
-|     |10-14y  |11.2 (10-12.8)  | 9.4 (8.5-10.5) | 
-|     |15-19y  |13 (11.7-14.5)  | 9.9 (8.8-11.2) |
-|     |20-29y  |11.1 (9.7-12.8) | 7.2 (6.4-8)    |
-|     |30-39y  |9.5 (8.5-11.1)  | 7.5 (6.7-8.4)  |
-|     |40-59y  |11.2 (9.9-12.8) | 7.0 (6.4-7.8)  |
-|     |60+     |7.4 (6.3-8.9)   | 5.8 (5.1-6.7)  |
+|     | Variable | Rural           | Urban          |
+|-----|----------|-----------------|----------------|
+| Sex |          |                 |                |
+|     | Female   | 9.0 (8.4-9.7)   | 6.8 (6.3-7.2)  |
+|     | Male     | 9.2 (8.6-9.8)   | 7.4 (7-7.9)    |
+| Age |          |                 |                |
+|     | 0-6mo    | 4.8 (3.8-5.9)   | 5.2 (4.4-6.3)  |
+|     | 6-11mo   | 7.0 (6-8.1)     | 5.8 (4.8-6.9)  |
+|     | 1-4y     | 6.1 (5.3-7.1)   | 5.7 (4.7-7)    |
+|     | 5-9y     | 10.1 (8.9-11.9) | 7.5 (6.5-8.7)  |
+|     | 10-14y   | 11.2 (10-12.8)  | 9.4 (8.5-10.5) |
+|     | 15-19y   | 13 (11.7-14.5)  | 9.9 (8.8-11.2) |
+|     | 20-29y   | 11.1 (9.7-12.8) | 7.2 (6.4-8)    |
+|     | 30-39y   | 9.5 (8.5-11.1)  | 7.5 (6.7-8.4)  |
+|     | 40-59y   | 11.2 (9.9-12.8) | 7.0 (6.4-7.8)  |
+|     | 60+      | 7.4 (6.3-8.9)   | 5.8 (5.1-6.7)  |
 
 \
 \
@@ -1476,17 +1480,17 @@ page.model <- glmm.nb(num_contacts ~ participant_sex + offset(log(N)), random = 
 
 # Proposed additional analysis {#sec-additional-analysis}
 
-| Analysis                                          | Status |
-|---------------------------------------------------|--------|
-| Bootstrapped contact rates                        |        |
-| Weighted contact matrices                         |        |
-| Multivariate analysis (Negative binomial model)   |        |
-| Contact outlier analysis                          |        |
-| Masking and contact reporting                     |        |
-| Contacts vs indoor/outdoor locations              |        |
-|Contacts by location of contact                    |        |       
-| National policy measure timelines                 |        |
-| Known vs unknown contacts over time               |        |
-| Contacts by vaccination status                    |        |
+| Analysis                                        | Status |
+|-------------------------------------------------|--------|
+| Bootstrapped contact rates                      |        |
+| Weighted contact matrices                       |        |
+| Multivariate analysis (Negative binomial model) |        |
+| Contact outlier analysis                        |        |
+| Masking and contact reporting                   |        |
+| Contacts vs indoor/outdoor locations            |        |
+| Contacts by location of contact                 |        |
+| National policy measure timelines               |        |
+| Known vs unknown contacts over time             |        |
+| Contacts by vaccination status                  |        |
 
 :{tbl-colwidths="\[30/70\]"}
