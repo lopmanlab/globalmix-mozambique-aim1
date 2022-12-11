@@ -236,12 +236,14 @@ m_u <- contact_matrix(df_u,
                       age.limits = c(0,18,50,99), ##Specify age bands for the matrix
                       symmetric=T,  ##symmetric matrix
                       missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
-                      #weights= df_r$participants$weights,                            
+                      weigh.age = T,
                       return.part.weights=T, 
                       n=1000)     ##Number of bootstraps
 
 #Code to take the mean of matrices
 mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
+
+
 
 #Make into long form
 mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
@@ -263,6 +265,7 @@ mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "co
 
 
 ```
+
 ## Matrix Viz
 ```{r}
 ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
@@ -348,3 +351,103 @@ cm_filter(df_u, boots=1, symmetric=T, filter=T, other=1)
 
 ```
 
+##Matrix sanity checks
+
+
+```{r}
+##Raw counts of average number of contacts per person in each age group made with other age groups
+contact%>%filter(study_site=="Urban")%>%
+  mutate(part_age_cat = case_when(
+          is.na(part_age)~NA_character_,
+          part_age<=17 ~ "0-17",
+          part_age <=60~"18-59",
+          TRUE ~ "60+"
+  ),
+        cont_age_cat = case_when(
+          is.na(contact_age)~NA_character_,
+          contact_age=="20-29y"|contact_age=="30-39y"|contact_age=="40-59y" ~ "18-59",
+          contact_age== "60+y" ~ "60+y",
+          TRUE~ "0-17"
+        ))%>%
+  group_by(part_id,part_age_cat,cont_age_cat)%>%summarise(n=n())%>%
+  group_by(part_age_cat,cont_age_cat)%>%
+  summarise(mean = mean(n))%>%
+  filter(!is.na(cont_age_cat))%>%
+  pivot_wider(names_from = cont_age_cat, values_from = mean)
+```
+
+```{r}
+#Remove those missing contact, no weighting, no symmetry, sample contact age
+m_u1 <- contact_matrix(df_u, 
+                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      symmetric=F,  ##symmetric matrix
+                      missing.contact.age="remove", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = F,
+                      return.part.weights=T, 
+                      n=100)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+mr_u1 <- Reduce("+", lapply(m_u1$matrices, function(x) {x$matrix})) / length(m_u1$matrices)
+
+```
+
+```{r}
+#Remove those missing contact, no weighting, no symmetry, take mid point of contact age
+m_u2 <- contact_matrix(df_u, 
+                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      symmetric=F,  ##symmetric matrix
+                      missing.contact.age="remove", estimated.contact.age = "mean",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = F,
+                      return.part.weights=T, 
+                      n=100)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+Reduce("+", lapply(m_u2$matrices, function(x) {x$matrix})) / length(m_u2$matrices)
+
+```
+```{r}
+#Sample those missing contact, no weighting, no symmetry, sample contact age
+m_u3 <- contact_matrix(df_u, 
+                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      symmetric=F,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = F,
+                      return.part.weights=T, 
+                      n=100)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+Reduce("+", lapply(m_u3$matrices, function(x) {x$matrix})) / length(m_u2$matrices)
+
+```
+
+
+
+```{r}
+#Sample those missing contact, age weighting, no symmetry, sample contact age
+m_u4 <- contact_matrix(df_u, 
+                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      symmetric=F,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = T,
+                      return.part.weights=T, 
+                      n=100)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+Reduce("+", lapply(m_u4$matrices, function(x) {x$matrix})) / length(m_u4$matrices)
+
+```
+
+```{r}
+#Sample those missing contact, age weighting, symmetry, sample contact age
+m_u4 <- contact_matrix(df_u, 
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
+                      symmetric=F,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = F,
+                      return.part.weights=T, 
+                      n=100)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+Reduce("+", lapply(m_u4$matrices, function(x) {x$matrix})) / length(m_u4$matrices)
+
+```
