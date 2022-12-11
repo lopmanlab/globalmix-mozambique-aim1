@@ -19,11 +19,11 @@ library(gtsummary)
 
 ## Read in data
 ```{r read_data, include=FALSE, warnings=FALSE}
-ind <- readRDS("../data/clean/individual_info.RDS")
-ind_exit <- readRDS("../data/clean/ind_exit.RDS")
-contact_hh <- readRDS("../data/clean/ind_contact_hh.RDS")
-contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
-hh_survey <- readRDS("../data/clean/household_survey.RDS")
+ind <- readRDS("../data/clean/participant_data_aim1.RDS")
+ind_exit <- readRDS("../data/clean/exit_interview_aim1.RDS")
+contact <- readRDS("../data/clean/contact_data_aim1.RDS")
+#contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
+hh_survey <- readRDS("../data/clean/household_survey_aim1.RDS")
 
 ```
 
@@ -34,19 +34,16 @@ ind <- ind %>%
   filter(aim ==1) %>% ## retain 1328 from aim 1
   filter(rec_id %in% unlist(ind_exit$rec_id)) ## retain 1270, only those with exit survey ie completed survey
 
-## Subset household contact to the IDs from aim 1 only
-contact_hh <- contact_hh %>%
+## Subset contact to the IDs from aim 1 only
+contact<- contact %>%
               filter(rec_id %in% unlist(ind$rec_id))
 
-## Subset non HH contact to the IDs from aim 1 only
-contact_nonhh <- contact_nonhh %>%
-              filter(rec_id %in% unlist(ind$rec_id))
 ```
 
 Check to see if there are any IDs with no contacts reported
 ```{r no_contacts, include=FALSE, warnings=FALSE}
-sum(!ind$rec_id %in% contact_hh$rec_id) # 84
-sum(!ind$rec_id %in% contact_nonhh$rec_id) # 28
+sum(!ind$rec_id %in% contact$rec_id) # 84
+#sum(!ind$rec_id %in% contact_nonhh$rec_id) # 28
 
 ## Figure out which ones
 # missing_hh_nonhh <- ind %>%
@@ -54,24 +51,19 @@ sum(!ind$rec_id %in% contact_nonhh$rec_id) # 28
 #   filter(!rec_id %in% unlist(contact_nonhh$rec_id)) %>%
 #   arrange(rec_id)
 
-missing_hh <- ind %>% 
-  filter(!rec_id %in% unlist(contact_hh$rec_id)) %>% 
+missing<- ind %>% 
+  filter(!rec_id %in% unlist(contact$rec_id)) %>% 
   arrange(rec_id)
 
-missing_nonhh <- ind %>% 
-  filter(!rec_id %in% unlist(contact_nonhh$rec_id)) %>% 
-  arrange(rec_id)
 
-missing_both <- missing_hh$rec_id[!missing_hh$rec_id %in% missing_nonhh$rec_id]
-length((missing_both)) # 56 missing in both
 ```
 
 
 Remove those with exit interviews but without contact diaries
 ```{r, , include=FALSE, warnings=FALSE}
 ind <- ind %>%
-    filter(!rec_id %in% unlist(missing_nonhh$rec_id)) 
-## Dropped an additional 28 without any diaries (but had exit interviews, all from polana canico)
+    filter(!rec_id %in% unlist(missing$rec_id)) 
+## Dropped an additional 78 without any diaries 
 ```
 
 
@@ -94,32 +86,14 @@ missing_hh %>%
 
 ```{r, include=FALSE, warnings=FALSE}
 ## Note that self refers to HoH not the participant, it looks like the entry for the participant has already been removed from the HH contacts
-contact_hh %>% select(rec_id, individual_id, contact_id:study_site)
-
-##Combine HH and nonhh contact and figure out the day/dates
-
-
-contact_all <- plyr::rbind.fill(contact_nonhh %>% 
-                                  select(rec_id,survey_date, study_site, Day1or2, 
-                                         contact_age_yn, age_contact,age_group_contact, 
-                                         touch_contact, where_contact, contact_mask, duration_contact,
-                                         location_contact___0:location_contact___11) %>%
-                                  arrange(rec_id, Day1or2),
-                                
-                                contact_hh %>% 
-                                  select(rec_id, survey_date,study_site, Day1or2, hh_member_age, 
-                                         age_group_contact, touch_contact, where_contact, contact_mask,
-                                         duration_contact, location_contact___0:location_contact___11,
-                                         hh_member_relationship) %>%
-                                  rename(age_contact = hh_member_age))
 
 ## Get age of the participant
-contact_all <- contact_all %>%
-                left_join(ind%>%select(rec_id, age,age_cat), by = c("rec_id"="rec_id"))%>%
+contact<- contact %>%
+                left_join(ind%>%select(rec_id, age), by = c("rec_id"="rec_id"))%>%
                 rename(age_part = age)
 
 ## Recategorize location
-contact_all <- contact_all %>%
+contact <- contact %>%
               mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
                      cnt_school = ifelse(location_contact___2==1, 1,0),
                      cnt_work = ifelse(location_contact___3==1, 1,0),
@@ -134,7 +108,7 @@ contact_all <- contact_all %>%
                                                location_contact___11==1,1,0))
 
 ## recat relationship
-contact_all <- contact_all %>%
+contact <- contact %>%
                 mutate(rel = case_when(is.na(hh_member_relationship) ~"non_hh",
                     #hh_member_relationship %in% c("Nephew", "Not relative","Other relative","Uncle/Aunt") ~ "ext_hh",
                     TRUE ~ "hh"))
@@ -431,35 +405,42 @@ contact_behav %>% filter(var=="where_contact") %>%
 ##Matrix
 One urban and one rural
 ```{r, include=FALSE, warnings=FALSE}
-contact_all <- contact_all %>%
+contact <- contact %>%
                 rename(part_id = rec_id)%>%
                 rename(part_age = age_part)
 
-contact_all <- contact_all %>%
-  mutate(age_cat = as.character(age_cat),
-        weight_cat = case_when(
-          age_cat =="<6mo" ~ "0",
-          age_cat == "6-11mo"~"0",
-          TRUE ~ age_cat
-  ))
-
+contact <-contact%>%mutate(
+          part_age = as.numeric(part_age),
+          weight_cat = case_when(
+                          part_age ==0 ~ "0",
+                          part_age<=4  ~ "1-4y",
+                          part_age<=9  ~ "5-9y",
+                          part_age<=14 ~ "10-14y",
+                          part_age<=19 ~ "15-19y",
+                          part_age<=29 ~ "20-29y",
+                          part_age<=39 ~ "30-39y",
+                          part_age<=59 ~ "40-59y",
+                          part_age<=100 ~ "60+y",
+                          TRUE ~ NA_character_
+          )
+)
 pop_dist <- read.csv("../data/pop_dist_ines_2021.csv") %>%
             pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
             mutate(study_site = case_when(
-                        urb_rur =="urban" ~"Polana Caniço",
-                        urb_rur == "rural"~"Manhiça"
+                        urb_rur =="urban" ~"Urban",
+                        urb_rur == "rural"~"Rural"
             ))
-pop_weight <- contact_all %>%
-                select(part_id, study_site, weight_cat) %>% unique() %>%
+pop_weight <- contact%>%
+                select(part_id, study_site,weight_cat) %>% unique() %>%
                 group_by(study_site, weight_cat) %>%
                 summarise(n=n())
 
 pop_weight <- pop_weight %>% 
-  left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
+  left_join(pop_dist, by = c("part_age_cat"="age_cat","study_site"="study_site")) %>%
   mutate(part_weight = 1/(n/tot_pop))
 
 ##join weights into participant data
-contact_all <- contact_all %>%
+contact <- contact %>%
   left_join(pop_weight %>% select(study_site, weight_cat, part_weight,tot_pop),
                 by = c("study_site"="study_site", "weight_cat"="weight_cat")) %>% 
   rename(population.count = tot_pop)
@@ -468,7 +449,7 @@ contact_all <- contact_all %>%
 ```
 
 ```{r, include=FALSE, warnings=FALSE}
-contact_all <- contact_all %>% 
+contact <- contact %>% 
   mutate(part_age = as.numeric(part_age),
          age_contact = as.numeric(age_contact),
          age_group_contact = as.character(age_group_contact),

@@ -1,0 +1,350 @@
+---
+title: "CL_contact matrix"
+output: html_document
+date: "2022-08-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_libs, include=FALSE, warnings=FALSE}
+library(dplyr)
+library(tidyr)
+library(socialmixr)
+library(ggplot2)
+library(table1)
+library(gtsummary)
+```
+
+## Read in data
+```{r read_data, include=FALSE, warnings=FALSE}
+ind <- readRDS("../data/clean/participant_data_aim1.RDS")
+ind_exit <- readRDS("../data/clean/exit_interview_aim1.RDS")
+contact <- readRDS("../data/clean/contact_data_aim1.RDS")
+#contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
+hh_survey <- readRDS("../data/clean/household_survey_aim1.RDS")
+
+```
+
+Subset to aim 1 only
+```{r subset_aim1, include=FALSE, warnings=FALSE}
+## Subset individual_info to those included in aim1 only and only those who compelted exit interview
+ind <- ind %>% 
+  filter(aim ==1) %>% ## retain 1328 from aim 1
+  filter(rec_id %in% unlist(ind_exit$rec_id)) ## retain 1270, only those with exit survey ie completed survey
+
+## Subset contact to the IDs from aim 1 only
+contact<- contact %>%
+              filter(rec_id %in% unlist(ind$rec_id))
+
+```
+
+Check to see if there are any IDs with no contacts reported
+```{r no_contacts, include=FALSE, warnings=FALSE}
+sum(!ind$rec_id %in% contact$rec_id) # 84
+#sum(!ind$rec_id %in% contact_nonhh$rec_id) # 28
+
+## Figure out which ones
+# missing_hh_nonhh <- ind %>%
+#   filter(!rec_id %in% unlist(contact_hh$rec_id)) %>%
+#   filter(!rec_id %in% unlist(contact_nonhh$rec_id)) %>%
+#   arrange(rec_id)
+
+missing<- ind %>% 
+  filter(!rec_id %in% unlist(contact$rec_id)) %>% 
+  arrange(rec_id)
+
+
+```
+
+
+Remove those with exit interviews but without contact diaries
+```{r, , include=FALSE, warnings=FALSE}
+ind <- ind %>%
+    filter(!rec_id %in% unlist(missing$rec_id)) 
+## Dropped an additional 78 without any diaries 
+```
+
+
+Check if those without household contact but have other contacts live alone
+```{r, , include=FALSE, warnings=FALSE}
+
+live_alone <- hh_survey %>% 
+  filter(rec_id %in% unlist(ind$rec_id)) %>%
+  filter(hh_occupants==1) 
+
+```
+
+```{r, include=FALSE, warnings=FALSE}
+## Note that self refers to HoH not the participant, it looks like the entry for the participant has already been removed from the HH contacts
+
+## Join with participant info to get age of the participant
+contact<- contact %>%
+                left_join(ind%>%select(rec_id, age), by = c("rec_id"="rec_id"))%>%
+                rename(age_part = age) ##rename to fit the socialmixr package convention
+
+## Recategorize location of contact based on socialmixr package convention
+contact <- contact %>%
+              mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
+                     cnt_school = ifelse(location_contact___2==1, 1,0),
+                     cnt_work = ifelse(location_contact___3==1, 1,0),
+                     cnt_otherplace = ifelse(location_contact___1==1 | 
+                                               location_contact___4==1 | 
+                                               location_contact___5==1 | 
+                                               location_contact___6==1 | 
+                                               location_contact___7==1 |
+                                               location_contact___8==1 | 
+                                               location_contact___9==1 |
+                                               location_contact___10==1 | 
+                                               location_contact___11==1,1,0))
+
+##Subset to day 1 only
+contact<-contact%>%filter(study_day==1)
+
+```
+
+## Manually calculating weights based rural/urban age structure from 2021 Moz pop projections
+Since we're interested in matrices weighted to total Moz population, we can get weighted matrices by specifying and country and the year in the survey structure below. 
+NB: I still can't get the manual weighting to work in the function 
+```{r, include=FALSE, warnings=FALSE}
+contact <- contact %>%
+                rename(part_id = rec_id)%>%   ##rename to fit socialmixr package
+                rename(part_age = age_part)
+
+contact <-contact%>%mutate(
+          part_age = as.numeric(part_age),
+          weight_cat = case_when(              ##age categories to join with population weighting
+                          part_age ==0 ~ "0",
+                          part_age<=4  ~ "1-4y",
+                          part_age<=9  ~ "5-9y",
+                          part_age<=14 ~ "10-14y",
+                          part_age<=19 ~ "15-19y",
+                          part_age<=29 ~ "20-29y",
+                          part_age<=39 ~ "30-39y",
+                          part_age<=59 ~ "40-59y",
+                          part_age<=100 ~ "60+y",
+                          TRUE ~ NA_character_
+          )
+)
+pop_dist <- read.csv("../data/pop_dist_ines_2021.csv") %>%
+            pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
+            mutate(study_site = case_when(
+                        urb_rur =="urban" ~"Urban",
+                        urb_rur == "rural"~"Rural"
+            ))
+
+
+
+pop_weight <- contact%>%
+                select(part_id, study_site,weight_cat) %>% unique() %>%
+                group_by(study_site, weight_cat) %>%
+                summarise(n=n())
+urb_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="urban")])
+rur_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="rural")])
+
+pop_weight <- pop_weight %>% 
+  left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site"))%>%
+  left_join(pop_weight%>%group_by(study_site)%>%summarise(tot_site = sum(n)), by = c("study_site"="study_site"))%>%
+  mutate(pop_urb_rur =ifelse(study_site=="Rural",rur_pop,urb_pop),
+           part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
+
+##join weights into participant data
+contact <- contact %>%
+  left_join(pop_weight %>% select(study_site, weight_cat, part_weight),
+                by = c("study_site"="study_site", "weight_cat"="weight_cat"))
+ # rename(population.count = tot_pop)
+
+         
+```
+
+##Create survey structures for input into socialmixr package
+```{r, include=FALSE, warnings=FALSE}
+contact <- contact %>% 
+  mutate(part_age = as.numeric(part_age),
+         contact_age = as.character(contact_age),
+         
+         cnt_age_est_min = case_when( ## If dont have exact contact age, need to specify a minimum and maximum based on the age group range
+           contact_age == "<6mo" ~0,
+           contact_age == "6-11mo"~0,
+           contact_age == "1-4y" ~1,
+           contact_age == "5-9y" ~ 5,
+           contact_age == "10-14y"~10,
+           contact_age == "15-19y"~15,
+           contact_age == "20-29y"~20,
+           contact_age == "30-39y"~30,
+           contact_age == "40-59y"~40,
+           contact_age == "60+y"~60,
+           contact_age== "I don't know" ~ NA_real_,
+           is.na(contact_age) ~ NA_real_
+         ),
+         
+         cnt_age_est_max= case_when(
+           contact_age == "<6mo" ~0,
+           contact_age == "6-11mo"~1,
+           contact_age == "1-4y" ~ 4,
+           contact_age == "5-9y" ~ 9,
+           contact_age == "10-14y"~14,
+           contact_age == "15-19y"~19,
+           contact_age == "20-29y"~29,
+           contact_age == "30-39y"~39,
+           contact_age == "40-59y"~59,
+           contact_age == "60+y"~99,
+           contact_age== "I don't know" ~ NA_real_,
+           is.na(contact_age) ~ NA_real_
+         )
+  ) 
+
+##Create the survey structure for input into socialmixr package
+# One urban and one rural
+cnt_u <- contact %>% filter(study_site == "Urban")
+
+cnt_r <- contact%>% filter(study_site == "Rural")
+
+
+df_r <- survey(
+        participants = cnt_r %>% 
+                        select(part_id, part_age,part_weight) %>% unique()%>%
+                        rename(weights = part_weight)%>%
+                        mutate(country=rep("Mozambique"),
+                               year=rep(2020)),
+        
+        contacts = cnt_r %>%
+                        select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
+                
+)
+
+df_u <- survey(
+        participants = cnt_u %>% 
+                        select(part_id, part_age,part_weight) %>% unique()%>%
+                        rename(weights = part_weight)%>%
+                        mutate(country=rep("Mozambique"),
+                               year=rep(2020)),
+        
+        contacts = cnt_u %>%
+                        select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
+                
+)
+```
+
+
+###Matrices
+```{r}
+## urban
+#Below code returns a list of matrix
+m_u <- contact_matrix(df_u, 
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
+                      symmetric=T,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      #weights= df_r$participants$weights,                            
+                      return.part.weights=T, 
+                      n=1000)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
+
+#Make into long form
+mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c(1,2,3),
+                            age_part = c("[0,17)","[18,50)","50+")),
+                            by="age1")
+
+#Do same for rural
+m_r <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T, 
+                      missing.contact.age="sample",estimated.contact.age = "sample",
+                      return.part.weights = T,n=1000)
+
+
+mr_r <- Reduce("+", lapply(m_r$matrices, function(x) {x$matrix})) / length(m_r$matrices)
+mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c(1,2,3),
+                            age_part = c("[0,17)","[18,50)","50+")),
+                            by="age1")
+
+
+```
+## Matrix Viz
+```{r}
+ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+ theme()
+
+ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+ theme()
+
+
+```
+##Function below helps filter on contact attributes to create attribute-specific matrices
+SUch as by location etc. 
+```{r}
+### Create a contact matrix with filters
+
+## Put filter = TRUE
+## Then put the value to filter by in the various filter variables
+
+cm_filter <- function(
+  df  = df,
+  matrix_output = TRUE,
+  #country = "United States",
+  age_limits =c(0,10,20,30,40,50,60),
+  symmetric =TRUE,
+  filter = FALSE,
+  phys_contact = NULL,
+  home  = NULL,
+  other_house = NULL,
+  work = NULL,
+  school = NULL,
+  gender = NULL,
+  other = NULL,
+  boots = 1
+){
+  
+  filter_text <- list()
+  
+  if(filter){
+    filter_text$phys_contact <- phys_contact
+    filter_text$cnt_home <- home
+    filter_text$cnt_other_house <- other_house
+    filter_text$cnt_work <- work
+    filter_text$cnt_school <- school
+    filter_text$cnt_otherplace <- other
+    filter_text$cnt_gender <- gender
+  }
+  
+  x <- contact_matrix(
+    df, 
+    #countries = country, 
+    age.limits = age_limits, 
+    symmetric = symmetric,
+    filter = filter_text,
+    estimated.contact.age = "sample",
+    n = boots
+  )
+  if(matrix_output){
+    if(boots == 1){
+      return(x$matrix)
+    } else {
+      return(x$matrices)
+    }  
+  } else {
+    
+    return(x)
+  }  
+}
+```
+
+## Code for matrix by location 
+Should be able to pass the same arguments as those in contact_matrix for age bands, sampling, bootstrapping etc. 
+```{r}
+cm_filter(df_u, boots=1)
+cm_filter(df_u, boots=1,symmetric = T, filter=T,work=1)
+cm_filter(df_u, boots=1,symmetric=T, filter=T, school=1)
+cm_filter(df_u, boots=1,symmetric=T, filter=T, home=1)
+cm_filter(df_u, boots=1, symmetric=T, filter=T, other=1)
+
+
+```
+
