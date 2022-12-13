@@ -134,12 +134,16 @@ N_urban <- nrow(participants %>% dplyr::filter(study_site == "Urban"))
 
 ## Summary of participant details
 
-@tbl-participant-summary below presents the characteristics of the participants in the rural and urban site. A total of `r nrow(participants)` individuals participated in the study, with `r N_rural` and `r N_urban` participants recruited from the rural and urban sites, respectively. In some age groups (\<5 yrs and 40-59 yrs) we recruited more than the target. By site, there was no difference in recruitment by age, sex, and school enrollment status.
+The figures below presents a summary the characteristics of the participants in the rural and urban site. A total of `r nrow(participants)` individuals participated in the study, with `r N_rural` and `r N_urban` participants recruited from the rural and urban sites, respectively. In some age groups (\<5 yrs and 40-59 yrs) we recruited more than the target. By site, there was no major difference in number of participants recruited by age, sex, and school enrollment status.
+
+::: callout-note
+Convert table to figures
+:::
 
 ```{r}
 #| label: tbl-participant-summary
 #| tbl-cap: "Participant summary"
-#| include: true
+#| include: false
 #| warning: false
 
 label(participants$study_site) <- "Site"
@@ -155,8 +159,6 @@ label(participants$school_level) <- "Current school level"
 label(participants$occupation) <- "Occupation"
 label(participants$age_symptom) <- "Acute gastroenteritis (diarrhea)"
 label(participants$ari_symptom) <- "Acute respiratory infection"
-
-
 
 table1 <- participants %>%
   # dplyr::filter(aim==1) %>%
@@ -174,63 +176,19 @@ table1 <- participants %>%
 
 # check homemaker, college
 
-table1
+# ## save table as text
+# table1
 ```
 
-## Participation summary
+## Participation summary by site
 
 ```{r}
-#| label: fig-participant-summary
-#| tbl-cap: "Participant summary"
+#| label: fig-participant-summary-agesex
+#| fig-cap: "Participant age and sex distribution"
 #| include: true
 #| warning: false
 
 source("../scripts/baseline_plot_functions.R")
-# =======================
-# function to plot by age
-# CURRENTLY DOES NOT WORK
-# fun_baseline_plot <- function(data){
-#   data %>%
-#     ggplot(aes(x = total, y = participant_age, fill = participant_sex)) +
-#     geom_bar(aes(x = total, y = participant_age, fill = participant_sex), 
-#              position = "fill", col="white", stat="identity") +
-#     theme_classic() +
-#     facet_wrap(~study_site) +
-#     
-#     theme(strip.background = element_blank(),
-#           # strip.text.x = element_blank(), # remove facet titles
-#           panel.spacing = unit(2, "lines")) +  # increase space between facets
-#    
-#     coord_cartesian(xlim = c(0, 1), 
-#                     # ylim = c(0.5, 20.5), 
-#                     expand = F, # removes white spaces at edge of plot
-#                     clip = 'off') + # allows drawing outside of panel
-#  
-#     # move x-axis title to the top and format
-#     scale_x_continuous(position="top",
-#                        labels = function(x) format(x*100, digits=0, nsmall=0),
-#                        breaks = seq(0, 1, 0.2)) + 
-#     theme(axis.line.x = element_line(colour = "black"), 
-#           axis.ticks.x = element_line(colour = "black")) +
-#    
-#     labs(title = "",
-#          x = "Proportion", 
-#          y = "Participant age",
-#          fill = element_blank()) +
-#     
-#     theme(legend.position = "bottom",
-#           legend.title = element_text(size = 10),
-#           legend.text = element_text(size = 8),
-#           legend.justification = "center") +
-#     # change legend order
-# 
-#     theme(plot.title = element_text(size = 20), 
-#           axis.title.x = element_text(size=16, face="bold"),
-#           axis.title.y = element_text(size=16, face="bold"),
-#           axis.text.x = element_text(size = 10, angle=0, hjust = 1),
-#           axis.text.y = element_text(size= 10))
-# }
-# =======================
 
 # Sex by participant_age
 sex_page <- participants %>% 
@@ -242,9 +200,19 @@ sex_page_plt <- fun_sex_plot(sex_page) +
       scale_color_manual(values = c("#E7B800", "#2E9FDF")) +
       geom_vline(xintercept=0.5, linetype="dashed")
 
-ggsave(sex_page_plt, filename = "../output/figs/1a.participant age.pdf",
+ggsave(sex_page_plt, filename = "../output/figs/1a_participant_age.pdf",
        height=6, width=8, dpi=300,
        bg="#FFFFFF")
+
+sex_page_plt
+```
+
+
+```{r}
+#| label: fig-participant-summary-literacy
+#| fig-cap: "Literacy level"
+#| include: true
+#| warning: false
 
 # read_write by age
 literacy_page <- participants %>%
@@ -254,9 +222,19 @@ literacy_page <- participants %>%
 
 literacy_page_plt <- fun_literacy_plot(literacy_page)
 
-# ggsave(sex_page_plt, filename = "../output/figs/1a.participant age.pdf",
-#        height=6, width=8, dpi=300,
-#        bg="#FFFFFF")
+ggsave(literacy_page_plt, filename = "../output/figs/1a_participant_literate.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF")
+
+literacy_page_plt
+```
+
+
+```{r}
+#| label: fig-participant-summary-enrolledsch
+#| fig-cap: "Participant currently enrolled in school"
+#| include: true
+#| warning: false
 
 # enrolled_school by age, "Currently enrolled in school"
 enrolledsch_page <- participants %>%
@@ -266,6 +244,20 @@ enrolledsch_page <- participants %>%
 
 enrolledsch_page_plt <- fun_schenrolled_plot(enrolledsch_page)
 
+ggsave(enrolledsch_page_plt, filename = "../output/figs/1a_participant_enrolledschool.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF")
+
+enrolledsch_page_plt
+```
+
+
+```{r}
+#| label: fig-participant-summary-educationlevel
+#| fig-cap: "Participant age and sex distribution by site"
+#| include: true
+#| warning: false
+
 # highest_educ by age <- "Highest education level attained"
 highesteduc_page <- participants %>%
   group_by(highest_educ, participant_age, study_site) %>% 
@@ -274,6 +266,38 @@ highesteduc_page <- participants %>%
 
 highesteduc_page_plt <- fun_highesteduc_plot(highesteduc_page)
 
+ggsave(highesteduc_page_plt, filename = "../output/figs/1a_participant_educlevel.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF")
+
+highesteduc_page_plt
+```
+
+
+```{r}
+#| label: fig-participant-summary-occupation
+#| fig-cap: "Participant ccupation"
+#| include: true
+#| warning: false
+
+# occupation by age <- "Occupation"
+occupation_page <- participants %>%
+  group_by(occupation, participant_age, study_site) %>%
+  dplyr::summarise(total = n(), .groups = "drop") %>%
+  na.omit()
+
+occupation_page_plt <- fun_occupation_plot(occupation_page)
+
+ggsave(occupation_page_plt, filename = "../output/figs/1a_participant_occupation.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF")
+
+occupation_page_plt
+```
+
+
+```{r}
+#| eval: false
 
 # school_level by age <- "Current school level"
 # schoollevel_page <- participants %>%
@@ -286,19 +310,11 @@ highesteduc_page_plt <- fun_highesteduc_plot(highesteduc_page)
 
 # transport_use by age <- "Transport use last 3 months"
 
-
-# occupation by age <- "Occupation"
-occupation_page <- participants %>%
-  group_by(occupation, participant_age, study_site) %>%
-  dplyr::summarise(total = n(), .groups = "drop") %>%
-  na.omit()
-
-occupation_page_plt <- fun_occupation_plot(occupation_page)
-
-# library(ggpubr)
-# ggarrange(sex_page_plt, literacy_page_plt, enrolledsch_page_plt, 
-#              highesteduc_page_plt, occupation_page_plt, 
-#              ncol=2, nrow=3)
+# library("ggpubr")
+# baseline <- ggarrange(sex_page_plt, literacy_page_plt,enrolledsch_page_plt,
+#                       highesteduc_page_plt, occupation_page_plt,
+#                       ncol=1)
+# baseline
 ```
 
 ## Summary of number of contacts reported
@@ -337,6 +353,8 @@ table2 <- contacts %>%
   modify_header(label = "")
   # modify_spanning_header(c("stat_1", "stat_2", "stat_3") ~ "**Survey round**") 
   # %>% modify_caption("**Table 2: Contact distribution by covariates in Mozambique**")
+
+table2
 ```
 
 @tbl-contact-characteristics shows the characteristics of the number of contacts per site. Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban).
@@ -344,12 +362,8 @@ table2 <- contacts %>%
 The highest number of contacts were reported with children aged 10-14 yrs (26% rural, 21% urban). Overall, more contacts were reported with women (54%) with no difference between sites.
 
 ::: callout-note
-Conduct statistical analysis
+Table available separately
 :::
-
-```{r}
-table2
-```
 
 ## Distribution of number of contacts on both days
 
@@ -372,7 +386,6 @@ df_contact_rural <- df_contact %>%
 # urban contacts
 df_contact_urban <- df_contact %>%
   dplyr::filter(study_site == "Urban")
-
 
 
 # contacts by site
@@ -434,7 +447,9 @@ hist_rural <- contacts_site %>%
             showlegend = FALSE) %>%
   add_annotations(x = mean_contacts_site$mean[1], 
                   y = 80,
-                  text = paste(mean_contacts_site$mean[1], " (95% CI ", ci_contacts_rural$`2.5 %`,"-",ci_contacts_rural$`97.5 %`,")", sep=""), 
+                  text = paste(mean_contacts_site$mean[1], 
+                               " (95% CI ", ci_contacts_rural$`2.5 %`,"-", 
+                               ci_contacts_rural$`97.5 %`,")", sep=""), 
                   showarrow = F, xanchor = "left") %>%
   layout(xaxis = list(title = "Num of contacts")) %>%
   add_histogram(name="Rural")
@@ -450,7 +465,9 @@ hist_urban <- contacts_site %>%
             showlegend = FALSE) %>%
   add_annotations(x = mean_contacts_site$mean[2], 
                   y = 90,
-                  text = paste(mean_contacts_site$mean[2], " (95% CI ", ci_contacts_urban$`2.5 %`,"-",ci_contacts_urban$`97.5 %`,")", sep=""), 
+                  text = paste(mean_contacts_site$mean[2], 
+                               " (95% CI ", ci_contacts_urban$`2.5 %`,"-",
+                               ci_contacts_urban$`97.5 %`,")", sep=""), 
                   showarrow = F, xanchor = "left") %>%
   layout(xaxis = list(title = "Num of contacts")) %>%
   add_histogram(name="Urban")
@@ -488,14 +505,17 @@ df_contact_d2 <- left_join(df_contact_d2, day2_num_contacts, by="rec_id" )
 
 ```
 
-### Rural contacts
-
-@tbl-rural-contact-table shows a the median (IQR) contacts in the rural area on day 1 and day 2 separately.
 
 ```{r}
 #| label: tbl-rural-contact-table
 #| tbl-cap: "Rural contacts"
 #| warning: false
+#| include: false
+
+### Rural contacts
+
+# @tbl-rural-contact-table shows a the median (IQR) contacts in the rural area on day 1 and day 2 separately.
+
 
 # table of contacts by day of study: both days, day 1 and day 2
 list <- list(0)  ## empty list
@@ -588,14 +608,16 @@ table3 <- kable(table3, digits = 0, align = "r") %>%
 table3
 ```
 
-### Urban contacts
-
-@tbl-urban-contact-table shows a summary of the median (IQR) contacts in the urban area on day 1 and day 2 separately.
 
 ```{r}
 #| label: tbl-urban-contact-table
 #| tbl-cap: "Urban contacts"
 #| warning: false
+#| include: false
+
+### Urban contacts
+
+# @tbl-urban-contact-table shows a summary of the median (IQR) contacts in the urban area on day 1 and day 2 separately.
 
 # table of contacts by day of study: both days, day 1 and day 2
 list <- list(0)  ## empty list
@@ -663,7 +685,12 @@ table4
 rm(t0, t1, t2)
 ```
 
-At face value, there is no difference between contacts reported on day 1 compared to day 2. Additional analysis can include: 1. mean number of contacts over both days 2. mean number of contacts of unique contacts only over both days 3. mean number of unique contacts reported on both day 1 and 2
+We observe no difference in the median (IQR) number of contacts reported on day 1 compared to day 2.  
+
+Additional analysis can include: 
+1. mean number of contacts over both days 
+2. mean number of contacts of unique contacts only over both days 
+3. mean number of unique contacts reported on both day 1 and 2
 
 ::: callout-important
 So from here below, I only present summaries of contacts for day 1 only.
@@ -712,6 +739,7 @@ ci_contacts_urban_d1 <- as.data.frame(round(confint(ci_contacts_urban_d1),1))
 # title
 title_rural_d1 <- list(
   text = "Rural",
+  size=14,
   # font = f,
   xref = "paper", yref = "paper",
   yanchor = "bottom", xanchor = "center",
@@ -722,6 +750,7 @@ title_rural_d1 <- list(
 
 title_urban_d1 <- list(
   text = "Urban",
+  size=14,
   # font = f,
   xref = "paper", yref = "paper",
   yanchor = "bottom", xanchor = "center",
@@ -1000,10 +1029,19 @@ subplot(style(fig7_weekday_rural_box, showlegend = F), nrows=2, fig7_weekday_urb
 #| fig-cap: "Distribution of contacts by week of the year"
 #| warning: false
 
+# week numbers for 2021: https://www.epochconverter.com/weeks/2021
+
 # week of the year
 contacts_weekyear <- df_contact_d1 %>%
   dplyr::group_by(rec_id, study_site, participant_age, weekyear) %>%
-  dplyr::summarize(num_contacts = n())
+  dplyr::summarize(num_contacts = n(),
+                   n_participants = length(unique(rec_id)))
+
+# number of unique participants per week
+participants_weekyear <- df_contact_d1 %>%
+  dplyr::group_by(study_site, weekyear) %>%
+  dplyr::summarize(n_participants = length(unique(rec_id)))
+
 
 fig8_weekyear_rural_box <- contacts_weekyear %>%
   dplyr::filter(study_site == "Rural") %>%
@@ -1013,7 +1051,39 @@ fig8_weekyear_rural_box <- contacts_weekyear %>%
                  xaxis = list(title= 'Week of year'),  
                  yaxis = list(title='Number of contacts',
                               range=list(0,40))) %>%
-  plotly::layout(boxmode = "group")
+  plotly::layout(boxmode = "group") %>%
+  
+  # highlight COVID-19 periods: refs
+  # https://allafrica.com/stories/202106281037.html
+  # https://www.science.org/doi/10.1126/science.abq5358
+  plotly::layout(shapes = list(
+    # wave 2, Oct 2020-Feb 2021. restrictions eased in May
+
+    # wave 3, delta, Apr 26 2021 - Aug 2 2021
+    list(type = "rect",
+         fillcolor = "#bdbdbd", line=list(color="#f0f0f0"), opacity=0.3,
+         x0="5", x1="18", xref="x",
+         y0=0, y1=40, yref="y"),
+    
+    # wave 4. omicron, Oct 2021-Jan 2022
+    list(type = "rect",
+         fillcolor = "#bdbdbd", line=list(color="#f0f0f0"), opacity=0.3,
+         x0="29", x1="2022-2", xref="x",
+         y0=0, y1=40, yref="y")
+    )) %>%
+  add_annotations(text = "Wave 3, Delta",
+                  x=0.2, y=0.85,
+                  size = 12,
+                  xref = "paper", yref = "paper",  
+                  xanchor = "center", yanchor = "bottom",  
+                  showarrow = FALSE) %>%
+    add_annotations(text = "Wave 4, Omicron",
+                    size = 12,
+                    x=0.66, y=0.85,
+                    xref = "paper", yref = "paper",  
+                    xanchor = "center", yanchor = "bottom",  
+                    showarrow = FALSE)
+# fig8_weekyear_rural_box
 
 fig8_weekyear_urban_box <- contacts_weekyear %>%
   dplyr::filter(study_site == "Urban") %>%
@@ -1023,7 +1093,47 @@ fig8_weekyear_urban_box <- contacts_weekyear %>%
                  xaxis = list(title= 'Week of year'),  
                  yaxis = list(title='Number of contacts',
                               range=list(0,40))) %>%
-  plotly::layout(boxmode = "group")
+  plotly::layout(boxmode = "group")  %>%
+  
+  # highlight COVID-19 periods: refs
+  # https://allafrica.com/stories/202106281037.html
+  # https://www.science.org/doi/10.1126/science.abq5358
+  plotly::layout(shapes = list(
+    # wave 2, Oct 2020-Feb 2021. restrictions eased in May
+
+    # wave 3, delta, Apr 26 2021 - Aug 2 2021
+    list(type = "rect",
+         fillcolor = "#bdbdbd", line=list(color="#f0f0f0"), opacity=0.3,
+         x0="5", x1="18", xref="x",
+         y0=0, y1=40, yref="y"),
+    
+    # wave 4. omicron, Oct 2021-Jan 2022
+    list(type = "rect",
+         fillcolor = "#bdbdbd", line=list(color="#f0f0f0"), opacity=0.3,
+         x0="29", x1="2022-2", xref="x",
+         y0=0, y1=40, yref="y")
+    )) %>%
+  add_annotations(text = "Wave 3, Delta",
+                  x=0.2, y=0.85,
+                  size = 12,
+                  xref = "paper", yref = "paper",  
+                  xanchor = "center", yanchor = "bottom",  
+                  showarrow = FALSE) %>%
+    add_annotations(text = "Wave 4, Omicron",
+                    size = 12,
+                    x=0.66, y=0.85,
+                    xref = "paper", yref = "paper",  
+                    xanchor = "center", yanchor = "bottom",  
+                    showarrow = FALSE) 
+
+# participants_weekyear %>%
+#   dplyr::filter(study_site == "Urban") %>%
+#   plotly::plot_ly(x=~weekyear,  y=~n_participants,  
+#                       type = 'scatter', mode="line") %>%
+#   plotly::layout(annotations = title_urban_d1,
+#                  xaxis = list(title= 'Week of year'),  
+#                  yaxis = list(title='Number of participants',
+#                               range=list(0,50)))
 
 subplot(style(fig8_weekyear_rural_box, showlegend = F), nrows=2, fig8_weekyear_urban_box, 
         shareX = TRUE, margin = 0.05)
@@ -1201,23 +1311,15 @@ fun_matrix1_plot <- function(m1data, title){
 ```
 
 ```{r}
-#| label: fig-contact-matrix-rural
+#| label: fig-contact-matrix
 #| fig-cap: ""
 
 rural_matrix <- fun_matrix1_plot(m1_rural, "Rural site")
 # ggplotly(rural_matrix, tooltip = "text")
-```
-
-```{r}
-#| label: fig-contact-matrix-urban
-#| fig-cap: ""
-
+ 
 urban_matrix <- fun_matrix1_plot(m1_urban, "Urban site")
 # ggplotly(urban_matrix, tooltip = "text")
-```
 
-```{r}
-#| label: crude-site-matrix
 crude_matrix <- subplot(style(rural_matrix, showlegend = F), urban_matrix, shareY = TRUE) %>%
   layout(title = 'Contact matrices by site',
          annotations = list(
@@ -1239,9 +1341,13 @@ crude_matrix <- subplot(style(rural_matrix, showlegend = F), urban_matrix, share
 crude_matrix
 ```
 
-### Weighted contact matrix
+
 
 ```{r}
+
+### Weighted contact matrix
+
+
 # col_names <- c("60+y","40-59y","30-39y","20-29y","15-19y","10-14y","5-9y","1-4y","6-11mo","<6mo") 
 # row_names <- c("60+y","40-59y","30-39y","20-29y","15-19y","10-14y","5-9y","1-4y","6-11mo","<6mo")
 # 
@@ -1337,33 +1443,6 @@ contact_behav <- df_contact_d1 %>%
                                    "<5 mins", "5-15mins", "16-30mins", 
                                    "31 mins-1hr ", "1-4hrs", ">4hrs")))
                                          
-
-# contact_behav_avg <- df_contact_d1 %>% 
-#   dplyr::select(study_site, touch_contact, where_contact, contact_mask, duration_contact) %>%
-#   mutate(where_contact = as.character(where_contact),
-#          touch_contact = as.character(touch_contact),
-#          contact_mask = as.character(contact_mask),
-#          duration_contact = as.character(duration_contact)) %>%
-#   pivot_longer(cols = touch_contact:duration_contact, names_to="var", values_to="value") %>%
-#   dplyr::group_by(study_site, var, value) %>%
-#   dplyr::summarize(n=n()) %>%
-#   na.omit() %>%
-#   left_join(df_contact_d1 %>% 
-#               dplyr::group_by(study_site) %>%
-#               dplyr::summarize(tot_contacts=n()), by = c("study_site" = "study_site")) %>%
-#   mutate(prop = n/tot_contacts,
-#          participant_age = "All")
-# 
-# dat2 <- contact_behav %>%
-#   mutate(var = as.character(participant_age)) %>%
-#   bind_rows(contact_behav_avg) %>%
-#   mutate(participant_age = factor(participant_age, levels = c("All", "<6mo", "6-11mo", 
-#                                                               "1-4y", "5-9y", "10-14y", 
-#                                                               "15-19y", "20-29y", 
-#                                                               "30-39y", "40-59y", " 60+y")))
-
-
-
 # function to plot behavior of contacts by age
 
 unhighlighed_col_darker <- 'grey60'
@@ -1481,7 +1560,6 @@ fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
 fig4_location 
 ```
 
-### Bootstrapped mean (95% CI) and median (IQR) contacts
 
 ```{r}
 #| label: bootstrap-averages
@@ -1489,6 +1567,8 @@ fig4_location
 #| warning: false
 #| include: false
 #| eval: false
+
+### Bootstrapped mean (95% CI) and median (IQR) contacts
 
 set.seed(30322) # rsph postcode
 library(boot) # https://cran.r-project.org/doc/Rnews/Rnews_2002-3.pdf
@@ -1690,31 +1770,34 @@ for(i in gee_psex){
 #   mean.i$mean_contact <- as.character(paste(mean.i$t0, " (",lower.ci, "-", upper.ci,")", sep=""))
 #   print("-----------------------------------------------------------")
 # }
+
+
+# #### Overall mean contact rate by site
+
+## | Variable | Mean (95% CI)    |
+## |----------|------------------|
+## | Rural    | 13.0 (12.8-13.2) |
+## | Urban    | 9.5 (9.4-9.7)    |
+## 
+## |     | Variable | Rural           | Urban          |
+## |-----|----------|-----------------|----------------|
+## | Sex |          |                 |                |
+## |     | Female   | 9.0 (8.4-9.7)   | 6.8 (6.3-7.2)  |
+## |     | Male     | 9.2 (8.6-9.8)   | 7.4 (7-7.9)    |
+## | Age |          |                 |                |
+## |     | 0-6mo    | 4.8 (3.8-5.9)   | 5.2 (4.4-6.3)  |
+## |     | 6-11mo   | 7.0 (6-8.1)     | 5.8 (4.8-6.9)  |
+## |     | 1-4y     | 6.1 (5.3-7.1)   | 5.7 (4.7-7)    |
+## |     | 5-9y     | 10.1 (8.9-11.9) | 7.5 (6.5-8.7)  |
+## |     | 10-14y   | 11.2 (10-12.8)  | 9.4 (8.5-10.5) |
+## |     | 15-19y   | 13 (11.7-14.5)  | 9.9 (8.8-11.2) |
+## |     | 20-29y   | 11.1 (9.7-12.8) | 7.2 (6.4-8)    |
+## |     | 30-39y   | 9.5 (8.5-11.1)  | 7.5 (6.7-8.4)  |
+## |     | 40-59y   | 11.2 (9.9-12.8) | 7.0 (6.4-7.8)  |
+## |     | 60+      | 7.4 (6.3-8.9)   | 5.8 (5.1-6.7)  |
+
 ```
 
-#### Overall mean contact rate by site
-
-| Variable | Mean (95% CI)    |
-|----------|------------------|
-| Rural    | 13.0 (12.8-13.2) |
-| Urban    | 9.5 (9.4-9.7)    |
-
-|     | Variable | Rural           | Urban          |
-|-----|----------|-----------------|----------------|
-| Sex |          |                 |                |
-|     | Female   | 9.0 (8.4-9.7)   | 6.8 (6.3-7.2)  |
-|     | Male     | 9.2 (8.6-9.8)   | 7.4 (7-7.9)    |
-| Age |          |                 |                |
-|     | 0-6mo    | 4.8 (3.8-5.9)   | 5.2 (4.4-6.3)  |
-|     | 6-11mo   | 7.0 (6-8.1)     | 5.8 (4.8-6.9)  |
-|     | 1-4y     | 6.1 (5.3-7.1)   | 5.7 (4.7-7)    |
-|     | 5-9y     | 10.1 (8.9-11.9) | 7.5 (6.5-8.7)  |
-|     | 10-14y   | 11.2 (10-12.8)  | 9.4 (8.5-10.5) |
-|     | 15-19y   | 13 (11.7-14.5)  | 9.9 (8.8-11.2) |
-|     | 20-29y   | 11.1 (9.7-12.8) | 7.2 (6.4-8)    |
-|     | 30-39y   | 9.5 (8.5-11.1)  | 7.5 (6.7-8.4)  |
-|     | 40-59y   | 11.2 (9.9-12.8) | 7.0 (6.4-7.8)  |
-|     | 60+      | 7.4 (6.3-8.9)   | 5.8 (5.1-6.7)  |
 
 \
 \
