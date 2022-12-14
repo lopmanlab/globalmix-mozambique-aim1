@@ -650,7 +650,7 @@ length(unique(data$rec_id))
 
 ```{r participant-exit}
 # merge participant and exit data by rec_id and study_site
-participant_vars <- c("rec_id", "aim", "study_site", "date_enrolled", "participant_age", 
+participant_vars <- c("rec_id", "aim", "study_site", "date_enrolled","age", "participant_age", 
                       "participant_sex", "enrolled_school", "school_level", "read_write",
                       "highest_educ", "occupation", "transport_use", 
                       "hh_resp_exposure", "child", "child_breastfeed", 
