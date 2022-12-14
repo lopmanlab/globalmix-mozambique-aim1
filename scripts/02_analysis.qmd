@@ -196,17 +196,49 @@ sex_page <- participants %>%
   dplyr::summarise(total = n(), .groups = "drop") %>%
   na.omit()
 
-sex_page_plt <- fun_sex_plot(sex_page) +
-      scale_color_manual(values = c("#E7B800", "#2E9FDF")) +
-      geom_vline(xintercept=0.5, linetype="dashed")
+# sex_page_plt <- fun_sex_plot(sex_page) +
+#       scale_color_manual(values = c("#E7B800", "#2E9FDF")) +
+#       geom_vline(xintercept=0.5, linetype="dashed")
+library(grid)
 
-ggsave(sex_page_plt, filename = "../output/figs/1a_participant_age.pdf",
+sex_page_plt2 <- sex_page %>%
+  ggplot(., aes(x=participant_age, y=total, fill=participant_sex)) +
+  geom_bar(aes(x = participant_age, y = total, fill = participant_sex), 
+           position = "stack", col="white", stat="identity") +
+  geom_hline(yintercept=63, linetype="dashed") +
+  annotation_custom(grobTree(textGrob("Target: 63", x=0.5, y=0.5, hjust=-0.2,
+                                      gp=gpar(fontsize=8)))) +
+  theme_classic() +
+  facet_wrap(~study_site) +
+  coord_flip() +
+  
+  theme(strip.background = element_blank(),
+        # strip.text.x = element_blank(), # remove facet titles
+        panel.spacing = unit(2, "lines")) +  # increase space between facets
+  labs(title = "",
+       x = "Participant age", 
+       y = "N",
+       fill = element_blank()) +
+  
+  theme(legend.position = "bottom",
+        # legend.title = element_text(size = 8),
+        legend.text = element_text(size = 10),
+        legend.justification = "center") +
+  # change legend order
+  
+  theme(plot.title = element_text(size = 14), 
+        axis.title.x = element_text(size=12, face="bold"),
+        axis.title.y = element_text(size=12, face="bold"),
+        axis.text.x = element_text(size = 8, angle=0, hjust = 1),
+        axis.text.y = element_text(size= 8))
+
+ggsave(sex_page_plt2, filename = "../output/figs/1a_participant_age.pdf",
        height=6, width=8, dpi=300,
        bg="#FFFFFF")
 
-sex_page_plt
-```
+sex_page_plt2
 
+```
 
 ```{r}
 #| label: fig-participant-summary-literacy
@@ -229,7 +261,6 @@ ggsave(literacy_page_plt, filename = "../output/figs/1a_participant_literate.pdf
 literacy_page_plt
 ```
 
-
 ```{r}
 #| label: fig-participant-summary-enrolledsch
 #| fig-cap: "Participant currently enrolled in school"
@@ -251,11 +282,10 @@ ggsave(enrolledsch_page_plt, filename = "../output/figs/1a_participant_enrolleds
 enrolledsch_page_plt
 ```
 
-
 ```{r}
 #| label: fig-participant-summary-educationlevel
-#| fig-cap: "Participant age and sex distribution by site"
-#| include: true
+#| fig-cap: "Participant education level"
+#| include: false
 #| warning: false
 
 # highest_educ by age <- "Highest education level attained"
@@ -272,7 +302,6 @@ ggsave(highesteduc_page_plt, filename = "../output/figs/1a_participant_educlevel
 
 highesteduc_page_plt
 ```
-
 
 ```{r}
 #| label: fig-participant-summary-occupation
@@ -294,7 +323,6 @@ ggsave(occupation_page_plt, filename = "../output/figs/1a_participant_occupation
 
 occupation_page_plt
 ```
-
 
 ```{r}
 #| eval: false
@@ -357,7 +385,7 @@ table2 <- contacts %>%
 table2
 ```
 
-@tbl-contact-characteristics shows the characteristics of the number of contacts per site. Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban).
+Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban).
 
 The highest number of contacts were reported with children aged 10-14 yrs (26% rural, 21% urban). Overall, more contacts were reported with women (54%) with no difference between sites.
 
@@ -505,7 +533,6 @@ df_contact_d2 <- left_join(df_contact_d2, day2_num_contacts, by="rec_id" )
 
 ```
 
-
 ```{r}
 #| label: tbl-rural-contact-table
 #| tbl-cap: "Rural contacts"
@@ -608,7 +635,6 @@ table3 <- kable(table3, digits = 0, align = "r") %>%
 table3
 ```
 
-
 ```{r}
 #| label: tbl-urban-contact-table
 #| tbl-cap: "Urban contacts"
@@ -685,12 +711,9 @@ table4
 rm(t0, t1, t2)
 ```
 
-We observe no difference in the median (IQR) number of contacts reported on day 1 compared to day 2.  
+We observe no difference in the median (IQR) number of contacts reported on day 1 compared to day 2.
 
-Additional analysis can include: 
-1. mean number of contacts over both days 
-2. mean number of contacts of unique contacts only over both days 
-3. mean number of unique contacts reported on both day 1 and 2
+Additional analysis can include: 1. mean number of contacts over both days 2. mean number of contacts of unique contacts only over both days 3. mean number of unique contacts reported on both day 1 and 2
 
 ::: callout-important
 So from here below, I only present summaries of contacts for day 1 only.
@@ -862,7 +885,6 @@ subplot(style(fig3_sex_rural_box, showlegend = F), nrows=2, fig3_sex_urban_box,
         shareX = TRUE, margin=0.05)
 ```
 
-
 #### by household membership
 
 ```{r}
@@ -986,6 +1008,7 @@ subplot(style(fig6_dayweek_rural_box, showlegend = F), nrows=2, fig6_dayweek_urb
 ```
 
 #### by weekday/ weekend
+
 ```{r}
 #| label: fig-contact-boxplot-weekday
 #| fig-cap: "Distribution of contacts by weekday/weekend"
@@ -1178,7 +1201,6 @@ subplot(style(fig8_ari_rural_box, showlegend = F), nrows=2, fig8_ari_urban_box,
         shareX = TRUE, margin=0.05)
 ```
 
-
 #### by AGE infection status
 
 ```{r}
@@ -1217,7 +1239,6 @@ subplot(style(fig8_age_rural_box, showlegend = F), nrows=2, fig8_age_urban_box, 
 ```
 
 #### by employment
-
 
 ### Unweighted non-symmetrical contact matrices
 
@@ -1340,8 +1361,6 @@ crude_matrix <- subplot(style(rural_matrix, showlegend = F), urban_matrix, share
 
 crude_matrix
 ```
-
-
 
 ```{r}
 
@@ -1559,7 +1578,6 @@ fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
        x = "% of contacts") 
 fig4_location 
 ```
-
 
 ```{r}
 #| label: bootstrap-averages
@@ -1797,7 +1815,6 @@ for(i in gee_psex){
 ## |     | 60+      | 7.4 (6.3-8.9)   | 5.8 (5.1-6.7)  |
 
 ```
-
 
 \
 \
