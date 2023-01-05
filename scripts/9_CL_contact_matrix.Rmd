@@ -128,8 +128,8 @@ diariest1 <- ind %>%
                     enrolled_school == "No"~"N",
                     TRUE ~ NA_character_)) %>%
   
-  select(sex, age_cat,  read_write, enrolled_school, 
-         school_level, highest_educ, study_site, occupation, transport_use) %>% # day_of_week, year,
+  select(participant_sex, participant_age,  read_write, enrolled_school, 
+         school_level, highest_education, study_site, occupation, transport_use) %>% # day_of_week, year,
   tbl_summary(by=study_site, 
               percent="column",
               digits = all_categorical() ~ 0) %>%
@@ -151,12 +151,12 @@ diariest1
 ## Not readily detectable
 
 ## Looks like some issues with this where surveydate not matching exactly with Day 1 or2
-first_survey_date <- contact_all %>%
-                    select(rec_id, survey_date)%>%
-                    arrange(rec_id, survey_date) %>%
-                    group_by(rec_id) %>%
-                    slice(n=1)%>%
-                    rename(dt_diaryd1 = survey_date) %>%
+first_survey_date <- contact %>%
+  select(rec_id, survey_date)%>%
+  arrange(rec_id, survey_date) %>%
+  group_by(rec_id) %>%
+  slice(n=1)%>%
+  rename(dt_diaryd1 = survey_date) %>%
   mutate(pand_period = case_when(dt_diaryd1 <= as.Date("2021-6-1") ~ "lull1",
                                  dt_diaryd1 <= as.Date("2021-7-31") ~ "inc_delta",
                                  dt_diaryd1 <= as.Date("2021-9-28") ~ "dec_delta",
@@ -193,51 +193,52 @@ first_survey_date <- contact_all %>%
 
 
 ```{r}
-contact_behav <- contact_all %>% select(study_site, age_cat, touch_contact, where_contact, contact_mask, duration_contact)%>%
+contact_behav <- contact %>% select(study_site, contact_age, touch_contact, where_contact, contact_mask, duration_contact)%>%
               mutate(where_contact = as.character(where_contact),
                      touch_contact = as.character(touch_contact),
                      contact_mask = as.character(contact_mask),
                      duration_contact = as.character(duration_contact))%>%
               pivot_longer(cols = touch_contact:duration_contact, names_to="var", values_to="value") %>%
-              group_by(study_site, age_cat, var, value) %>%
+              group_by(study_site, contact_age, var, value) %>%
               summarise(n=n()) %>% 
-              left_join(contact_all %>% 
-                          group_by(age_cat, study_site) %>%
-                          summarise(tot_contacts=n()), by = c("age_cat"="age_cat", "study_site" = "study_site")) %>%
+              left_join(contact %>% 
+                          group_by(contact_age, study_site) %>%
+                          summarise(tot_contacts=n()), by = c("contact_age"="contact_age", "study_site" = "study_site")) %>%
               mutate(prop = n/tot_contacts)
 
 contact_behav %>% filter(var=="contact_mask") %>% 
-  ggplot(x=age_cat, y =prop, fill = value) +
-  geom_col(aes(x=age_cat, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
+  ggplot(x=contact_age, y =prop, fill = value) +
+  geom_col(aes(x=contact_age, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
   theme_bw()+theme(axis.text.x = element_text(angle = 45, hjust=1))+
   ylab("Prop contacts")
        
 contact_behav %>% filter(var=="duration_contact") %>% 
-  ggplot(x=age_cat, y =prop, fill = value) +
-  geom_col(aes(x=age_cat, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
+  ggplot(x=contact_age, y =prop, fill = value) +
+  geom_col(aes(x=contact_age, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
   theme_bw()+theme(axis.text.x = element_text(angle = 45, hjust=1))+
   ylab("Prop contacts")
 
 contact_behav %>% filter(var=="touch_contact") %>% 
-  ggplot(x=age_cat, y =prop, fill = value) +
-  geom_col(aes(x=age_cat, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
+  ggplot(x=contact_age, y =prop, fill = value) +
+  geom_col(aes(x=contact_age, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
   theme_bw()+theme(axis.text.x = element_text(angle = 45, hjust=1))+
   ylab("Prop contacts")
 
 contact_behav %>% filter(var=="where_contact") %>% 
-  ggplot(x=age_cat, y =prop, fill = value) +
-  geom_col(aes(x=age_cat, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
+  ggplot(x=contact_age, y =prop, fill = value) +
+  geom_col(aes(x=contact_age, y =prop, fill = value), position = "fill") + facet_wrap(~study_site)+
   theme_bw()+theme(axis.text.x = element_text(angle = 45, hjust=1))+
   ylab("Prop contacts")
 ```
+
 ```{r}
 ## work with Day 1 contacts only
-contact_all <- contact_all %>% 
-              left_join(first_survey_date)%>%
-              filter(Day1or2 ==1) 
+contact_all <- contact %>% 
+              left_join(first_survey_date, by="rec_id") %>%
+              filter(study_day ==1) 
   
 contact_all_summary <- contact_all %>%
-                        filter(Day1or2 ==1) %>%
+                        filter(study_day ==1) %>%
                         group_by(rec_id,study_site,age_part, pand_period, pand_period_simp, pand_period_simp1)%>%
                         summarise(num_contact = n()) %>%
                         mutate(pand_period = factor(pand_period, 
@@ -245,8 +246,7 @@ contact_all_summary <- contact_all %>%
                         
 
 ggplot(contact_all_summary, aes(x =pand_period, y = num_contact, fill = study_site)) +
-
-  geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
+geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
   theme_bw() +
   #geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
   scale_y_continuous(limits = c(0, 40)) +
@@ -263,7 +263,6 @@ ggplot(contact_all_summary, aes(x =pand_period, y = num_contact, fill = study_si
         axis.text.y = element_text(size= 16))
 
 ggplot(contact_all_summary, aes(x =pand_period_simp, y = num_contact, fill = study_site)) +
-
   geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
   theme_bw() +
   #geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
@@ -281,7 +280,6 @@ ggplot(contact_all_summary, aes(x =pand_period_simp, y = num_contact, fill = stu
         axis.text.y = element_text(size= 16))
 
 ggplot(contact_all_summary, aes(x =pand_period_simp1, y = num_contact, fill = study_site))+
-
   geom_boxplot(width = .50, position = position_dodge(0.6), outlier.size = 0.5) + #outlier.shape = NA,
   theme_bw() +
   #geom_hline(yintercept = all_median_rural, linetype = "dashed", color = "red") +
@@ -436,7 +434,7 @@ pop_weight <- contact%>%
                 summarise(n=n())
 
 pop_weight <- pop_weight %>% 
-  left_join(pop_dist, by = c("part_age_cat"="age_cat","study_site"="study_site")) %>%
+  left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
   mutate(part_weight = 1/(n/tot_pop))
 
 ##join weights into participant data
@@ -451,7 +449,7 @@ contact <- contact %>%
 ```{r, include=FALSE, warnings=FALSE}
 contact <- contact %>% 
   mutate(part_age = as.numeric(part_age),
-         age_contact = as.numeric(age_contact),
+         age_contact = as.numeric(contact_age),
          age_group_contact = as.character(age_group_contact),
          
          cnt_age_est_min = age_contact,
@@ -491,32 +489,40 @@ contact <- contact %>%
   ) 
 
 
-cnt_u <- contact_all %>% filter(
+cnt_u <- contact %>% filter(
                   study_site == "Polana Caniço"
 )
 
-cnt_r <- contact_all %>% filter(
+cnt_r <- contact %>% filter(
                   study_site == "Manhiça"
 )
 
 df_u <- survey(
-        participants = cnt_u %>% 
-                        select(part_id, part_age,part_weight,population.count) %>% unique()%>%
-                        rename(weights = part_weight),
-        
-        contacts = cnt_u %>%
-                        select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
-                
-)
-
+  participants = cnt_u %>% 
+    select(part_id, part_age, part_weight,population.count) %>% unique()%>%
+    rename(weights = part_weight) %>%
+    mutate(country=rep("Mozambique"),
+           year=rep(2020)),
+  
+  contacts = cnt_u %>%
+    select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace) %>%
+    mutate(country=rep("Mozambique"),
+           year=rep(2020))
+           
+    )
+  
 df_r <- survey(
-        participants = cnt_r %>% 
-                        select(part_id, part_age,part_weight,population.count) %>% unique()%>%
-                        rename(weights = part_weight),
-        
-        contacts = cnt_r %>%
-                        select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
-                
+  participants = cnt_r %>% 
+    select(part_id, part_age, part_weight,population.count) %>% unique()%>%
+    rename(weights = part_weight) %>%
+    mutate(country=rep("Mozambique"),
+           year=rep(2020)),
+  
+  contacts = cnt_r %>%
+    select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace) %>%
+    mutate(country=rep("Mozambique"),
+           year=rep(2020))
+  
 )
 ```
 
@@ -525,7 +531,7 @@ df_r <- survey(
 ## urban
 m_u <- contact_matrix(df_u, age.limits = c(0,18,50,99), symmetric=T, 
                       missing.contact.age="sample", estimated.contact.age = "sample",
-                     weights= df_u$participants$weights, n=1000)
+                      weights= df_u$participants$weights, n=1000)
 
 
 mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
