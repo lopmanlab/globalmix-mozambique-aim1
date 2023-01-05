@@ -188,7 +188,7 @@ table1 <- participants %>%
 #| include: true
 #| warning: false
 
-source("../scripts/baseline_plot_functions.R")
+source("../scripts/00_baseline_plot_functions.R")
 
 # Sex by participant_age
 sex_page <- participants %>% 
