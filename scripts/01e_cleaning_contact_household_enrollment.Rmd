@@ -1,0 +1,385 @@
+---
+title: "Global Mix Mozambique cleaning"
+author: "Holin Chen"
+date: "9/30/2021"
+output: html_document
+---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, comment = NA, error= FALSE, cache = F}
+rm(list=ls())
+library(knitr)
+opts_chunk$set(comment = NA, 
+               echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE)
+```
+
+
+```{r imports, echo=FALSE, message = FALSE}
+# Load packages
+source("../scripts/00_load_libraries.R")
+library(stringr)
+
+# load data
+data = rio::import("../raw/all_data_09242021.csv")
+
+cont_d1_hh_1 <- data %>% dplyr::filter(redcap_event_name == "day_1_diary_arm_1") %>% dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance","redcap_repeat_instrument","contact_id_d1_hh_1","touch_contact_d1_hh_1","where_contact_d1_hh_1","location_contact_d1_hh_1___1","location_contact_d1_hh_1___2","location_contact_d1_hh_1___3","location_contact_d1_hh_1___4","location_contact_d1_hh_1___5","location_contact_d1_hh_1___6","location_contact_d1_hh_1___7","location_contact_d1_hh_1___8","location_contact_d1_hh_1___9","location_contact_d1_hh_1___10","location_contact_d1_hh_1___11","location_contact_other_d1_1","contact_mask_d1_hh_1","duration_contact_d1_hh_1","frequency_contact_d1_hh_1","known_contact_d1_hh_1") %>%
+    dplyr::filter(redcap_repeat_instrument == "")
+```
+
+```{r}
+for (i in 1:30) {
+  nam <- paste("c", i, sep = ".")
+  assign(nam, data %>%
+           dplyr::filter(redcap_event_name == "day_1_diary_arm_1") %>% 
+           dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance","redcap_repeat_instrument", ends_with(paste0("_d1_hh_",i)), starts_with(paste0("location_contact_d1_hh_",i, "___")), paste0("location_contact_other_d1_", i), "contact_d1_hh_sum"))%>%
+    dplyr::filter(redcap_repeat_instrument == "") %>%
+    drop_na(paste0("contact_id_d1_hh_",i))
+}
+
+c.1 <- c.1[,1:26]
+c.2 <- c.2[,1:26]
+c.3 <- c.3[,1:26]
+
+names(c.1) <- str_remove(names(c.1), "_1") 
+names(c.2) <- str_remove(names(c.2), "_2") 
+names(c.3) <- str_remove(names(c.3), "_3") 
+names(c.4) <- str_remove(names(c.4), "_4") 
+names(c.5) <- str_remove(names(c.5), "_5") 
+names(c.6) <- str_remove(names(c.6), "_6") 
+names(c.7) <- str_remove(names(c.7), "_7") 
+names(c.8) <- str_remove(names(c.8), "_8") 
+names(c.9) <- str_remove(names(c.9), "_9") 
+names(c.10) <- str_remove(names(c.10), "_10") 
+names(c.11) <- str_remove(names(c.11), "_11") 
+names(c.12) <- str_remove(names(c.12), "_12") 
+names(c.13) <- str_remove(names(c.13), "_13") 
+names(c.14) <- str_remove(names(c.14), "_14") 
+names(c.15) <- str_remove(names(c.15), "_15") 
+names(c.16) <- str_remove(names(c.16), "_16") 
+names(c.17) <- str_remove(names(c.17), "_17") 
+names(c.18) <- str_remove(names(c.18), "_18") 
+names(c.19) <- str_remove(names(c.19), "_19") 
+names(c.20) <- str_remove(names(c.20), "_20") 
+names(c.21) <- str_remove(names(c.21), "_21") 
+names(c.22) <- str_remove(names(c.22), "_22") 
+names(c.23) <- str_remove(names(c.23), "_23") 
+names(c.24) <- str_remove(names(c.24), "_24") 
+names(c.25) <- str_remove(names(c.25), "_25")
+names(c.26) <- str_remove(names(c.26), "_26") 
+names(c.27) <- str_remove(names(c.27), "_27") 
+names(c.28) <- str_remove(names(c.28), "_28") 
+names(c.29) <- str_remove(names(c.29), "_29") 
+names(c.30) <- str_remove(names(c.30), "_30") 
+
+cont_d1_hh <- rbind(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
+   c.15,c.16,c.17,c.18,c.19,c.20,c.21,c.22,c.23,c.24,c.25,c.26,
+   c.27,c.28,c.29,c.30)
+cont_d1_hh <- cont_d1_hh[which(!is.na(cont_d1_hh$contact_id_d1_hh)),]
+
+```
+
+```{r}
+for (i in 1:30) {
+  nam <- paste("c", i, sep = ".")
+  assign(nam, data %>%
+           dplyr::filter(redcap_event_name == "day_2_diary_arm_1") %>% 
+           dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance","redcap_repeat_instrument", ends_with(paste0("_d2_hh_",i)), starts_with(paste0("location_contact_d2_hh_",i, "___")), paste0("location_contact_other_d2_", i)))%>%
+    dplyr::filter(redcap_repeat_instrument == "") %>%
+    drop_na(paste0("contact_id_d2_hh_",i))
+}
+
+
+names(c.1) <- str_remove(names(c.1), "_1") 
+names(c.2) <- str_remove(names(c.2), "_2") 
+names(c.3) <- str_remove(names(c.3), "_3") 
+names(c.4) <- str_remove(names(c.4), "_4") 
+names(c.5) <- str_remove(names(c.5), "_5") 
+names(c.6) <- str_remove(names(c.6), "_6") 
+names(c.7) <- str_remove(names(c.7), "_7") 
+names(c.8) <- str_remove(names(c.8), "_8") 
+names(c.9) <- str_remove(names(c.9), "_9") 
+names(c.10) <- str_remove(names(c.10), "_10") 
+names(c.11) <- str_remove(names(c.11), "_11") 
+names(c.12) <- str_remove(names(c.12), "_12") 
+names(c.13) <- str_remove(names(c.13), "_13") 
+names(c.14) <- str_remove(names(c.14), "_14") 
+names(c.15) <- str_remove(names(c.15), "_15") 
+names(c.16) <- str_remove(names(c.16), "_16") 
+names(c.17) <- str_remove(names(c.17), "_17") 
+names(c.18) <- str_remove(names(c.18), "_18") 
+names(c.19) <- str_remove(names(c.19), "_19") 
+names(c.20) <- str_remove(names(c.20), "_20") 
+names(c.21) <- str_remove(names(c.21), "_21") 
+names(c.22) <- str_remove(names(c.22), "_22") 
+names(c.23) <- str_remove(names(c.23), "_23") 
+names(c.24) <- str_remove(names(c.24), "_24") 
+names(c.25) <- str_remove(names(c.25), "_25")
+names(c.26) <- str_remove(names(c.26), "_26") 
+names(c.27) <- str_remove(names(c.27), "_27") 
+names(c.28) <- str_remove(names(c.28), "_28") 
+names(c.29) <- str_remove(names(c.29), "_29") 
+names(c.30) <- str_remove(names(c.30), "_30") 
+
+cont_d2_hh<- rbind(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
+   c.15,c.16,c.17,c.18,c.19,c.20,c.21,c.22,c.23,c.24,c.25,c.26,
+   c.27,c.28,c.29,c.30)
+cont_d2_hh <- cont_d2_hh[which(!is.na(cont_d2_hh$contact_id_d2_hh)),]
+
+rm(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
+   c.15,c.16,c.17,c.18,c.19,c.20,c.21,c.22,c.23,c.24,c.25,c.26,
+   c.27,c.28,c.29,c.30)
+```
+
+
+
+```{r day2_repeat}
+for (i in 1:20) {
+  nam <- paste("c", i, sep = ".")
+  assign(nam, data %>%
+           dplyr::filter(redcap_event_name == "day_2_diary_arm_1") %>% 
+           dplyr::select("rec_id","individual_id","redcap_event_name","redcap_repeat_instance","redcap_repeat_instrument", ends_with(paste0("_d2_rep_",i)), starts_with(paste0("location_contact_d2_rep_",i))))%>%
+    dplyr::filter(redcap_repeat_instrument == "") %>%
+    drop_na(paste0("repeat_contact_d2_rep_",i))
+}
+
+c.1 <- c.1[,1:25]
+c.2 <- c.2[,1:25]
+c.3 <- c.3[,1:25]
+
+names(c.1) <- str_remove(names(c.1), "_1") 
+names(c.2) <- str_remove(names(c.2), "_2") 
+names(c.3) <- str_remove(names(c.3), "_3") 
+names(c.4) <- str_remove(names(c.4), "_4") 
+names(c.5) <- str_remove(names(c.5), "_5") 
+names(c.6) <- str_remove(names(c.6), "_6") 
+names(c.7) <- str_remove(names(c.7), "_7") 
+names(c.8) <- str_remove(names(c.8), "_8") 
+names(c.9) <- str_remove(names(c.9), "_9") 
+names(c.10) <- str_remove(names(c.10), "_10") 
+names(c.11) <- str_remove(names(c.11), "_11") 
+names(c.12) <- str_remove(names(c.12), "_12") 
+names(c.13) <- str_remove(names(c.13), "_13") 
+names(c.14) <- str_remove(names(c.14), "_14") 
+names(c.15) <- str_remove(names(c.15), "_15") 
+names(c.16) <- str_remove(names(c.16), "_16") 
+names(c.17) <- str_remove(names(c.17), "_17") 
+names(c.18) <- str_remove(names(c.18), "_18") 
+names(c.19) <- str_remove(names(c.19), "_19") 
+names(c.20) <- str_remove(names(c.20), "_20") 
+
+
+cont_d2_rep <- rbind(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
+   c.15,c.16,c.17,c.18,c.19,c.20)
+cont_d2_rep <- cont_d2_rep[which(cont_d2_rep$repeat_contact_d2_rep == 1),]
+
+rm(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
+   c.15,c.16,c.17,c.18,c.19,c.20)
+```
+
+```{r}
+cont_d1_hh = cont_d1_hh %>% 
+  dplyr::mutate(contact_id_d1_hhlb = case_when(contact_id_d1_hh == 0 ~ "No",
+                                         contact_id_d1_hh == 1 ~ "Yes",
+                                         contact_id_d1_hh == 2 ~ "Do not remember")) #the data dic only says 0, No | 1, Yes, but actually there are 3 levels in this variable 
+label(cont_d1_hh$contact_id_d1_hhlb) <- "Did you have contact with [household_survey_arm_1][hh_member_name][1]?"
+
+cont_d1_hh = cont_d1_hh %>% 
+  dplyr::mutate(touch_contact_d1_hhlb = case_when(touch_contact_d1_hh == 0 ~ "No",
+                                         touch_contact_d1_hh == 1 ~ "Yes",
+                                         touch_contact_d1_hh == 2 ~ "Do not remember")) 
+label(cont_d1_hh$touch_contact_d1_hhlb) <- "Did you touch?"
+
+cont_d1_hh = cont_d1_hh %>% 
+  dplyr::mutate(where_contact_d1_hhlb = case_when(where_contact_d1_hh == 0 ~ "Indoors",
+                                         where_contact_d1_hh == 1 ~ "Outdoors",
+                                         where_contact_d1_hh == 2 ~ "Both")) 
+label(cont_d1_hh$where_contact_d1_hhlb) <- "Did the contact occur indoors or outdoors?"
+
+label(cont_d1_hh$location_contact_d1_hh___0) <- "My home"
+label(cont_d1_hh$location_contact_d1_hh___1) <- "Other home"
+label(cont_d1_hh$location_contact_d1_hh___2) <- "School"
+label(cont_d1_hh$location_contact_d1_hh___3) <- "Work"
+label(cont_d1_hh$location_contact_d1_hh___4) <- "Transport/Hub"
+label(cont_d1_hh$location_contact_d1_hh___5) <- "Market/Shop"
+label(cont_d1_hh$location_contact_d1_hh___6) <- "Street"
+label(cont_d1_hh$location_contact_d1_hh___7) <- "Well"
+label(cont_d1_hh$location_contact_d1_hh___8) <- "Agricultural Field"
+label(cont_d1_hh$location_contact_d1_hh___9) <- "Playground"
+label(cont_d1_hh$location_contact_d1_hh___10) <- "Place of worship"
+label(cont_d1_hh$location_contact_d1_hh___11) <- "Other"
+
+cont_d1_hh = cont_d1_hh %>% 
+  dplyr::mutate(contact_mask_d1_hhlb = case_when(contact_mask_d1_hh == 0 ~ "No, no mask was worn during the encounter",
+                                        contact_mask_d1_hh == 1 ~ "Yes, for the entire encounter",
+                                        contact_mask_d1_hh == 2 ~ "Yes, during parts of encounter",
+                                        contact_mask_d1_hh == 3 ~ "I don't remember"))  
+label(cont_d1_hh$contact_mask_d1_hhlb) <- "Was this individual wearing a mask when you had contact?"
+
+cont_d1_hh = cont_d1_hh %>%
+  dplyr::mutate(duration_contact_d1_hhlb = case_when(duration_contact_d1_hh == 0 ~ "< 5 mins",
+                                               duration_contact_d1_hh == 1 ~ "5-15 mins",
+                                               duration_contact_d1_hh == 2 ~ "16-30 mins",
+                                               duration_contact_d1_hh == 3 ~ "31 mins - 1 hr",
+                                               duration_contact_d1_hh == 4 ~ "1-4 hrs",
+                                               duration_contact_d1_hh == 5 ~ ">4 hrs"))
+label(cont_d1_hh$duration_contact_d1_hhlb) <- "What was the total time spent with the contact on this day?"
+
+cont_d1_hh = cont_d1_hh %>%
+  dplyr::mutate(frequency_contact_d1_hhlb = case_when(frequency_contact_d1_hh == 0 ~ "Never met before",
+                                               frequency_contact_d1_hh == 1 ~ "Rarely",
+                                               frequency_contact_d1_hh == 2 ~ "Daily or almost daily",
+                                               frequency_contact_d1_hh == 3 ~ "1-3 times per week",
+                                               frequency_contact_d1_hh == 4 ~ "Once every 2 weeks",
+                                               frequency_contact_d1_hh == 5 ~ "Once per month",
+                                               frequency_contact_d1_hh == 6 ~ "Once every 3 months"))
+label(cont_d1_hh$frequency_contact_d1_hhlb) <- "In the past 6 months, how often have you had contact with this person?"
+
+cont_d1_hh = cont_d1_hh %>%
+  dplyr::mutate(known_contact_d1_hhlb = case_when(known_contact_d1_hh == 0 ~ "Never met before",
+                                               known_contact_d1_hh == 1 ~ "Less than a year",
+                                               known_contact_d1_hh == 2 ~ "1-2 years",
+                                               known_contact_d1_hh == 3 ~ "3-5 years",
+                                               known_contact_d1_hh == 4 ~ "6-10 years",
+                                               known_contact_d1_hh == 5 ~ "More than 10 years"))
+label(cont_d1_hh$known_contact_d1_hhlb) <- "How long have you known this person?"
+```
+
+```{r}
+cont_d2_hh = cont_d2_hh %>% 
+  dplyr::mutate(contact_id_d2_hhlb = case_when(contact_id_d2_hh == 0 ~ "No",
+                                         contact_id_d2_hh == 1 ~ "Yes",
+                                         contact_id_d2_hh == 2 ~ "Do not remember")) #the data dic only says 0, No | 1, Yes, but actually there are 3 levels in this variable 
+label(cont_d2_hh$contact_id_d2_hhlb) <- "Did you have contact with [household_survey_arm_1][hh_member_name][1]?"
+
+cont_d2_hh = cont_d2_hh %>% 
+  dplyr::mutate(touch_contact_d2_hhlb = case_when(touch_contact_d2_hh == 0 ~ "No",
+                                         touch_contact_d2_hh == 1 ~ "Yes",
+                                         touch_contact_d2_hh == 2 ~ "Do not remember")) 
+label(cont_d2_hh$touch_contact_d2_hhlb) <- "Did you touch?"
+
+cont_d2_hh = cont_d2_hh %>% 
+  dplyr::mutate(where_contact_d2_hhlb = case_when(where_contact_d2_hh == 0 ~ "Indoors",
+                                         where_contact_d2_hh == 1 ~ "Outdoors",
+                                         where_contact_d2_hh == 2 ~ "Both")) 
+label(cont_d2_hh$where_contact_d2_hhlb) <- "Did the contact occur indoors or outdoors?"
+
+label(cont_d2_hh$location_contact_d2_hh___0) <- "My home"
+label(cont_d2_hh$location_contact_d2_hh___1) <- "Other home"
+label(cont_d2_hh$location_contact_d2_hh___2) <- "School"
+label(cont_d2_hh$location_contact_d2_hh___3) <- "Work"
+label(cont_d2_hh$location_contact_d2_hh___4) <- "Transport/Hub"
+label(cont_d2_hh$location_contact_d2_hh___5) <- "Market/Shop"
+label(cont_d2_hh$location_contact_d2_hh___6) <- "Street"
+label(cont_d2_hh$location_contact_d2_hh___7) <- "Well"
+label(cont_d2_hh$location_contact_d2_hh___8) <- "Agricultural Field"
+label(cont_d2_hh$location_contact_d2_hh___9) <- "Playground"
+label(cont_d2_hh$location_contact_d2_hh___10) <- "Place of worship"
+label(cont_d2_hh$location_contact_d2_hh___11) <- "Other"
+
+cont_d2_hh = cont_d2_hh %>% 
+  dplyr::mutate(contact_mask_d2_hhlb = case_when(contact_mask_d2_hh == 0 ~ "No, no mask was worn during the encounter",
+                                        contact_mask_d2_hh == 1 ~ "Yes, for the entire encounter",
+                                        contact_mask_d2_hh == 2 ~ "Yes, during parts of encounter",
+                                        contact_mask_d2_hh == 3 ~ "I don't remember"))  
+label(cont_d2_hh$contact_mask_d2_hhlb) <- "Was this individual wearing a mask when you had contact?"
+
+cont_d2_hh = cont_d2_hh %>%
+  dplyr::mutate(duration_contact_d2_hhlb = case_when(duration_contact_d2_hh == 0 ~ "< 5 mins",
+                                               duration_contact_d2_hh == 1 ~ "5-15 mins",
+                                               duration_contact_d2_hh == 2 ~ "16-30 mins",
+                                               duration_contact_d2_hh == 3 ~ "31 mins - 1 hr",
+                                               duration_contact_d2_hh == 4 ~ "1-4 hrs",
+                                               duration_contact_d2_hh == 5 ~ ">4 hrs"))
+label(cont_d2_hh$duration_contact_d2_hhlb) <- "What was the total time spent with the contact on this day?"
+
+cont_d2_hh = cont_d2_hh %>%
+  dplyr::mutate(frequency_contact_d2_hhlb = case_when(frequency_contact_d2_hh == 0 ~ "Never met before",
+                                               frequency_contact_d2_hh == 1 ~ "Rarely",
+                                               frequency_contact_d2_hh == 2 ~ "Daily or almost daily",
+                                               frequency_contact_d2_hh == 3 ~ "1-3 times per week",
+                                               frequency_contact_d2_hh == 4 ~ "Once every 2 weeks",
+                                               frequency_contact_d2_hh == 5 ~ "Once per month",
+                                               frequency_contact_d2_hh == 6 ~ "Once every 3 months"))
+label(cont_d2_hh$frequency_contact_d2_hhlb) <- "In the past 6 months, how often have you had contact with this person?"
+
+cont_d2_hh = cont_d2_hh %>%
+  dplyr::mutate(known_contact_d2_hhlb = case_when(known_contact_d2_hh == 0 ~ "Never met before",
+                                               known_contact_d2_hh == 1 ~ "Less than a year",
+                                               known_contact_d2_hh == 2 ~ "1-2 years",
+                                               known_contact_d2_hh == 3 ~ "3-5 years",
+                                               known_contact_d2_hh == 4 ~ "6-10 years",
+                                               known_contact_d2_hh == 5 ~ "More than 10 years"))
+label(cont_d2_hh$known_contact_d2_hhlb) <- "How long have you known this person?"
+```
+
+
+```{r}
+cont_d2_rep = cont_d2_rep %>% 
+  dplyr::mutate(repeat_contact_d2_replb = case_when(repeat_contact_d2_rep == 0 ~ "No",
+                                         repeat_contact_d2_rep == 1 ~ "Yes",
+                                         repeat_contact_d2_rep == 2 ~ "I don't remember")) #the data dic only says 0, No | 1, Yes, but actually there are 3 levels in this variable 
+label(cont_d2_rep$repeat_contact_d2_replb) <- "Did you have contact with [day_1_diary_arm_1][contact_id_d1][1] on the second day of contact diary?"
+
+cont_d2_rep = cont_d2_rep %>% 
+  dplyr::mutate(touch_contact_d2_replb = case_when(touch_contact_d2_rep == 0 ~ "No",
+                                         touch_contact_d2_rep == 1 ~ "Yes",
+                                         touch_contact_d2_rep == 2 ~ "Do not remember")) 
+label(cont_d2_rep$touch_contact_d2_replb) <- "Did you touch?"
+
+cont_d2_rep = cont_d2_rep %>% 
+  dplyr::mutate(where_contact_d2_replb = case_when(where_contact_d2_rep == 0 ~ "Indoors",
+                                         where_contact_d2_rep == 1 ~ "Outdoors",
+                                         where_contact_d2_rep == 2 ~ "Both")) 
+label(cont_d2_rep$where_contact_d2_replb) <- "Did the contact occur indoors or outdoors?"
+
+label(cont_d2_rep$location_contact_d2_rep___0) <- "My home"
+label(cont_d2_rep$location_contact_d2_rep___1) <- "Other home"
+label(cont_d2_rep$location_contact_d2_rep___2) <- "School"
+label(cont_d2_rep$location_contact_d2_rep___3) <- "Work"
+label(cont_d2_rep$location_contact_d2_rep___4) <- "Transport/Hub"
+label(cont_d2_rep$location_contact_d2_rep___5) <- "Market/Shop"
+label(cont_d2_rep$location_contact_d2_rep___6) <- "Street"
+label(cont_d2_rep$location_contact_d2_rep___7) <- "Well"
+label(cont_d2_rep$location_contact_d2_rep___8) <- "Agricultural Field"
+label(cont_d2_rep$location_contact_d2_rep___9) <- "Playground"
+label(cont_d2_rep$location_contact_d2_rep___10) <- "Place of worship"
+label(cont_d2_rep$location_contact_d2_rep___11) <- "Other"
+
+cont_d2_rep = cont_d2_rep %>% 
+  dplyr::mutate(contact_mask_d2_replb = case_when(contact_mask_d2_rep == 0 ~ "No, no mask was worn during the encounter",
+                                        contact_mask_d2_rep == 1 ~ "Yes, for the entire encounter",
+                                        contact_mask_d2_rep == 2 ~ "Yes, during parts of encounter",
+                                        contact_mask_d2_rep == 3 ~ "I don't remember"))  
+label(cont_d2_rep$contact_mask_d2_replb) <- "Was this individual wearing a mask when you had contact?"
+
+cont_d2_rep = cont_d2_rep %>%
+  dplyr::mutate(duration_contact_d2_replb = case_when(duration_contact_d2_rep == 0 ~ "< 5 mins",
+                                               duration_contact_d2_rep == 1 ~ "5-15 mins",
+                                               duration_contact_d2_rep == 2 ~ "16-30 mins",
+                                               duration_contact_d2_rep == 3 ~ "31 mins - 1 hr",
+                                               duration_contact_d2_rep == 4 ~ "1-4 hrs",
+                                               duration_contact_d2_rep == 5 ~ ">4 hrs"))
+label(cont_d2_rep$duration_contact_d2_replb) <- "What was the total time spent with the contact on this day?"
+
+cont_d2_rep = cont_d2_rep %>%
+  dplyr::mutate(frequency_contact_d2_replb = case_when(frequency_contact_d2_rep == 0 ~ "Never met before",
+                                               frequency_contact_d2_rep == 1 ~ "Rarely",
+                                               frequency_contact_d2_rep == 2 ~ "Daily or almost daily",
+                                               frequency_contact_d2_rep == 3 ~ "1-3 times per week",
+                                               frequency_contact_d2_rep == 4 ~ "Once every 2 weeks",
+                                               frequency_contact_d2_rep == 5 ~ "Once per month",
+                                               frequency_contact_d2_rep == 6 ~ "Once every 3 months"))
+label(cont_d2_rep$frequency_contact_d2_replb) <- "In the past 6 months, how often have you had contact with this person?"
+
+cont_d2_rep = cont_d2_rep %>%
+  dplyr::mutate(known_contact_d2_replb = case_when(known_contact_d2_rep == 0 ~ "Never met before",
+                                               known_contact_d2_rep == 1 ~ "Less than a year",
+                                               known_contact_d2_rep == 2 ~ "1-2 years",
+                                               known_contact_d2_rep == 3 ~ "3-5 years",
+                                               known_contact_d2_rep == 4 ~ "6-10 years",
+                                               known_contact_d2_rep == 5 ~ "More than 10 years"))
+label(cont_d2_rep$known_contact_d2_replb) <- "How long have you known this person?"
+```
