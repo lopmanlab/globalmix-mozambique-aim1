@@ -1,260 +1,303 @@
-"","rec_id","study_site","aim","sensor_id","hwid","sex","age_cat","enrolled_school","highest_educ","school_level"
-"1",433,"Polana Canico",2,"F029ABE0",4029262816,"Male","<6mo","No","Middle Secondary (11-12)",NA
-"2",503,"Polana Canico",2,"57B92915",1471752469,"Male","<6mo","No","Middle Secondary (11-12)",NA
-"3",505,"Polana Canico",2,"0F0AC00E",252362766,"Female","<6mo","No","Basic Secondary school (8-10)",NA
-"4",617,"Polana Canico",2,"B093D42E",2962478126,"Female","6-11mo",NA,NA,NA
-"5",723,"Polana Canico",2,"6375E09A",1668669594,"Female","<6mo","No","Primary School (1-7)",NA
-"6",1037,"Polana Canico",2,"2F66CF32",795266866,"Female","<6mo",NA,NA,NA
-"7",1038,"Polana Canico",2,"D5207DD4",3575676372,"Female","6-11mo",NA,NA,NA
-"8",1040,"Polana Canico",2,"57B92915",1471752469,"Female","<6mo",NA,NA,NA
-"9",1119,"Polana Canico",2,"D0130626",3490907686,"Female","6-11mo",NA,NA,NA
-"10",1145,"Polana Canico",2,"E2C58AE4",3804596964,"Female","<6mo","No","Primary School (1-7)",NA
-"11",1183,"Polana Canico",2,"565F06C9",1449068233,"Male","6-11mo",NA,NA,NA
-"12",1202,"Polana Canico",2,"6CECD070",1827459184,"Female","<6mo",NA,NA,NA
-"13",1260,"Polana Canico",2,"775F3576",2002728310,"Female","6-11mo",NA,NA,NA
-"14",1285,"Polana Canico",2,"01964B1A",26626842,"Male","6-11mo",NA,NA,NA
-"15",1305,"Polana Canico",2,"950CC02A",2500640810,"Female","6-11mo",NA,NA,NA
-"16",1347,"Polana Canico",2,"1C4E9633",474912307,"Male","6-11mo",NA,NA,NA
-"17",1367,"Polana Canico",2,"0249F49D",38401181,"Male","6-11mo",NA,NA,NA
-"18",1382,"Polana Canico",2,"73A0D657",1939920471,"Female","6-11mo",NA,NA,NA
-"19",1387,"Polana Canico",2,"05A700AC",94830764,"Female","<6mo",NA,NA,NA
-"20",1390,"Polana Canico",2,"B287D42A",2995246122,"Female","<6mo",NA,NA,NA
-"21",1452,"Polana Canico",2,"FDF97280",4260983424,"Female","6-11mo",NA,NA,NA
-"22",1487,"Polana Canico",2,"ADC6D682",2915489410,"Male","6-11mo",NA,NA,NA
-"23",1502,"Polana Canico",2,"6579D37C",1702482812,"Female","<6mo",NA,NA,NA
-"24",1528,"Polana Canico",2,"E290C8BD",3801139389,"Male","<6mo",NA,NA,NA
-"25",1529,"Polana Canico",2,"B287D42A",2995246122,"Male","6-11mo",NA,NA,NA
-"26",1541,"Polana Canico",2,"73A0D657",1939920471,"Male","<6mo",NA,NA,NA
-"27",1604,"Polana Canico",2,"57B92915",1471752469,"Female","6-11mo",NA,NA,NA
-"28",1615,"Polana Canico",2,"63137977",1662220663,"Male","<6mo",NA,NA,NA
-"29",1617,"Polana Canico",2,"335C4283",861684355,"Female","6-11mo",NA,NA,NA
-"30",1620,"Polana Canico",2,"7DF19AC4",2112985796,"Male","6-11mo",NA,NA,NA
-"31",1623,"Polana Canico",2,"0249F49D",38401181,"Male","6-11mo",NA,NA,NA
-"32",1626,"Polana Canico",2,"7AEECBB1",2062470065,"Male","6-11mo",NA,NA,NA
-"33",1638,"Polana Canico",2,"0746B936",122075446,"Female","6-11mo",NA,NA,NA
-"34",1727,"Polana Canico",2,"5DA335CD",1570977229,"Female","6-11mo",NA,NA,NA
-"35",1733,"Polana Canico",2,"05A700AC",94830764,"Female","<6mo",NA,NA,NA
-"36",1736,"Polana Canico",2,"7AEECBB1",2062470065,"Female","6-11mo",NA,NA,NA
-"37",1739,"Polana Canico",2,"A44C5E76",2756468342,"Female","6-11mo",NA,NA,NA
-"38",1746,"Polana Canico",2,"30DEADD1",819899857,"Female","<6mo",NA,NA,NA
-"39",1747,"Polana Canico",2,"335C4283",861684355,"Female","<6mo",NA,NA,NA
-"40",1782,"Polana Canico",2,"B6514945",3058780485,"Female","6-11mo",NA,NA,NA
-"41",2257,"Polana Canico",2,"E290C8BD",3801139389,"Female","6-11mo",NA,NA,NA
-"42",2261,"Polana Canico",2,"775F3576",2002728310,"Female","<6mo",NA,NA,NA
-"43",5796,"Polana Canico",2,"7AEECBB1",2062470065,"Female","6-11mo",NA,NA,NA
-"44",5800,"Polana Canico",2,"7FDE60EB",2145280235,"Female","6-11mo",NA,NA,NA
-"45",5801,"Polana Canico",2,"7ADEB947",2061416775,"Female","6-11mo",NA,NA,NA
-"46",432,"Polana Canico",2,"90CBF595",2429285781,"Female","60+y","Yes",NA,"Primary School (1-7)"
-"47",434,"Polana Canico",2,"0746B936",122075446,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
-"48",455,"Polana Canico",2,"48DDBBF4",1222491124,"Female","30-39y","No","Primary School (1-7)",NA
-"49",456,"Polana Canico",2,"6CECD070",1827459184,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
-"50",457,"Polana Canico",2,"7705947E",1996854398,"Female","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"51",506,"Polana Canico",2,"73A0D657",1939920471,"Female","1-4y",NA,NA,NA
-"52",510,"Polana Canico",2,"93EF89E6",3474272015,"Female","30-39y","No","Middle Secondary (11-12)",NA
-"53",580,"Polana Canico",2,"7201E52B",1912726827,"Female","1-4y",NA,NA,NA
-"54",610,"Polana Canico",2,"30DEADD1",819899857,"Female","40-59y","No","Middle Secondary (11-12)",NA
-"55",611,"Polana Canico",2,"B6514945",3058780485,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"56",612,"Polana Canico",2,"F75B23E1",4149945313,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
-"57",613,"Polana Canico",2,"CF152F0F",3474272015,"Male","20-29y","No","Basic Secondary school (8-10)",NA
-"58",614,"Polana Canico",2,"6F673A12",1869036050,"Male","5-9y","No","Primary School (1-7)",NA
-"59",615,"Polana Canico",2,"565F06C9",1449068233,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"60",616,"Polana Canico",2,"993564AB",2570413227,"Female","1-4y",NA,NA,NA
-"61",662,"Polana Canico",2,"7FDE60EB",2145280235,"Female","40-59y","No","Primary School (1-7)",NA
-"62",703,"Polana Canico",2,"90CBF595",2429285781,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"63",704,"Polana Canico",2,"FDF97280",4260983424,"Male","1-4y",NA,NA,NA
-"64",705,"Polana Canico",2,"B287D42A",2995246122,"Female","20-29y","No","Primary School (1-7)",NA
-"65",706,"Polana Canico",2,"775F3576",2002728310,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"66",707,"Polana Canico",2,"05A700AC",94830764,"Female","20-29y","No","Primary School (1-7)",NA
-"67",709,"Polana Canico",2,"5BAC9680",1487705728,"Female","60+y","No","No schooling",NA
-"68",710,"Polana Canico",2,"01964B1A",26626842,"Male","20-29y","No","Primary School (1-7)",NA
-"69",724,"Polana Canico",2,"3C114B9E",1007766430,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"70",725,"Polana Canico",2,"E290C8BD",3801139389,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"71",726,"Polana Canico",2,"D6CFBE70",3603938928,"Male","1-4y",NA,NA,NA
-"72",730,"Polana Canico",2,"7ADEB947",2061416775,"Male","20-29y","No","Primary School (1-7)",NA
-"73",731,"Polana Canico",2,"D2495E9F",3528023711,"Female","20-29y","No","Primary School (1-7)",NA
-"74",732,"Polana Canico",2,"1B6E7DC6",460225990,"Male","5-9y",NA,NA,NA
-"75",733,"Polana Canico",2,"3F3453F3",1060393971,"Female","1-4y",NA,NA,NA
-"76",735,"Polana Canico",2,"ADC6D682",2915489410,"Female","40-59y","No","Basic Secondary school (8-10)",NA
-"77",745,"Polana Canico",2,"567140F0",1450262768,"Female","30-39y","Yes",NA,"Basic Secondary school (8-10)"
-"78",747,"Polana Canico",2,"7DF19AC4",2112985796,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"79",748,"Polana Canico",2,"C179A589",3245974921,"Male","1-4y",NA,NA,NA
-"80",773,"Polana Canico",2,"B648ADEB",3058216427,"Female","20-29y","No","Primary School (1-7)",NA
-"81",774,"Polana Canico",2,"6A9FB5EB",1788851688,"Male","5-9y",NA,NA,NA
-"82",775,"Polana Canico",2,"1C4E9633",474912307,"Male","1-4y",NA,NA,NA
-"83",807,"Polana Canico",2,"950CC02A",2500640810,"Female","40-59y","No","Primary School (1-7)",NA
-"84",808,"Polana Canico",2,"59FA6AFD",1509583613,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
-"85",809,"Polana Canico",2,"63137977",1662220663,"Female","15-19y","Yes",NA,"Primary School (1-7)"
-"86",811,"Polana Canico",2,"F029ABE0",4029262816,"Female","1-4y",NA,NA,NA
-"87",900,"Polana Canico",2,"0746B936",122075446,"Female","20-29y","Yes",NA,"Basic Secondary school (8-10)"
-"88",901,"Polana Canico",2,"D4D84F97",3570945943,"Female","1-4y",NA,NA,NA
-"89",902,"Polana Canico",2,"272EBC2B",657374251,"Female","1-4y",NA,NA,NA
-"90",907,"Polana Canico",2,"5DA335CD",1570977229,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"91",908,"Polana Canico",2,"E7317FFF",3878780927,"Female","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"92",910,"Polana Canico",2,"9BC8EB99",2613635993,"Male","5-9y",NA,NA,NA
-"93",965,"Polana Canico",2,"612514B1",1629820081,"Female","40-59y","No","Primary School (1-7)",NA
-"94",968,"Polana Canico",2,"6F673A12",1869036050,"Female","15-19y","Yes",NA,"Basic Secondary school (8-10)"
-"95",970,"Polana Canico",2,"73A0D657",1939920471,"Male","5-9y","No","No schooling",NA
-"96",971,"Polana Canico",2,"567140F0",1450262768,"Male","1-4y",NA,NA,NA
-"97",973,"Polana Canico",2,"B6514945",3058780485,"Female","40-59y","No","Primary School (1-7)",NA
-"98",974,"Polana Canico",2,"993564AB",2570413227,"Male","30-39y","No","Primary School (1-7)",NA
-"99",975,"Polana Canico",2,"0249F49D",38401181,"Female","20-29y","No","Primary School (1-7)",NA
-"100",977,"Polana Canico",2,"0F0AC00E",252362766,"Male","1-4y",NA,NA,NA
-"101",978,"Polana Canico",2,"B093D42E",2962478126,"Female","30-39y","No","Basic Secondary school (8-10)",NA
-"102",979,"Polana Canico",2,"6CECD070",1827459184,"Male","5-9y",NA,NA,NA
-"103",981,"Polana Canico",2,"48DDBBF4",1222491124,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"104",1017,"Polana Canico",2,"ADC6D682",2915489410,"Male","30-39y","No","Basic Secondary school (8-10)",NA
-"105",1018,"Polana Canico",2,"BB211C8C",3139509388,"Female","30-39y","No","Middle Secondary (11-12)",NA
-"106",1025,"Polana Canico",2,"CF152F0F",3474272015,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"107",1030,"Polana Canico",2,"8D46A482",2370217090,"Female","20-29y","No","Primary School (1-7)",NA
-"108",1031,"Polana Canico",2,"C5410CE6",3309374694,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"109",1034,"Polana Canico",2,"595D34C5",1499280581,"Female","60+y","No","No schooling",NA
-"110",1035,"Polana Canico",2,"3F3453F3",1060393971,"Female","30-39y","No","Basic Secondary school (8-10)",NA
-"111",1036,"Polana Canico",2,"98ED9A65",2565708389,"Female","30-39y","No","Basic Secondary school (8-10)",NA
-"112",1039,"Polana Canico",2,"C179A589",3245974921,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"113",1116,"Polana Canico",2,"6579D37C",1702482812,"Female","40-59y","No","Primary School (1-7)",NA
-"114",1117,"Polana Canico",2,"45B9CEA9",1169804969,"Female","5-9y",NA,NA,NA
-"115",1118,"Polana Canico",2,"7FDE60EB",2145280235,"Female","20-29y","No","Primary School (1-7)",NA
-"116",1123,"Polana Canico",2,"1B6E7DC6",460225990,"Male","20-29y","Yes",NA,"Basic Secondary school (8-10)"
-"117",1124,"Polana Canico",2,"63137977",1662220663,"Male","5-9y",NA,NA,NA
-"118",1125,"Polana Canico",2,"7ADEB947",2061416775,"Female","20-29y","Yes",NA,"1-3 years of college/university"
-"119",1129,"Polana Canico",2,"F58E44EB",4119741675,"Male","30-39y","No","Primary School (1-7)",NA
-"120",1131,"Polana Canico",2,"59FA6AFD",1509583613,"Female","1-4y",NA,NA,NA
-"121",1132,"Polana Canico",2,"D0130626",3490907686,"Male","5-9y",NA,NA,NA
-"122",1141,"Polana Canico",2,"7FDE60EB",2145280235,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"123",1142,"Polana Canico",2,"6579D37C",1702482812,"Male","1-4y",NA,NA,NA
-"124",1146,"Polana Canico",2,"6CECD070",1827459184,"Female","20-29y","No","Primary School (1-7)",NA
-"125",1147,"Polana Canico",2,"B648ADEB",3058216427,"Female","15-19y","Yes",NA,"Middle Secondary (11-12)"
-"126",1148,"Polana Canico",2,"612514B1",1629820081,"Male","1-4y",NA,NA,NA
-"127",1180,"Polana Canico",2,"7201E52B",1912726827,"Male","40-59y","No","Primary School (1-7)",NA
-"128",1182,"Polana Canico",2,"FDF97280",4260983424,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"129",1190,"Polana Canico",2,"05A700AC",94830764,"Male","40-59y","No","Primary School (1-7)",NA
-"130",1192,"Polana Canico",2,"0746B936",122075446,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"131",1193,"Polana Canico",2,"5BAC9680",1487705728,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"132",1194,"Polana Canico",2,"7705947E",1996854398,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"133",1195,"Polana Canico",2,"6BDA8DED",1809485293,"Female","5-9y",NA,NA,NA
-"134",1196,"Polana Canico",2,"6375E09A",1668669594,"Male","1-4y",NA,NA,NA
-"135",1199,"Polana Canico",2,"D2495E9F",3528023711,"Male","40-59y","Yes",NA,"Primary School (1-7)"
-"136",1200,"Polana Canico",2,"1B6E7DC6",460225990,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"137",1201,"Polana Canico",2,"B648ADEB",3058216427,"Male","1-4y",NA,NA,NA
-"138",1249,"Polana Canico",2,"90CBF595",2429285781,"Male","60+y","No","Primary School (1-7)",NA
-"139",1250,"Polana Canico",2,"126DCF62",309186402,"Female","60+y","No","Primary School (1-7)",NA
-"140",1251,"Polana Canico",2,"272EBC2B",657374251,"Female","20-29y","No","Middle Secondary (11-12)",NA
-"141",1252,"Polana Canico",2,"1C4E9633",474912307,"Female","1-4y",NA,NA,NA
-"142",1254,"Polana Canico",2,"F029ABE0",4029262816,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"143",1256,"Polana Canico",2,"BB211C8C",3139509388,"Female","30-39y","No","Basic Secondary school (8-10)",NA
-"144",1257,"Polana Canico",2,"A264CC63",2724514915,"Male","30-39y","No","No schooling",NA
-"145",1258,"Polana Canico",2,"D0130626",3490907686,"Female","20-29y","No","Primary School (1-7)",NA
-"146",1259,"Polana Canico",2,"63137977",1662220663,"Female","1-4y",NA,NA,NA
-"147",1269,"Polana Canico",2,"3F3453F3",1060393971,"Male","30-39y","No","Middle Secondary (11-12)",NA
-"148",1270,"Polana Canico",2,"335C4283",861684355,"Female","30-39y","No","Basic Secondary school (8-10)",NA
-"149",1271,"Polana Canico",2,"2F66CF32",795266866,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"150",1272,"Polana Canico",2,"D5207DD4",3575676372,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"151",1273,"Polana Canico",2,"993564AB",2570413227,"Male","5-9y",NA,NA,NA
-"152",1274,"Polana Canico",2,"48DDBBF4",1222491124,"Male","1-4y",NA,NA,NA
-"153",1277,"Polana Canico",2,"6A9FB5EB",1788851688,"Male","20-29y","No","Basic Secondary school (8-10)",NA
-"154",1283,"Polana Canico",2,"595D34C5",1499280581,"Male","60+y","No","No schooling",NA
-"155",1284,"Polana Canico",2,"C5410CE6",3309374694,"Female","30-39y","No","Primary School (1-7)",NA
-"156",1303,"Polana Canico",2,"B6514945",3058780485,"Male","40-59y","No","Primary School (1-7)",NA
-"157",1304,"Polana Canico",2,"CF152F0F",3474272015,"Female","30-39y","No","Primary School (1-7)",NA
-"158",1344,"Polana Canico",2,"6375E09A",1668669594,"Female","20-29y","No","Middle Secondary (11-12)",NA
-"159",1345,"Polana Canico",2,"126DCF62",309186402,"Male","15-19y","Yes",NA,"Primary School (1-7)"
-"160",1346,"Polana Canico",2,"D2495E9F",3528023711,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"161",1366,"Polana Canico",2,"7705947E",1996854398,"Female","20-29y","No","Middle Secondary (11-12)",NA
-"162",1368,"Polana Canico",2,"6CECD070",1827459184,"Female","40-59y","No","Primary School (1-7)",NA
-"163",1370,"Polana Canico",2,"272EBC2B",657374251,"Female","40-59y","No","Primary School (1-7)",NA
-"164",1371,"Polana Canico",2,"BB211C8C",3139509388,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"165",1381,"Polana Canico",2,"68CF2EA5",1758408357,"Female","30-39y","No","Primary School (1-7)",NA
-"166",1385,"Polana Canico",2,"3C114B9E",1007766430,"Female","15-19y","No","Basic Secondary school (8-10)",NA
-"167",1386,"Polana Canico",2,"612514B1",1629820081,"Female","15-19y","Yes",NA,"Primary School (1-7)"
-"168",1388,"Polana Canico",2,"C179A589",3245974921,"Male","5-9y","No","Primary School (1-7)",NA
-"169",1389,"Polana Canico",2,"D6CFBE70",3603938928,"Female","20-29y","No","Primary School (1-7)",NA
-"170",1391,"Polana Canico",2,"E290C8BD",3801139389,"Female","1-4y",NA,NA,NA
-"171",1451,"Polana Canico",2,"565F06C9",1449068233,"Female","20-29y","No","Primary School (1-7)",NA
-"172",1484,"Polana Canico",2,"5BAC9680",1487705728,"Female","40-59y","No","Middle Secondary (11-12)",NA
-"173",1485,"Polana Canico",2,"1B6E7DC6",460225990,"Male","15-19y","Yes",NA,"Bachelors"
-"174",1488,"Polana Canico",2,"7FDE60EB",2145280235,"Male","30-39y","No","Middle Secondary (11-12)",NA
-"175",1489,"Polana Canico",2,"567140F0",1450262768,"Female","30-39y","No","Primary School (1-7)",NA
-"176",1490,"Polana Canico",2,"D2495E9F",3528023711,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"177",1491,"Polana Canico",2,"0249F49D",38401181,"Female","1-4y",NA,NA,NA
-"178",1492,"Polana Canico",2,"D4D84F97",3570945943,"Male","40-59y","No","Basic Secondary school (8-10)",NA
-"179",1496,"Polana Canico",2,"D0130626",3490907686,"Female","40-59y","No","Primary School (1-7)",NA
-"180",1497,"Polana Canico",2,"B6514945",3058780485,"Male","30-39y","No","Primary School (1-7)",NA
-"181",1498,"Polana Canico",2,"335C4283",861684355,NA,"1-4y",NA,NA,NA
-"182",1499,"Polana Canico",2,"2F66CF32",795266866,"Male","1-4y",NA,NA,NA
-"183",1500,"Polana Canico",2,"63137977",1662220663,"Female","30-39y","No","Primary School (1-7)",NA
-"184",1501,"Polana Canico",2,"D5207DD4",3575676372,"Female","15-19y","No","Basic Secondary school (8-10)",NA
-"185",1503,"Polana Canico",2,"0746B936",122075446,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"186",1504,"Polana Canico",2,"A264CC63",2724514915,"Male","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"187",1505,"Polana Canico",2,"BB211C8C",3139509388,"Female","30-39y","No","No schooling",NA
-"188",1506,"Polana Canico",2,"1C4E9633",474912307,"Female","5-9y",NA,NA,NA
-"189",1507,"Polana Canico",2,"595D34C5",1499280581,"Female","15-19y","No","Primary School (1-7)",NA
-"190",1519,"Polana Canico",2,"7DF19AC4",2112985796,"Male","15-19y","Yes",NA,"Basic Secondary school (8-10)"
-"191",1520,"Polana Canico",2,"126DCF62",309186402,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"192",1523,"Polana Canico",2,"6CECD070",1827459184,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"193",1524,"Polana Canico",2,"45B9CEA9",1169804969,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"194",1526,"Polana Canico",2,"272EBC2B",657374251,"Female","30-39y","No","No schooling",NA
-"195",1539,"Polana Canico",2,"F75B23E1",4149945313,"Male","30-39y","Yes",NA,"Bachelors"
-"196",1540,"Polana Canico",2,"5DA335CD",1570977229,"Female","20-29y","No","Middle Secondary (11-12)",NA
-"197",1542,"Polana Canico",2,"9BC8EB99",2613635993,"Male","20-29y","No","Middle Secondary (11-12)",NA
-"198",1567,"Polana Canico",2,"68CF2EA5",1758408357,"Female","1-4y",NA,NA,NA
-"199",1568,"Polana Canico",2,"E7317FFF",3878780927,"Male","10-14y","No","No schooling",NA
-"200",1569,"Polana Canico",2,"CF152F0F",3474272015,"Female","5-9y",NA,NA,NA
-"201",1605,"Polana Canico",2,"ADC6D682",2915489410,"Male","1-4y",NA,NA,NA
-"202",1606,"Polana Canico",2,"6CECD070",1827459184,"Male","20-29y","No","Basic Secondary school (8-10)",NA
-"203",1607,"Polana Canico",2,"567140F0",1450262768,"Female","20-29y","No","Primary School (1-7)",NA
-"204",1608,"Polana Canico",2,"950CC02A",2500640810,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"205",1609,"Polana Canico",2,"0249F49D",38401181,"Female","5-9y",NA,NA,NA
-"206",1610,"Polana Canico",2,"6A9FB5EB",1788851688,"Female","1-4y",NA,NA,NA
-"207",1611,"Polana Canico",2,"6579D37C",1702482812,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"208",1613,"Polana Canico",2,"A264CC63",2724514915,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"209",1614,"Polana Canico",2,"D5207DD4",3575676372,"Female","1-4y",NA,NA,NA
-"210",1616,"Polana Canico",2,"FDF97280",4260983424,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"211",1618,"Polana Canico",2,"D2495E9F",3528023711,"Female","30-39y","No","Primary School (1-7)",NA
-"212",1619,"Polana Canico",2,"7DF19AC4",2112985796,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"213",1624,"Polana Canico",2,"0F0AC00E",252362766,"Male","5-9y",NA,NA,NA
-"214",1625,"Polana Canico",2,"C5410CE6",3309374694,"Female","1-4y",NA,NA,NA
-"215",1627,"Polana Canico",2,"3C114B9E",1007766430,"Male","30-39y","No","Basic Secondary school (8-10)",NA
-"216",1629,"Polana Canico",2,"90CBF595",2429285781,"Female","20-29y","Yes",NA,"Basic Secondary school (8-10)"
-"217",1630,"Polana Canico",2,"2F66CF32",795266866,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"218",1632,"Polana Canico",2,"7FDE60EB",2145280235,"Male","15-19y","Yes",NA,"1-3 years of college/university"
-"219",1633,"Polana Canico",2,"93EF89E6",3474272015,"Male","10-14y","Yes",NA,"Primary School (1-7)"
-"220",1634,"Polana Canico",2,"7201E52B",1912726827,"Female","10-14y","Yes",NA,"Basic Secondary school (8-10)"
-"221",1635,"Polana Canico",2,"E290C8BD",3801139389,"Female","1-4y",NA,NA,NA
-"222",1636,"Polana Canico",2,"BB211C8C",3139509388,"Male","30-39y","No","Middle Secondary (11-12)",NA
-"223",1637,"Polana Canico",2,"0F0AC00E",252362766,"Female","20-29y","No","Middle Secondary (11-12)",NA
-"224",1656,"Polana Canico",2,"6375E09A",1668669594,"Female","30-39y","No","Primary School (1-7)",NA
-"225",1657,"Polana Canico",2,"F029ABE0",4029262816,"Male","1-4y",NA,NA,NA
-"226",1716,"Polana Canico",2,"98ED9A65",2565708389,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"227",1717,"Polana Canico",2,"48DDBBF4",1222491124,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"228",1726,"Polana Canico",2,"48DDBBF4",1222491124,"Female","20-29y","Yes",NA,"Middle Secondary (11-12)"
-"229",1728,"Polana Canico",2,"1C4E9633",474912307,"Male","60+y","No","Primary School (1-7)",NA
-"230",1729,"Polana Canico",2,"D4D84F97",3570945943,"Female","60+y","No","No schooling",NA
-"231",1730,"Polana Canico",2,"01964B1A",26626842,"Male","20-29y","No","Basic Secondary school (8-10)",NA
-"232",1731,"Polana Canico",2,"7705947E",1996854398,"Female","20-29y","Yes",NA,"Middle Secondary (11-12)"
-"233",1732,"Polana Canico",2,"B6514945",3058780485,"Female","15-19y","Yes",NA,"Bachelors"
-"234",1734,"Polana Canico",2,"595D34C5",1499280581,"Male","30-39y","No","Primary School (1-7)",NA
-"235",1735,"Polana Canico",2,"59FA6AFD",1509583613,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"236",1737,"Polana Canico",2,"D0130626",3490907686,"Male","20-29y","No","Primary School (1-7)",NA
-"237",1740,"Polana Canico",2,"A264CC63",2724514915,"Male","30-39y","No","Primary School (1-7)",NA
-"238",1742,"Polana Canico",2,"D5207DD4",3575676372,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"239",1743,"Polana Canico",2,"6579D37C",1702482812,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"240",1745,"Polana Canico",2,"FDF97280",4260983424,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"241",1778,"Polana Canico",2,"3F3453F3",1060393971,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"242",1780,"Polana Canico",2,"D4D84F97",3570945943,"Male","20-29y","No","Basic Secondary school (8-10)",NA
-"243",1781,"Polana Canico",2,"7705947E",1996854398,"Female","20-29y","No","Basic Secondary school (8-10)",NA
-"244",1950,"Polana Canico",2,"272EBC2B",657374251,"Female","40-59y","No","Primary School (1-7)",NA
-"245",1951,"Polana Canico",2,"90CBF595",2429285781,"Female","10-14y","Yes",NA,"Primary School (1-7)"
-"246",1952,"Polana Canico",2,"3C114B9E",1007766430,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"247",1953,"Polana Canico",2,"05A700AC",94830764,"Male","20-29y","Yes",NA,"Middle Secondary (11-12)"
-"248",1954,"Polana Canico",2,"5BAC9680",1487705728,"Female","1-4y",NA,NA,NA
-"249",1979,"Polana Canico",2,"F58E44EB",4119741675,"Male","30-39y","No","Primary School (1-7)",NA
-"250",2229,"Polana Canico",2,"5BAC9680",1487705728,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"251",2258,"Polana Canico",2,"3F3453F3",1060393971,"Female","15-19y","No","Middle Secondary (11-12)",NA
-"252",5794,"Polana Canico",2,"D0130626",3490907686,"Male","20-29y","No","Basic Secondary school (8-10)",NA
-"253",5795,"Polana Canico",2,"126DCF62",309186402,"Male","5-9y",NA,NA,NA
-"254",5799,"Polana Canico",2,"59FA6AFD",1509583613,"Female","40-59y","No","Primary School (1-7)",NA
-"255",5804,"Polana Canico",2,"7201E52B",1912726827,"Male","30-39y","No","Primary School (1-7)",NA
-"256",5805,"Polana Canico",2,"90CBF595",2429285781,"Female","20-29y","No","No schooling",NA
-"257",5806,"Polana Canico",2,"C5410CE6",3309374694,"Female","5-9y","Yes",NA,"Primary School (1-7)"
-"258",5807,"Polana Canico",2,"C179A589",3245974921,"Male","5-9y","Yes",NA,"Primary School (1-7)"
-"259",5826,"Polana Canico",2,"5BAC9680",1487705728,"Male","5-9y","Yes",NA,"Primary School (1-7)"
+"","rec_id","isindex","aim","study_site","sensor_id","hwid","participant_sex","sex_other","age","participant_age","read_write","occupation","occupation_other","enrolled_school","highest_educ","school_level","transport_use","hh_resp_exposure","child","child_breastfeed","num_sibling"
+"1",433,NA,2,"Urban","F029ABE0",4029262816,"Male",NA,"26","<6mo","Yes","Unemployed",NA,"No","Secondary",NA,"Daily","No",NA,NA,NA
+"2",505,NA,2,"Urban","0F0AC00E",252362766,"Female",NA,"26","<6mo","Yes","Office worker",NA,"No","Secondary",NA,"Daily","No","Yes","No",NA
+"3",595,NA,2,"Urban","D0130626",3490907686,"Female",NA,"44","<6mo","Yes","Business person",NA,"No","Primary",NA,"Rarely","Yes","No",NA,NA
+"4",617,NA,2,"Urban","B093D42E",2962478126,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"1"
+"5",723,NA,2,"Urban","6375E09A",1668669594,"Female",NA,"33","<6mo","Yes",NA,NA,"No","Primary",NA,"≤3 times per week","No","No",NA,NA
+"6",1037,1,2,"Urban","2F66CF32",795266866,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"7",1038,0,2,"Urban","D5207DD4",3575676372,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"8",1040,1,2,"Urban","57B92915",1471752469,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"2"
+"9",1111,1,2,"Urban",NA,NA,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"10",1119,1,2,"Urban","D0130626",3490907686,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"11",1145,NA,2,"Urban","E2C58AE4",3804596964,"Female",NA,"43","<6mo","Yes","Office worker",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"12",1183,1,2,"Urban","565F06C9",1449068233,"Male",NA,"1","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"13",1202,1,2,"Urban","6CECD070",1827459184,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"1"
+"14",1260,1,2,"Urban","775F3576",2002728310,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"15",1285,1,2,"Urban","01964B1A",26626842,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"16",1305,1,2,"Urban","950CC02A",2500640810,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","Yes",NA,NA,"2"
+"17",1347,1,2,"Urban","1C4E9633",474912307,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"18",1367,1,2,"Urban","0249F49D",38401181,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"19",1387,1,2,"Urban","05A700AC",94830764,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","Yes",NA,NA,"1"
+"20",1390,NA,2,"Urban","B287D42A",2995246122,"Female",NA,"0","<6mo","Yes",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"21",1487,1,2,"Urban","ADC6D682",2915489410,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"22",1502,1,2,"Urban","6579D37C",1702482812,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"23",1512,1,2,"Urban","B648ADEB",3058216427,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"24",1515,NA,2,"Urban","CF152F0F",3474272015,"Male",NA,"0","<6mo","Yes",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"25",1516,1,2,"Urban",NA,NA,"Male",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"26",1518,1,2,"Urban","CF152F0F",3474272015,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"27",1527,1,2,"Urban","6373E09A",NA,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"28",1528,NA,2,"Urban","E290C8BD",3801139389,"Male",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"29",1529,1,2,"Urban","B287D42A",2995246122,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","Yes",NA,NA,"3"
+"30",1541,1,2,"Urban","73A0D657",1939920471,"Male",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"31",1603,0,2,"Urban","1B6E7DC6",460225990,"Female",NA,"32","<6mo","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"32",1604,0,2,"Urban","57B92915",1471752469,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"33",1615,1,2,"Urban","63137977",1662220663,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"34",1617,1,2,"Urban","335C4283",861684355,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"35",1623,1,2,"Urban","0249F49D",38401181,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"36",1626,1,2,"Urban","7AEECBB1",2062470065,"Male",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"37",1638,1,2,"Urban","0746B936",122075446,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"38",1727,1,2,"Urban","5DA335CD",1570977229,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"39",1733,1,2,"Urban","05A700AC",94830764,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"40",1736,1,2,"Urban","7AEECBB1",2062470065,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"41",1739,1,2,"Urban","A44C5E76",2756468342,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"42",1746,1,2,"Urban","30DEADD1",819899857,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"43",1747,NA,2,"Urban","335C4283",861684355,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"5"
+"44",1955,1,2,"Urban","67FD60EB",NA,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"45",2257,1,2,"Urban","E290C8BD",3801139389,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"0"
+"46",2259,NA,2,"Urban","73AOD657",NA,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"47",2261,1,2,"Urban","775F3576",2002728310,"Female",NA,"0","<6mo","No",NA,NA,NA,NA,NA,"Daily","No",NA,NA,"3"
+"48",5800,NA,2,"Urban","7FDE60EB",2145280235,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"49",5801,NA,2,"Urban","7ADEB947",2061416775,"Female",NA,"0","6-11mo","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"50",432,NA,2,"Urban","90CBF595",2429285781,"Female",NA,"66","60+y","Yes",NA,NA,"Yes",NA,"Primary","Rarely","No","No",NA,NA
+"51",434,NA,2,"Urban","0746B936",122075446,"Female",NA,"17","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","Daily","No","No",NA,"2"
+"52",435,NA,2,"Urban","0DD5BD3F",NA,"Male",NA,"15","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","Daily","No",NA,NA,"2"
+"53",455,NA,2,"Urban","48DDBBF4",1222491124,"Female",NA,"35","30-39y","Yes","Unemployed",NA,"No","Primary",NA,"Daily","No","No",NA,NA
+"54",456,NA,2,"Urban","6CECD070",1827459184,"Female",NA,"17","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No","No",NA,"4"
+"55",457,NA,2,"Urban","7705947E",1996854398,"Female",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No","No",NA,"5"
+"56",458,NA,2,"Urban","E691CC38",NA,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"2"
+"57",506,NA,2,"Urban","73A0D657",1939920471,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"58",578,NA,2,"Urban","041802E2",NA,"Male",NA,"40","40-59y","Yes","Office worker",NA,"No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
+"59",579,NA,2,"Urban","BFAAAFE9",NA,"Female",NA,"30","30-39y","Yes","Office worker",NA,"No","Secondary",NA,"Daily","Yes","No",NA,NA
+"60",580,1,2,"Urban","7201E52B",1912726827,"Female",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","Yes",NA,NA,"0"
+"61",596,NA,2,"Urban","6579D37C",1702482812,"Female",NA,"16","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","Yes","No",NA,"2"
+"62",597,NA,2,"Urban","BB211C8C",3139509388,"Male",NA,"12","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","Yes",NA,NA,"2"
+"63",598,1,2,"Urban","EC52843D",NA,"Male",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","Yes",NA,NA,"2"
+"64",610,NA,2,"Urban","30DEADD1",819899857,"Female",NA,"50","40-59y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","Yes","No",NA,NA
+"65",611,NA,2,"Urban","B6514945",3058780485,"Female",NA,"25","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Rarely","No","Yes","No",NA
+"66",612,NA,2,"Urban","F75B23E1",4149945313,"Female",NA,"17","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","Daily","No","No",NA,"4"
+"67",613,NA,2,"Urban","CF152F0F",3474272015,"Male",NA,"22","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
+"68",614,NA,2,"Urban","6F673A12",1869036050,"Male",NA,"6","5-9y","No","Unemployed",NA,"No","Primary",NA,"Never","No","No",NA,"2"
+"69",615,NA,2,"Urban","565F06C9",1449068233,"Female",NA,"25","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","No",NA,NA
+"70",616,1,2,"Urban","993564AB",2570413227,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"71",661,NA,2,"Urban","FC1DE353",NA,"Female",NA,"27","20-29y","Yes","Business person",NA,"No","Secondary",NA,"≤3 times per week","No","No",NA,NA
+"72",662,NA,2,"Urban","7FDE60EB",2145280235,"Female",NA,"59","40-59y","Yes",NA,NA,"No","Primary",NA,"Rarely","No","No","No",NA
+"73",663,1,2,"Urban","EDC58AE4",NA,"Male",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"74",703,NA,2,"Urban","90CBF595",2429285781,"Female",NA,"20","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","No","No",NA
+"75",704,1,2,"Urban","FDF97280",4260983424,"Male",NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"76",705,NA,2,"Urban","B287D42A",2995246122,"Female",NA,"27","20-29y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"77",706,NA,2,"Urban","775F3576",2002728310,"Female",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"0"
+"78",707,NA,2,"Urban","05A700AC",94830764,"Female",NA,"26","20-29y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"79",708,NA,2,"Urban","E691CC38",NA,"Female",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"80",709,NA,2,"Urban","5BAC9680",1487705728,"Female",NA,"62","60+y","No","Business person",NA,"No","None",NA,"Rarely","No","No",NA,NA
+"81",710,NA,2,"Urban","01964B1A",26626842,"Male",NA,"26","20-29y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"82",724,NA,2,"Urban","3C114B9E",1007766430,"Male",NA,"13","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Never","No",NA,NA,"4"
+"83",725,NA,2,"Urban","E290C8BD",3801139389,"Female",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"0"
+"84",726,1,2,"Urban","D6CFBE70",3603938928,"Male",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"1"
+"85",730,NA,2,"Urban","7ADEB947",2061416775,"Male",NA,"24","20-29y","Yes","Office worker",NA,"No","Primary",NA,"Rarely","Yes",NA,NA,NA
+"86",731,NA,2,"Urban","D2495E9F",3528023711,"Female",NA,"24","20-29y","Yes","Business person",NA,"No","Primary",NA,"Daily","Yes","No",NA,NA
+"87",732,NA,2,"Urban","1B6E7DC6",460225990,"Male",NA,"6","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"88",733,1,2,"Urban","3F3453F3",1060393971,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"89",735,NA,2,"Urban","ADC6D682",2915489410,"Female",NA,"44","40-59y","Yes",NA,NA,"No","Secondary",NA,"Rarely","Yes","Yes","No",NA
+"90",736,NA,2,"Urban","16B7EA20",NA,"Male",NA,"21","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Once monthly","No",NA,NA,NA
+"91",737,NA,2,"Urban","0DD5BD3F",NA,"Male",NA,"20","20-29y","Yes","Office worker",NA,"Yes",NA,"Primary",NA,"No",NA,NA,NA
+"92",738,NA,2,"Urban","45B9CEA9",1169804969,"Male",NA,"10","10-14y","No","Student",NA,"No","Primary",NA,"Rarely","Yes",NA,NA,"3"
+"93",739,1,2,"Urban","7705947E",1996854398,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Never","Yes",NA,NA,"3"
+"94",745,NA,2,"Urban","567140F0",1450262768,"Female",NA,"36","30-39y","Yes","Unemployed",NA,"Yes",NA,"Secondary","Daily","No","No",NA,NA
+"95",746,NA,2,"Urban","612540B1",NA,"Male",NA,"8","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"96",747,NA,2,"Urban","7DF19AC4",2112985796,"Male",NA,"9","5-9y","No","Student",NA,"Yes",NA,"Primary","Never","No",NA,NA,"3"
+"97",748,1,2,"Urban","C179A589",3245974921,"Male",NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,NA
+"98",773,NA,2,"Urban","B648ADEB",3058216427,"Female",NA,"26","20-29y","No","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"99",774,NA,2,"Urban","6A9FB5EB",1788851688,"Male",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"100",775,1,2,"Urban","1C4E9633",474912307,"Male",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"101",807,NA,2,"Urban","950CC02A",2500640810,"Female",NA,"44","40-59y","Yes","Unemployed",NA,"No","Primary",NA,"Never","No","No",NA,NA
+"102",808,NA,2,"Urban","59FA6AFD",1509583613,"Male",NA,"17","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"6"
+"103",809,NA,2,"Urban","63137977",1662220663,"Female",NA,"15","15-19y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"6"
+"104",810,0,2,"Urban","A264CC63",2724514915,"Female",NA,"10","10-14y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"6"
+"105",811,1,2,"Urban","F029ABE0",4029262816,"Female",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"6"
+"106",899,NA,2,"Urban","99FF6D3B",NA,"Female",NA,"58","40-59y","Yes","Office worker",NA,"No","Primary",NA,"Daily","Yes","No",NA,NA
+"107",900,NA,2,"Urban","0746B936",122075446,"Female",NA,"22","20-29y","Yes","Unemployed",NA,"Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
+"108",901,NA,2,"Urban","D4D84F97",3570945943,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"109",902,1,2,"Urban","272EBC2B",657374251,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"110",903,NA,2,"Urban","A498A0A5",NA,"Male",NA,"43","40-59y","Yes","Office worker",NA,"No","Primary",NA,"≤3 times per week","No",NA,NA,NA
+"111",904,NA,2,"Urban","F554A006",NA,"Female",NA,"32","30-39y","No","Unemployed",NA,"No","None",NA,"Rarely","No","Yes","No",NA
+"112",905,1,2,"Urban","B0834C7E",NA,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"113",906,NA,2,"Urban","6B592F7D",NA,"Female",NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"114",907,NA,2,"Urban","5DA335CD",1570977229,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","Once monthly","No",NA,NA,"3"
+"115",908,NA,2,"Urban","E7317FFF",3878780927,"Female",NA,"13","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No",NA,NA,"3"
+"116",909,NA,2,"Urban","DFB00C63",NA,"Female",NA,"27","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","No",NA,NA
+"117",910,0,2,"Urban","9BC8EB99",2613635993,"Male",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"118",965,NA,2,"Urban","612514B1",1629820081,"Female",NA,"51","40-59y","Yes","Business person",NA,"No","Primary",NA,"Daily","No","No",NA,NA
+"119",966,NA,2,"Urban","93GF89E6",NA,"Female",NA,"19","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No","No",NA,NA
+"120",967,NA,2,"Urban","B648ADGB",NA,"Male",NA,"21","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No",NA,NA,NA
+"121",968,NA,2,"Urban","6F673A12",1869036050,"Female",NA,"15","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No","No",NA,"5"
+"122",969,NA,2,"Urban","077075CE",NA,"Female",NA,"11","10-14y","Yes","Student",NA,"Yes",NA,"Primary","≤3 times per week","No","No",NA,"5"
+"123",970,NA,2,"Urban","73A0D657",1939920471,"Male",NA,"7","5-9y","No",NA,NA,"No","None",NA,"Rarely","No",NA,NA,"01"
+"124",971,1,2,"Urban","567140F0",1450262768,"Male",NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"01"
+"125",972,NA,2,"Urban","7201G52B",NA,"Male",NA,"36","30-39y","Yes","Business person",NA,"Yes",NA,"Primary","Daily","No",NA,NA,NA
+"126",1017,NA,2,"Urban","ADC6D682",2915489410,"Male",NA,"35","30-39y","Yes","Other","Motorista","No","Secondary",NA,"Rarely","No",NA,NA,NA
+"127",1018,0,2,"Urban","BB211C8C",3139509388,"Female",NA,"35","30-39y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"128",1025,NA,2,"Urban","CF152F0F",3474272015,"Female",NA,"27","20-29y","Yes","Other","medica tradicional","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"129",1030,NA,2,"Urban","8D46A482",2370217090,"Female",NA,"21","20-29y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"130",1031,NA,2,"Urban","C5410CE6",3309374694,"Male",NA,"7","5-9y","No","Student",NA,"Yes",NA,"Primary","Never","No",NA,NA,"3"
+"131",1032,NA,2,"Urban","FC1DE353",NA,"Female",NA,"11","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Never","No","No",NA,"1"
+"132",1033,1,2,"Urban","BD848166",NA,"Female",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"1"
+"133",1034,NA,2,"Urban","595D34C5",1499280581,"Female",NA,"66","60+y","No","Business person",NA,"No","None",NA,"Rarely","No","No",NA,NA
+"134",1035,0,2,"Urban","3F3453F3",1060393971,"Female",NA,"38","30-39y","Yes","Business person",NA,"No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
+"135",1036,0,2,"Urban","98ED9A65",2565708389,"Female",NA,"30","30-39y","Yes","Business person",NA,"No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
+"136",1041,NA,2,"Urban","BFAAAFE9",NA,"Male",NA,"17","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"2"
+"137",1109,NA,2,"Urban",NA,NA,"Male",NA,"25","20-29y","Yes","Office worker",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"138",1110,NA,2,"Urban",NA,NA,"Female",NA,"20","20-29y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"139",1116,NA,2,"Urban","6579D37C",1702482812,"Female",NA,"56","40-59y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"140",1117,NA,2,"Urban","45B9CEA9",1169804969,"Female",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"141",1118,NA,2,"Urban","7FDE60EB",2145280235,"Female",NA,"26","20-29y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"142",1129,NA,2,"Urban","F58E44EB",4119741675,"Male",NA,"31","30-39y","Yes","Office worker",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"143",1130,NA,2,"Urban","777F3576",NA,"Female",NA,"24","20-29y","No","Unemployed",NA,"No","None",NA,"≤3 times per week","No","Yes","Yes",NA
+"144",1131,1,2,"Urban","59FA6AFD",1509583613,"Female",NA,"1","1-4y","No","Student",NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"145",1132,NA,2,"Urban","D0130626",3490907686,"Male",NA,"6","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"146",1141,NA,2,"Urban","7FDE60EB",2145280235,"Female",NA,"25","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","No",NA
+"147",1142,1,2,"Urban","6579D37C",1702482812,"Male",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"148",1146,NA,2,"Urban","6CECD070",1827459184,"Female",NA,"21","20-29y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"149",1147,NA,2,"Urban","B648ADEB",3058216427,"Female",NA,"17","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","Daily","No","No",NA,"2"
+"150",1148,1,2,"Urban","612514B1",1629820081,"Male",NA,"3","1-4y","Yes",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,NA
+"151",1180,NA,2,"Urban","7201E52B",1912726827,"Male",NA,"52","40-59y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No",NA,NA,"3"
+"152",1182,NA,2,"Urban","FDF97280",4260983424,"Female",NA,"25","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","No",NA
+"153",1184,NA,2,"Urban","93EF89E9",NA,"Male",NA,"16","15-19y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"1"
+"154",1188,NA,2,"Urban",NA,NA,"Male",NA,"59","40-59y","Yes","Office worker",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"155",1190,NA,2,"Urban","05A700AC",94830764,"Male",NA,"40","40-59y","Yes","Casual laboror",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"156",1191,NA,2,"Urban",NA,NA,"Female",NA,"35","30-39y","Yes",NA,NA,"No","Secondary",NA,"Rarely","No","No",NA,NA
+"157",1192,NA,2,"Urban","0746B936",122075446,"Male",NA,"13","10-14y","Yes","Student",NA,"Yes",NA,"Primary","≤3 times per week","No",NA,NA,"1"
+"158",1193,NA,2,"Urban","5BAC9680",1487705728,"Male",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","≤3 times per week","No",NA,NA,"01"
+"159",1194,NA,2,"Urban","7705947E",1996854398,"Male",NA,"8","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"02"
+"160",1195,NA,2,"Urban","6BDA8DED",1809485293,"Female",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"02"
+"161",1196,1,2,"Urban","6375E09A",1668669594,"Male",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Never","No",NA,NA,"02"
+"162",1199,NA,2,"Urban","D2495E9F",3528023711,"Male",NA,"43","40-59y","Yes","Casual laboror",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,NA
+"163",1200,NA,2,"Urban","1B6E7DC6",460225990,"Female",NA,"25","20-29y","Yes",NA,NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"164",1201,NA,2,"Urban","B648ADEB",3058216427,"Male",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"165",1249,0,2,"Urban","90CBF595",2429285781,"Male",NA,"62","60+y","Yes","Office worker",NA,"No","Primary",NA,"≤3 times per week","No",NA,NA,NA
+"166",1250,0,2,"Urban","126DCF62",309186402,"Female",NA,"62","60+y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"167",1251,0,2,"Urban","272EBC2B",657374251,"Female",NA,"21","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"168",1252,1,2,"Urban","1C4E9633",474912307,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"169",1253,0,2,"Urban","99FF6D3B",NA,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"170",1254,0,2,"Urban","F029ABE0",4029262816,"Female",NA,"7","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"0"
+"171",1255,0,2,"Urban","1BF0AB62",NA,"Female",NA,"11","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"1"
+"172",1257,NA,2,"Urban","A264CC63",2724514915,"Male",NA,"32","30-39y","No","Office worker",NA,"No","None",NA,"≤3 times per week","No",NA,NA,NA
+"173",1258,NA,2,"Urban","D0130626",3490907686,"Female",NA,"28","20-29y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","Yes","No",NA
+"174",1259,NA,2,"Urban","63137977",1662220663,"Female",NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"175",1270,NA,2,"Urban","335C4283",861684355,"Female",NA,"33","30-39y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","No",NA,NA
+"176",1271,0,2,"Urban","2F66CF32",795266866,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","Once monthly","No",NA,NA,"3"
+"177",1272,0,2,"Urban","D5207DD4",3575676372,"Male",NA,"9","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"178",1273,0,2,"Urban","993564AB",2570413227,"Male",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"179",1274,1,2,"Urban","48DDBBF4",1222491124,"Male",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
+"180",1277,NA,2,"Urban","6A9FB5EB",1788851688,"Male",NA,"24","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Daily","No",NA,NA,NA
+"181",1278,NA,2,"Urban","BO93D42E",NA,"Female",NA,"23","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Daily","No","No",NA,NA
+"182",1279,1,2,"Urban","BFAAAFE9",NA,"Male",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"183",1283,0,2,"Urban","595D34C5",1499280581,"Male",NA,"77","60+y","No","Retired",NA,"No","None",NA,"Rarely","No",NA,NA,NA
+"184",1284,0,2,"Urban","C5410CE6",3309374694,"Female",NA,"31","30-39y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"185",1303,NA,2,"Urban","B6514945",3058780485,"Male",NA,"40","40-59y","Yes","Office worker",NA,"No","Primary",NA,"Daily","Yes",NA,NA,NA
+"186",1304,NA,2,"Urban","CF152F0F",3474272015,"Female",NA,"33","30-39y","Yes","Business person",NA,"No","Primary",NA,"Rarely","Yes","Yes","Yes",NA
+"187",1314,NA,2,"Urban",NA,NA,"Male",NA,"59","40-59y","Yes","Office worker",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"188",1315,0,2,"Urban",NA,NA,"Male",NA,"32","30-39y","Yes","Business person",NA,"No","Secondary",NA,"Daily","Yes",NA,NA,NA
+"189",1343,NA,2,"Urban","77DE60EB",NA,"Female",NA,"54","40-59y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"190",1344,NA,2,"Urban","6375E09A",1668669594,"Female",NA,"21","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"191",1345,NA,2,"Urban","126DCF62",309186402,"Male",NA,"18","15-19y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,NA
+"192",1346,0,2,"Urban","D2495E9F",3528023711,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
+"193",1366,NA,2,"Urban","7705947E",1996854398,"Female",NA,"25","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","No",NA
+"194",1368,NA,2,"Urban","6CECD070",1827459184,"Female",NA,"43","40-59y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"195",1369,NA,2,"Urban","D4D84F9F",NA,"Male",NA,"56","40-59y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"196",1370,NA,2,"Urban","272EBC2B",657374251,"Female",NA,"55","40-59y","No","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"197",1371,NA,2,"Urban","BB211C8C",3139509388,"Female",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"4"
+"198",1386,0,2,"Urban","612514B1",1629820081,"Female",NA,"15","15-19y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","Yes","No",NA,"7"
+"199",1388,0,2,"Urban","C179A589",3245974921,"Male",NA,"7","5-9y","No","Student",NA,"No","Primary",NA,"≤3 times per week","No",NA,NA,"1"
+"200",1389,NA,2,"Urban","D6CFBE70",3603938928,"Female",NA,"25","20-29y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"201",1391,1,2,"Urban","E290C8BD",3801139389,"Female",NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"202",1484,NA,2,"Urban","5BAC9680",1487705728,"Female",NA,"51","40-59y","Yes","Office worker",NA,"No","Secondary",NA,"Daily","No","No",NA,NA
+"203",1485,NA,2,"Urban","1B6E7DC6",460225990,"Male",NA,"19","15-19y","Yes","Student",NA,"Yes",NA,"Bachelors or more","Daily","No",NA,NA,NA
+"204",1486,NA,2,"Urban","FQ29ABE0",NA,"Female",NA,"26","20-29y","Yes","Office worker",NA,"No","Bachelors or more",NA,"Daily","No","Yes","Yes",NA
+"205",1488,NA,2,"Urban","7FDE60EB",2145280235,"Male",NA,"34","30-39y","Yes","Office worker",NA,"No","Secondary",NA,"Daily","Yes",NA,NA,NA
+"206",1489,NA,2,"Urban","567140F0",1450262768,"Female",NA,"36","30-39y","Yes",NA,NA,"No","Primary",NA,"≤3 times per week","No","Yes","No",NA
+"207",1490,NA,2,"Urban","D2495E9F",3528023711,"Female",NA,"8","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"208",1491,1,2,"Urban","0249F49D",38401181,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"209",1492,NA,2,"Urban","D4D84F97",3570945943,"Male",NA,"45","40-59y","Yes","Office worker",NA,"No","Secondary",NA,"≤3 times per week","Yes",NA,NA,NA
+"210",1493,0,2,"Urban",NA,NA,"Female",NA,"25","20-29y","Yes","Business person",NA,"No","Secondary",NA,"≤3 times per week","No","Yes","No",NA
+"211",1494,1,2,"Urban",NA,NA,"Male",NA,"1","1-4y",NA,NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"212",1495,NA,2,"Urban",NA,NA,"Male",NA,"23","20-29y","Yes","Casual laboror",NA,"No","Secondary",NA,"Daily","Unknown",NA,NA,NA
+"213",1496,NA,2,"Urban","D0130626",3490907686,"Female",NA,"56","40-59y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"214",1497,NA,2,"Urban","B6514945",3058780485,"Male",NA,"32","30-39y","Yes","Casual laboror",NA,"No","Primary",NA,"Once monthly","No",NA,NA,NA
+"215",1498,NA,2,"Urban","335C4283",861684355,NA,NA,"3","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"216",1499,1,2,"Urban","2F66CF32",795266866,"Male",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"217",1500,NA,2,"Urban","63137977",1662220663,"Female",NA,"30","30-39y","Yes","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"218",1501,NA,2,"Urban","D5207DD4",3575676372,"Female",NA,"17","15-19y","Yes","Business person",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes","0"
+"219",1503,NA,2,"Urban","0746B936",122075446,"Male",NA,"12","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"220",1504,NA,2,"Urban","A264CC63",2724514915,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"3"
+"221",1505,NA,2,"Urban","BB211C8C",3139509388,"Female",NA,"38","30-39y","Yes","Unemployed",NA,"No","None",NA,"Rarely","No","Yes","Yes",NA
+"222",1506,NA,2,"Urban","1C4E9633",474912307,"Female",NA,"6","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"223",1507,NA,2,"Urban","595D34C5",1499280581,"Female",NA,"19","15-19y","No","Unemployed",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"224",1510,NA,2,"Urban",NA,NA,"Female",NA,"27","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"225",1511,NA,2,"Urban",NA,NA,"Female",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"226",1513,NA,2,"Urban","993564AB",2570413227,"Male",NA,"27","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No",NA,NA,NA
+"227",1514,NA,2,"Urban",NA,NA,"Female",NA,"22","20-29y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No","Yes","Yes",NA
+"228",1519,NA,2,"Urban","7DF19AC4",2112985796,"Male",NA,"16","15-19y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
+"229",1520,NA,2,"Urban","126DCF62",309186402,"Male",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"230",1521,NA,2,"Urban","8D46A482",2370217090,"Female",NA,"30","30-39y","Yes","Business person",NA,"No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"231",1522,NA,2,"Urban",NA,NA,"Male",NA,"9","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"232",1523,NA,2,"Urban","6CECD070",1827459184,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"233",1524,NA,2,"Urban","45B9CEA9",1169804969,"Female",NA,"9","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"234",1526,NA,2,"Urban","272EBC2B",657374251,"Female",NA,"34","30-39y","No","Business person",NA,"No","None",NA,"Rarely","No","Yes","Yes",NA
+"235",1530,NA,2,"Urban","B093D42E",2962478126,"Male",NA,"7","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","Yes",NA,NA,"3"
+"236",1539,0,2,"Urban","F75B23E1",4149945313,"Male",NA,"33","30-39y","Yes","Office worker",NA,"Yes",NA,"Bachelors or more","Daily","No",NA,NA,NA
+"237",1540,NA,2,"Urban","5DA335CD",1570977229,"Female",NA,"24","20-29y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"238",1542,NA,2,"Urban","9BC8EB99",2613635993,"Male",NA,"27","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Rarely","No",NA,NA,NA
+"239",1566,0,2,"Urban",NA,NA,"Female",NA,"39","30-39y","No","Casual laboror",NA,"No","Primary",NA,"Once monthly","No","Yes","No",NA
+"240",1567,1,2,"Urban","68CF2EA5",1758408357,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"241",1568,0,2,"Urban","E7317FFF",3878780927,"Male",NA,"10","10-14y","No",NA,NA,"No","None",NA,"Rarely","No",NA,NA,"2"
+"242",1606,NA,2,"Urban","6CECD070",1827459184,"Male",NA,"27","20-29y","Yes","Business person",NA,"No","Secondary",NA,"Rarely","No",NA,NA,NA
+"243",1607,NA,2,"Urban","567140F0",1450262768,"Female",NA,"24","20-29y","Yes","Casual laboror",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"244",1608,NA,2,"Urban","950CC02A",2500640810,"Female",NA,"7","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"245",1609,NA,2,"Urban","0249F49D",38401181,"Female",NA,"5","5-9y","Yes",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"246",1610,1,2,"Urban","6A9FB5EB",1788851688,"Female",NA,"2","1-4y","Yes",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"247",1611,NA,2,"Urban","6579D37C",1702482812,"Female",NA,"23","20-29y","Yes",NA,NA,"No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
+"248",1613,NA,2,"Urban","A264CC63",2724514915,"Female",NA,"8","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"249",1614,NA,2,"Urban","D5207DD4",3575676372,"Female",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"250",1616,NA,2,"Urban","FDF97280",4260983424,"Female",NA,"13","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"02"
+"251",1624,NA,2,"Urban","0F0AC00E",252362766,"Male",NA,"5","5-9y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"252",1625,NA,2,"Urban","C5410CE6",3309374694,"Female",NA,"2","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"253",1627,NA,2,"Urban","3C114B9E",1007766430,"Male",NA,"37","30-39y","Yes","Office worker",NA,"No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
+"254",1629,NA,2,"Urban","90CBF595",2429285781,"Female",NA,"21","20-29y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No","No",NA,NA
+"255",1630,NA,2,"Urban","2F66CF32",795266866,"Female",NA,"11","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"3"
+"256",1631,NA,2,"Urban",NA,NA,"Female",NA,"48","40-59y","Yes","Casual laboror",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"257",1632,NA,2,"Urban","7FDE60EB",2145280235,"Male",NA,"19","15-19y","Yes","Student",NA,"Yes",NA,"College","Daily","No",NA,NA,NA
+"258",1633,NA,2,"Urban","93EF89E6",3474272015,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"0"
+"259",1634,NA,2,"Urban","7201E52B",1912726827,"Female",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No","No",NA,"0"
+"260",1635,1,2,"Urban","E290C8BD",3801139389,"Female",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"261",1636,NA,2,"Urban","BB211C8C",3139509388,"Male",NA,"30","30-39y","Yes","Casual laboror",NA,"No","Secondary",NA,"Daily","No",NA,NA,NA
+"262",1637,NA,2,"Urban","0F0AC00E",252362766,"Female",NA,"25","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Rarely","No","Yes","No",NA
+"263",1686,NA,2,"Urban","F7C6FA98",NA,"Male",NA,"10","10-14y","No","Student",NA,"Yes",NA,"Primary","Never","No",NA,NA,"3"
+"264",1716,0,2,"Urban","98ED9A65",2565708389,"Female",NA,"11","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"2"
+"265",1717,0,2,"Urban","48DDBBF4",1222491124,"Male",NA,"9","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"266",1725,0,2,"Urban","5DA335CD",1570977229,"Male",NA,"22","20-29y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No",NA,NA,NA
+"267",1726,0,2,"Urban","48DDBBF4",1222491124,"Female",NA,"21","20-29y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
+"268",1728,NA,2,"Urban","1C4E9633",474912307,"Male",NA,"64","60+y","Yes","Office worker",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"269",1729,NA,2,"Urban","D4D84F97",3570945943,"Female",NA,"61","60+y","No",NA,NA,"No","None",NA,"≤3 times per week","No","No",NA,NA
+"270",1730,NA,2,"Urban","01964B1A",26626842,"Male",NA,"29","20-29y","Yes","Casual laboror",NA,"No","Secondary",NA,"Rarely","No",NA,NA,NA
+"271",1731,NA,2,"Urban","7705947E",1996854398,"Female",NA,"22","20-29y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
+"272",1732,NA,2,"Urban","B6514945",3058780485,"Female",NA,"18","15-19y","Yes","Student",NA,"Yes",NA,"Bachelors or more","Daily","No","No",NA,NA
+"273",1734,NA,2,"Urban","595D34C5",1499280581,"Male",NA,"31","30-39y","Yes","Office worker",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"274",1735,NA,2,"Urban","59FA6AFD",1509583613,"Female",NA,"21","20-29y","Yes",NA,NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"275",1737,NA,2,"Urban","D0130626",3490907686,"Male",NA,"28","20-29y","Yes","Office worker",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"276",1738,NA,2,"Urban","B287D421",NA,"Female",NA,"30","30-39y","Yes",NA,NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"277",1740,NA,2,"Urban","A264CC63",2724514915,"Male",NA,"31","30-39y","Yes","Casual laboror",NA,"No","Primary",NA,"Daily","No",NA,NA,NA
+"278",1742,NA,2,"Urban","D5207DD4",3575676372,"Female",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"05"
+"279",1743,NA,2,"Urban","6579D37C",1702482812,"Female",NA,"8","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"05"
+"280",1745,NA,2,"Urban","FDF97280",4260983424,"Female",NA,"21","20-29y","Yes",NA,NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"281",1778,NA,2,"Urban","3F3453F3",1060393971,"Male",NA,"8","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"282",1780,NA,2,"Urban","D4D84F97",3570945943,"Male",NA,"27","20-29y","Yes","Office worker",NA,"No","Secondary",NA,"Daily","No",NA,NA,NA
+"283",1781,NA,2,"Urban","7705947E",1996854398,"Female",NA,"20","20-29y","Yes","Business person",NA,"No","Secondary",NA,"≤3 times per week","No","Yes","No",NA
+"284",1782,1,2,"Urban","B6514945",3058780485,"Female",NA,"0","1-4y","No",NA,NA,NA,NA,NA,"Rarely","Yes",NA,NA,"0"
+"285",1859,NA,2,"Urban",NA,NA,"Male",NA,"75","60+y","Yes","Retired",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"286",1897,NA,2,"Urban",NA,NA,"Male",NA,"63","60+y","Yes","Retired",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"287",1950,NA,2,"Urban","272EBC2B",657374251,"Female",NA,"43","40-59y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"288",1951,NA,2,"Urban","90CBF595",2429285781,"Female",NA,"11","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No","No",NA,"4"
+"289",1952,NA,2,"Urban","3C114B9E",1007766430,"Male",NA,"9","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"4"
+"290",1953,NA,2,"Urban","05A700AC",94830764,"Male",NA,"23","20-29y","Yes","Student",NA,"Yes",NA,"Secondary","≤3 times per week","No",NA,NA,NA
+"291",1954,NA,2,"Urban","5BAC9680",1487705728,"Female",NA,"4","1-4y","No",NA,NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"292",1979,0,2,"Urban","F58E44EB",4119741675,"Male",NA,"38","30-39y","Yes","Casual laboror",NA,"No","Primary",NA,"Rarely","No",NA,NA,NA
+"293",2228,NA,2,"Urban","126DCF62",309186402,"Male",NA,"14","10-14y","Yes","Student",NA,"Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
+"294",2230,1,2,"Urban","7029ABE0",NA,"Male",NA,"1","1-4y","No",NA,NA,NA,NA,NA,"Daily","No",NA,NA,"3"
+"295",2253,NA,2,"Urban","126DCF62",309186402,"Male",NA,"10","10-14y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"5"
+"296",2256,NA,2,"Urban","3C114B9C",NA,"Female",NA,"42","40-59y","Yes","Business person",NA,"No","Primary",NA,"Rarely","No","No",NA,NA
+"297",2258,NA,2,"Urban","3F3453F3",1060393971,"Female",NA,"19","15-19y","Yes","Unemployed",NA,"No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"298",5804,NA,2,"Urban","7201E52B",1912726827,"Male",NA,"34","30-39y","Yes","Casual laboror",NA,"No","Primary",NA,"Daily","Yes",NA,NA,NA
+"299",5805,NA,2,"Urban","90CBF595",2429285781,"Female",NA,"26","20-29y","Yes",NA,NA,"No","None",NA,"Rarely","No","Yes","Yes",NA
+"300",5806,NA,2,"Urban","C5410CE6",3309374694,"Female",NA,"7","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"301",5807,NA,2,"Urban","C179A589",3245974921,"Male",NA,"9","5-9y","Yes","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"302",5826,NA,2,"Urban","5BAC9680",1487705728,"Male",NA,"7","5-9y","No","Student",NA,"Yes",NA,"Primary","Rarely","No",NA,NA,NA
