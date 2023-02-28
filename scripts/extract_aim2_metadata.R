@@ -1,26 +1,23 @@
 # extract aim 2 participant details for use in sensor analysis.
 
 rm(list=ls())
-source("./scripts/00_load_libraries.R")
+pacman::p_load(tidyr, dplyr, gtsummary)
 
-aim2 <- readRDS("./data/clean/individual_info.RDS") %>% 
-  filter(., aim==2)
+aim2 <- readRDS("./data/clean/participant_data_aim2.RDS") %>%
+  select("rec_id", "isindex", "aim", "study_site", "sensor_id", 
+         "participant_sex", "sex_other", "age", "participant_age", "read_write", 
+         "occupation", "occupation_other", "enrolled_school", "highest_educ",  
+         "school_level", "transport_use", "hh_resp_exposure", "child", 
+         "child_breastfeed", "num_sibling")
 
-# names(aim2)
-# table(aim2$study_site) # 418 rural, 367 urban
-
-keep_vars <- c("rec_id","aim","sensor_id", "sex", "age_cat",         
-                "enrolled_school","highest_educ","school_level",            
-                "study_site")
+table(aim2$study_site) # 418 rural, 367 urban
 
 
 # Rural site
 aim2_rural <- aim2 %>%
-  filter(study_site=="Manhiça") %>%
-  select(all_of(keep_vars))
+  filter(study_site=="Rural")
 
 rural_summary_all <- aim2_rural %>%
-  select("sex", "age_cat", "enrolled_school", "highest_educ", "school_level") %>%
   tbl_summary(percent="column",
               digits = all_categorical() ~ 1) %>%
   bold_labels() %>%
@@ -29,6 +26,7 @@ rural_summary_all <- aim2_rural %>%
 rural_summary_all
 
 # check sensor ids
+table()
 # currently, check for these rec_ids: 
 drop_sensor_rural <- c("1263","478","942","867","1378",
                        "6853","1600","1004", "531", "1463")
@@ -71,7 +69,7 @@ rural_summary_final
 # 
 write.csv(aim2_rural_final,"./data/sensor_metadata/mozambique_aim2_rural_participants.csv" )
 
-# check characterisrics of dropped sensors
+# check characteristics of dropped sensors
 aim2_rural_drop <- aim2_rural %>%
   left_join(rural_meta, by="sensor_id") %>%
   filter(is.na(hwid) | hwid==0)
