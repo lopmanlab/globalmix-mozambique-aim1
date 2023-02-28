@@ -1,13 +1,21 @@
 ---
 title: "Globalmix Mozambique analysis"
 author: "M. C. Kiti"
-highlight-style: pygments 
-format: 
+highlight-style: pygments
+prefer-html: true
+format:
+  # pdf:
+  #   toc: true
+  #   toc-location: left
+  #   number-sections: true
+  #   toc-depth: 4
+  #   code-fold: false
+  #   fig-align: left
   html:
     toc: true
     toc-location: left
     number-sections: true
-    toc-depth: 4
+    toc-depth: 2
     code-fold: false
     fig-align: left
 execute: 
