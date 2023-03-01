@@ -7,5 +7,5 @@ rm(list=ls())
 ## Installing required packges
 pacman::p_load(tidyr, dplyr, ggplot2, plotly,
                ggthemes, lubridate, knitr, kableExtra, 
-               table1, kableExtra, gtsummary)
+               table1, kableExtra, gtsummary, readr)
 # RCurl, REDCapR, redcapAPI, 
