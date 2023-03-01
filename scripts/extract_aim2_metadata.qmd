@@ -17,12 +17,14 @@ rm(list=ls())
 pacman::p_load(tidyr, dplyr, gtsummary, xlsx, readr)
 
 aim2 <- readRDS("../data/clean/participant_data_aim2.RDS") %>%
-  select("rec_id", "isindex", "aim", "study_site", "sensor_id", 
+  select("rec_id", "date_enrolled", "isindex", "aim", "study_site", "sensor_id", 
          "participant_sex", "sex_other", "age", "participant_age", "read_write", 
          "occupation", "occupation_other", "enrolled_school", "highest_educ",  
          "school_level", "transport_use", "hh_resp_exposure", "child", 
          "child_breastfeed", "num_sibling") 
 
+date_enrolled <- readRDS("../data/clean/household_survey_aim2.RDS") #%>%
+# names(date_enrolled)
 # there are some records that we need to delete from the dataset
 drop_recid <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv",
                        show_col_types = FALSE)
@@ -109,7 +111,7 @@ rural_meta <- read.csv("../data/sensor_metadata/mozambique_rural_sensor_meta.csv
 rural_sensors <- rural_sensors %>%
   left_join(rural_meta, by="sensor_id") %>%
   distinct(rec_id, .keep_all = TRUE) %>%
-  select("rec_id", "isindex", "aim", "study_site", "sensor_id", "hwid",
+  select("rec_id", "date_enrolled", "isindex", "aim", "study_site", "sensor_id", "hwid",
          "participant_sex", "sex_other", "age", "participant_age", "read_write", 
          "occupation", "occupation_other", "enrolled_school", "highest_educ",  
          "school_level", "transport_use", "hh_resp_exposure", "child", 
@@ -118,13 +120,13 @@ rural_sensors <- rural_sensors %>%
 # extract and check characteristics of individuals with missing sensor_id and hwid
 rural_missing_sensorid <- rural_sensors %>%
   filter(is.na(sensor_id) | is.na(hwid)) %>%
-  select(rec_id, sensor_id, hwid, isindex, participant_sex, participant_age)
+  select(rec_id, date_enrolled, sensor_id, hwid, isindex, participant_sex, participant_age)
 
 # export this for checking
 write.xlsx(rural_missing_sensorid, 
            file =  "../data/sensor_metadata/mozambique_missing_aim2_data.xlsx",
            sheetName = "rural", 
-           append = FALSE)
+           append = FALSE, showNA = FALSE)
 
 # save rural participant metadata
 write.csv(rural_sensors,"../data/sensor_metadata/mozambique_aim2_rural_participants.csv")
@@ -220,7 +222,7 @@ urban_meta <- read.csv("../data/sensor_metadata/mozambique_urban_sensor_meta.csv
 urban_sensors <- urban_sensors %>%
   left_join(urban_meta, by="sensor_id") %>%
   distinct(rec_id, .keep_all = TRUE) %>%
-  select("rec_id", "isindex", "aim", "study_site", "sensor_id", "hwid",
+  select("rec_id", "date_enrolled", "isindex", "aim", "study_site", "sensor_id", "hwid",
          "participant_sex", "sex_other", "age", "participant_age", "read_write", 
          "occupation", "occupation_other", "enrolled_school", "highest_educ",  
          "school_level", "transport_use", "hh_resp_exposure", "child", 
@@ -234,13 +236,13 @@ urban_missing_hwid <- urban_sensors %>%
 # check characteristics of individuals with missing sensor_id
 urban_missing_sensorid <- urban_sensors %>%
   filter(is.na(sensor_id) | is.na(hwid)) %>%
-  select(rec_id, sensor_id, hwid, isindex, participant_sex, participant_age)
+  select(rec_id, date_enrolled, sensor_id, hwid, isindex, participant_sex, participant_age)
 
 # export this for checking
 write.xlsx(urban_missing_sensorid, 
            file =  "../data/sensor_metadata/mozambique_missing_aim2_data.xlsx",
            sheetName = "urban", 
-           append = FALSE)
+           append = TRUE, showNA = FALSE)
 
 # save rural participant metadata
 write.csv(urban_sensors,"../data/sensor_metadata/mozambique_aim2_urban_participants.csv")
