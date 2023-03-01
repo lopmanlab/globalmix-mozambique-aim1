@@ -609,7 +609,9 @@ label(exit$phone_uselb) <- "In the last 24 hours, how often did you call/ text u
 library(readxl)
 
 # drop all rec_ids in list given by Nilzio. these are 53 individuals in PC who did not complete the study.
-todelete1 <- read_excel("../data/sensor_metadata/records_to_remove_09062022.xlsx", sheet=1)
+# todelete1 <- read_excel("../data/sensor_metadata/records_to_remove_09062022.xlsx", sheet=1)
+todelete1 <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv")
+
 
 length(unique(study_site$rec_id)) # 2186
 length(unique(participant$rec_id)) # 2119
@@ -821,8 +823,9 @@ cont_d1_hh <- cont_d1_hh %>%
          "location_contact_d1_hh___7", "location_contact_d1_hh___8", 
          "location_contact_d1_hh___9", "location_contact_d1_hh___10", 
          "location_contact_d1_hh___11", "location_contact_other_d1",
-         "contact_id", "hh_member_id2", "hh_member_name") # drop hh_member_name,  "hh_member_id", 
-# "individual_id",
+         "contact_id", "hh_member_id2", "hh_member_name") # drop hh_member_name,  "hh_member_id", "individual_id",
+   # drop hh members with whom participant did not have a contact
+  # filter(had_contact == "Yes")
 ```
 
 
@@ -900,8 +903,8 @@ cont_d2_hh <- cont_d2_hh %>%
          "location_contact_d2_hh___7", "location_contact_d2_hh___8", 
          "location_contact_d2_hh___9", "location_contact_d2_hh___10", 
          "location_contact_d2_hh___11", "location_contact_other_d2",
-         "contact_id","hh_member_id2", "hh_member_name") # drop   "hh_member_id", 
-# "individual_id",
+         "contact_id","hh_member_id2", "hh_member_name") # drop, "hh_member_id", # "individual_id",
+    # filter(had_contact == "Yes")
 ```
 
 /
@@ -995,6 +998,7 @@ contact_hh_all <- contact_hh_all %>%
                                 (study_day == 1 & contact_count == 2)), "Both Days",
                              ifelse(contact_count == 1 & study_day == 2, "Day2 Only",
                                     ifelse(contact_count == 1 & study_day == 1, "Day1 Only", NA)))) %>%
+  filter(had_contact=="Yes") %>% # household contacts with 10700/15156 (71%) registered members
   # keep select variables
   select("rec_id","study_site", "hh_membership", "hh_member_hoh", "hh_member_id2",
          "hh_member_sex", "hh_member_age", "hh_member_relationship", "hh_member_relationship_other",
@@ -1175,7 +1179,10 @@ names(c.20) <- str_remove(names(c.20), "_20")
 
 cont_d2_rep <- rbind(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
    c.15,c.16,c.17,c.18,c.19,c.20)
+
+# and then, we keep only the repeat contacts with non-hh individuals reported in d1.
 cont_d2_rep <- cont_d2_rep[which(cont_d2_rep$repeat_contact_d2_rep == 1),]
+# out of 38260 non-hh contacts reported on d1, 6141 (16%) were repeat.
 
 rm(c.1,c.2,c.3,c.4,c.5,c.6,c.7,c.8,c.9,c.10,c.11,c.12,c.13,c.14,
    c.15,c.16,c.17,c.18,c.19,c.20)
@@ -1225,11 +1232,11 @@ contact_nonhh_all <- contact_nonhh_all %>%
                                     ifelse((study_day == 1 & contact_count == 1), "Day1 Only", NA))))
 
 contact_nonhh_all$fromdayone[which(contact_nonhh_all$contact_count > 2 & 
-                                  contact_nonhh_all$repeat_contact_d2=="unique" & 
+                                  contact_nonhh_all$repeat_contact_d2=="Unique" & 
                                   contact_nonhh_all$study_day==2)] <- "Day2 Only"
 
 contact_nonhh_all$fromdayone[which(contact_nonhh_all$contact_count > 2 & 
-                            contact_nonhh_all$repeat_contact_d2=="repeat" & 
+                            contact_nonhh_all$repeat_contact_d2=="Repeat" & 
                             contact_nonhh_all$study_day==2)] <- "Both Days"
 
 
@@ -1272,8 +1279,8 @@ contact_hh_all = contact_hh_all %>%
                                         hh_member_age %in% 50:59 ~ "40-59y", # 40-59
                                         hh_member_age >=60 ~ "60+y"))
 
-table(contact_hh_all$age_group_contact, useNA = "always")
-#  drop "I don't know" and NA
+table(contact_hh_all$contact_age, useNA = "always")
+#  drop "Missing" and NA
 contact_hh_all <- contact_hh_all %>% #15840
   subset(contact_age != "Missing")  # n=345 No response ages
 
@@ -1285,22 +1292,22 @@ label(contact_hh_all$contact_age) <- "Age group"
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(contact_id = case_when(had_contact == 0 ~ "No",
-                                         had_contact == 1 ~ "Yes",
-                                         had_contact == 2 ~ "Not applicable"))
+                                       had_contact == 1 ~ "Yes",
+                                       had_contact == 2 ~ "Not applicable"))
 label(contact_hh_all$had_contact) <- "Did you have contact with this household member?"
 
 contact_hh_all <- contact_hh_all %>% 
   dplyr::mutate(touch_contact = case_when(touch_contact == 0 ~ "No",
-                                         touch_contact == 1 ~ "Yes",
-                                         touch_contact == 2 ~ "I don't remember"))
+                                          touch_contact == 1 ~ "Yes",
+                                          touch_contact == 2 ~ "I don't remember"))
 contact_hh_all$touch_contact = factor(contact_hh_all$touch_contact, 
-                   levels = c("Yes", "No", "I don't remember"))
+                                      levels = c("Yes", "No", "I don't remember"))
 label(contact_hh_all$touch_contact) <- "Did you touch?"
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(where_contact = case_when(where_contact == 0 ~ "Indoors",
-                                         where_contact == 1 ~ "Outdoors",
-                                         where_contact == 2 ~ "Both"))
+                                          where_contact == 1 ~ "Outdoors",
+                                          where_contact == 2 ~ "Both"))
 contact_hh_all$where_contact <- factor(contact_hh_all$where_contact,
                                        levels = c("Indoors", "Outdoors", "Both"))
 label(contact_hh_all$where_contact) <- "Did the contact occur indoors or outdoors?"
@@ -1320,9 +1327,9 @@ label(contact_hh_all$location_contact___11) <- "Other"
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(contact_mask = case_when(contact_mask == 0 ~ "No mask was worn during the encounter",
-                                        contact_mask == 1 ~ "Yes, for the entire encounter",
-                                        contact_mask == 2 ~ "Yes, during parts of encounter",
-                                        contact_mask == 3 ~ "I don't remember"))
+                                         contact_mask == 1 ~ "Yes, for the entire encounter",
+                                         contact_mask == 2 ~ "Yes, during parts of encounter",
+                                         contact_mask == 3 ~ "I don't remember"))
 contact_hh_all$contact_mask <- factor(contact_hh_all$contact_mask,
                                       levels = c("No mask was worn during the encounter",
                                                  "Yes, for the entire encounter",
@@ -1332,11 +1339,11 @@ label(contact_hh_all$contact_mask) <- "Was this individual wearing a mask when y
 
 contact_hh_all = contact_hh_all %>%
   dplyr::mutate(duration_contact = case_when(duration_contact == 0 ~ "<5 mins",
-                                               duration_contact == 1 ~ "5-15 mins",
-                                               duration_contact == 2 ~ "16-30 mins",
-                                               duration_contact == 3 ~ "31 mins-1 hr",
-                                               duration_contact == 4 ~ "1-4 hrs",
-                                               duration_contact == 5 ~ ">4 hrs"))
+                                             duration_contact == 1 ~ "5-15 mins",
+                                             duration_contact == 2 ~ "16-30 mins",
+                                             duration_contact == 3 ~ "31 mins-1 hr",
+                                             duration_contact == 4 ~ "1-4 hrs",
+                                             duration_contact == 5 ~ ">4 hrs"))
 contact_hh_all$duration_contact <- factor(contact_hh_all$duration_contact,
                                           levels = c("<5 mins", "5-15 mins", 
                                                      "16-30 mins", "31 mins-1 hr",
@@ -1345,12 +1352,12 @@ label(contact_hh_all$duration_contact) <- "What was the total time spent with th
 
 contact_hh_all = contact_hh_all %>%
   dplyr::mutate(frequency_contact = case_when(frequency_contact == 0 ~ "Never met before",
-                                               frequency_contact == 1 ~ "Rarely",
-                                               frequency_contact == 2 ~ "Daily or almost daily",
-                                               frequency_contact == 3 ~ "1-3 times per week",
-                                               frequency_contact == 4 ~ "Once every 2 weeks",
-                                               frequency_contact == 5 ~ "Once per month",
-                                               frequency_contact == 6 ~ "Once every 3 months"))
+                                              frequency_contact == 1 ~ "Rarely",
+                                              frequency_contact == 2 ~ "Daily or almost daily",
+                                              frequency_contact == 3 ~ "1-3 times per week",
+                                              frequency_contact == 4 ~ "Once every 2 weeks",
+                                              frequency_contact == 5 ~ "Once per month",
+                                              frequency_contact == 6 ~ "Once every 3 months"))
 contact_hh_all$frequency_contact <- factor(contact_hh_all$frequency_contact,
                                            levels = c("Never met before", "Rarely",
                                                       "Daily or almost daily","1-3 times per week",
@@ -1360,11 +1367,11 @@ label(contact_hh_all$frequency_contact) <- "In the past 6 months, how often have
 
 contact_hh_all = contact_hh_all %>%
   dplyr::mutate(known_contact = case_when(known_contact == 0 ~ "Never met before",
-                                               known_contact == 1 ~ "<1 yr",
-                                               known_contact == 2 ~ "1-2 yrs",
-                                               known_contact == 3 ~ "3-5 yrs",
-                                               known_contact == 4 ~ "6-10 yrs",
-                                               known_contact == 5 ~ ">10 yrs"))
+                                          known_contact == 1 ~ "<1 yr",
+                                          known_contact == 2 ~ "1-2 yrs",
+                                          known_contact == 3 ~ "3-5 yrs",
+                                          known_contact == 4 ~ "6-10 yrs",
+                                          known_contact == 5 ~ ">10 yrs"))
 contact_hh_all$known_contact <- factor(contact_hh_all$known_contact,
                                        levels = c("Never met before", "<1 yr",
                                                   "1-2 yrs", "3-5 yrs", "6-10 yrs",
@@ -1373,41 +1380,45 @@ label(contact_hh_all$known_contact) <- "How long have you known this person?"
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça", 
-                                         study_site == 2 ~ "Polana Caniço"))
+                                       study_site == 2 ~ "Polana Caniço"))
 contact_hh_all$study_site <- factor(contact_hh_all$study_site, levels = c("Manhiça", "Polana Caniço"),
-                          labels = c("Rural", "Urban"))
+                                    labels = c("Rural", "Urban"))
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(contact_sex = case_when(hh_member_sex == 0 ~ "Female",
                                         hh_member_sex == 1 ~ "Male",
                                         TRUE ~ "Other"))
-                                        # hh_member_sex == 2 ~ "Transsexual Female",
-                                        # hh_member_sex == 3 ~ "Transsexual Male",
-                                        # hh_member_sex == 4 ~ "Other"))
+# hh_member_sex == 2 ~ "Transsexual Female",
+# hh_member_sex == 3 ~ "Transsexual Male",
+# hh_member_sex == 4 ~ "Other"))
+
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(hh_member_relationship = case_when(hh_member_relationship == 0 ~ "Spouse",
-                                        hh_member_relationship == 1 ~ "Sibling",
-                                        hh_member_relationship == 2 ~ "Child",
-                                        hh_member_relationship == 3 ~ "Parent",
-                                        hh_member_relationship == 4 ~ "Grandparent",
-                                        hh_member_relationship == 5 ~ "Uncle/Aunt",
-                                        hh_member_relationship == 6 ~ "Grandchild",
-                                        hh_member_relationship == 7 ~ "Nephew",
-                                        hh_member_relationship == 8 ~ "Other relative",
-                                        hh_member_relationship == 9 ~ "Non-relative",
-                                        hh_member_relationship == 10 ~ "Self"))
+                                                   hh_member_relationship == 1 ~ "Sibling",
+                                                   hh_member_relationship == 2 ~ "Child",
+                                                   hh_member_relationship == 3 ~ "Parent",
+                                                   hh_member_relationship == 4 ~ "Grandparent",
+                                                   hh_member_relationship == 5 ~ "Uncle/Aunt",
+                                                   hh_member_relationship == 6 ~ "Grandchild",
+                                                   hh_member_relationship == 7 ~ "Nephew",
+                                                   hh_member_relationship == 8 ~ "Other relative",
+                                                   hh_member_relationship == 9 ~ "Non-relative",
+                                                   hh_member_relationship == 10 ~ "Self")) %>%
+  # drop if hh_member_relationship==Self since this means contact with self
+  filter(hh_member_relationship != "Self") 
+# 1537/10159 (15%) contacts dropped, 88 higher than the final total number of participants
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(share_room = case_when(share_room == 0 ~ "No",
-                                         share_room == 1 ~ "Yes"))
+                                       share_room == 1 ~ "Yes"))
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(share_bed = case_when(share_bed == 0 ~ "No",
-                                        share_bed == 1 ~ "Yes"))
+                                      share_bed == 1 ~ "Yes"))
 
 contact_hh_all = contact_hh_all %>% 
   dplyr::mutate(cook_food = case_when(cook_food == 0 ~ "No",
-                                        cook_food == 1 ~ "Yes"))
+                                      cook_food == 1 ~ "Yes"))
 ```
 
 
@@ -1416,8 +1427,8 @@ contact_hh_all = contact_hh_all %>%
 
 contact_nonhh_all <- contact_nonhh_all %>% 
   dplyr::mutate(touch_contact = case_when(touch_contact == 0 ~ "No",
-                                         touch_contact == 1 ~ "Yes",
-                                         touch_contact == 2 ~ "I don't remember"))
+                                          touch_contact == 1 ~ "Yes",
+                                          touch_contact == 2 ~ "I don't remember"))
 contact_nonhh_all$touch_contact = factor(contact_nonhh_all$touch_contact, 
                    levels = c("Yes", "No", "I don't remember"))
 label(contact_nonhh_all$touch_contact) <- "Did you touch?"
@@ -1679,11 +1690,11 @@ contact_all$contact_sex <- factor(contact_all$contact_sex ,
                                   levels = c("Female", "Male"))
 
 contact_all$hh_member_relationship <- factor(contact_all$hh_member_relationship,
-                                             levels = c("Self", "Spouse", "Child",
+                                             levels = c("Spouse", "Child",
                                                         "Parent", "Sibling", "Grandparent",
                                                         "Uncle/Aunt", "Nephew",
                                                         "Grandchild", "Other relative",
-                                                        "Non-relative"))
+                                                        "Non-relative")) # "Self", 
 
 contact_all$share_room <- factor(contact_all$share_room, levels = c("Yes", "No"))
 
@@ -1737,6 +1748,9 @@ contacts_aim2_index <- contact_all %>%
 # %>% rename(contact_age = age_group_contact)
 
 contacts_aim1 <- rbind(contacts_aim1, contacts_aim2_index)
+
+contacts_aim1 <- contacts_aim1 %>%
+              dplyr::filter(rec_id %in% unlist(participants_aim1$rec_id))
 
 # save participant and contact data
 saveRDS(participants_aim1, "../data/clean/participant_data_aim1.RDS")
