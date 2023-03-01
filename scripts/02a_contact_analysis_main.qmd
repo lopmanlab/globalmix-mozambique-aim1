@@ -471,9 +471,8 @@ Conduct statistical tests.
 
 # The mean (95% CI) contacts for the rural and urban sites was `r paste(mean_contacts_site$mean[1], " (95% CI ", ci_contacts_rural$`2.5 %`,"-",ci_contacts_rural$`97.5 %`,")", sep="")` and `r paste(mean_contacts_site$mean[2], " (95% CI ", ci_contacts_urban$`2.5 %`,"-",ci_contacts_urban$`97.5 %`,")", sep="")`, respectively. The rural area thus reported higher number of contacts compared to the urban area.
 
-
-
-# histograms
+                        
+# rural histograms
 hist_rural <- contacts_site %>%
   dplyr::filter(study_site == "Rural") %>%
   plotly::plot_ly(x=~num_contacts, colors="#a6611a") %>%
@@ -481,17 +480,18 @@ hist_rural <- contacts_site %>%
             x = mean_contacts_site$mean[1], #,mean(contacts_site$num_contacts),
             line = list(color = "black"),
             showlegend = FALSE) %>%
-  add_annotations(x = mean_contacts_site$mean[1], 
+  add_annotations(x = mean_contacts_site$mean[1],
                   y = 80,
-                  text = paste(mean_contacts_site$mean[1], 
-                               " (95% CI ", ci_contacts_rural$`2.5 %`,"-", 
-                               ci_contacts_rural$`97.5 %`,")", sep=""), 
+                  text = paste(mean_contacts_site$mean[1],
+                               " (95% CI ", ci_contacts_rural$`2.5 %`,"-",
+                               ci_contacts_rural$`97.5 %`,")", sep=""),
                   showarrow = F, xanchor = "left") %>%
   layout(xaxis = list(title = "Num of contacts")) %>%
   add_histogram(name="Rural")
 
 
-# hist_rural
+#
+# hist_urban
 hist_urban <- contacts_site %>%
   dplyr::filter(study_site == "Urban") %>%
   plotly::plot_ly(x=~num_contacts, colors="#018571") %>%
@@ -499,16 +499,72 @@ hist_urban <- contacts_site %>%
             x = mean_contacts_site$mean[2], #,mean(contacts_site$num_contacts),
             line = list(color = "black"),
             showlegend = FALSE) %>%
-  add_annotations(x = mean_contacts_site$mean[2], 
+  add_annotations(x = mean_contacts_site$mean[2],
                   y = 90,
-                  text = paste(mean_contacts_site$mean[2], 
+                  text = paste(mean_contacts_site$mean[2],
                                " (95% CI ", ci_contacts_urban$`2.5 %`,"-",
-                               ci_contacts_urban$`97.5 %`,")", sep=""), 
+                               ci_contacts_urban$`97.5 %`,")", sep=""),
                   showarrow = F, xanchor = "left") %>%
   layout(xaxis = list(title = "Num of contacts")) %>%
   add_histogram(name="Urban")
 
 subplot(hist_rural, hist_urban, nrows=2, shareX = TRUE)
+
+
+
+############################
+# alternative plot in ggplot
+# # rural histogram
+# hist_rural <- contacts_site %>%
+#   dplyr::filter(study_site == "Rural")
+# 
+# hist_rural <- ggplot(hist_rural, aes(x=num_contacts, fill="Rural")) +
+#   geom_histogram(color="#a6611a", alpha=0.7, binwidth = 1) +
+#   scale_fill_manual(values="#a6611a") +
+#   geom_vline(xintercept=mean_contacts_site$mean[1], color="black") +
+#   annotate("text", x=mean_contacts_site$mean[1]+1, y=60,
+#            label=paste0(mean_contacts_site$mean[1],
+#                         " (95% CI ", ci_contacts_rural$`2.5 %`,"-",
+#                         ci_contacts_rural$`97.5 %`,")"),
+#            hjust=0, size=4) +
+#   labs(x="",
+#        y="Count") +
+#   theme(plot.title = element_text(size = 14),
+#         axis.title.x = element_text(size=12, face="bold"),
+#         axis.title.y = element_text(size=12, face="bold"),
+#         axis.text.x = element_text(size = 8, angle=0, hjust = 1),
+#         axis.text.y = element_text(size= 8)) +
+#   theme_minimal() 
+#   # guides(fill = FALSE)
+# 
+# # urban histogram
+# hist_urban <- contacts_site %>%
+#   dplyr::filter(study_site == "Urban")
+# 
+# hist_urban <- ggplot(hist_urban, aes(x=num_contacts, fill="Urban")) +
+#   geom_histogram(color="#018571", alpha=0.7, binwidth=1) +
+#   scale_fill_manual(values="#018571") +
+#   geom_vline(xintercept=mean_contacts_site$mean[2], color="black") +
+#   annotate("text", x=mean_contacts_site$mean[2]+1, y=60,
+#            label=paste0(mean_contacts_site$mean[2],
+#                         " (95% CI ", ci_contacts_urban$`2.5 %`,"-",
+#                         ci_contacts_urban$`97.5 %`,")"),
+#            hjust=0, size=4) +
+#   labs(x="Num of contacts",
+#        y="Count") +
+#   theme_minimal() +
+#   theme(plot.title = element_text(size = 14),
+#         axis.title.x = element_text(size=12, face="bold"),
+#         axis.title.y = element_text(size=12, face="bold"),
+#         axis.text.x = element_text(size = 8, angle=0, hjust = 1),
+#         axis.text.y = element_text(size= 8)) 
+#   # guides(fill = FALSE)
+# 
+# # combine plots
+# ggpubr::ggarrange(hist_rural, hist_urban, ncol = 1, nrow = 2,
+#                   common.legend = FALSE, legend = "right",
+#                   common.axis = TRUE, axis="tb",
+#                   align = "hv", heights = c(2, 2))
 ```
 
 ```{r}
