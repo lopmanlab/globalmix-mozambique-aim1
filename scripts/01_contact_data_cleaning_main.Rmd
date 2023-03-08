@@ -34,6 +34,9 @@ library(stringr)
 ```{r raw-data, echo=FALSE}
 # import raw data
 data <- readRDS("../data/raw/all_data_09142022.RDS")
+
+# I identified one household whose study_site had been coded wrongly.
+data$study_site[data$rec_id=="1686"] <- "1"
 ```
 
 
@@ -52,7 +55,7 @@ table(study_site$study_site, study_site$aim)
 ```{r enrolled-participants, echo=FALSE}
 participant <- data %>% 
   dplyr::filter(redcap_event_name == "individual_enrollm_arm_1") %>% 
-  dplyr::select("rec_id","date_enrolled", "sex", "sex_other", "birthdate","age", 
+  dplyr::select("rec_id", "date_enrolled", "sex", "sex_other", "birthdate","age", 
                 "read_write", "occupation___0", "occupation___1", "occupation___2", 
                 "occupation___3", "occupation___4", "occupation___5", "occupation___6",
                 "occupation___7", "occupation___8", "occupation___9", "occupation_other",
@@ -278,6 +281,7 @@ participant$child_breastfeed<- factor(participant$child_breastfeed, levels = c("
                                                                 "Not applicable"))
 label(participant$child_breastfeed) <- "Are you breastfeeding?"
 
+rm(df_mths, df_years)
 
 # ind_contact_hh <- contact_hh_all %>%
 #   left_join(participant[,-which(names(participant) %in% c("aim","study_site"))], by = "rec_id")
@@ -650,11 +654,79 @@ length(unique(data$rec_id))
 ```
 
 
+```{r}
+# extract household ID
+# merge hh contact data with household member data
+hmid <- data %>%
+  dplyr::filter(redcap_event_name == "household_survey_arm_1") %>%
+  dplyr::filter(aim==1) %>%
+  select(rec_id, aim, study_site, individual_id, hh_id) %>%
+  filter(rec_id %in% unlist(participant$rec_id)) %>%
+  distinct(rec_id, .keep_all = TRUE) %>%
+  arrange(individual_id, hh_id, rec_id) 
+
+rurhhid <- hmid %>%
+  dplyr::filter(study_site==1) %>%
+  # extract the hmid based on the individual_id
+  mutate(hmid = substr(individual_id, start = 1, stop = nchar(individual_id)-3)) %>%
+  # check if hmid==hh_id
+  mutate(hh_id2 = case_when(is.na(hh_id) ~ hmid,
+                          hh_id == hmid ~ hh_id,
+                          # if not, list the hh_ids that need to be checked.
+                          TRUE ~ "confirm hh_id")) %>%
+  arrange(rec_id)
+# there are some households that need to be checked.
+
+urbhhid <- hmid %>%
+  dplyr::filter(study_site==2) %>%
+    # extract the hmid based on the individual id
+  mutate(hmid = substr(individual_id, start = 1, stop = nchar(individual_id)-3)) %>%
+  mutate(hh_id2 = case_when(is.na(hh_id) ~ hmid,
+                          hh_id == hmid ~ hh_id,
+                          # list the hh_ids that need to be checked.
+                          TRUE ~ "confirm hh_id"))  %>%
+  arrange(rec_id)
+# all worked out ok for urban IDs
+
+hmid <- rurhhid %>%
+  filter(hh_id2 != "confirm hh_id")
+hmid <- rbind(hmid, urbhhid) %>%
+  select(rec_id, study_site, hh_id2) %>%
+  rename(hh_id = hh_id2)
+# now, merge this with the participant file.
+
+# since we do not have hh_id for each individual in rural aim 2, let us export the data
+# and request the Mozambique team to fill the data in REDCap.
+library(xlsx)
+write.xlsx(rurhhid %>% 
+             dplyr::filter(study_site=="1") %>%
+             dplyr::filter(hh_id2 == "confirm hh_id"), 
+           file =  "../data/sensor_metadata/mozambique_missing_aim2_hmid.xlsx",
+           sheetName = "rural_hmid", 
+           append = FALSE, showNA = FALSE)
+
+write.xlsx(hmid %>% dplyr::filter(study_site=="2"),
+           file =  "../data/sensor_metadata/mozambique_missing_aim2_hmid.xlsx",
+           sheetName = "urban_hmid",
+           append = TRUE, showNA = FALSE)
+
+# hmid2 <- hmid %>%
+#   group_by(study_site, hh_id) %>%
+#   na.omit() %>%
+#   summarize(hh_size_count = n())
+#   # na.omit()
+
+  
+
+```
+
+
 ```{r participant-exit}
 # merge participant and exit data by rec_id and study_site
-participant_vars <- c("rec_id", "aim", "study_site", "date_enrolled","age", "participant_age", 
-                      "participant_sex", "enrolled_school", "school_level", "read_write",
-                      "highest_educ", "occupation", "transport_use", 
+participant_vars <- c("rec_id", "study_site", "aim", "isindex", "sensor_id",
+                      "date_enrolled", "age", "participant_age", 
+                      "participant_sex", "enrolled_school", "school_level", 
+                      "read_write", "highest_educ", "occupation", "transport_use", 
                       "hh_resp_exposure", "child", "child_breastfeed", 
                       "num_sibling")
 # household size, composition, 
@@ -966,18 +1038,17 @@ contact_hh_all <- contact_hh_all %>%
   distinct(rec_id, hh_member_id2, study_day, .keep_all = TRUE) # n=12730, hh_member_id, 
   # distinct(rec_id, study_day, .keep_all = TRUE) # initially, this was the code, but only retains one hh member.
 
-
-# merge hh contact data with household member data
 hh_member <- data %>%
   dplyr::filter(redcap_repeat_instrument == "informaes_sobre_os_membros_da_famlia") %>%
-  dplyr::select("rec_id", hh_member_hoh,
+  dplyr::select(rec_id, hh_member_hoh,
                 hh_member_id, hh_member_sensor, hh_member_sex,
                 hh_member_name, hh_member_age, hh_member_relationship,
                 hh_member_relationship_other, share_room, share_bed, cook_food,
                 #  hh_member_hhform, hh_member_instance,
                 informaes_de_agregado_familiar_e_casa_complete) %>%
-  # hh_member_sex_outro, 
+  # left_join(hh_idd, by="rec_id") %>%
   distinct(rec_id, hh_member_id, .keep_all = TRUE) # 7729 household members recorded
+
 
 contact_hh_all <- contact_hh_all %>% 
   left_join(hh_member, by=c("rec_id", "hh_member_name")) # n=12823, ok
@@ -1734,10 +1805,6 @@ participants_aim1 <- rbind(participants_aim1, participants_aim2_index) %>%
   mutate(aim = case_when(aim == 2 ~ 1,
                          TRUE ~ 1))
 
-participants_aim2 <- participant %>% 
-  filter(aim==2)
-
-
 # add index contacts from aim 2 to aim 1 data for analysis
 contacts_aim1 <- contact_all %>% 
   filter(aim==0) %>%
@@ -1756,17 +1823,27 @@ contacts_aim1 <- contacts_aim1 %>%
 saveRDS(participants_aim1, "../data/clean/participant_data_aim1.RDS")
 saveRDS(contacts_aim1, "../data/clean/contact_data_aim1.RDS")
 
+```
+
+\
+\
+
+```{r}
+# aim 2 data
 
 # extract all aim 2 participants and contacts
 participants_aim2 <- participant %>% 
-  filter(aim==2)
+  filter(aim==2)  %>%
+  left_join(hmid %>% 
+              select(rec_id, hh_id), 
+            by="rec_id")
 
 contacts_aim2 <- contact_all %>% 
   filter(aim==1) %>%
   rename(contact_age = age_group_contact)
 
-# saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
-# saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
+saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
+saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
 ```
 
 \
@@ -1787,7 +1864,6 @@ participant_summary_aim1 <- participants_aim1 %>%
 participant_summary_aim1
 # this includes aim 2 index participants
 ```
-
 
 \
 \
@@ -1852,7 +1928,9 @@ hh_survey <- data %>%
   select(-c("redcap_event_name", "informaes_de_agregado_familiar_e_casa_complete", 
             "redcap_repeat_instrument", "redcap_repeat_instance", "individual_id",
             "interview_date", "enumerator_id100", "isindex", "site_do_estudo_complete",
-            "date_hohconsent", "hh"))
+            "date_hohconsent", "hh")) %>%
+  filter(rec_id %in% participant_ids) %>%
+  arrange(study_site, rec_id, hh_id)
 
 hh_survey <- hh_survey %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
@@ -2043,17 +2121,23 @@ hh_survey <- hh_survey %>%
 label(hh_survey$hh_asthmalb) -> "Does anyone in your household have asthma?"
 label(hh_survey$hh_tblb) -> "Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?"
 
+# extract dataframe with the rec_id, hh_id and hh_member_id
+hh_id <- hh_survey %>%
+  select(rec_id, hh_id)
+  
+
+
 # keep aim 1 data only
 hh_survey_aim1 <- hh_survey %>%
   filter(rec_id %in% participants_aim1$rec_id) %>%
-  select(-c(hh_id, hoh_id))
+  select(-c(hoh_id))
 
 saveRDS(hh_survey_aim1, "../data/clean/household_survey_aim1.RDS")
 
 # keep aim 2 data only
 hh_survey_aim2 <- hh_survey %>%
   filter(rec_id %in% participants_aim2$rec_id) %>%
-  select(-c(hh_id, hoh_id))
+  select(-c(hoh_id))
 
 saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
 
