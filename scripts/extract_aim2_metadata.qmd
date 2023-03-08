@@ -5,8 +5,6 @@ format: pdf
 editor: visual
 ---
 
-We use this file to extract participant metadata for further analysis.
-
 ```{r}
 #| label: setup
 #| echo: false
@@ -15,13 +13,27 @@ We use this file to extract participant metadata for further analysis.
 
 rm(list=ls())
 pacman::p_load(tidyr, dplyr, gtsummary, xlsx, readr)
+```
+
+We use this file to extract participant metadata for further analysis.
+
+```{r}
+#| label: load-data
+#| echo: false
+#| include: false
+#| warning: false
+
+participant_vars <- c("rec_id", "hh_id", "date_enrolled", "isindex", "aim", 
+                      "study_site", "sensor_id", "hwid", "participant_sex", "age", 
+                      "participant_age", "read_write", "occupation",
+                      "enrolled_school", "highest_educ", "school_level", 
+                      "transport_use", "hh_resp_exposure", "child", 
+                      "child_breastfeed", "num_sibling")
 
 aim2 <- readRDS("../data/clean/participant_data_aim2.RDS") %>%
-  select("rec_id", "date_enrolled", "isindex", "aim", "study_site", "sensor_id", 
-         "participant_sex", "sex_other", "age", "participant_age", "read_write", 
-         "occupation", "occupation_other", "enrolled_school", "highest_educ",  
-         "school_level", "transport_use", "hh_resp_exposure", "child", 
-         "child_breastfeed", "num_sibling") 
+  select(any_of(participant_vars))
+  # mutate(isindex = case_when(is.na(isindex) ~ "0",
+  #                            TRUE ~ isindex))
 
 date_enrolled <- readRDS("../data/clean/household_survey_aim2.RDS") #%>%
 # names(date_enrolled)
@@ -111,11 +123,7 @@ rural_meta <- read.csv("../data/sensor_metadata/mozambique_rural_sensor_meta.csv
 rural_sensors <- rural_sensors %>%
   left_join(rural_meta, by="sensor_id") %>%
   distinct(rec_id, .keep_all = TRUE) %>%
-  select("rec_id", "date_enrolled", "isindex", "aim", "study_site", "sensor_id", "hwid",
-         "participant_sex", "sex_other", "age", "participant_age", "read_write", 
-         "occupation", "occupation_other", "enrolled_school", "highest_educ",  
-         "school_level", "transport_use", "hh_resp_exposure", "child", 
-         "child_breastfeed", "num_sibling")
+  select(any_of(participant_vars))
 
 # extract and check characteristics of individuals with missing sensor_id and hwid
 rural_missing_sensorid <- rural_sensors %>%
@@ -222,11 +230,7 @@ urban_meta <- read.csv("../data/sensor_metadata/mozambique_urban_sensor_meta.csv
 urban_sensors <- urban_sensors %>%
   left_join(urban_meta, by="sensor_id") %>%
   distinct(rec_id, .keep_all = TRUE) %>%
-  select("rec_id", "date_enrolled", "isindex", "aim", "study_site", "sensor_id", "hwid",
-         "participant_sex", "sex_other", "age", "participant_age", "read_write", 
-         "occupation", "occupation_other", "enrolled_school", "highest_educ",  
-         "school_level", "transport_use", "hh_resp_exposure", "child", 
-         "child_breastfeed", "num_sibling")
+  select(any_of(participant_vars))
 
 # extract rec_id, sensor_id for rec_ids without hwid
 urban_missing_hwid <- urban_sensors %>%
