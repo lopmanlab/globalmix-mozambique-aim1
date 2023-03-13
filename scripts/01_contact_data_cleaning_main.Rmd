@@ -33,10 +33,37 @@ library(stringr)
 
 ```{r raw-data, echo=FALSE}
 # import raw data
-data <- readRDS("../data/raw/all_data_09142022.RDS")
+data <- readRDS("../raw/all_data_09142022.RDS")
 
 # I identified one household whose study_site had been coded wrongly.
 data$study_site[data$rec_id=="1686"] <- "1"
+
+# there are some records that we need to delete from the dataset
+drop_recid <- c("405", "443", "445", "1815", "1827", "1828", "6843")
+drop_recid2 <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv",
+                       show_col_types = FALSE)
+
+drop_hhs <- c("0603-029", "3201-281",  # incorrect sensor data
+              "0501-031", "3403-383", "0706-022", "0405-022" # hhs not found in records
+              )
+
+data <- data %>%
+  filter(!rec_id %in% drop_recid) %>%
+  filter(!rec_id %in% drop_recid2$rec_id) %>%
+  filter(!hh_id %in% drop_hhs) %>%
+  mutate(hh_id = case_when(rec_id == "716" ~ "0501-031",
+                           rec_id == "756" ~ "3204-399",
+                           rec_id == "844" ~ "3305-289",
+                           rec_id == "935" ~ "3102-218",
+                           rec_id == "989" ~ "3208-386",
+                           rec_id == "1208" ~ "3305-287",
+                           rec_id == "1219" ~ "3305-275",
+                           rec_id == "1466" ~ "3204-316",
+                           rec_id == "1696" ~ "2705-255",
+                           
+                           TRUE ~ hh_id))
+
+rm(drop_recid, drop_recid2, drop_hhs)
 ```
 
 
@@ -695,28 +722,28 @@ hmid <- rbind(hmid, urbhhid) %>%
   rename(hh_id = hh_id2)
 # now, merge this with the participant file.
 
+# THIS WAS ALREADY EXPORTED. DATA CHECKS ARE BEING CONDUCTED AND RELEVANT CODE 
+# ADDED FROM LINE 47.
 # since we do not have hh_id for each individual in rural aim 2, let us export the data
 # and request the Mozambique team to fill the data in REDCap.
-library(xlsx)
-write.xlsx(rurhhid %>% 
-             dplyr::filter(study_site=="1") %>%
-             dplyr::filter(hh_id2 == "confirm hh_id"), 
-           file =  "../data/sensor_metadata/mozambique_missing_aim2_hmid.xlsx",
-           sheetName = "rural_hmid", 
-           append = FALSE, showNA = FALSE)
-
-write.xlsx(hmid %>% dplyr::filter(study_site=="2"),
-           file =  "../data/sensor_metadata/mozambique_missing_aim2_hmid.xlsx",
-           sheetName = "urban_hmid",
-           append = TRUE, showNA = FALSE)
+# library(xlsx)
+# write.xlsx(rurhhid %>% 
+#              dplyr::filter(study_site=="1") %>%
+#              dplyr::filter(hh_id2 == "confirm hh_id"), 
+#            file =  "../data/sensor_metadata/mozambique_missing_aim2_hmid.xlsx",
+#            sheetName = "rural_hmid", 
+#            append = FALSE, showNA = FALSE)
+# 
+# write.xlsx(hmid %>% dplyr::filter(study_site=="2"),
+#            file =  "../data/sensor_metadata/mozambique_missing_aim2_hmid.xlsx",
+#            sheetName = "urban_hmid",
+#            append = TRUE, showNA = FALSE)
 
 # hmid2 <- hmid %>%
 #   group_by(study_site, hh_id) %>%
 #   na.omit() %>%
 #   summarize(hh_size_count = n())
 #   # na.omit()
-
-  
 
 ```
 
@@ -754,8 +781,6 @@ exit <- exit %>%
 
 participant <- participant %>%
   left_join(exit, by="rec_id")
-
-
 ```
 
 # Summary of Aim 1 only participant details by site
