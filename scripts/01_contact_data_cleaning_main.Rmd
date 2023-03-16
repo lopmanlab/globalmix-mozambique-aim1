@@ -1867,8 +1867,9 @@ contacts_aim2 <- contact_all %>%
   filter(aim==1) %>%
   rename(contact_age = age_group_contact)
 
-saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
-saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
+saveRDS(participants_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/participant_data_aim2.RDS")
+
+saveRDS(contacts_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/contact_data_aim2.RDS")
 ```
 
 \
@@ -2164,7 +2165,7 @@ hh_survey_aim2 <- hh_survey %>%
   filter(rec_id %in% participants_aim2$rec_id) %>%
   select(-c(hoh_id))
 
-saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
+saveRDS(hh_survey_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/household_survey_aim2.RDS")
 
 # rm(hh_survey, hh_survey_aim1, hh_survey_aim2)
 ```
@@ -2302,7 +2303,7 @@ saveRDS(loc_visit_aim1, "../data/clean/locations_visited_aim1.RDS")
 # keep aim 2 data only
 loc_visit_aim2 <- loc_visit %>%
   filter(rec_id %in% participants_aim2$rec_id)
-saveRDS(loc_visit_aim2, "../data/clean/locations_visited_aim2.RDS")
+saveRDS(loc_visit_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/locations_visited_aim2.RDS")
 
 rm(loc_visit_d1, loc_visit_d2)
 ```
@@ -2318,7 +2319,7 @@ saveRDS(exit_interview_aim1, "../data/clean/exit_interview_aim1.RDS")
 # keep aim 2 data only
 exit_interview_aim2 <- exit %>%
   filter(rec_id %in% participants_aim2$rec_id)
-saveRDS(exit_interview_aim2, "../data/clean/exit_interview_aim2.RDS")
+saveRDS(exit_interview_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/exit_interview_aim2.RDS")
 
 # rm(exit_interview_aim1, exit_interview_aim2)
 
@@ -2328,7 +2329,7 @@ saveRDS(exit_interview_aim2, "../data/clean/exit_interview_aim2.RDS")
 ```{r data-export-rds, echo=FALSE}
 # Export data to GlobalMix shared folder.
 
-EXPORT_PATH <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-country-data/Mozambique/aim_1/data"
+EXPORT_PATH <- "~/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-country-data/Mozambique/aim_1/data"
 
 saveRDS(participants_aim1, paste0(EXPORT_PATH, "/participant_data_aim1.RDS"))
 saveRDS(participants_aim2, paste0(EXPORT_PATH, "/participant_data_aim2.RDS"))

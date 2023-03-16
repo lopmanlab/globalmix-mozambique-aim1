@@ -855,7 +855,7 @@ hist_rural_d1 <- contacts_site_d1 %>%
             showlegend = FALSE) %>%
   add_annotations(x = mean_contacts_site_d1$mean[1], 
                   y = 90,
-                  text = paste(mean_contacts_site_d1$mean[1], " (95% CI ", ci_contacts_urban_d1$`2.5 %`,"-",ci_contacts_urban_d1$`97.5 %`,")", sep=""), 
+                  text = paste(mean_contacts_site_d1$mean[1], " (95% CI ", ci_contacts_rural_d1$`2.5 %`,"-",ci_contacts__d1$`97.5 %`,")", sep=""), 
                   showarrow = F, xanchor = "left") %>%
   layout(annotations = title_rural_d1,
          xaxis = list(title = "Num of contacts")) %>%
