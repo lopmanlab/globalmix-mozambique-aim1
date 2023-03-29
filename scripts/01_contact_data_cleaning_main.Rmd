@@ -1498,7 +1498,7 @@ contact_hh_all = contact_hh_all %>%
                                                    hh_member_relationship == 6 ~ "Grandchild",
                                                    hh_member_relationship == 7 ~ "Nephew",
                                                    hh_member_relationship == 8 ~ "Other relative",
-                                                   hh_member_relationship == 9 ~ "Non-relative",
+                                                   hh_member_relationship == 9 ~ "Not related",
                                                    hh_member_relationship == 10 ~ "Self")) %>%
   # drop if hh_member_relationship==Self since this means contact with self
   filter(hh_member_relationship != "Self") 
@@ -1662,7 +1662,7 @@ contact_nonhh_all = contact_nonhh_all %>%
                                         # sex_contact == 3 ~ "Transsexual Male",
                                         # sex_contact == 4 ~ "Other"))
 
-contact_nonhh_all$hh_member_relationship <- "Non-relative"
+contact_nonhh_all$hh_member_relationship <- "Not related"
 ```
 
 
@@ -1785,12 +1785,13 @@ contact_all$weekyear <-  factor(contact_all$weekyear,
 contact_all$contact_sex <- factor(contact_all$contact_sex , 
                                   levels = c("Female", "Male"))
 
+# change non-relative to not related
 contact_all$hh_member_relationship <- factor(contact_all$hh_member_relationship,
                                              levels = c("Spouse", "Child",
                                                         "Parent", "Sibling", "Grandparent",
                                                         "Uncle/Aunt", "Nephew",
                                                         "Grandchild", "Other relative",
-                                                        "Non-relative")) # "Self", 
+                                                        "Not related")) # "Self", 
 
 contact_all$share_room <- factor(contact_all$share_room, levels = c("Yes", "No"))
 
