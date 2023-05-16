@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r load_libs, include=FALSE, warnings=FALSE}
 library(dplyr)
 library(tidyr)
-library(socialmixr)
+library(socialmixr) ## Need socialmixr package version 0.2.0
 library(ggplot2)
 library(table1)
 library(gtsummary)
@@ -131,7 +131,7 @@ contact <-contact%>%mutate(
                           TRUE ~ NA_character_
           )
 )
-pop_dist <- read.csv("../data/pop_dist_ines_2021.csv") %>%
+pop_dist <- read.csv("../data/clean/pop_dist_ines_2021.csv") %>%
             pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
             mutate(study_site = case_when(
                         urb_rur =="urban" ~"Urban",
@@ -240,8 +240,8 @@ m_u <- contact_matrix(df_u,
                       age.limits = c(0,18,50,99), ##Specify age bands for the matrix
                       symmetric=T,  ##symmetric matrix
                       missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
-                      weigh.age = T,
-                      return.part.weights=T, 
+                     weigh.age = T,
+                      return.part.weights=T,
                       n=2)     ##Number of bootstraps
 
 #Code to take the mean of matrices
