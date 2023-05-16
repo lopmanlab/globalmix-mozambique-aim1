@@ -15,6 +15,8 @@ library(socialmixr)
 library(ggplot2)
 library(table1)
 library(gtsummary)
+library(ggpubr)
+library(cowplot)
 ```
 
 ## Read in data
@@ -24,7 +26,9 @@ ind_exit <- readRDS("../data/clean/exit_interview_aim1.RDS")
 contact <- readRDS("../data/clean/contact_data_aim1.RDS")
 #contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
 hh_survey <- readRDS("../data/clean/household_survey_aim1.RDS")
-
+loc <- readRDS("../data/clean/locations_visited_aim1.RDS") ## loc clean
+loc_orig <- readRDS("../data/clean/old_data/ind_location_visit.RDS")
+loc_orig2 <- readRDS("../data/clean/old_data/ind_location_visit2.RDS")
 ```
 
 Subset to aim 1 only
@@ -100,7 +104,7 @@ contact <- contact %>%
                                                location_contact___11==1,1,0))
 
 ##Subset to day 1 only
-contact<-contact%>%filter(study_day==1)
+#contact<-contact%>%filter(study_day==1)
 
 ```
 
@@ -238,7 +242,7 @@ m_u <- contact_matrix(df_u,
                       missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = T,
                       return.part.weights=T, 
-                      n=1000)     ##Number of bootstraps
+                      n=2)     ##Number of bootstraps
 
 #Code to take the mean of matrices
 mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
@@ -248,7 +252,7 @@ mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$m
 #Make into long form
 mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
        left_join(data.frame(age1 = c(1,2,3),
-                            age_part = c("[0,17)","[18,50)","50+")),
+                            age_part = c("[0,18)","[18,50)","50+")),
                             by="age1")
 
 #Do same for rural
@@ -260,7 +264,7 @@ m_r <- contact_matrix(df_r, age.limits = c(0,18,50,99),symmetric=T,
 mr_r <- Reduce("+", lapply(m_r$matrices, function(x) {x$matrix})) / length(m_r$matrices)
 mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
        left_join(data.frame(age1 = c(1,2,3),
-                            age_part = c("[0,17)","[18,50)","50+")),
+                            age_part = c("[0,18)","[18,50)","50+")),
                             by="age1")
 
 
@@ -271,12 +275,16 @@ mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "co
 ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
     scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
     xlab("Age of participant")+ylab("Age of contact")+
-    geom_tile()+ theme()
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+    theme()
 
 ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
     scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
     xlab("Age of participant")+ylab("Age of contact")+
-    geom_tile()+ theme()
+    geom_tile()+ 
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+    theme()
 
 
 ```
@@ -379,45 +387,79 @@ contact%>%filter(study_site=="Urban")%>%
 ```{r}
 #Remove those missing contact, no weighting, no symmetry, sample contact age
 m_u1 <- contact_matrix(df_u, 
-                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
                       symmetric=F,  ##symmetric matrix
                       missing.contact.age="remove", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = F,
                       return.part.weights=T, 
-                      n=100)     ##Number of bootstraps
+                      n=1000)     ##Number of bootstraps
 
 #Code to take the mean of matrices
 mr_u1 <- Reduce("+", lapply(m_u1$matrices, function(x) {x$matrix})) / length(m_u1$matrices)
 
+mat_u1 <- reshape2::melt(mr_u1, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c("[0,18)","[18,50)","50+"),
+                            age_part = c("[0,18)","[18,50)","50+")),
+                            by="age1")
 ```
 
 ```{r}
 #Remove those missing contact, no weighting, no symmetry, take mid point of contact age
 m_u2 <- contact_matrix(df_u, 
-                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
                       symmetric=F,  ##symmetric matrix
                       missing.contact.age="remove", estimated.contact.age = "mean",  ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = F,
                       return.part.weights=T, 
-                      n=100)     ##Number of bootstraps
+                      n=1000)     ##Number of bootstraps
 
 #Code to take the mean of matrices
-Reduce("+", lapply(m_u2$matrices, function(x) {x$matrix})) / length(m_u2$matrices)
+mr_u2 <- Reduce("+", lapply(m_u2$matrices, function(x) {x$matrix})) / length(m_u2$matrices)
+mat_u2 <- reshape2::melt(mr_u2, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c("[0,18)","[18,50)","50+"),
+                            age_part = c("[0,18)","[18,50)","50+")),
+                            by="age1")
 
 ```
+
+
 ```{r}
 #Sample those missing contact, no weighting, no symmetry, sample contact age
 m_u3 <- contact_matrix(df_u, 
-                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
                       symmetric=F,  ##symmetric matrix
                       missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = F,
                       return.part.weights=T, 
-                      n=100)     ##Number of bootstraps
+                      n=1000)     ##Number of bootstraps
 
 #Code to take the mean of matrices
-Reduce("+", lapply(m_u3$matrices, function(x) {x$matrix})) / length(m_u2$matrices)
+mr_u3 <- Reduce("+", lapply(m_u3$matrices, function(x) {x$matrix})) / length(m_u3$matrices)
+mat_u3 <- reshape2::melt(mr_u3, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c("[0,18)","[18,50)","50+"),
+                            age_part = c("[0,18)","[18,50)","50+")),
+                            by="age1")
+t(mr_u3)
+mr_u3
 
+#Sample those missing contact, no weighting, no symmetry, sample contact age
+m_r3 <- contact_matrix(df_r, 
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
+                      symmetric=F,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = F,
+                      return.part.weights=T, 
+                      n=1000)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+mr_r3 <- Reduce("+", lapply(m_r3$matrices, function(x) {x$matrix})) / length(m_r3$matrices)
+mat_r3 <- reshape2::melt(mr_r3, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c("[0,18)","[18,50)","50+"),
+                            age_part = c("[0,18)","[18,50)","50+")),
+                            by="age1")
+
+mr_r3
+t(mr_r3)
 ```
 
 
@@ -425,29 +467,154 @@ Reduce("+", lapply(m_u3$matrices, function(x) {x$matrix})) / length(m_u2$matrice
 ```{r}
 #Sample those missing contact, age weighting, no symmetry, sample contact age
 m_u4 <- contact_matrix(df_u, 
-                      age.limits = c(0,18,60,99), ##Specify age bands for the matrix
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
                       symmetric=F,  ##symmetric matrix
                       missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = T,
                       return.part.weights=T, 
-                      n=100)     ##Number of bootstraps
+                      n=1000)     ##Number of bootstraps
 
 #Code to take the mean of matrices
-Reduce("+", lapply(m_u4$matrices, function(x) {x$matrix})) / length(m_u4$matrices)
-
+mr_u4 <- Reduce("+", lapply(m_u4$matrices, function(x) {x$matrix})) / length(m_u4$matrices)
+mat_u4 <- reshape2::melt(mr_u4, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c("[0,18)","[18,50)","50+"),
+                            age_part = c("[0,18)","[18,50)","50+")),
+                            by="age1")
 ```
 
 ```{r}
-#Sample those missing contact, age weighting, symmetry, sample contact age
-m_u4 <- contact_matrix(df_u, 
+#Sample those missing contact, no age weighting, symmetry, sample contact age
+m_u5 <- contact_matrix(df_u, 
                       age.limits = c(0,18,50,99), ##Specify age bands for the matrix
+                      symmetric=T,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = F,
+                      return.part.weights=T, 
+                      n=1000)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+mr_u5<- Reduce("+", lapply(m_u5$matrices, function(x) {x$matrix})) / length(m_u5$matrices)
+mat_u5 <- reshape2::melt(mr_u5, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c(1,2,3),
+                            age_part = c("[0,18)","[18,50)","50+")),
+                            by="age1")
+
+```
+
+
+
+```{r}
+#Sample those missing contact, age weighting, symmetry, sample contact age
+m_u6 <- contact_matrix(df_u, 
+                      age.limits = c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,99), ##Specify age bands for the matrix
+                      symmetric=T,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = T,
+                      return.part.weights=T, 
+                      n=1000)     ##Number of bootstraps
+
+#Code to take the mean of matrices
+mr_u6 <- Reduce("+", lapply(m_u6$matrices, function(x) {x$matrix})) / length(m_u6$matrices)
+mat_u6 <- reshape2::melt(mr_u6, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       left_join(data.frame(age1 = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),
+                            age_part = c("[0,5)","[5,10)]","[10,15)","[15,20)","[20,25)","[25,30)","[30,35)",
+                                         "[35,40)","[40,45)","[45,50)","[50,55)","[55,60)","[60,65)","[65,70)","70+")),
+                            by="age1")%>%
+       mutate(age_part = factor(age_part, levels =  c("[0,5)","[5,10)]","[10,15)","[15,20)","[20,25)","[25,30)","[30,35)",
+                                         "[35,40)","[40,45)","[45,50)","[50,55)","[55,60)","[60,65)","[65,70)","70+")))
+
+#Sample those missing contact, age weighting, symmetry, sample contact age
+m_u7 <- contact_matrix(df_u, 
+                      age.limits = c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,99), ##Specify age bands for the matrix
                       symmetric=F,  ##symmetric matrix
                       missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = F,
                       return.part.weights=T, 
-                      n=100)     ##Number of bootstraps
+                      n=1000)     ##Number of bootstraps
 
 #Code to take the mean of matrices
-Reduce("+", lapply(m_u4$matrices, function(x) {x$matrix})) / length(m_u4$matrices)
+mr_u7 <- Reduce("+", lapply(m_u7$matrices, function(x) {x$matrix})) / length(m_u7$matrices)
+mat_u7 <- reshape2::melt(mr_u7, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
+       mutate(age_part = factor(age1, levels =  c("[0,5)","[5,10)]","[10,15)","[15,20)","[20,25)","[25,30)","[30,35)",
+                                         "[35,40)","[40,45)","[45,50)","[50,55)","[55,60)","[60,65)","[65,70)","70+")))
 
 ```
+
+```{r}
+p1 <- ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+    theme(legend.position = "none")+ggtitle("symmetric, age weighed, sample missing age, sample contact age estimate")
+
+p2 <- ggplot(mat_u1, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+     theme(legend.position = "none")+ggtitle("no symmetric,no age weighed, remove missing age, sample contact age estimate")
+
+p3 <- ggplot(mat_u2, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+     theme(legend.position = "none")+ggtitle("no symmetric,no age weighed, remove missing age, midpoint contact age estimate")
+
+p4 <- ggplot(mat_u3, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+     theme(legend.position = "none")+ggtitle("no symmetric,no age weighed, sample missing age, sample contact age estimate")
+
+p5<- ggplot(mat_u4, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+     theme(legend.position = "none")+ggtitle("no symmetric,age weighed, sample missing age, sample contact age estimate")
+
+p6 <- ggplot(mat_u5, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+    theme(legend.position = "none")+ggtitle("symmetric,no age weighed, sample missing age, sample contact age estimate")
+
+p7 <- ggplot(mat_u6, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 2.25, limit = c(0,4.5))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+    theme()+ggtitle("symmetric, age weighed, sample missing age, sample contact age estimate")
+
+p8 <- ggplot(mat_u7, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+    scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 2.25, limit = c(0,4.5))+
+    xlab("Age of participant")+ylab("Age of contact")+
+    geom_tile()+
+    geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+    theme()+ggtitle("symmetric, age weighed, sample missing age, sample contact age estimate")
+
+png("matrix_prep_compare.png", width = 12,height = 12,units="in",res=400)
+ggarrange(p1,p4,p5,p6,ncol=2,nrow=2, align="v",widths=c(1, 1))
+dev.off()
+
+```
+
+```{r}
+contact_matrix(df_u, 
+                      age.limits = c(0,18,50,99), ##Specify age bands for the matrix
+                      symmetric=T,  ##symmetric matrix
+                      missing.contact.age="sample", estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      weigh.age = T,
+                      return.part.weights=T, 
+                      n=1000)     ##Number of bootstraps
+
+```
+
+
+
+
+
