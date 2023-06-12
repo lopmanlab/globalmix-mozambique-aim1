@@ -433,3 +433,57 @@ ggplot(negbin_daily_ent, aes(x = term, y = estimate, color = log_pvalue)) +
                          guide = "colorbar")+
   ggtitle("Negative Binomial: Daily Average Enteric Contacts ~ Age + Sex + Site")
 dev.off()
+
+# Grouped Age ---------------------------------------------------------------
+
+negbin_daily_resp_mod <- glm.nb(avg_daily_resp_contacts ~ participant_age + sex + site,
+                                data = contacts_resp_ent)
+negbin_daily_resp <- as.data.frame(summary(negbin_daily_resp_mod)$coefficients)%>% 
+  tibble::rownames_to_column()
+
+negbin_daily_ent_mod <- glm.nb(avg_daily_ent_contacts ~ participant_age + sex + site,
+                               data = contacts_resp_ent)
+negbin_daily_ent <- as.data.frame(summary(negbin_daily_ent_mod)$coefficients)%>% 
+  tibble::rownames_to_column()
+
+names(negbin_daily_resp) <- c("term", "estimate", "SE", "test_statistic", "p_value")
+names(negbin_daily_ent) <- c("term", "estimate", "SE", "test_statistic", "p_value")
+
+negbin_daily_resp$log_pvalue <- log(round(negbin_daily_resp$p_value, 2))
+negbin_daily_resp$log_pvalue[which(is.infinite(negbin_daily_resp$log_pvalue))] <- -5.99
+
+png("negbin_daily_resp_grp.png", width=4000, height=1500, res=300)
+ggplot(negbin_daily_resp, aes(x = term, y = estimate, color = log_pvalue)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+  theme(axis.text.x = element_text(angle = 45))+
+  scale_colour_gradient2(low = "forestgreen",
+                         mid = "goldenrod1",
+                         high = "firebrick", 
+                         midpoint=log(0.05),
+                         guide = "colorbar")+
+  ggtitle("Negative Binomial: Daily Average Respiratory Contacts ~ Age + Sex + Site")
+dev.off()
+
+negbin_daily_ent$log_pvalue <- log(round(negbin_daily_ent$p_value, 2))
+negbin_daily_ent$log_pvalue[which(is.infinite(negbin_daily_ent$log_pvalue))] <- -5.99
+
+png("negbin_daily_ent_grp.png", width=4000, height=1500, res=300)
+ggplot(negbin_daily_ent, aes(x = term, y = estimate, color = log_pvalue)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+  theme(axis.text.x = element_text(angle = 45))+
+  scale_colour_gradient2(low = "forestgreen",
+                         mid = "goldenrod1",
+                         high = "firebrick", 
+                         midpoint=log(0.05),
+                         guide = "colorbar")+
+  ggtitle("Negative Binomial: Daily Average Enteric Contacts ~ Age + Sex + Site")
+dev.off()
+
+# Save data --------------------------------------------------------------------
+
+write.csv(negbin_daily_resp, "negbin_daily_resp.csv")
+write.csv(negbin_daily_ent, "negbin_daily_ent.csv")
+
+

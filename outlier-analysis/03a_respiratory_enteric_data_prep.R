@@ -182,3 +182,40 @@ contacts_resp_ent <- contacts_resp_ent %>%
            ifelse(avg_unique_ent_contacts > contact_summaries$unique_ent_q75, 1, 0))
 
 saveRDS(contacts_resp_ent, here("outlier-analysis/data/contacts_resp_ent.RDS"))
+
+#Lite analysis for abstract ---------------------------------------------------
+#Average/Q75 respiratory and enteric contacts
+contact_summaries
+
+#Include number of outliers as well per each definition 
+table(contacts_resp_ent$daily_ent_q75_outlier)
+336/(336+1024)
+table(contacts_resp_ent$daily_resp_q75_outlier)
+317/(317+1046)
+
+#Number of outliers by site respiratory
+table(contacts_resp_ent$daily_resp_q75_outlier, contacts_resp_ent$study_site)
+#Rural: 31%
+217/(217+479)
+#Urban: 15%
+100/(100+567)
+
+#Number of outliers by site enteric
+table(contacts_resp_ent$daily_ent_q75_outlier, contacts_resp_ent$study_site)
+#Rural: 32%
+220/(220+473)
+#Urban: 17%
+116/(116+551)
+
+# Proportion of contacts that were considered both
+table(df_contact$respiratory == 1 & df_contact$enteric == 1)
+16221 / (16221 + 3708)
+
+# Proportion of contacts that were considered both by site
+table(df_contact$respiratory == 1 & df_contact$enteric == 1, df_contact$study_site)
+#Rural: 78%
+9155/(9155+2627)
+#Urban: 87%
+7066/(7066+1081)
+
+#Average respiratory and enteric contacts by rural/urban 
