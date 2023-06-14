@@ -6,7 +6,7 @@ library(plotly)
 library(tidyverse)
 library(MASS)
 
-contacts_resp_ent <- readRDS(here("data/contacts_resp_ent.RDS"))
+contacts_resp_ent <- readRDS(here("outlier-analysis/data/contacts_resp_ent.RDS"))
 
 contacts_resp_ent$age <- as.numeric(contacts_resp_ent$age)
 contacts_resp_ent$sex <- contacts_resp_ent$participant_sex
