@@ -37,3 +37,12 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# data download file
+/scripts/00_data_download.R
+
+# folders
+/scripts/old
+
+# html files
+/scripts/*.html
