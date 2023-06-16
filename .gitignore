@@ -42,7 +42,8 @@ vignettes/*.pdf
 /scripts/00_data_download.R
 
 # folders
-/scripts/old
+/scripts/old/*
+/data/raw/*
 
 # html files
 /scripts/*.html
