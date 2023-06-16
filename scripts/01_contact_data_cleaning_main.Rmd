@@ -31,6 +31,7 @@ library(stringr)
 
 ```
 
+
 ```{r raw-data, echo=FALSE}
 # import raw data
 data <- readRDS("../raw/all_data_09142022.RDS")
@@ -39,7 +40,10 @@ data <- readRDS("../raw/all_data_09142022.RDS")
 data$study_site[data$rec_id=="1686"] <- "1"
 
 # there are some records that we need to delete from the dataset
-drop_recid <- c("405", "443", "445", "1815", "1827", "1828", "6843")
+drop_recid <- c("405", "443", "445", "1815", "1827", "1828", "6843", "1188",
+                "1191", "1314", "1315", "1514", "1516", "1522", "1566", 
+                "1859","1897")
+
 drop_recid2 <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv",
                        show_col_types = FALSE)
 
@@ -51,8 +55,7 @@ data <- data %>%
   filter(!rec_id %in% drop_recid) %>%
   filter(!rec_id %in% drop_recid2$rec_id) %>%
   filter(!hh_id %in% drop_hhs) %>%
-  mutate(hh_id = case_when(rec_id == "716" ~ "0501-031",
-                           rec_id == "756" ~ "3204-399",
+  mutate(hh_id = case_when(rec_id == "756" ~ "3204-399",
                            rec_id == "844" ~ "3305-289",
                            rec_id == "935" ~ "3102-218",
                            rec_id == "989" ~ "3208-386",
@@ -60,8 +63,14 @@ data <- data %>%
                            rec_id == "1219" ~ "3305-275",
                            rec_id == "1466" ~ "3204-316",
                            rec_id == "1696" ~ "2705-255",
-                           
                            TRUE ~ hh_id))
+
+# This file corrects hh_id entries. In REDCap, some individuals did not have a
+# hh_id that corresponds to where they were recruited for the study. Hence, we
+# used a masterfile Charfudin to create the correct hh_ids for each participant.
+
+source("../scripts/moz_hhid_corrections.R")
+
 
 rm(drop_recid, drop_recid2, drop_hhs)
 ```
@@ -82,7 +91,7 @@ table(study_site$study_site, study_site$aim)
 ```{r enrolled-participants, echo=FALSE}
 participant <- data %>% 
   dplyr::filter(redcap_event_name == "individual_enrollm_arm_1") %>% 
-  dplyr::select("rec_id", "date_enrolled", "sex", "sex_other", "birthdate","age", 
+  dplyr::select("rec_id", "individual_id", "date_enrolled", "sex", "sex_other", "birthdate","age", 
                 "read_write", "occupation___0", "occupation___1", "occupation___2", 
                 "occupation___3", "occupation___4", "occupation___5", "occupation___6",
                 "occupation___7", "occupation___8", "occupation___9", "occupation_other",
@@ -682,15 +691,16 @@ length(unique(data$rec_id))
 
 
 ```{r}
-# extract household ID
+# extract household ID for aim 2
 # merge hh contact data with household member data
 hmid <- data %>%
   dplyr::filter(redcap_event_name == "household_survey_arm_1") %>%
-  dplyr::filter(aim==1) %>%
-  select(rec_id, aim, study_site, individual_id, hh_id) %>%
+  # select aim 2 data only
+  dplyr::filter(aim==1) %>% 
+  select(rec_id, aim, study_site, individual_id, hh_id, hh_id3) %>%
   filter(rec_id %in% unlist(participant$rec_id)) %>%
   distinct(rec_id, .keep_all = TRUE) %>%
-  arrange(individual_id, hh_id, rec_id) 
+  arrange(individual_id, hh_id3, rec_id) 
 
 rurhhid <- hmid %>%
   dplyr::filter(study_site==1) %>%
@@ -703,7 +713,39 @@ rurhhid <- hmid %>%
                           TRUE ~ "confirm hh_id")) %>%
   arrange(rec_id)
 # there are some households that need to be checked.
+# 
+# After a visual check, we replace hh_id==hmid if hh_id is missing.
+# this is not entirely correct as the hh_ids do not all correspond to hh_id3. we will
+# use hh_id3 since this has the full list of all individuals in their households 
+# who were recruited and listed in the master file.
 
+rurhhid <- rurhhid %>%
+  mutate(hh_id = case_when(is.na(hh_id) ~ hmid,
+                           TRUE ~ hh_id)) %>%
+  # there still remain some questionable records, we drop these for now
+  filter(!rec_id %in% c(1591, 1814, 1816, 1817, 1824, 1824, 1829)) %>%
+  select("rec_id", "aim", "study_site", "individual_id", "hh_id", "hh_id3")
+
+cat("There are", length(unique(rurhhid$hh_id3)), "unique households in the rural data.
+    One of these is NA and needs to be dropped.")
+
+rurhhid <- rurhhid %>%
+  filter(!is.na(hh_id3)) %>%
+  select("rec_id", "aim", "study_site", "individual_id", "hh_id3") %>%
+  rename(hh_id = hh_id3) %>%
+  # drop missing hh_id
+  filter(!is.na(hh_id))
+# so now this is the final list of individuals for aim 2.
+
+n_rural_hhid <- rurhhid %>%
+  group_by(hh_id) %>%
+  summarise(n = n())
+
+# show distribution
+# ggplot(n_rural_hhid, aes(x=n)) + geom_histogram(bins=9)
+
+
+# urban households
 urbhhid <- hmid %>%
   dplyr::filter(study_site==2) %>%
     # extract the hmid based on the individual id
@@ -712,14 +754,31 @@ urbhhid <- hmid %>%
                           hh_id == hmid ~ hh_id,
                           # list the hh_ids that need to be checked.
                           TRUE ~ "confirm hh_id"))  %>%
-  arrange(rec_id)
+  mutate(hh_id = case_when(hh_id2 == "QUSRT10290" ~ "QUSRT1029",
+                           TRUE ~ hh_id)) %>%
+  arrange(rec_id) %>%
+  # for the blank hh_id, replace with hh_id2
+  mutate(hh_id = case_when(is.na(hh_id) ~ hh_id2,
+                           TRUE ~ hh_id)) %>%
+  select("rec_id", "aim", "study_site", "individual_id", "hh_id")
+
+# drop this
+# rurhhid <- rurhhid %>%
+#   filter(hh_id2 != "confirm hh_id")
+
+# generate number of residents by hh_id
+n_urban_hhid <- urbhhid %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarize(n = n())
+# show distribution
+ggplot(n_urban_hhid, aes(x=n)) + geom_histogram(bins=9)
+# THERE ARE SOME HOUSEHOLDS WITH 1 HOUSEHOLD MEMBER??!!
 # all worked out ok for urban IDs
 
-hmid <- rurhhid %>%
-  filter(hh_id2 != "confirm hh_id")
-hmid <- rbind(hmid, urbhhid) %>%
-  select(rec_id, study_site, hh_id2) %>%
-  rename(hh_id = hh_id2)
+
+hmid <- rbind(rurhhid, urbhhid) %>%
+  select(rec_id, study_site, individual_id, hh_id)
 # now, merge this with the participant file.
 
 # THIS WAS ALREADY EXPORTED. DATA CHECKS ARE BEING CONDUCTED AND RELEVANT CODE 
@@ -750,7 +809,7 @@ hmid <- rbind(hmid, urbhhid) %>%
 
 ```{r participant-exit}
 # merge participant and exit data by rec_id and study_site
-participant_vars <- c("rec_id", "study_site", "aim", "isindex", "sensor_id",
+participant_vars <- c("rec_id", "individual_id", "study_site", "aim", "isindex", "sensor_id",
                       "date_enrolled", "age", "participant_age", 
                       "participant_sex", "enrolled_school", "school_level", 
                       "read_write", "highest_educ", "occupation", "transport_use", 
@@ -1845,7 +1904,7 @@ contacts_aim1 <- rbind(contacts_aim1, contacts_aim2_index)
 contacts_aim1 <- contacts_aim1 %>%
               dplyr::filter(rec_id %in% unlist(participants_aim1$rec_id))
 
-# save participant and contact data
+# save participant and contact data for aim 1
 saveRDS(participants_aim1, "../data/clean/participant_data_aim1.RDS")
 saveRDS(contacts_aim1, "../data/clean/contact_data_aim1.RDS")
 
@@ -1860,17 +1919,26 @@ saveRDS(contacts_aim1, "../data/clean/contact_data_aim1.RDS")
 # extract all aim 2 participants and contacts
 participants_aim2 <- participant %>% 
   filter(aim==2)  %>%
+  # keep only rec_ids in the rurhhid and urbhhid list
+  filter(rec_id %in% hmid$rec_id) %>%
   left_join(hmid %>% 
               select(rec_id, hh_id), 
             by="rec_id")
 
 contacts_aim2 <- contact_all %>% 
   filter(aim==1) %>%
-  rename(contact_age = age_group_contact)
+  rename(contact_age = age_group_contact) %>%
+  # keep only rec_ids in the rurhhid and urbhhid list
+  filter(rec_id %in% hmid$rec_id)
 
-saveRDS(participants_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/participant_data_aim2.RDS")
+# save participant and contact data for aim 2
+saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
+saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
 
-saveRDS(contacts_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/contact_data_aim2.RDS")
+
+saveRDS(participants_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/participant_data_aim2.RDS")
+
+saveRDS(contacts_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/contact_data_aim2.RDS")
 ```
 
 \
@@ -2164,9 +2232,13 @@ saveRDS(hh_survey_aim1, "../data/clean/household_survey_aim1.RDS")
 # keep aim 2 data only
 hh_survey_aim2 <- hh_survey %>%
   filter(rec_id %in% participants_aim2$rec_id) %>%
-  select(-c(hoh_id))
+  select(-c(hoh_id))  %>%
+  # keep only rec_ids in the rurhhid and urbhhid list
+  filter(rec_id %in% hmid$rec_id)
 
-saveRDS(hh_survey_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/household_survey_aim2.RDS")
+saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
+
+saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/household_survey_aim2.RDS")
 
 # rm(hh_survey, hh_survey_aim1, hh_survey_aim2)
 ```
@@ -2303,8 +2375,11 @@ saveRDS(loc_visit_aim1, "../data/clean/locations_visited_aim1.RDS")
 
 # keep aim 2 data only
 loc_visit_aim2 <- loc_visit %>%
-  filter(rec_id %in% participants_aim2$rec_id)
-saveRDS(loc_visit_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/locations_visited_aim2.RDS")
+  filter(rec_id %in% participants_aim2$rec_id)  %>%
+  # keep only rec_ids in the rurhhid and urbhhid list
+  filter(rec_id %in% hmid$rec_id)
+
+saveRDS(loc_visit_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/locations_visited_aim2.RDS")
 
 rm(loc_visit_d1, loc_visit_d2)
 ```
@@ -2319,8 +2394,11 @@ saveRDS(exit_interview_aim1, "../data/clean/exit_interview_aim1.RDS")
 
 # keep aim 2 data only
 exit_interview_aim2 <- exit %>%
-  filter(rec_id %in% participants_aim2$rec_id)
-saveRDS(exit_interview_aim2, "/Users/mkiti/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim-2/sites/joint_analysis/data/diary/exit_interview_aim2.RDS")
+  filter(rec_id %in% participants_aim2$rec_id)  %>%
+  # keep only rec_ids in the rurhhid and urbhhid list
+  filter(rec_id %in% hmid$rec_id)
+
+saveRDS(exit_interview_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/exit_interview_aim2.RDS")
 
 # rm(exit_interview_aim1, exit_interview_aim2)
 
