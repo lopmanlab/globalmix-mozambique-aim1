@@ -22,17 +22,18 @@ We use this file to extract participant metadata for further analysis.
 #| echo: false
 #| include: false
 
-participant_vars <- c("rec_id", "hh_id", "date_enrolled", "isindex", "aim", 
-                      "study_site", "sensor_id", "hwid", "participant_sex", "age", 
-                      "participant_age", "read_write", "occupation",
-                      "enrolled_school", "highest_educ", "school_level", 
-                      "transport_use", "hh_resp_exposure", "child", 
-                      "child_breastfeed", "num_sibling")
+participant_vars <- c("rec_id", "hh_id", "date_enrolled", 
+                      "isindex", "aim", "study_site", "sensor_id", "hwid", 
+                      "participant_sex", "age", "participant_age", "read_write",
+                      "occupation", "enrolled_school", "highest_educ", 
+                      "school_level", "transport_use", "hh_resp_exposure", 
+                      "child", "child_breastfeed", "num_sibling")
 
-aim2 <- readRDS("../data/clean/participant_data_aim2.RDS") %>%
-  select(any_of(participant_vars))
-  # mutate(isindex = case_when(is.na(isindex) ~ "0",
-  #                            TRUE ~ isindex))
+data <- readRDS("../data/clean/participant_data_aim2.RDS") %>%
+  select(any_of(participant_vars)) %>%
+  mutate(isindex = case_when(isindex == 1 ~ 1,
+                             TRUE ~ 0))
+
 
 date_enrolled <- readRDS("../data/clean/household_survey_aim2.RDS") #%>%
 # names(date_enrolled)
@@ -42,9 +43,58 @@ date_enrolled <- readRDS("../data/clean/household_survey_aim2.RDS") #%>%
 # drop_recid <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv",
 #                        show_col_types = FALSE)
 # 
-# aim2 <- subset(aim2, !(rec_id %in% drop_recid$rec_id))
+# data <- subset(data, !(rec_id %in% drop_recid$rec_id))
 # rm(drop_recid)
+# 
+
+# THIC CLEANING HAS BEEN DONE IN THE MAIN DATA CLEANING FILE.
+# This file corrects hh_id entries. In REDCap, some individuals did not have a
+# hh_id that corresponds to where they were recruited for the study. Hence, we
+# used a masterfile Charfudin to create the correct hh_ids for each participant.
+# source("../scripts/moz_hhid_corrections.R")
+
 ```
+
+# Lost sensors
+
+```{r}
+#| label: lost-sensors
+
+# we lost some sensors and we do not have the hwids. let's identify these 
+# individuals and see their characteristics then delete them from the data.
+lost_sensorid <- c("041802E2", "077075CE", "0DD5BD3F", "16B7EA20", "1BF0AB62", 
+                  "99FF6D3B", "A498A0A5", "B0834C7E", "BD848166", "BFAAAFE9", 
+                  "E691CC38", "EC52843D", "F554A006", "FC1DE353")
+
+lost_sensors_df <- data %>%
+  filter(sensor_id %in% lost_sensorid) %>%
+  select(rec_id, study_site, hh_id, isindex, sensor_id, participant_age, participant_sex,
+         read_write, occupation, enrolled_school)
+
+summary_lost_sensors <- lost_sensors_df %>%
+  tbl_summary(by="study_site",
+              percent="column",
+              missing="ifany",
+              digits = all_categorical() ~ 0) %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("")
+summary_lost_sensors
+
+# extract the rec_id associated with the lost sensors. these will be dropped from the main data. All the lost sensors do not have the sensor hwid extracted, hence we cannot merge the participant data to the sensor data.
+
+lost_sensor_recid <- lost_sensors_df %>%
+  select(rec_id)
+
+# currently, we have 703 observations (300 urban).
+data <- data %>%
+  filter(!rec_id %in% lost_sensor_recid$rec_id)
+# after dropping, we have 684 records (281 urban), so we have dropped 19 records.
+
+rm(lost_sensor_recid, lost_sensorid)
+```
+
+All the `r nrow(lost_sensors_df)` individuals who lost sensors are from `r length(unique(lost_sensors_df$hh_id))` households in the urban site. Out of these, 5 households had \>2 sensors that were lost (1 had 3 missing and 1 had 4 missing). During sensor data cleaning, it will be important to take this into account for these households.
 
 # Summary of participant characteristics by site
 
@@ -57,7 +107,7 @@ date_enrolled <- readRDS("../data/clean/household_survey_aim2.RDS") #%>%
 #| warning: false
 #| tbl-cap: "Particiant data from Mozambique sites"
 
-summary <- aim2 %>%
+summary_aim2 <- data %>%
   select(study_site, isindex, participant_sex, participant_age, read_write,
          occupation, enrolled_school) %>%
   tbl_summary(by="study_site",
@@ -68,14 +118,14 @@ summary <- aim2 %>%
   bold_labels() %>%
   modify_header(label = "**Variable**") %>%
   modify_caption("")
-summary
+summary_aim2
 
 # for occupation==unknown, need to categorize these accordingly.
 # for enrolled_school, check the unknowns and fill in the category based on
 # highest_educ and school level.
 ```
 
-# Rural sensor data
+# Rural sensor metadata
 
 Here, we clean the sensor participant data. Steps are: 1. Check that all the sensor_ids are available. 2. Replace sensor_id written incorrectly. These were identified visually and via code. 3. Drop records with inconsistent sensor_id and share with data managers for checks. 4. Merge with hwid data. This was extracted from the sensors by data managers. 5. Check missing sensor_id and hwid data. Export records for DMs to check.
 
@@ -84,33 +134,77 @@ Here, we clean the sensor participant data. Steps are: 1. Check that all the sen
 #| echo: false
 #| include: true
 #| warning: false
-rural_sensors <- aim2 %>%
+rural_sensors <- data %>%
   filter(study_site == "Rural") 
-
-# visual check
-# knitr::kable(rural_sensors[,c("rec_id", "sensor_id")])
-
-# previously, I identified the following sensor_id that had been captured incorrectly
-rural_sensors$sensor_id[rural_sensors$sensor_id=="63DD440BD"] <- "63DD40BD"
-rural_sensors$sensor_id[rural_sensors$sensor_id=="OC0516EA"] <- "0C0516EA"
-
-id_count <- sapply(rural_sensors$sensor_id, function(x) nchar(gsub("[^[:alnum:]]", "", x)))
-subset1_rural <- rural_sensors[id_count > 8,]
-# knitr::kable(subset1_rural[,c("rec_id", "sensor_id")])
-# rec_ids with issues: "478", "942", "1004", "1263","1378", "1600", "6853" 
-
-subset2_rural <- rural_sensors[id_count < 8,]
-# knitr::kable(subset2_rural[,c("rec_id", "sensor_id")]) 
-# rec_id: "867"
-
-# for now, we drop these records
-drop_id_rural <- c("478", "942", "1004", "1263","1378", "1600", "6853", "867")
-rural_sensors <- subset(rural_sensors, !(rec_id %in% drop_id_rural))
 
 # keep only unique rec_ids
 rural_sensors <- rural_sensors %>%
   distinct(rec_id, .keep_all = TRUE)
 n_rural <- nrow(rural_sensors)
+
+# let us count the number of people per household in the raw data before any other manipulation
+n_raw_rural_household_members <- rural_sensors %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarise(n_redcap_raw=n())
+
+# visual check
+# knitr::kable(rural_sensors[,c("rec_id", "sensor_id")])
+
+# check if there are some sensor ids with <8 or >8 digits.
+id_count <- sapply(rural_sensors$sensor_id, function(x) nchar(gsub("[^[:alnum:]]", "", x)))
+subset1_rural <- rural_sensors[id_count > 8,]
+# knitr::kable(subset1_rural[,c("rec_id", "sensor_id")])
+
+subset2_rural <- rural_sensors[id_count < 8,]
+# knitr::kable(subset2_rural[,c("rec_id", "sensor_id")]) 
+# None
+
+rm(subset1_rural, subset2_rural, id_count)
+
+# previously, I identified the following sensor_id that had been captured incorrectly.
+# others we identified after merging the sensor_id and hwid dfs. corrections are done here.
+rural_sensors$sensor_id[rural_sensors$sensor_id=="63DD440BD"] <- "63DD40BD"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="OC0516EA"] <- "0C0516EA"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="6F809378"] <-	"6F8093F8"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="6O4842FC"] <- "604842FC"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="9FDAO8E8"] <-	"9FDA08E8"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="6F809378"] <-	"6F8093F8"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="7O74A528"] <-	"7074A528"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="D54O1F13"] <-	"D5401F13"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="6O4842FC"] <-	"604842FC"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="O3OD199D"] <-	"030D199D"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="144BFE9O"] <-	"144BFE90"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="D36O933D"] <-	"D360933D"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="256E25CB"] <-	"256E23CB"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="9FDAO8E8"] <-	"9FDA08E8"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="D36O933D"] <-	"D360933D"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="O3OD199D"] <-	"030D199D"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="ADF8D142"] <-	"ADD8D142"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="63DD4OBD"] <-	"63DD40BD"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="D5401713"] <-	"D5401F13"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="OD9F0693"] <-	"0D9F0693"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="0601-034-17"] <- "1CF914EO"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="1503-124-01"] <- "D2510EC4"
+rural_sensors$sensor_id[rural_sensors$sensor_id=="3204-483-04"] <-
+rural_sensors$sensor_id[rural_sensors$sensor_id=="3406-012-15"] <- "C959CE30"
+
+# visual check revealed another discrepancy
+# rural_sensors$sensor_id[rural_sensors$sensor_id=="3405-182-V4"] # no sensor records, delete entire household 
+rural_sensors <- rural_sensors %>%
+  filter(sensor_id != "3405-182-V4")
+
+# check again if there are some sensor ids with <8 or >8 digits.
+id_count <- sapply(rural_sensors$sensor_id, function(x) nchar(gsub("[^[:alnum:]]", "", x)))
+subset1_rural <- rural_sensors[id_count > 8,]
+# knitr::kable(subset1_rural[,c("rec_id", "sensor_id")])
+
+subset2_rural <- rural_sensors[id_count < 8,]
+# knitr::kable(subset2_rural[,c("rec_id", "sensor_id")]) 
+# None
+
+rm(subset1_rural, subset2_rural, id_count)
+# ALL IS OK!!
 
 
 ### upload and merge with hwid data
@@ -126,35 +220,80 @@ rural_sensors <- rural_sensors %>%
   distinct(rec_id, .keep_all = TRUE) %>%
   select(any_of(participant_vars))
 
+# for now, we drop these records
+drop_id_rural <- c("478", "942", "1004", "1263","1378", "1600", "6853",
+                   # we also identified others from the sheet extracted above
+                   "405", "407", "409", "416", "422", "443", "445", "468", 
+                   "471", "473", "477", "479", "522", "523", "528", "530", 
+                   "531", "1815", "1827", "1828", "6843", "6848", "6850") # , "867"
+
+rural_sensors <- subset(rural_sensors, !(rec_id %in% drop_id_rural))
+
 # extract and check characteristics of individuals with missing sensor_id and hwid
-rural_missing_sensorid <- rural_sensors %>%
+rural_missing_sensor_hwid <- rural_sensors %>%
   filter(is.na(sensor_id) | is.na(hwid)) %>%
   select(rec_id, date_enrolled, sensor_id, hwid, isindex, participant_sex, participant_age)
 
-# export this for checking
-write.xlsx(rural_missing_sensorid, 
-           file =  "../data/sensor_metadata/mozambique_missing_aim2_hwid.xlsx",
-           sheetName = "rural", 
-           append = FALSE, showNA = FALSE)
+cat("There are", length(unique(rural_missing_sensor_hwid$sensor_id)), "sensors that do not have hwid data, used by", nrow(rural_missing_sensor_hwid), "individuals missing hwids, so we need to drop these.")
+# length(unique(rural_missing_sensor_hwid$sensor_id)) # 25 sensors are missing hwids
+
+rural_drop_sensorhwid <- rural_missing_sensor_hwid %>%
+  select(sensor_id) %>%
+  distinct(sensor_id)
+
+rural_sensors <- rural_sensors %>%
+  filter(!sensor_id %in% rural_missing_sensor_hwid$sensor_id)
+############
+# we exported and made some corrections.
+# # export this for checking
+# write.xlsx(rural_missing_sensor_hwid, 
+#            file =  "../data/sensor_metadata/mozambique_missing_aim2_hwid.xlsx",
+#            sheetName = "rural", 
+#            append = FALSE, showNA = FALSE)
+#############
+
+# rm(rural_missing_sensor_hwid)
+
+table(rural_sensors$isindex) # we have 46 index children
+length(unique(rural_sensors$hh_id)) # 61 households
+
+# number of 
+n_rural_hhid <- rural_sensors %>%
+  group_by(hh_id) %>%
+  summarise(n = n())
+# show distribution
+ggplot(n_rural_hhid, aes(x=n)) + geom_histogram(bins=max(n_rural_hhid$n))
 
 # save rural participant metadata
 write.csv(rural_sensors,"../data/sensor_metadata/mozambique_aim2_rural_participants.csv")
 
-# save unique sensor IDs used by urban participants
+# save unique sensor IDs used by rural participants
 rural_unique_sensors <- rural_sensors %>% 
   select(sensor_id, hwid, study_site) %>%
   distinct(sensor_id, .keep_all = TRUE)
 
 write.csv(rural_unique_sensors, "../data/sensor_metadata/mozambique_rural_unique_sensors.csv")
+
 ```
 
-In total, there are `r n_rural` participants who were issued sensors from the rural site. Out of these, we have complete records for `r n_rural-nrow(rural_missing_sensorid)`. This is after dropping records due to missing sensor_id and hwid.
+```{r}
+#| label: rural-participants-summary
 
-::: callout-note
-The hwid is an important identifier for the participants and is the primary key for the sensor data. Without the hwid, we cannot link the sensor data to the participant data collected in REDCap.
-:::
+# summary of updated rural participants
+rural_summary_aim2 <- rural_sensors %>%
+  select(study_site, isindex, participant_sex, participant_age, read_write,
+         occupation, enrolled_school) %>%
+  tbl_summary(statistic = list(all_continuous() ~ "{median ({IQR})"),
+              percent="column",
+              missing="ifany",
+              digits = all_categorical() ~ 0) %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("")
+rural_summary_aim2
+```
 
-@tbl-rural-missing-ids shows the characteristics of individuals with missing sensor IDS and hwids (n=`r nrow(rural_missing_sensorid)`).
+@tbl-rural-missing-ids shows the characteristics of individuals with missing sensor IDS and hwids (n=`r nrow(rural_missing_sensor_hwid)`).
 
 ```{r}
 #| label: tbl-rural-missing-ids
@@ -163,7 +302,7 @@ The hwid is an important identifier for the participants and is the primary key 
 #| warning: false
 #| tbl-cap: "Rural records missing sensor_id and hwid data"
 
-rural_missing_sensorid_tbl <- rural_missing_sensorid %>%
+rural_missing_sensorid_tbl <- rural_missing_sensor_hwid %>%
   select(isindex, participant_sex, participant_age) %>%
   tbl_summary(percent="column",
               digits = all_categorical() ~ 0) %>%
@@ -171,6 +310,115 @@ rural_missing_sensorid_tbl <- rural_missing_sensorid %>%
   modify_header(label = "**Variable**") %>%
   modify_caption("**Dropped participants in rural area**")
 rural_missing_sensorid_tbl
+```
+
+In total, there are `r n_rural` participants who were issued sensors from the rural site. Out of these, we have complete records for `r n_rural-nrow(rural_missing_sensor_hwid)`. This is after dropping records due to missing sensor_id and hwid.
+
+::: callout-note
+The hwid is an important identifier for the participants and is the primary key for the sensor data. Without the hwid, we cannot link the sensor data to the participant data collected in REDCap.
+:::
+
+## Checking household IDs
+
+```{r}
+#| label: rural-household-ids
+
+cat("Here, we want to find out households thatn are present in all the raw files i.e.
+    zipped, unzipped, h5 and REDCap database. This is because I was having a hard time reconciling the number of households particularly from REDCap. In some cases, there were households with only 1 individual. this exercise below will enable me to hopefully get households with complete data.")
+
+cat("There are", length(unique(rural_sensors$hh_id)), "households in the rural 
+    area. This means that there are individuals who migrated from one household
+    and were now living in a new household, but their perm_id was not updated to
+    reflect the move to the new household.")
+
+n_rural_household_members <- rural_sensors %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarise(n=n())
+cat("There are 2 households with only 1 member. This should not be the case.")
+
+
+# extract the file names in the raw folder.
+unzip_path <- c("/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/main_study_raw_data/rural/raw/unzip/backup_05032022/")
+zip_path <- c("/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/main_study_raw_data/rural/raw/zip/")
+h5_path <- c("/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/main_study_raw_data/rural/raw/h5_07082022/")
+
+# library(stringr)
+# filterr <- c("SM-rural-supervisors-files-20210727102207",
+#              "SM-rural-supervisors-files-20210811091335",
+#              "SM-manhica_supervisors-files-20210727102207",
+#              "SM-manhica_supervisors-files-20210811091335",
+#              "infants_only",
+#              "Household sensor ID list comparision.xlsx",
+#              "deleted duplicated")
+#              
+rural_unzip_hmid <- as.data.frame(list.files(path = paste(unzip_path))) %>%
+  rename(hmid_unzip = names(.[1])) %>%
+  # filter(!hmid_unzip %in% unlist(filterr)) %>%
+  mutate(hmid_unzip = substr(hmid_unzip, start = 10, stop=nchar(hmid_unzip))) %>%
+  # str_replace_all("_", "-") %>%
+  na.omit()
+
+rural_zip_hmid <- as.data.frame(list.files(path = paste(zip_path))) %>%
+  rename(hmid_zip = names(.[1])) %>%
+  # filter(!hmid_zip %in% unlist(filterr)) %>%
+  mutate(hmid_zip = substr(hmid_zip, start = 12, stop=nchar(hmid_zip)-25)) %>%
+  # gsub("_", "-", .) %>%
+  na.omit()
+
+rural_h5_hmid <- as.data.frame(list.files(path = paste(h5_path))) %>%
+  rename(hmid_h5 = names(.[1])) %>%
+  # filter(!hmid_h5 %in% unlist(filterr)) %>%
+  mutate(hmid_h5 = substr(hmid_h5, start = 10, stop=nchar(hmid_h5)-8)) %>%
+  # str_replace_all("_", "-") %>%
+  na.omit()
+
+rural_redcap_hmid <- rural_sensors %>%
+  select(hh_id) %>% rename(hmid_redcap = hh_id) %>%
+  distinct(hmid_redcap) %>%
+  na.omit()
+
+rural_hmid_check <- full_join(rural_zip_hmid , rural_unzip_hmid, 
+                              by = c("hmid_zip" = "hmid_unzip"),
+                              keep = TRUE)
+rural_hmid_check <- full_join(rural_hmid_check, rural_h5_hmid, 
+                              by = c("hmid_zip" = "hmid_h5"),
+                              keep = TRUE)
+rural_hmid_check <- full_join(rural_hmid_check, rural_redcap_hmid, 
+                              by = c("hmid_zip" = "hmid_redcap"),
+                              keep = TRUE)
+
+# now, extract only the households that appear in all 3 datasets.
+rural_complete_hmid <- rural_hmid_check[complete.cases(rural_hmid_check), ]
+
+# now, from the main rural_sensor data, extract households appearing on the list above.
+rural_sensors_complete <- rural_sensors %>%
+  filter(hh_id %in% rural_complete_hmid$hmid_zip)
+
+cat("After this cleaning up, now there are", length(unique(rural_sensors_complete$hh_id)), "households in the rural area.")
+
+n_rural_household_members_complete <- rural_sensors_complete %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarise(n_hhid_complete = n())
+
+rural_hh_size <- n_raw_rural_household_members %>%
+  left_join( n_rural_household_members_complete, by = "hh_id")
+
+# How many individuals per household? 
+cat("There are still some households with only 1 member.")
+
+write.xlsx(rural_hh_size,
+           file =  "../data/sensor_metadata/mozambique_hh_size_check.xlsx",
+           sheetName = "rural_hhsize_check",
+           append = FALSE, showNA = FALSE)
+
+write.xlsx(rural_hmid_check,
+           file =  "../data/sensor_metadata/mozambique_hh_size_check.xlsx",
+           sheetName = "rural_hmid_check",
+           append = TRUE, showNA = FALSE)
+############
+
 ```
 
 # Urban sensor data
@@ -182,8 +430,10 @@ rural_missing_sensorid_tbl
 #| echo: false
 #| include: true
 #| warning: false
-urban_sensors <- aim2 %>%
-  filter(study_site == "Urban") 
+urban_sensors <- data %>%
+  filter(study_site == "Urban") %>%
+  filter(!is.na(rec_id))
+
 
 # previously, I identified the following sensor_id that had been captured incorrectly
 urban_sensors$sensor_id[urban_sensors$sensor_id=="019664B1A"] <- "01964B1A"
@@ -196,7 +446,27 @@ urban_sensors$sensor_id[urban_sensors$sensor_id=="67FDE60EB"] <- "67FD60EB"
 urban_sensors$sensor_id[urban_sensors$sensor_id=="A26CC63"] <- "A264CC63"
 urban_sensors$sensor_id[urban_sensors$sensor_id=="B93D42E"] <- "B093D42E"
 urban_sensors$sensor_id[urban_sensors$sensor_id=="16D7EAB20"] <- "16B7EA20"
-
+urban_sensors$sensor_id[urban_sensors$sensor_id=="EDC58AE4"] <- "E2C58AE4"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="612540B1"] <- "612514B1"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="B287D421"] <- "B287D42A"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="B648ADGB"] <- "B648ADEB"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="6B592F7D"] <- "6BDA8DED"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="93GF89E6"] <- "93EF89E6"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="7201G52B"] <- "7201E52B"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="D2495E5F"] <- "D2495E9F"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="DFB00C63"] <- "D7B00C63"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="E290C88D"] <- "E290C8BD"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="777F3576"] <- "775F3576"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="93EF89E9"] <- "93EF89E6"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="BO93D42E"] <- "B093D42E"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="D4D84F9F"] <- "D4D84F97"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="77DE60EB"] <- "7FDE60EB"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="FQ29ABE0"] <- "FO29ABE0"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="6373E09A"] <- "6375E09A"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="67FD60EB"] <- "7FDE60EB"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="7029ABE0"] <- "F029ABE0"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="3C114B9C"] <- "3C114B9E"
+urban_sensors$sensor_id[urban_sensors$sensor_id=="73AOD657"] <- "73A0D657"
 
 # visual check
 # knitr::kable(urban_sensors[,c("rec_id", "sensor_id")])
@@ -204,12 +474,13 @@ urban_sensors$sensor_id[urban_sensors$sensor_id=="16D7EAB20"] <- "16B7EA20"
 id_count <- sapply(urban_sensors$sensor_id, function(x) nchar(gsub("[^[:alnum:]]", "", x)))
 subset1_urban <- urban_sensors[id_count > 8,]
 # knitr::kable(subset1_urban[,c("rec_id", "sensor_id")])
-# all ok
+# ok, 9 NAs
 
 subset2_urban <- urban_sensors[id_count < 8,]
 # knitr::kable(subset2_urban[,c("rec_id", "sensor_id")]) 
+cat("We have 9 records that have sensor id == 0.")
 
-# for now, we drop these records that have sensor_id==0
+# for now, we drop these 9 records that have sensor_id==0
 drop_id_urban <- c("249", "1026", "1650", "1721","5814", "1719", "1720", "1722",
                    "1724") # 9 
 urban_sensors <- subset(urban_sensors, !(rec_id %in% drop_id_urban))
@@ -219,6 +490,11 @@ n_urban <- nrow(urban_sensors)
 urban_sensors <- urban_sensors %>%
   distinct(rec_id, .keep_all = TRUE)
 
+# let us count the number of people per household in the raw data before any other manipulation
+n_raw_urban_household_members <- urban_sensors %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarise(n_redcap_raw=n())
 
 ### upload and merge with hwid data
 urban_meta <- read.csv("../data/sensor_metadata/mozambique_urban_sensor_meta.csv") %>%
@@ -243,13 +519,29 @@ urban_missing_sensorid <- urban_sensors %>%
   filter(is.na(sensor_id) | is.na(hwid)) %>%
   select(rec_id, date_enrolled, sensor_id, hwid, isindex, participant_sex, participant_age)
 
-# export this for checking
-write.xlsx(urban_missing_sensorid, 
-           file =  "../data/sensor_metadata/mozambique_missing_aim2_hwid.xlsx",
-           sheetName = "urban", 
-           append = TRUE, showNA = FALSE)
+# ###### the below was checked and corrected. so we are now working with corrected data.
+# # export this for checking
+# write.xlsx(urban_missing_sensorid, 
+#            file =  "../data/sensor_metadata/mozambique_missing_aim2_hwid.xlsx",
+#            sheetName = "urban", 
+#            append = TRUE, showNA = FALSE)
+########
 
-# save rural participant metadata
+# additional visual check
+# View(urban_missing_sensorid)
+
+urban_missing_recid <- c(909, 1486, 1111, 1109, 1110, 1493, 1494, 1495, 
+                         1510, 1511, 1631)
+
+cat("visual check reveals", length(urban_missing_recid), "missing sensor ids (7) or missing hwid (2). So, we drop these.")
+
+urban_sensors <- urban_sensors %>%
+  filter(!rec_id %in% urban_missing_recid)
+
+cat("So we now have", nrow(urban_sensors), "complete records from the urban site.")
+
+
+# save urban participant metadata
 write.csv(urban_sensors,"../data/sensor_metadata/mozambique_aim2_urban_participants.csv")
 
 # save unique sensor IDs used by urban participants
@@ -262,7 +554,7 @@ write.csv(urban_unique_sensors, "../data/sensor_metadata/mozambique_urban_unique
 
 In total, there are `r n_urban` participants who were issued sensors from the urban site. Out of these, we have complete records for `r n_urban-nrow(urban_missing_sensorid)`. This is after dropping records due to missing sensor_id and hwid.
 
-@tbl-urban-missing-ids shows the characteristics of individuals with missing sensor IDS and hwids (n=`r nrow(rural_missing_sensorid)`).
+@tbl-urban-missing-ids shows the characteristics of individuals with missing sensor IDS and hwids (n=`r nrow(rural_missing_sensor_hwid)`).
 
 ```{r}
 #| label: tbl-urban-missing-ids
@@ -282,4 +574,98 @@ urban_missing_sensorid_tbl
 
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+## Checking household IDs
+
+```{r}
+#| label: urban-household-ids
+
+cat("There are", length(unique(urban_sensors$hh_id)), "households in the urban 
+    area. This means that there are individuals who migrated from one household
+    and were now living in a new household, but their perm_id was not updated to
+    reflect the move to the new household.")
+
+n_urban_household_members <- urban_sensors %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarise(n=n())
+urban_hhsize_2 <- n_urban_household_members %>%
+  filter(n < 3)
+cat("There are", nrow(urban_hhsize_2), "households with ≤2 members. This should 
+    not be households with only 1 member (11).")
+
+
+# extract the file names in the raw folder.
+unzip_path <- c("/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/main_study_raw_data/urban/raw/unzip/")
+zip_path <- c("/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/main_study_raw_data/urban/raw/zip/")
+h5_path <- c("/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/main_study_raw_data/urban/raw/h5_07082022/")
+
+             
+urban_unzip_hmid <- as.data.frame(list.files(path = paste(unzip_path))) %>%
+  rename(hmid_unzip = names(.[1])) %>%
+  # filter(!hmid_unzip %in% unlist(filterr)) %>%
+  mutate(hmid_unzip = substr(hmid_unzip, start = 10, stop=nchar(hmid_unzip))) %>%
+  # str_replace_all("_", "-") %>%
+  na.omit()
+
+urban_zip_hmid <- as.data.frame(list.files(path = paste(zip_path))) %>%
+  rename(hmid_zip = names(.[1])) %>%
+  # filter(!hmid_zip %in% unlist(filterr)) %>%
+  mutate(hmid_zip = substr(hmid_zip, start = 10, stop=nchar(hmid_zip)-25)) %>%
+  # gsub("_", "-", .) %>%
+  na.omit()
+
+urban_h5_hmid <- as.data.frame(list.files(path = paste(h5_path))) %>%
+  rename(hmid_h5 = names(.[1])) %>%
+  # filter(!hmid_h5 %in% unlist(filterr)) %>%
+  mutate(hmid_h5 = substr(hmid_h5, start = 10, stop=nchar(hmid_h5)-8)) %>%
+  # str_replace_all("_", "-") %>%
+  na.omit()
+
+urban_redcap_hmid <- urban_sensors %>%
+  select(hh_id) %>% rename(hmid_redcap = hh_id) %>%
+  distinct(hmid_redcap) %>%
+  na.omit()
+
+urban_hmid_check <- full_join(urban_zip_hmid , urban_unzip_hmid, 
+                              by = c("hmid_zip" = "hmid_unzip"),
+                              keep = TRUE)
+urban_hmid_check <- full_join(urban_hmid_check, urban_h5_hmid, 
+                              by = c("hmid_zip" = "hmid_h5"),
+                              keep = TRUE)
+urban_hmid_check <- full_join(urban_hmid_check, urban_redcap_hmid, 
+                              by = c("hmid_zip" = "hmid_redcap"),
+                              keep = TRUE)
+
+# now, extract only the households that appear in all 3 datasets.
+urban_complete_hmid <- urban_hmid_check[complete.cases(urban_hmid_check), ]
+
+# now, from the main urban_sensor data, extract households appearing on the list above.
+urban_sensors_complete <- urban_sensors %>%
+  filter(hh_id %in% urban_complete_hmid$hmid_zip)
+
+cat("After this cleaning up, now there are", length(unique(urban_sensors_complete$hh_id)), "households in the urban area.")
+
+n_urban_household_members_complete <- urban_sensors_complete %>%
+  select(rec_id, hh_id) %>%
+  group_by(hh_id) %>%
+  summarise(n_hhid_complete = n())
+
+urban_hh_size <- n_raw_urban_household_members %>%
+  left_join( n_urban_household_members_complete, by = "hh_id")
+
+# How many individuals per household? 
+cat("There are 10 households with ≤2 members, 6 with only 1 member.")
+
+write.xlsx(urban_hh_size,
+           file =  "../data/sensor_metadata/mozambique_urban_hh_size_check.xlsx",
+           sheetName = "urban_hhsize_check",
+           append = FALSE, showNA = FALSE)
+
+write.xlsx(urban_hmid_check,
+           file =  "../data/sensor_metadata/mozambique_urban_hh_size_check.xlsx",
+           sheetName = "urban_hmid_check",
+           append = TRUE, showNA = FALSE)
+############
+
+```
