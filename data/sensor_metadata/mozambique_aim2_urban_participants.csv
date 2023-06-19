@@ -1,262 +1,191 @@
 "","rec_id","hh_id","date_enrolled","isindex","aim","study_site","sensor_id","hwid","participant_sex","age","participant_age","read_write","occupation","enrolled_school","highest_educ","school_level","transport_use","hh_resp_exposure","child","child_breastfeed","num_sibling"
-"1",433,"BLACM1022",2021-06-06,0,2,"Urban","F029ABE0",4029262816,"Male","26","<6mo","No","Child","No","None","None","Daily","No",NA,NA,NA
-"2",505,"QU9JM2068",2021-05-30,0,2,"Urban","0F0AC00E",252362766,"Female","26","<6mo","No","Child","No","None","None","Daily","No","Yes","No",NA
-"3",595,"QURMU1007",2021-06-21,0,2,"Urban","D0130626",3490907686,"Female","44","<6mo","No","Child","No","None","None","Rarely","Yes","No",NA,NA
-"4",617,"BLACM1038",2021-06-20,0,2,"Urban","B093D42E",2962478126,"Female","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"1"
-"5",723,"QUYPC1140",2021-07-14,0,2,"Urban","6375E09A",1668669594,"Female","33","<6mo","No","Child","No","None","None","≤3 times per week","No","No",NA,NA
-"6",1037,"QUVAM2034",2021-09-01,1,2,"Urban","2F66CF32",795266866,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
-"7",1038,"QUVAM2034",2021-09-01,0,2,"Urban","D5207DD4",3575676372,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
-"8",1040,"QUTRT1061",2021-08-23,1,2,"Urban","57B92915",1471752469,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"2"
-"9",1119,"BLBDA1044",2021-08-22,1,2,"Urban","D0130626",3490907686,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"10",1145,"QUXQM2140",2021-09-12,0,2,"Urban","E2C58AE4",3804596964,"Female","43","<6mo","No","Child","No","None","None","Rarely","No","No",NA,NA
-"11",1183,"QUURT1036",2021-09-23,1,2,"Urban","565F06C9",1449068233,"Male","1","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
-"12",1202,"BL2CM2032",2021-09-27,1,2,"Urban","6CECD070",1827459184,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"1"
-"13",1260,"QUYPC1272",2021-09-27,1,2,"Urban","775F3576",2002728310,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"14",1285,"QU2RT1016",2021-10-11,1,2,"Urban","01964B1A",26626842,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"15",1305,"QU2GG1015",2021-10-10,1,2,"Urban","950CC02A",2500640810,"Female","0","6-11mo","No","Child","No","None","None","Rarely","Yes",NA,NA,"2"
-"16",1347,"QU2RT1001",2021-10-15,1,2,"Urban","1C4E9633",474912307,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"17",1367,"QUFQM2077",2021-10-17,1,2,"Urban","0249F49D",38401181,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"18",1387,"QUOMU1039",2021-10-24,1,2,"Urban","05A700AC",94830764,"Female","0","<6mo","No","Child","No","None","None","Rarely","Yes",NA,NA,"1"
-"19",1390,"QU2RT1017",2021-10-23,0,2,"Urban","B287D42A",2995246122,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"20",1487,"QU2NM4001",2021-10-26,1,2,"Urban","ADC6D682",2915489410,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"21",1502,"QUKNM1002",2021-11-03,1,2,"Urban","6579D37C",1702482812,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"22",1512,"QUWJC1041",2021-11-02,1,2,"Urban","B648ADEB",3058216427,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
-"23",1515,"QUCGG1009",2021-11-02,0,2,"Urban","CF152F0F",3474272015,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
-"24",1518,"QUKQM1001",2021-11-08,1,2,"Urban","CF152F0F",3474272015,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
-"25",1527,"QUBNM4003",2021-11-07,1,2,"Urban","6375E09A",1668669594,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
-"26",1528,"QUBNM4003",2021-11-07,0,2,"Urban","E290C8BD",3801139389,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
-"27",1529,"QUBNM4003",2021-11-07,1,2,"Urban","B287D42A",2995246122,"Male","0","6-11mo","No","Child","No","None","None","Rarely","Yes",NA,NA,"3"
-"28",1541,"QUKMU1016",2021-11-14,1,2,"Urban","73A0D657",1939920471,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"29",1603,"QU7GG1064",2021-11-21,0,2,"Urban","1B6E7DC6",460225990,"Female","32","<6mo","No","Child","No","None","None","Rarely","No","Yes","Yes",NA
-"30",1604,"QU7GG1064",2021-11-21,0,2,"Urban","57B92915",1471752469,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"4"
-"31",1615,"QUMMU1002",2021-11-18,1,2,"Urban","63137977",1662220663,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
-"32",1617,"QUMMU1002",2021-11-18,1,2,"Urban","335C4283",861684355,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"33",1623,"QUFQM2077",2021-10-17,1,2,"Urban","0249F49D",38401181,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"34",1626,"QUKAM2012",2021-11-08,1,2,"Urban","7AEECBB1",2062470065,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"4"
-"35",1638,"QUZRT1013",2021-11-28,1,2,"Urban","0746B936",122075446,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"36",1727,"QULNM4015",2021-12-10,1,2,"Urban","5DA335CD",1570977229,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"37",1733,"QUMPC1003",2021-11-24,1,2,"Urban","05A700AC",94830764,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"38",1736,"QU3QM1034",2021-11-25,1,2,"Urban","7AEECBB1",2062470065,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"39",1739,"QU5QM1070",2021-12-01,1,2,"Urban","A44C5E76",2756468342,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"40",1746,"QUYPC1214",2021-12-05,1,2,"Urban","30DEADD1",819899857,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"41",1747,"QUYPC1214",2021-12-05,0,2,"Urban","335C4283",861684355,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"5"
-"42",1955,"QULQM1041",2022-02-01,1,2,"Urban","7FDE60EB",2145280235,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"4"
-"43",2257,"QUGPC1004",2021-12-14,1,2,"Urban","E290C8BD",3801139389,"Female","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"0"
-"44",2259,"QU2RT1012",2021-10-22,0,2,"Urban","73A0D657",1939920471,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"45",2261,"QUKQM2039",2021-11-17,1,2,"Urban","775F3576",2002728310,"Female","0","<6mo","No","Child","No","None","None","Daily","No",NA,NA,"3"
-"46",5800,"QUKQM2030",2021-12-19,0,2,"Urban","7FDE60EB",2145280235,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
-"47",5801,"QUKQM2030",2021-12-19,0,2,"Urban","7ADEB947",2061416775,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
-"48",432,"BLACM1022",2021-06-06,0,2,"Urban","90CBF595",2429285781,"Female","66","60+y","Yes","Homemaker","Yes",NA,"Primary","Rarely","No","No",NA,NA
-"49",434,"BLACM1022",2021-06-06,0,2,"Urban","0746B936",122075446,"Female","17","15-19y","Yes","Student","Yes",NA,"Secondary","Daily","No","No",NA,"2"
-"50",455,"BL1GG1030",2021-05-28,0,2,"Urban","48DDBBF4",1222491124,"Female","35","30-39y","Yes","Unemployed","No","Primary",NA,"Daily","No","No",NA,NA
-"51",456,"BL1GG1030",2021-05-28,0,2,"Urban","6CECD070",1827459184,"Female","17","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No","No",NA,"4"
-"52",457,"BL1GG1030",2021-05-28,0,2,"Urban","7705947E",1996854398,"Female","14","10-14y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No","No",NA,"5"
-"53",506,"QU9JM2068",2021-05-30,0,2,"Urban","73A0D657",1939920471,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"54",580,"BL1GG1040",2021-06-20,1,2,"Urban","7201E52B",1912726827,"Female","4","1-4y","No",NA,"No","None","None","Rarely","Yes",NA,NA,"0"
-"55",596,"QURMU1007",2021-06-21,0,2,"Urban","6579D37C",1702482812,"Female","16","15-19y","Yes","Student","Yes",NA,"Secondary","Rarely","Yes","No",NA,"2"
-"56",597,"QURMU1007",2021-06-21,0,2,"Urban","BB211C8C",3139509388,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","Yes",NA,NA,"2"
-"57",610,"BLACM1038",2021-06-20,0,2,"Urban","30DEADD1",819899857,"Female","50","40-59y","Yes","Unemployed","No","Secondary",NA,"Rarely","Yes","No",NA,NA
-"58",611,"BLACM1038",2021-06-20,0,2,"Urban","B6514945",3058780485,"Female","25","20-29y","Yes","Office worker","No","Secondary",NA,"Rarely","No","Yes","No",NA
-"59",612,"BLACM1038",2021-06-20,0,2,"Urban","F75B23E1",4149945313,"Female","17","15-19y","Yes","Student","Yes",NA,"Secondary","Daily","No","No",NA,"4"
-"60",613,"BLACM1038",2021-06-20,0,2,"Urban","CF152F0F",3474272015,"Male","22","20-29y","Yes","Office worker","No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
-"61",614,"BLACM1038",2021-06-20,0,2,"Urban","6F673A12",1869036050,"Male","6","5-9y","No","Unemployed","No","Primary",NA,"Never","No","No",NA,"2"
-"62",615,"BLACM1038",2021-06-20,0,2,"Urban","565F06C9",1449068233,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","No",NA,NA
-"63",616,"BLACM1038",2021-06-20,1,2,"Urban","993564AB",2570413227,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"64",662,"QUOMU1033",2021-07-04,0,2,"Urban","7FDE60EB",2145280235,"Female","59","40-59y","Yes","Homemaker","No","Primary",NA,"Rarely","No","No","No",NA
-"65",663,"QUOMU1033",2021-07-04,1,2,"Urban","E2C58AE4",3804596964,"Male","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"66",703,"QUYPC1144",2021-07-14,0,2,"Urban","90CBF595",2429285781,"Female","20","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","No","No",NA
-"67",704,"QUYPC1144",2021-07-14,1,2,"Urban","FDF97280",4260983424,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"68",705,"QUYPC1144",2021-07-14,0,2,"Urban","B287D42A",2995246122,"Female","27","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"69",706,"QUYPC1144",2021-07-14,0,2,"Urban","775F3576",2002728310,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"0"
-"70",707,"QUYPC1144",2021-07-14,0,2,"Urban","05A700AC",94830764,"Female","26","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"71",709,"QUYPC1144",2021-07-14,0,2,"Urban","5BAC9680",1487705728,"Female","62","60+y","No","Business person","No","None",NA,"Rarely","No","No",NA,NA
-"72",710,"QUYPC1144",2021-07-14,0,2,"Urban","01964B1A",26626842,"Male","26","20-29y","Yes","Business person","No","Primary",NA,"Rarely","No",NA,NA,NA
-"73",724,"QUYPC1140",2021-07-14,0,2,"Urban","3C114B9E",1007766430,"Male","13","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"74",725,"QUYPC1140",2021-07-14,0,2,"Urban","E290C8BD",3801139389,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"0"
-"75",726,"QUYPC1140",2021-07-14,1,2,"Urban","D6CFBE70",3603938928,"Male","2","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
-"76",730,"QUYPC1071",2021-07-18,0,2,"Urban","7ADEB947",2061416775,"Male","24","20-29y","Yes","Office worker","No","Primary",NA,"Rarely","Yes",NA,NA,NA
-"77",731,"QUYPC1071",2021-07-18,0,2,"Urban","D2495E9F",3528023711,"Female","24","20-29y","Yes","Business person","No","Primary",NA,"Daily","Yes","No",NA,NA
-"78",732,"QUYPC1071",2021-07-18,0,2,"Urban","1B6E7DC6",460225990,"Male","6","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
-"79",733,"QUYPC1071",2021-07-18,1,2,"Urban","3F3453F3",1060393971,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
-"80",735,"QU8NM1002",2021-07-18,0,2,"Urban","ADC6D682",2915489410,"Female","44","40-59y","Yes","Homemaker","No","Secondary",NA,"Rarely","Yes","Yes","No",NA
-"81",736,"QU8NM1002",2021-07-18,0,2,"Urban","16B7EA20",NA,"Male","21","20-29y","Yes","Office worker","No","Secondary",NA,"Once monthly","No",NA,NA,NA
-"82",738,"QU8NM1002",2021-07-18,0,2,"Urban","45B9CEA9",1169804969,"Male","10","10-14y","No","Student","No","Primary",NA,"Rarely","Yes",NA,NA,"3"
-"83",739,"QU8NM1002",2021-07-18,1,2,"Urban","7705947E",1996854398,"Female","1","1-4y","No",NA,"No","None","None","Never","Yes",NA,NA,"3"
-"84",745,"QURMU1022",2021-07-11,0,2,"Urban","567140F0",1450262768,"Female","36","30-39y","Yes","Unemployed","Yes",NA,"Secondary","Daily","No","No",NA,NA
-"85",746,"QURMU1022",2021-07-11,0,2,"Urban","612514B1",1629820081,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
-"86",747,"QURMU1022",2021-07-11,0,2,"Urban","7DF19AC4",2112985796,"Male","9","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"87",748,"QURMU1022",2021-07-11,1,2,"Urban","C179A589",3245974921,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,NA
-"88",773,"QUYPC1122",2021-07-18,0,2,"Urban","B648ADEB",3058216427,"Female","26","20-29y","No","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"89",774,"QUYPC1122",2021-07-22,0,2,"Urban","6A9FB5EB",1788851688,"Male","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
-"90",775,"QUYPC1122",2021-07-22,1,2,"Urban","1C4E9633",474912307,"Male","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
-"91",807,"QU8NM1005",2021-07-25,0,2,"Urban","950CC02A",2500640810,"Female","44","40-59y","Yes","Unemployed","No","Primary",NA,"Never","No","No",NA,NA
-"92",808,"QU8NM1005",2021-07-25,0,2,"Urban","59FA6AFD",1509583613,"Male","17","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"6"
-"93",809,"QU8NM1005",2021-07-25,0,2,"Urban","63137977",1662220663,"Female","15","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"6"
-"94",810,"QU8NM1005",2021-07-25,0,2,"Urban","A264CC63",2724514915,"Female","10","10-14y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"6"
-"95",811,"QU8NM1005",2021-07-25,1,2,"Urban","F029ABE0",4029262816,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"6"
-"96",900,"QUYPC1195",2021-08-08,0,2,"Urban","0746B936",122075446,"Female","22","20-29y","Yes","Unemployed","Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
-"97",901,"QUYPC1195",2021-08-08,0,2,"Urban","D4D84F97",3570945943,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"98",902,"QUYPC1195",2021-08-08,1,2,"Urban","272EBC2B",657374251,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"99",906,"QUVAM2023",2021-08-06,0,2,"Urban","6BDA8DED",1809485293,"Female","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
-"100",907,"QUVAM2023",2021-08-06,0,2,"Urban","5DA335CD",1570977229,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Once monthly","No",NA,NA,"3"
-"101",908,"QUVAM2023",2021-08-06,0,2,"Urban","E7317FFF",3878780927,"Female","13","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"3"
-"102",910,"QUVAM2023",2021-08-06,0,2,"Urban","9BC8EB99",2613635993,"Male","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
-"103",965,"QUSRT1029",2021-08-22,0,2,"Urban","612514B1",1629820081,"Female","51","40-59y","Yes","Business person","No","Primary",NA,"Daily","No","No",NA,NA
-"104",966,"QUSRT1029",2021-08-22,0,2,"Urban","93EF89E6",3474272015,"Female","19","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No","No",NA,NA
-"105",967,"QUSRT1029",2021-08-22,0,2,"Urban","B648ADEB",3058216427,"Male","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No",NA,NA,NA
-"106",968,"QUSRT1029",2021-08-22,0,2,"Urban","6F673A12",1869036050,"Female","15","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No","No",NA,"5"
-"107",970,"QUSRT1029",2021-08-22,0,2,"Urban","73A0D657",1939920471,"Male","7","5-9y","No","Homemaker","No","None",NA,"Rarely","No",NA,NA,"01"
-"108",971,"QUSRT1029",2021-08-22,1,2,"Urban","567140F0",1450262768,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"01"
-"109",972,"QUSRT10290",2021-08-22,0,2,"Urban","7201E52B",1912726827,"Male","36","30-39y","Yes","Business person","Yes",NA,"Primary","Daily","No",NA,NA,NA
-"110",1017,"QUTRT1061",2021-08-23,0,2,"Urban","ADC6D682",2915489410,"Male","35","30-39y","Yes","Other","No","Secondary",NA,"Rarely","No",NA,NA,NA
-"111",1018,"QUTRT1061",2021-08-23,0,2,"Urban","BB211C8C",3139509388,"Female","35","30-39y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"112",1025,"QUUGG1009",2021-08-30,0,2,"Urban","CF152F0F",3474272015,"Female","27","20-29y","Yes","Other","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"113",1030,"QUUGG1003",2021-08-29,0,2,"Urban","8D46A482",2370217090,"Female","21","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"114",1031,"QUUGG1003",2021-08-29,0,2,"Urban","C5410CE6",3309374694,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"115",1034,"QUVAM2034",2021-09-01,0,2,"Urban","595D34C5",1499280581,"Female","66","60+y","No","Business person","No","None",NA,"Rarely","No","No",NA,NA
-"116",1035,"QUVAM2034",2021-09-01,0,2,"Urban","3F3453F3",1060393971,"Female","38","30-39y","Yes","Business person","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
-"117",1036,"QUVAM2034",2021-09-01,0,2,"Urban","98ED9A65",2565708389,"Female","30","30-39y","Yes","Business person","No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
-"118",1116,"BLBDA1044",2021-08-22,0,2,"Urban","6579D37C",1702482812,"Female","56","40-59y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"119",1117,"BLBDA1044",2021-08-22,0,2,"Urban","45B9CEA9",1169804969,"Female","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
-"120",1118,"BLBDA1044",2021-08-22,0,2,"Urban","7FDE60EB",2145280235,"Female","26","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"121",1129,"QUXQM2066",2021-09-12,0,2,"Urban","F58E44EB",4119741675,"Male","31","30-39y","Yes","Office worker","No","Primary",NA,"Daily","No",NA,NA,NA
-"122",1130,"QUXQM2066",2021-09-12,0,2,"Urban","775F3576",2002728310,"Female","24","20-29y","No","Unemployed","No","None",NA,"≤3 times per week","No","Yes","Yes",NA
-"123",1131,"QUXQM2066",2021-09-12,1,2,"Urban","59FA6AFD",1509583613,"Female","1","1-4y","No","Student","No","None","None","Rarely","No",NA,NA,"2"
-"124",1132,"QUXQM2066",2021-09-12,0,2,"Urban","D0130626",3490907686,"Male","6","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
-"125",1141,"QUUGG1037",2021-09-14,0,2,"Urban","7FDE60EB",2145280235,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","No",NA
-"126",1142,"QUUGG1037",2021-09-14,1,2,"Urban","6579D37C",1702482812,"Male","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"127",1146,"QUXQM2140",2021-09-12,0,2,"Urban","6CECD070",1827459184,"Female","21","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"128",1147,"QUXQM2140",2021-09-12,0,2,"Urban","B648ADEB",3058216427,"Female","17","15-19y","Yes","Student","Yes",NA,"Secondary","Daily","No","No",NA,"2"
-"129",1148,"QUXQM2140",2021-09-12,1,2,"Urban","612514B1",1629820081,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,NA
-"130",1180,"QUXQM2120",2021-09-16,0,2,"Urban","7201E52B",1912726827,"Male","52","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No",NA,NA,"3"
-"131",1182,"QUURT1036",2021-09-23,0,2,"Urban","FDF97280",4260983424,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","No",NA
-"132",1184,"QUURT1036",2021-09-23,0,2,"Urban","93EF89E6",3474272015,"Male","16","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"1"
-"133",1190,"BLBDA1018",2021-09-16,0,2,"Urban","05A700AC",94830764,"Male","40","40-59y","Yes","Casual laboror","No","Primary",NA,"Daily","No",NA,NA,NA
-"134",1192,"BLBDA1018",2021-09-16,0,2,"Urban","0746B936",122075446,"Male","13","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"1"
-"135",1193,"BLBDA1018",2021-09-16,0,2,"Urban","5BAC9680",1487705728,"Male","10","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"01"
-"136",1194,"BLBDA1018",2021-09-16,0,2,"Urban","7705947E",1996854398,"Male","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"02"
-"137",1195,"BLBDA1018",2021-09-16,0,2,"Urban","6BDA8DED",1809485293,"Female","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"02"
-"138",1196,"BLBDA1018",2021-09-16,1,2,"Urban","6375E09A",1668669594,"Male","2","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"02"
-"139",1199,"BL2CM2032",2021-09-27,0,2,"Urban","D2495E9F",3528023711,"Male","43","40-59y","Yes","Casual laboror","Yes",NA,"Primary","Rarely","No",NA,NA,NA
-"140",1200,"BL2CM2032",2021-09-27,0,2,"Urban","1B6E7DC6",460225990,"Female","25","20-29y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"141",1201,"BL2CM2032",2021-09-27,0,2,"Urban","B648ADEB",3058216427,"Male","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
-"142",1249,"BL2CM2003",2021-09-23,0,2,"Urban","90CBF595",2429285781,"Male","62","60+y","Yes","Office worker","No","Primary",NA,"≤3 times per week","No",NA,NA,NA
-"143",1250,"BL2CM2003",2021-09-23,0,2,"Urban","126DCF62",309186402,"Female","62","60+y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"144",1251,"BL2CM2003",2021-09-23,0,2,"Urban","272EBC2B",657374251,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"145",1252,"BL2CM2003",2021-09-23,1,2,"Urban","1C4E9633",474912307,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"146",1254,"BL2CM2003",2021-09-23,0,2,"Urban","F029ABE0",4029262816,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"0"
-"147",1257,"QUYPC1272",2021-09-27,0,2,"Urban","A264CC63",2724514915,"Male","32","30-39y","No","Office worker","No","None",NA,"≤3 times per week","No",NA,NA,NA
-"148",1258,"QUYPC1272",2021-09-27,0,2,"Urban","D0130626",3490907686,"Female","28","20-29y","Yes","Business person","No","Primary",NA,"Rarely","No","Yes","No",NA
-"149",1259,"QUYPC1272",2021-09-27,0,2,"Urban","63137977",1662220663,"Female","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
-"150",1270,"QUXRT1176",2021-09-19,0,2,"Urban","335C4283",861684355,"Female","33","30-39y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","No",NA,NA
-"151",1271,"QUXRT1176",2021-09-19,0,2,"Urban","2F66CF32",795266866,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Once monthly","No",NA,NA,"3"
-"152",1272,"QUXRT1176",2021-09-19,0,2,"Urban","D5207DD4",3575676372,"Male","9","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
-"153",1273,"QUXRT1176",2021-09-19,0,2,"Urban","993564AB",2570413227,"Male","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"3"
-"154",1274,"QUXRT1176",2021-09-19,1,2,"Urban","48DDBBF4",1222491124,"Male","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"3"
-"155",1277,"QUUGG1005",2021-09-23,0,2,"Urban","6A9FB5EB",1788851688,"Male","24","20-29y","Yes","Office worker","No","Secondary",NA,"Daily","No",NA,NA,NA
-"156",1278,"QUUGG1005",2021-09-23,0,2,"Urban","B093D42E",2962478126,"Female","23","20-29y","Yes","Office worker","No","Secondary",NA,"Daily","No","No",NA,NA
-"157",1283,"QU2RT1016",2021-10-11,0,2,"Urban","595D34C5",1499280581,"Male","77","60+y","No","Retired","No","None",NA,"Rarely","No",NA,NA,NA
-"158",1284,"QU2RT1016",2021-10-11,0,2,"Urban","C5410CE6",3309374694,"Female","31","30-39y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"159",1303,"QU2GG1015",2021-10-10,0,2,"Urban","B6514945",3058780485,"Male","40","40-59y","Yes","Office worker","No","Primary",NA,"Daily","Yes",NA,NA,NA
-"160",1304,"QU2GG1015",2021-10-10,0,2,"Urban","CF152F0F",3474272015,"Female","33","30-39y","Yes","Business person","No","Primary",NA,"Rarely","Yes","Yes","Yes",NA
-"161",1343,"QU2RT1001",2021-10-15,0,2,"Urban","7FDE60EB",2145280235,"Female","54","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No","No",NA,NA
-"162",1344,"QU2RT1001",2021-10-15,0,2,"Urban","6375E09A",1668669594,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"163",1345,"QU2RT1001",2021-10-15,0,2,"Urban","126DCF62",309186402,"Male","18","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,NA
-"164",1346,"QU2RT1001",2021-10-15,0,2,"Urban","D2495E9F",3528023711,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
-"165",1366,"QUFQM2077",2021-10-17,0,2,"Urban","7705947E",1996854398,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","No",NA
-"166",1368,"QUFQM2077",2021-10-17,0,2,"Urban","6CECD070",1827459184,"Female","43","40-59y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"167",1369,"QUFQM2077",2021-10-17,0,2,"Urban","D4D84F97",3570945943,"Male","56","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No",NA,NA,NA
-"168",1370,"QUFQM2077",2021-10-17,0,2,"Urban","272EBC2B",657374251,"Female","55","40-59y","No","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"169",1371,"QUFQM2077",2021-10-17,0,2,"Urban","BB211C8C",3139509388,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"4"
-"170",1386,"QUOMU1039",2021-10-24,0,2,"Urban","612514B1",1629820081,"Female","15","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","Yes","No",NA,"7"
-"171",1388,"QUOMU1039",2021-10-24,0,2,"Urban","C179A589",3245974921,"Male","7","5-9y","No","Student","No","Primary",NA,"≤3 times per week","No",NA,NA,"1"
-"172",1389,"QU2RT1017",2021-10-23,0,2,"Urban","D6CFBE70",3603938928,"Female","25","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"173",1391,"QU2RT1017",2021-10-23,1,2,"Urban","E290C8BD",3801139389,"Female","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
-"174",1484,"QU2NM4001",2021-10-26,0,2,"Urban","5BAC9680",1487705728,"Female","51","40-59y","Yes","Office worker","No","Secondary",NA,"Daily","No","No",NA,NA
-"175",1485,"QU2NM4001",2021-10-26,0,2,"Urban","1B6E7DC6",460225990,"Male","19","15-19y","Yes","Student","Yes",NA,"Bachelors or more","Daily","No",NA,NA,NA
-"176",1488,"QUKNM1003",2021-11-07,0,2,"Urban","7FDE60EB",2145280235,"Male","34","30-39y","Yes","Office worker","No","Secondary",NA,"Daily","Yes",NA,NA,NA
-"177",1489,"QUKNM1003",2021-11-07,0,2,"Urban","567140F0",1450262768,"Female","36","30-39y","Yes","Homemaker","No","Primary",NA,"≤3 times per week","No","Yes","No",NA
-"178",1490,"QUKNM1003",2021-11-07,0,2,"Urban","D2495E9F",3528023711,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"179",1491,"QUKNM1003",2021-11-07,1,2,"Urban","0249F49D",38401181,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"180",1492,"BLBDA1010",2021-11-07,0,2,"Urban","D4D84F97",3570945943,"Male","45","40-59y","Yes","Office worker","No","Secondary",NA,"≤3 times per week","Yes",NA,NA,NA
-"181",1496,"QUKNM1002",2021-11-03,0,2,"Urban","D0130626",3490907686,"Female","56","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No","No",NA,NA
-"182",1497,"QUKNM1002",2021-11-03,0,2,"Urban","B6514945",3058780485,"Male","32","30-39y","Yes","Casual laboror","No","Primary",NA,"Once monthly","No",NA,NA,NA
-"183",1498,"QUKNM1002",2021-11-03,0,2,"Urban","335C4283",861684355,NA,"3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"184",1499,"QUKNM1002",2021-11-03,1,2,"Urban","2F66CF32",795266866,"Male","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"185",1500,"QUKNM1002",2021-11-03,0,2,"Urban","63137977",1662220663,"Female","30","30-39y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"186",1501,"QUKNM1002",2021-11-03,0,2,"Urban","D5207DD4",3575676372,"Female","17","15-19y","Yes","Business person","No","Secondary",NA,"Rarely","No","Yes","Yes","0"
-"187",1503,"QUKNM1002",2021-11-03,0,2,"Urban","0746B936",122075446,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"188",1504,"QUKNM1002",2021-11-03,0,2,"Urban","A264CC63",2724514915,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"3"
-"189",1505,"QUKAM2012",2021-11-08,0,2,"Urban","BB211C8C",3139509388,"Female","38","30-39y","Yes","Unemployed","No","None",NA,"Rarely","No","Yes","Yes",NA
-"190",1506,"QUKAM2012",2021-11-08,0,2,"Urban","1C4E9633",474912307,"Female","6","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
-"191",1507,"QUKAM2012",2021-11-08,0,2,"Urban","595D34C5",1499280581,"Female","19","15-19y","No","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
-"192",1513,"QUCGG1009",2021-11-02,0,2,"Urban","993564AB",2570413227,"Male","27","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No",NA,NA,NA
-"193",1519,"QUKQM1001",2021-11-08,0,2,"Urban","7DF19AC4",2112985796,"Male","16","15-19y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
-"194",1520,"QUKQM2001",2021-11-08,0,2,"Urban","126DCF62",309186402,"Male","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"195",1521,"QUKQM1001",2021-11-08,0,2,"Urban","8D46A482",2370217090,"Female","30","30-39y","Yes","Business person","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"196",1523,"QUKQM1001",2021-11-08,0,2,"Urban","6CECD070",1827459184,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"197",1524,"QUKQM1001",2021-11-08,0,2,"Urban","45B9CEA9",1169804969,"Female","9","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"198",1526,"QUBNM4003",2021-11-07,0,2,"Urban","272EBC2B",657374251,"Female","34","30-39y","No","Business person","No","None",NA,"Rarely","No","Yes","Yes",NA
-"199",1530,"QUBNM4003",2021-11-07,0,2,"Urban","B093D42E",2962478126,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","Yes",NA,NA,"3"
-"200",1539,"QUKMU1016",2021-11-14,0,2,"Urban","F75B23E1",4149945313,"Male","33","30-39y","Yes","Office worker","Yes",NA,"Bachelors or more","Daily","No",NA,NA,NA
-"201",1540,"QUKMU1016",2021-11-14,0,2,"Urban","5DA335CD",1570977229,"Female","24","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"202",1542,"QUKMU1016",2021-11-14,0,2,"Urban","9BC8EB99",2613635993,"Male","27","20-29y","Yes","Office worker","No","Secondary",NA,"Rarely","No",NA,NA,NA
-"203",1567,"QUKRT1041",2021-11-17,1,2,"Urban","68CF2EA5",1758408357,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"204",1568,"QUKRT10141",2021-11-17,0,2,"Urban","E7317FFF",3878780927,"Male","10","10-14y","No","Homemaker","No","None",NA,"Rarely","No",NA,NA,"2"
-"205",1606,"QU7NM4029",2021-11-23,0,2,"Urban","6CECD070",1827459184,"Male","27","20-29y","Yes","Business person","No","Secondary",NA,"Rarely","No",NA,NA,NA
-"206",1607,"QU7NM4029",2021-11-23,0,2,"Urban","567140F0",1450262768,"Female","24","20-29y","Yes","Casual laboror","No","Primary",NA,"Rarely","No","No",NA,NA
-"207",1608,"QU7NM4029",2021-11-23,0,2,"Urban","950CC02A",2500640810,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"208",1609,"QU7NM4029",2021-11-23,0,2,"Urban","0249F49D",38401181,"Female","5","5-9y","Yes",NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
-"209",1610,"QU7NM4029",2021-11-23,1,2,"Urban","6A9FB5EB",1788851688,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"210",1611,"QUMMU1002",2021-11-18,0,2,"Urban","6579D37C",1702482812,"Female","23","20-29y","Yes","Homemaker","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
-"211",1613,"QUMMU1002",2021-11-18,0,2,"Urban","A264CC63",2724514915,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"212",1614,"QUMMU1002",2021-11-18,0,2,"Urban","D5207DD4",3575676372,"Female","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"213",1616,"QUMMU1002",2021-11-18,0,2,"Urban","FDF97280",4260983424,"Female","13","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"02"
-"214",1624,"QUKAM2012",2021-11-08,0,2,"Urban","0F0AC00E",252362766,"Male","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
-"215",1625,"QUKAM2012",2021-11-08,0,2,"Urban","C5410CE6",3309374694,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"4"
-"216",1627,"QU3QM2047",2021-11-23,0,2,"Urban","3C114B9E",1007766430,"Male","37","30-39y","Yes","Office worker","No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
-"217",1629,"QU3QM2047",2021-11-23,0,2,"Urban","90CBF595",2429285781,"Female","21","20-29y","Yes","Student","Yes",NA,"Secondary","Rarely","No","No",NA,NA
-"218",1630,"QU3QM2047",2021-11-23,0,2,"Urban","2F66CF32",795266866,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"3"
-"219",1632,"QU3AM2004",2021-11-25,0,2,"Urban","7FDE60EB",2145280235,"Male","19","15-19y","Yes","Student","Yes",NA,"College","Daily","No",NA,NA,NA
-"220",1633,"QU3AM2004",2021-11-25,0,2,"Urban","93EF89E6",3474272015,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"0"
-"221",1634,"QU3AM2004",2021-11-25,0,2,"Urban","7201E52B",1912726827,"Female","14","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No","No",NA,"0"
-"222",1635,"QU3AM2004",2021-11-25,1,2,"Urban","E290C8BD",3801139389,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
-"223",1636,"QUZRT1013",2021-11-28,0,2,"Urban","BB211C8C",3139509388,"Male","30","30-39y","Yes","Casual laboror","No","Secondary",NA,"Daily","No",NA,NA,NA
-"224",1637,"QUZRT1013",2021-11-28,0,2,"Urban","0F0AC00E",252362766,"Female","25","20-29y","Yes","Office worker","No","Secondary",NA,"Rarely","No","Yes","No",NA
-"225",1716,"QUKQM2039",2021-11-17,0,2,"Urban","98ED9A65",2565708389,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"2"
-"226",1717,"QUKQM2039",2021-11-11,0,2,"Urban","48DDBBF4",1222491124,"Male","9","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
-"227",1725,"QULNM4015",2021-12-10,0,2,"Urban","5DA335CD",1570977229,"Male","22","20-29y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,NA
-"228",1726,"QULNM4015",2021-12-10,0,2,"Urban","48DDBBF4",1222491124,"Female","21","20-29y","Yes","Student","Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
-"229",1728,"QUMPC1003",2021-11-24,0,2,"Urban","1C4E9633",474912307,"Male","64","60+y","Yes","Office worker","No","Primary",NA,"Rarely","No",NA,NA,NA
-"230",1729,"QUMPC1003",2021-11-24,0,2,"Urban","D4D84F97",3570945943,"Female","61","60+y","No","Homemaker","No","None",NA,"≤3 times per week","No","No",NA,NA
-"231",1730,"QUMPC1003",2021-11-24,0,2,"Urban","01964B1A",26626842,"Male","29","20-29y","Yes","Casual laboror","No","Secondary",NA,"Rarely","No",NA,NA,NA
-"232",1731,"QUMPC1003",2021-11-24,0,2,"Urban","7705947E",1996854398,"Female","22","20-29y","Yes","Student","Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
-"233",1732,"QUMPC1003",2021-11-24,0,2,"Urban","B6514945",3058780485,"Female","18","15-19y","Yes","Student","Yes",NA,"Bachelors or more","Daily","No","No",NA,NA
-"234",1734,"QU3QM1034",2021-11-25,0,2,"Urban","595D34C5",1499280581,"Male","31","30-39y","Yes","Office worker","No","Primary",NA,"Daily","No",NA,NA,NA
-"235",1735,"QU3QM1034",2021-11-25,0,2,"Urban","59FA6AFD",1509583613,"Female","21","20-29y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"236",1737,"QU5QM1070",2021-12-01,0,2,"Urban","D0130626",3490907686,"Male","28","20-29y","Yes","Office worker","No","Primary",NA,"Daily","No",NA,NA,NA
-"237",1738,"QU5QM1070",2021-12-01,0,2,"Urban","B287D42A",2995246122,"Female","30","30-39y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"238",1740,"QUYPC1214",2021-12-05,0,2,"Urban","A264CC63",2724514915,"Male","31","30-39y","Yes","Casual laboror","No","Primary",NA,"Daily","No",NA,NA,NA
-"239",1742,"QUYPC1214",2021-12-05,0,2,"Urban","D5207DD4",3575676372,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"05"
-"240",1743,"QUYPC1214",2021-12-05,0,2,"Urban","6579D37C",1702482812,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"05"
-"241",1745,"QUYPC1214",2021-12-05,0,2,"Urban","FDF97280",4260983424,"Female","21","20-29y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"242",1778,"QU3QM2047",2021-11-23,0,2,"Urban","3F3453F3",1060393971,"Male","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
-"243",1780,"QUYPC1113",2021-12-08,0,2,"Urban","D4D84F97",3570945943,"Male","27","20-29y","Yes","Office worker","No","Secondary",NA,"Daily","No",NA,NA,NA
-"244",1781,"QUYPC1113",2021-12-08,0,2,"Urban","7705947E",1996854398,"Female","20","20-29y","Yes","Business person","No","Secondary",NA,"≤3 times per week","No","Yes","No",NA
-"245",1782,"QUYPC1113",2021-12-08,1,2,"Urban","B6514945",3058780485,"Female","0","1-4y","No",NA,"No","None","None","Rarely","Yes",NA,NA,"0"
-"246",1950,"QULQM1041",2022-02-01,0,2,"Urban","272EBC2B",657374251,"Female","43","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"247",1951,"QULQM1041",2022-02-01,0,2,"Urban","90CBF595",2429285781,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"4"
-"248",1952,"QULQM1041",2022-02-01,0,2,"Urban","3C114B9E",1007766430,"Male","9","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"4"
-"249",1953,"QULQM1041",2022-02-01,0,2,"Urban","05A700AC",94830764,"Male","23","20-29y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,NA
-"250",1954,"QULQM1041",2022-02-01,0,2,"Urban","5BAC9680",1487705728,"Female","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"4"
-"251",1979,"QUGPC1004",2021-12-14,0,2,"Urban","F58E44EB",4119741675,"Male","38","30-39y","Yes","Casual laboror","No","Primary",NA,"Rarely","No",NA,NA,NA
-"252",2228,"QUVAM2034",2021-09-01,0,2,"Urban","126DCF62",309186402,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
-"253",2230,"QU7GG1064",2021-11-21,1,2,"Urban","F029ABE0",4029262816,"Male","1","1-4y","No",NA,"No","None","None","Daily","No",NA,NA,"3"
-"254",2253,"QUKQM1001",2021-11-08,0,2,"Urban","126DCF62",309186402,"Male","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"5"
-"255",2256,"QUGPC1004",2021-12-14,0,2,"Urban","3C114B9E",1007766430,"Female","42","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No","No",NA,NA
-"256",2258,"QUGPC1004",2021-12-14,0,2,"Urban","3F3453F3",1060393971,"Female","19","15-19y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
-"257",5804,"QUKQM2030",2021-12-19,0,2,"Urban","7201E52B",1912726827,"Male","34","30-39y","Yes","Casual laboror","No","Primary",NA,"Daily","Yes",NA,NA,NA
-"258",5805,"QUKQM203",2021-12-19,0,2,"Urban","90CBF595",2429285781,"Female","26","20-29y","Yes","Homemaker","No","None",NA,"Rarely","No","Yes","Yes",NA
-"259",5806,"QUKQM2030",2021-12-19,0,2,"Urban","C5410CE6",3309374694,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
-"260",5807,"QUKQM2030",2021-12-19,0,2,"Urban","C179A589",3245974921,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
-"261",5826,"QU7GG1064",2021-11-22,0,2,"Urban","5BAC9680",1487705728,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,NA
+"1",595,"QURMU1007",2021-06-21,0,2,"Urban","D0130626",3490907686,"Female","44","<6mo","No","Child","No","None","None","Rarely","Yes","No",NA,NA
+"2",723,"QUYPC1140",2021-07-14,0,2,"Urban","6375E09A",1668669594,"Female","33","<6mo","No","Child","No","None","None","≤3 times per week","No","No",NA,NA
+"3",1037,"QUVAM2034",2021-09-01,1,2,"Urban","2F66CF32",795266866,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
+"4",1038,"QUVAM2034",2021-09-01,0,2,"Urban","D5207DD4",3575676372,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
+"5",1145,"QUXQM2140",2021-09-12,0,2,"Urban","E2C58AE4",3804596964,"Female","43","<6mo","No","Child","No","None","None","Rarely","No","No",NA,NA
+"6",1183,"QUURT1036",2021-09-23,1,2,"Urban","565F06C9",1449068233,"Male","1","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
+"7",1202,"BL2CM2032",2021-09-27,1,2,"Urban","6CECD070",1827459184,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"1"
+"8",1260,"QUYPC1272",2021-09-27,1,2,"Urban","775F3576",2002728310,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"9",1285,"QU2RT1016",2021-10-11,1,2,"Urban","01964B1A",26626842,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"10",1305,"QU2GG1015",2021-10-10,1,2,"Urban","950CC02A",2500640810,"Female","0","6-11mo","No","Child","No","None","None","Rarely","Yes",NA,NA,"2"
+"11",1347,"QU2RT1001",2021-10-15,1,2,"Urban","1C4E9633",474912307,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"12",1367,"QUFQM2077",2021-10-17,1,2,"Urban","0249F49D",38401181,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"13",1387,"QUOMU1039",2021-10-24,1,2,"Urban","05A700AC",94830764,"Female","0","<6mo","No","Child","No","None","None","Rarely","Yes",NA,NA,"1"
+"14",1390,"QU2RT1017",2021-10-23,0,2,"Urban","B287D42A",2995246122,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"15",1502,"QUKNM1002",2021-11-03,1,2,"Urban","6579D37C",1702482812,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"16",1512,"QUWJC1041",2021-11-02,1,2,"Urban","B648ADEB",3058216427,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
+"17",1515,"QUCGG1009",2021-11-02,0,2,"Urban","CF152F0F",3474272015,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
+"18",1527,"QUBNM4003",2021-11-07,1,2,"Urban","6375E09A",1668669594,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
+"19",1528,"QUBNM4003",2021-11-07,0,2,"Urban","E290C8BD",3801139389,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
+"20",1529,"QUBNM4003",2021-11-07,1,2,"Urban","B287D42A",2995246122,"Male","0","6-11mo","No","Child","No","None","None","Rarely","Yes",NA,NA,"3"
+"21",1541,"QUKMU1016",2021-11-14,1,2,"Urban","73A0D657",1939920471,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"22",1615,"QUMMU1002",2021-11-18,1,2,"Urban","63137977",1662220663,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
+"23",1617,"QUMMU1002",2021-11-18,1,2,"Urban","335C4283",861684355,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"24",1623,"QUFQM2077",2021-10-17,1,2,"Urban","0249F49D",38401181,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"25",1626,"QUKAM2012",2021-11-08,1,2,"Urban","7AEECBB1",2062470065,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"4"
+"26",1638,"QUZRT1013",2021-11-28,1,2,"Urban","0746B936",122075446,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"27",1733,"QUMPC1003",2021-11-24,1,2,"Urban","05A700AC",94830764,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"28",1736,"QU3QM1034",2021-11-25,1,2,"Urban","7AEECBB1",2062470065,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"29",1739,"QU5QM1070",2021-12-01,1,2,"Urban","A44C5E76",2756468342,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"30",1746,"QUYPC1214",2021-12-05,1,2,"Urban","30DEADD1",819899857,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"31",1747,"QUYPC1214",2021-12-05,0,2,"Urban","335C4283",861684355,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"5"
+"32",2259,"QU2RT1012",2021-10-22,0,2,"Urban","73A0D657",1939920471,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"33",2261,"QUKQM2039",2021-11-17,1,2,"Urban","775F3576",2002728310,"Female","0","<6mo","No","Child","No","None","None","Daily","No",NA,NA,"3"
+"34",5800,"QUKQM2030",2021-12-19,0,2,"Urban","7FDE60EB",2145280235,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
+"35",5801,"QUKQM2030",2021-12-19,0,2,"Urban","7ADEB947",2061416775,"Female","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"3"
+"36",580,"BL1GG1040",2021-06-20,1,2,"Urban","7201E52B",1912726827,"Female","4","1-4y","No",NA,"No","None","None","Rarely","Yes",NA,NA,"0"
+"37",596,"QURMU1007",2021-06-21,0,2,"Urban","6579D37C",1702482812,"Female","16","15-19y","Yes","Student","Yes",NA,"Secondary","Rarely","Yes","No",NA,"2"
+"38",597,"QURMU1007",2021-06-21,0,2,"Urban","BB211C8C",3139509388,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","Yes",NA,NA,"2"
+"39",703,"QUYPC1144",2021-07-14,0,2,"Urban","90CBF595",2429285781,"Female","20","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","No","No",NA
+"40",704,"QUYPC1144",2021-07-14,1,2,"Urban","FDF97280",4260983424,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
+"41",705,"QUYPC1144",2021-07-14,0,2,"Urban","B287D42A",2995246122,"Female","27","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"42",706,"QUYPC1144",2021-07-14,0,2,"Urban","775F3576",2002728310,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"0"
+"43",707,"QUYPC1144",2021-07-14,0,2,"Urban","05A700AC",94830764,"Female","26","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"44",709,"QUYPC1144",2021-07-14,0,2,"Urban","5BAC9680",1487705728,"Female","62","60+y","No","Business person","No","None",NA,"Rarely","No","No",NA,NA
+"45",710,"QUYPC1144",2021-07-14,0,2,"Urban","01964B1A",26626842,"Male","26","20-29y","Yes","Business person","No","Primary",NA,"Rarely","No",NA,NA,NA
+"46",724,"QUYPC1140",2021-07-14,0,2,"Urban","3C114B9E",1007766430,"Male","13","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"47",725,"QUYPC1140",2021-07-14,0,2,"Urban","E290C8BD",3801139389,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"0"
+"48",726,"QUYPC1140",2021-07-14,1,2,"Urban","D6CFBE70",3603938928,"Male","2","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
+"49",730,"QUYPC1071",2021-07-18,0,2,"Urban","7ADEB947",2061416775,"Male","24","20-29y","Yes","Office worker","No","Primary",NA,"Rarely","Yes",NA,NA,NA
+"50",731,"QUYPC1071",2021-07-18,0,2,"Urban","D2495E9F",3528023711,"Female","24","20-29y","Yes","Business person","No","Primary",NA,"Daily","Yes","No",NA,NA
+"51",732,"QUYPC1071",2021-07-18,0,2,"Urban","1B6E7DC6",460225990,"Male","6","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"1"
+"52",733,"QUYPC1071",2021-07-18,1,2,"Urban","3F3453F3",1060393971,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
+"53",735,"QU8NM1002",2021-07-18,0,2,"Urban","ADC6D682",2915489410,"Female","44","40-59y","Yes","Homemaker","No","Secondary",NA,"Rarely","Yes","Yes","No",NA
+"54",738,"QU8NM1002",2021-07-18,0,2,"Urban","45B9CEA9",1169804969,"Male","10","10-14y","No","Student","No","Primary",NA,"Rarely","Yes",NA,NA,"3"
+"55",739,"QU8NM1002",2021-07-18,1,2,"Urban","7705947E",1996854398,"Female","1","1-4y","No",NA,"No","None","None","Never","Yes",NA,NA,"3"
+"56",807,"QU8NM1005",2021-07-25,0,2,"Urban","950CC02A",2500640810,"Female","44","40-59y","Yes","Unemployed","No","Primary",NA,"Never","No","No",NA,NA
+"57",808,"QU8NM1005",2021-07-25,0,2,"Urban","59FA6AFD",1509583613,"Male","17","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"6"
+"58",809,"QU8NM1005",2021-07-25,0,2,"Urban","63137977",1662220663,"Female","15","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"6"
+"59",810,"QU8NM1005",2021-07-25,0,2,"Urban","A264CC63",2724514915,"Female","10","10-14y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"6"
+"60",811,"QU8NM1005",2021-07-25,1,2,"Urban","F029ABE0",4029262816,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"6"
+"61",900,"QUYPC1195",2021-08-08,0,2,"Urban","0746B936",122075446,"Female","22","20-29y","Yes","Unemployed","Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
+"62",901,"QUYPC1195",2021-08-08,0,2,"Urban","D4D84F97",3570945943,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
+"63",902,"QUYPC1195",2021-08-08,1,2,"Urban","272EBC2B",657374251,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
+"64",906,"QUVAM2023",2021-08-06,0,2,"Urban","6BDA8DED",1809485293,"Female","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
+"65",907,"QUVAM2023",2021-08-06,0,2,"Urban","5DA335CD",1570977229,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Once monthly","No",NA,NA,"3"
+"66",908,"QUVAM2023",2021-08-06,0,2,"Urban","E7317FFF",3878780927,"Female","13","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"3"
+"67",910,"QUVAM2023",2021-08-06,0,2,"Urban","9BC8EB99",2613635993,"Male","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"0"
+"68",965,"QUSRT1029",2021-08-22,0,2,"Urban","612514B1",1629820081,"Female","51","40-59y","Yes","Business person","No","Primary",NA,"Daily","No","No",NA,NA
+"69",966,"QUSRT1029",2021-08-22,0,2,"Urban","93EF89E6",3474272015,"Female","19","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No","No",NA,NA
+"70",967,"QUSRT1029",2021-08-22,0,2,"Urban","B648ADEB",3058216427,"Male","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No",NA,NA,NA
+"71",968,"QUSRT1029",2021-08-22,0,2,"Urban","6F673A12",1869036050,"Female","15","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No","No",NA,"5"
+"72",970,"QUSRT1029",2021-08-22,0,2,"Urban","73A0D657",1939920471,"Male","7","5-9y","No","Homemaker","No","None",NA,"Rarely","No",NA,NA,"01"
+"73",971,"QUSRT1029",2021-08-22,1,2,"Urban","567140F0",1450262768,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"01"
+"74",972,"QUSRT1029",2021-08-22,0,2,"Urban","7201E52B",1912726827,"Male","36","30-39y","Yes","Business person","Yes",NA,"Primary","Daily","No",NA,NA,NA
+"75",1030,"QUUGG1003",2021-08-29,0,2,"Urban","8D46A482",2370217090,"Female","21","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"76",1031,"QUUGG1003",2021-08-29,0,2,"Urban","C5410CE6",3309374694,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"77",1034,"QUVAM2034",2021-09-01,0,2,"Urban","595D34C5",1499280581,"Female","66","60+y","No","Business person","No","None",NA,"Rarely","No","No",NA,NA
+"78",1035,"QUVAM2034",2021-09-01,0,2,"Urban","3F3453F3",1060393971,"Female","38","30-39y","Yes","Business person","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
+"79",1036,"QUVAM2034",2021-09-01,0,2,"Urban","98ED9A65",2565708389,"Female","30","30-39y","Yes","Business person","No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
+"80",1129,"QUXQM2066",2021-09-12,0,2,"Urban","F58E44EB",4119741675,"Male","31","30-39y","Yes","Office worker","No","Primary",NA,"Daily","No",NA,NA,NA
+"81",1130,"QUXQM2066",2021-09-12,0,2,"Urban","775F3576",2002728310,"Female","24","20-29y","No","Unemployed","No","None",NA,"≤3 times per week","No","Yes","Yes",NA
+"82",1131,"QUXQM2066",2021-09-12,1,2,"Urban","59FA6AFD",1509583613,"Female","1","1-4y","No","Student","No","None","None","Rarely","No",NA,NA,"2"
+"83",1132,"QUXQM2066",2021-09-12,0,2,"Urban","D0130626",3490907686,"Male","6","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"84",1141,"QUUGG1037",2021-09-14,0,2,"Urban","7FDE60EB",2145280235,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","No",NA
+"85",1142,"QUUGG1037",2021-09-14,1,2,"Urban","6579D37C",1702482812,"Male","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
+"86",1146,"QUXQM2140",2021-09-12,0,2,"Urban","6CECD070",1827459184,"Female","21","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"87",1147,"QUXQM2140",2021-09-12,0,2,"Urban","B648ADEB",3058216427,"Female","17","15-19y","Yes","Student","Yes",NA,"Secondary","Daily","No","No",NA,"2"
+"88",1148,"QUXQM2140",2021-09-12,1,2,"Urban","612514B1",1629820081,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,NA
+"89",1180,"QUXQM2120",2021-09-16,0,2,"Urban","7201E52B",1912726827,"Male","52","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No",NA,NA,"3"
+"90",1182,"QUURT1036",2021-09-23,0,2,"Urban","FDF97280",4260983424,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","No",NA
+"91",1184,"QUURT1036",2021-09-23,0,2,"Urban","93EF89E6",3474272015,"Male","16","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"1"
+"92",1190,"BLBDA1018",2021-09-16,0,2,"Urban","05A700AC",94830764,"Male","40","40-59y","Yes","Casual laboror","No","Primary",NA,"Daily","No",NA,NA,NA
+"93",1192,"BLBDA1018",2021-09-16,0,2,"Urban","0746B936",122075446,"Male","13","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"1"
+"94",1193,"BLBDA1018",2021-09-16,0,2,"Urban","5BAC9680",1487705728,"Male","10","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"01"
+"95",1194,"BLBDA1018",2021-09-16,0,2,"Urban","7705947E",1996854398,"Male","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"02"
+"96",1195,"BLBDA1018",2021-09-16,0,2,"Urban","6BDA8DED",1809485293,"Female","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"02"
+"97",1196,"BLBDA1018",2021-09-16,1,2,"Urban","6375E09A",1668669594,"Male","2","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"02"
+"98",1199,"BL2CM2032",2021-09-27,0,2,"Urban","D2495E9F",3528023711,"Male","43","40-59y","Yes","Casual laboror","Yes",NA,"Primary","Rarely","No",NA,NA,NA
+"99",1200,"BL2CM2032",2021-09-27,0,2,"Urban","1B6E7DC6",460225990,"Female","25","20-29y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"100",1201,"BL2CM2032",2021-09-27,0,2,"Urban","B648ADEB",3058216427,"Male","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
+"101",1249,"BL2CM2003",2021-09-23,0,2,"Urban","90CBF595",2429285781,"Male","62","60+y","Yes","Office worker","No","Primary",NA,"≤3 times per week","No",NA,NA,NA
+"102",1250,"BL2CM2003",2021-09-23,0,2,"Urban","126DCF62",309186402,"Female","62","60+y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"103",1251,"BL2CM2003",2021-09-23,0,2,"Urban","272EBC2B",657374251,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"104",1252,"BL2CM2003",2021-09-23,1,2,"Urban","1C4E9633",474912307,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
+"105",1254,"BL2CM2003",2021-09-23,0,2,"Urban","F029ABE0",4029262816,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"0"
+"106",1257,"QUYPC1272",2021-09-27,0,2,"Urban","A264CC63",2724514915,"Male","32","30-39y","No","Office worker","No","None",NA,"≤3 times per week","No",NA,NA,NA
+"107",1258,"QUYPC1272",2021-09-27,0,2,"Urban","D0130626",3490907686,"Female","28","20-29y","Yes","Business person","No","Primary",NA,"Rarely","No","Yes","No",NA
+"108",1259,"QUYPC1272",2021-09-27,0,2,"Urban","63137977",1662220663,"Female","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
+"109",1277,"QUUGG1005",2021-09-23,0,2,"Urban","6A9FB5EB",1788851688,"Male","24","20-29y","Yes","Office worker","No","Secondary",NA,"Daily","No",NA,NA,NA
+"110",1278,"QUUGG1005",2021-09-23,0,2,"Urban","B093D42E",2962478126,"Female","23","20-29y","Yes","Office worker","No","Secondary",NA,"Daily","No","No",NA,NA
+"111",1283,"QU2RT1016",2021-10-11,0,2,"Urban","595D34C5",1499280581,"Male","77","60+y","No","Retired","No","None",NA,"Rarely","No",NA,NA,NA
+"112",1284,"QU2RT1016",2021-10-11,0,2,"Urban","C5410CE6",3309374694,"Female","31","30-39y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"113",1303,"QU2GG1015",2021-10-10,0,2,"Urban","B6514945",3058780485,"Male","40","40-59y","Yes","Office worker","No","Primary",NA,"Daily","Yes",NA,NA,NA
+"114",1304,"QU2GG1015",2021-10-10,0,2,"Urban","CF152F0F",3474272015,"Female","33","30-39y","Yes","Business person","No","Primary",NA,"Rarely","Yes","Yes","Yes",NA
+"115",1343,"QU2RT1001",2021-10-15,0,2,"Urban","7FDE60EB",2145280235,"Female","54","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No","No",NA,NA
+"116",1344,"QU2RT1001",2021-10-15,0,2,"Urban","6375E09A",1668669594,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"117",1345,"QU2RT1001",2021-10-15,0,2,"Urban","126DCF62",309186402,"Male","18","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,NA
+"118",1346,"QU2RT1001",2021-10-15,0,2,"Urban","D2495E9F",3528023711,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
+"119",1366,"QUFQM2077",2021-10-17,0,2,"Urban","7705947E",1996854398,"Female","25","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","No",NA
+"120",1368,"QUFQM2077",2021-10-17,0,2,"Urban","6CECD070",1827459184,"Female","43","40-59y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"121",1369,"QUFQM2077",2021-10-17,0,2,"Urban","D4D84F97",3570945943,"Male","56","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No",NA,NA,NA
+"122",1370,"QUFQM2077",2021-10-17,0,2,"Urban","272EBC2B",657374251,"Female","55","40-59y","No","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"123",1371,"QUFQM2077",2021-10-17,0,2,"Urban","BB211C8C",3139509388,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"4"
+"124",1386,"QUOMU1039",2021-10-24,0,2,"Urban","612514B1",1629820081,"Female","15","15-19y","Yes","Student","Yes",NA,"Primary","Rarely","Yes","No",NA,"7"
+"125",1388,"QUOMU1039",2021-10-24,0,2,"Urban","C179A589",3245974921,"Male","7","5-9y","No","Student","No","Primary",NA,"≤3 times per week","No",NA,NA,"1"
+"126",1389,"QU2RT1017",2021-10-23,0,2,"Urban","D6CFBE70",3603938928,"Female","25","20-29y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"127",1391,"QU2RT1017",2021-10-23,1,2,"Urban","E290C8BD",3801139389,"Female","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"1"
+"128",1488,"QUKNM1003",2021-11-07,0,2,"Urban","7FDE60EB",2145280235,"Male","34","30-39y","Yes","Office worker","No","Secondary",NA,"Daily","Yes",NA,NA,NA
+"129",1489,"QUKNM1003",2021-11-07,0,2,"Urban","567140F0",1450262768,"Female","36","30-39y","Yes","Homemaker","No","Primary",NA,"≤3 times per week","No","Yes","No",NA
+"130",1490,"QUKNM1003",2021-11-07,0,2,"Urban","D2495E9F",3528023711,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"131",1491,"QUKNM1003",2021-11-07,1,2,"Urban","0249F49D",38401181,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"132",1492,"BLBDA1010",2021-11-07,0,2,"Urban","D4D84F97",3570945943,"Male","45","40-59y","Yes","Office worker","No","Secondary",NA,"≤3 times per week","Yes",NA,NA,NA
+"133",1496,"QUKNM1002",2021-11-03,0,2,"Urban","D0130626",3490907686,"Female","56","40-59y","Yes","Business person","No","Primary",NA,"Rarely","No","No",NA,NA
+"134",1497,"QUKNM1002",2021-11-03,0,2,"Urban","B6514945",3058780485,"Male","32","30-39y","Yes","Casual laboror","No","Primary",NA,"Once monthly","No",NA,NA,NA
+"135",1498,"QUKNM1002",2021-11-03,0,2,"Urban","335C4283",861684355,NA,"3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"136",1499,"QUKNM1002",2021-11-03,1,2,"Urban","2F66CF32",795266866,"Male","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"137",1500,"QUKNM1002",2021-11-03,0,2,"Urban","63137977",1662220663,"Female","30","30-39y","Yes","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"138",1501,"QUKNM1002",2021-11-03,0,2,"Urban","D5207DD4",3575676372,"Female","17","15-19y","Yes","Business person","No","Secondary",NA,"Rarely","No","Yes","Yes","0"
+"139",1503,"QUKNM1002",2021-11-03,0,2,"Urban","0746B936",122075446,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"140",1504,"QUKNM1002",2021-11-03,0,2,"Urban","A264CC63",2724514915,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"3"
+"141",1505,"QUKAM2012",2021-11-08,0,2,"Urban","BB211C8C",3139509388,"Female","38","30-39y","Yes","Unemployed","No","None",NA,"Rarely","No","Yes","Yes",NA
+"142",1506,"QUKAM2012",2021-11-08,0,2,"Urban","1C4E9633",474912307,"Female","6","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"143",1507,"QUKAM2012",2021-11-08,0,2,"Urban","595D34C5",1499280581,"Female","19","15-19y","No","Unemployed","No","Primary",NA,"Rarely","No","No",NA,NA
+"144",1513,"QUCGG1009",2021-11-02,0,2,"Urban","993564AB",2570413227,"Male","27","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No",NA,NA,NA
+"145",1526,"QUBNM4003",2021-11-07,0,2,"Urban","272EBC2B",657374251,"Female","34","30-39y","No","Business person","No","None",NA,"Rarely","No","Yes","Yes",NA
+"146",1530,"QUBNM4003",2021-11-07,0,2,"Urban","B093D42E",2962478126,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","Yes",NA,NA,"3"
+"147",1539,"QUKMU1016",2021-11-14,0,2,"Urban","F75B23E1",4149945313,"Male","33","30-39y","Yes","Office worker","Yes",NA,"Bachelors or more","Daily","No",NA,NA,NA
+"148",1540,"QUKMU1016",2021-11-14,0,2,"Urban","5DA335CD",1570977229,"Female","24","20-29y","Yes","Unemployed","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"149",1542,"QUKMU1016",2021-11-14,0,2,"Urban","9BC8EB99",2613635993,"Male","27","20-29y","Yes","Office worker","No","Secondary",NA,"Rarely","No",NA,NA,NA
+"150",1567,"QUKRT1041",2021-11-17,1,2,"Urban","68CF2EA5",1758408357,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"151",1606,"QU7NM4029",2021-11-23,0,2,"Urban","6CECD070",1827459184,"Male","27","20-29y","Yes","Business person","No","Secondary",NA,"Rarely","No",NA,NA,NA
+"152",1607,"QU7NM4029",2021-11-23,0,2,"Urban","567140F0",1450262768,"Female","24","20-29y","Yes","Casual laboror","No","Primary",NA,"Rarely","No","No",NA,NA
+"153",1608,"QU7NM4029",2021-11-23,0,2,"Urban","950CC02A",2500640810,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"154",1609,"QU7NM4029",2021-11-23,0,2,"Urban","0249F49D",38401181,"Female","5","5-9y","Yes",NA,NA,NA,NA,"Rarely","No",NA,NA,"2"
+"155",1610,"QU7NM4029",2021-11-23,1,2,"Urban","6A9FB5EB",1788851688,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"156",1611,"QUMMU1002",2021-11-18,0,2,"Urban","6579D37C",1702482812,"Female","23","20-29y","Yes","Homemaker","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
+"157",1613,"QUMMU1002",2021-11-18,0,2,"Urban","A264CC63",2724514915,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"158",1614,"QUMMU1002",2021-11-18,0,2,"Urban","D5207DD4",3575676372,"Female","4","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"159",1616,"QUMMU1002",2021-11-18,0,2,"Urban","FDF97280",4260983424,"Female","13","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"02"
+"160",1624,"QUKAM2012",2021-11-08,0,2,"Urban","0F0AC00E",252362766,"Male","5","5-9y","No",NA,NA,NA,NA,"Rarely","No",NA,NA,"4"
+"161",1625,"QUKAM2012",2021-11-08,0,2,"Urban","C5410CE6",3309374694,"Female","2","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"4"
+"162",1627,"QU3QM2047",2021-11-23,0,2,"Urban","3C114B9E",1007766430,"Male","37","30-39y","Yes","Office worker","No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
+"163",1629,"QU3QM2047",2021-11-23,0,2,"Urban","90CBF595",2429285781,"Female","21","20-29y","Yes","Student","Yes",NA,"Secondary","Rarely","No","No",NA,NA
+"164",1630,"QU3QM2047",2021-11-23,0,2,"Urban","2F66CF32",795266866,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"3"
+"165",1632,"QU3AM2004",2021-11-25,0,2,"Urban","7FDE60EB",2145280235,"Male","19","15-19y","Yes","Student","Yes",NA,"College","Daily","No",NA,NA,NA
+"166",1633,"QU3AM2004",2021-11-25,0,2,"Urban","93EF89E6",3474272015,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"0"
+"167",1634,"QU3AM2004",2021-11-25,0,2,"Urban","7201E52B",1912726827,"Female","14","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No","No",NA,"0"
+"168",1635,"QU3AM2004",2021-11-25,1,2,"Urban","E290C8BD",3801139389,"Female","1","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"0"
+"169",1636,"QUZRT1013",2021-11-28,0,2,"Urban","BB211C8C",3139509388,"Male","30","30-39y","Yes","Casual laboror","No","Secondary",NA,"Daily","No",NA,NA,NA
+"170",1637,"QUZRT1013",2021-11-28,0,2,"Urban","0F0AC00E",252362766,"Female","25","20-29y","Yes","Office worker","No","Secondary",NA,"Rarely","No","Yes","No",NA
+"171",1716,"QUKQM2039",2021-11-17,0,2,"Urban","98ED9A65",2565708389,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"2"
+"172",1717,"QUKQM2039",2021-11-11,0,2,"Urban","48DDBBF4",1222491124,"Male","9","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"2"
+"173",1728,"QUMPC1003",2021-11-24,0,2,"Urban","1C4E9633",474912307,"Male","64","60+y","Yes","Office worker","No","Primary",NA,"Rarely","No",NA,NA,NA
+"174",1729,"QUMPC1003",2021-11-24,0,2,"Urban","D4D84F97",3570945943,"Female","61","60+y","No","Homemaker","No","None",NA,"≤3 times per week","No","No",NA,NA
+"175",1730,"QUMPC1003",2021-11-24,0,2,"Urban","01964B1A",26626842,"Male","29","20-29y","Yes","Casual laboror","No","Secondary",NA,"Rarely","No",NA,NA,NA
+"176",1731,"QUMPC1003",2021-11-24,0,2,"Urban","7705947E",1996854398,"Female","22","20-29y","Yes","Student","Yes",NA,"Secondary","Rarely","No","Yes","Yes",NA
+"177",1732,"QUMPC1003",2021-11-24,0,2,"Urban","B6514945",3058780485,"Female","18","15-19y","Yes","Student","Yes",NA,"Bachelors or more","Daily","No","No",NA,NA
+"178",1734,"QU3QM1034",2021-11-25,0,2,"Urban","595D34C5",1499280581,"Male","31","30-39y","Yes","Office worker","No","Primary",NA,"Daily","No",NA,NA,NA
+"179",1735,"QU3QM1034",2021-11-25,0,2,"Urban","59FA6AFD",1509583613,"Female","21","20-29y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"180",1737,"QU5QM1070",2021-12-01,0,2,"Urban","D0130626",3490907686,"Male","28","20-29y","Yes","Office worker","No","Primary",NA,"Daily","No",NA,NA,NA
+"181",1738,"QU5QM1070",2021-12-01,0,2,"Urban","B287D42A",2995246122,"Female","30","30-39y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"182",1740,"QUYPC1214",2021-12-05,0,2,"Urban","A264CC63",2724514915,"Male","31","30-39y","Yes","Casual laboror","No","Primary",NA,"Daily","No",NA,NA,NA
+"183",1742,"QUYPC1214",2021-12-05,0,2,"Urban","D5207DD4",3575676372,"Female","10","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"05"
+"184",1743,"QUYPC1214",2021-12-05,0,2,"Urban","6579D37C",1702482812,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"05"
+"185",1745,"QUYPC1214",2021-12-05,0,2,"Urban","FDF97280",4260983424,"Female","21","20-29y","Yes","Homemaker","No","Secondary",NA,"Rarely","No","Yes","Yes",NA
+"186",1778,"QU3QM2047",2021-11-23,0,2,"Urban","3F3453F3",1060393971,"Male","8","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"187",2228,"QUVAM2034",2021-09-01,0,2,"Urban","126DCF62",309186402,"Male","14","10-14y","Yes","Student","Yes",NA,"Secondary","Rarely","No",NA,NA,"2"
+"188",5804,"QUKQM2030",2021-12-19,0,2,"Urban","7201E52B",1912726827,"Male","34","30-39y","Yes","Casual laboror","No","Primary",NA,"Daily","Yes",NA,NA,NA
+"189",5806,"QUKQM2030",2021-12-19,0,2,"Urban","C5410CE6",3309374694,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"
+"190",5807,"QUKQM2030",2021-12-19,0,2,"Urban","C179A589",3245974921,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"3"

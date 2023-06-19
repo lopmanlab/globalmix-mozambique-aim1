@@ -1,231 +1,169 @@
-"","rec_id","individual_id","hh_id","date_enrolled","isindex","aim","study_site","sensor_id","hwid","participant_sex","age","participant_age","read_write","occupation","enrolled_school","highest_educ","school_level","transport_use","hh_resp_exposure","child","child_breastfeed","num_sibling"
-"1",714,NA,"3209-291",2021-07-16,1,2,"Rural","FEF743B7",4277617591,"Male","1","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"3"
-"2",722,NA,"0501-031",2021-07-16,1,2,"Rural","92C8407A",2462597242,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
-"3",787,NA,"3403-108",2021-07-22,1,2,"Rural","D5401F13",3577749267,"Male","0","<6mo","No","Child","No","None","None",NA,"No",NA,NA,"6"
-"4",825,NA,"3102-088",2021-08-05,1,2,"Rural","F43FE559",4097828185,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
-"5",826,NA,"3403-352",2021-07-29,1,2,"Rural","3EA3B441",1050915905,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"6",837,NA,"0105-036",2021-08-05,1,2,"Rural","70A31CC7",1889737927,"Female","0","6-11mo","No","Child","No","None","None","Once monthly","No",NA,NA,"0"
-"7",847,NA,"3305-289",2021-07-29,1,2,"Rural","9FDA08E8",2681866472,"Male","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"7"
-"8",857,NA,"3003-468",2021-08-05,1,2,"Rural","2BCCD1C5",734843333,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"3"
-"9",881,NA,"0802-458",2021-07-29,1,2,"Rural","3777B3F2",930591730,"Female","0","<6mo","No","Child","No","None","None",NA,"Yes",NA,NA,"1"
-"10",883,NA,"0802-458",2021-07-29,0,2,"Rural","5AE89A51",1525193297,"Female","19","<6mo","No","Child","No","None","None",NA,"No","Yes","Yes",NA
-"11",892,NA,"0705-101",2021-08-05,1,2,"Rural","F17A9446",0,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"5"
-"12",929,NA,"0706-022",2021-08-16,1,2,"Rural","53068F21",1392938785,"Female","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"0"
-"13",1051,NA,"3204-241",2021-09-03,1,2,"Rural","7D0FAB23",2098178851,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"0"
-"14",1069,NA,"3204-403",2021-09-03,1,2,"Rural","DEF297AF",3740440495,"Male","1","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
-"15",1092,NA,"3101-288",2021-09-06,1,2,"Rural","E40CEEDE",3826052830,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
-"16",1097,NA,"2607-075",2021-09-07,1,2,"Rural","3777B3F2",930591730,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"0"
-"17",1169,NA,"3210-241",2021-09-20,1,2,"Rural","FFEFD46D",4293907565,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
-"18",1207,NA,"0405-022",2021-09-24,1,2,"Rural","3EA3B441",1050915905,"Female","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"5"
-"19",1212,NA,"3305-287",2021-09-27,1,2,"Rural","24F443FB",619987963,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"1"
-"20",1268,NA,"0606-102",2021-10-09,1,2,"Rural","E96B3013",3916115987,"Female","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"1"
-"21",1295,NA,"0609-002",2021-10-05,1,2,"Rural","834238CE",2202155214,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"7"
-"22",1299,NA,"3210-829",2021-10-08,1,2,"Rural","43BE9338",1136563000,"Female","0","<6mo","No","Child","No","None","None","Once monthly","No",NA,NA,"2"
-"23",1331,NA,"3403-045",2021-10-14,1,2,"Rural","6F8093F8",1870697464,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"10"
-"24",1353,NA,"3210-692",2021-10-11,1,2,"Rural","F7AA9B6A",4155153258,"Female","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
-"25",1362,NA,"2703-148",2021-10-14,1,2,"Rural","70A31CC7",1889737927,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"0"
-"26",1377,NA,"3204-483",2021-10-21,1,2,"Rural","ADD8D142",291666774,"Female","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"4"
-"27",1408,NA,"1603-198",2021-11-02,1,2,"Rural","3EA3B441",1050915905,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
-"28",1419,NA,"2605-169",2021-11-04,1,2,"Rural","B5349CD7",3040124119,"Male","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"3"
-"29",1420,NA,"3403-037",2021-11-04,1,2,"Rural","256E23CB",627975115,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
-"30",1427,NA,"3403-037",2021-11-04,0,2,"Rural","3CCF6E22",1020227106,"Female","0","<6mo","No","Child","No","None","None","Once monthly","No",NA,NA,"2"
-"31",1438,NA,"3304-033",2021-10-26,1,2,"Rural","030D199D",51190173,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"4"
-"32",1439,NA,"3204-483",2021-10-26,0,2,"Rural","5AE89A51",1525193297,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
-"33",1447,NA,"3301-105",2021-11-01,1,2,"Rural","D5401F13",3577749267,NA,"0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"3"
-"34",1465,NA,"3103-083",2021-10-29,1,2,"Rural","295C4781",693913473,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"4"
-"35",1480,NA,"3102-446",2021-11-08,1,2,"Rural","E743747F",3879957631,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
-"36",1574,NA,"2801-203",2021-11-18,1,2,"Rural","ADD16571",2916181361,"Female","0","6-11mo","No","Child","No","None","None","Once monthly","Yes",NA,NA,"2"
-"37",1580,NA,"3405-005",2021-11-16,1,2,"Rural","FFEFD46D",4293907565,"Female","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"1"
-"38",1647,NA,"3202-613",2021-11-30,1,2,"Rural","43BE9338",1136563000,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
-"39",1659,NA,"0506-119",2021-12-02,1,2,"Rural","7074A528",1886692648,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
-"40",1669,NA,"0708-226",2021-11-29,1,2,"Rural","4A4AADA5",1246408101,"Male","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"1"
-"41",1700,NA,"2705-255",2021-12-02,1,2,"Rural","63DD40BD",1675444413,"Female","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"0"
-"42",712,NA,"3209-291",2021-07-16,0,2,"Rural","F17A9446",0,"Female","32","30-39y","No","Other","No","Primary",NA,NA,"No","Yes","Yes",NA
-"43",713,NA,"3209-291",2021-07-16,0,2,"Rural","ADD16571",2916181361,"Male","7","5-9y","No","Other","No","None",NA,"Never","No response",NA,NA,"3"
-"44",717,NA,"0501-031",2021-07-16,0,2,"Rural","096B42CF",158024399,"Female","40","40-59y","No","Homemaker","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"45",719,NA,"0501-031",2021-07-16,0,2,"Rural","70A31CC7",1889737927,"Female","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"3"
-"46",720,NA,"0501-031",2021-07-16,0,2,"Rural","946F180C",2490308620,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"47",777,NA,"3205-338",2021-07-22,0,2,"Rural","6F8093F8",1870697464,"Female","34","30-39y","No","Homemaker","No","Primary",NA,"≤3 times per week","No","No",NA,NA
-"48",778,NA,"3205-338",2021-07-22,0,2,"Rural","B5349CD7",3040124119,"Male","15","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"4"
-"49",779,NA,"3205-338",2021-07-22,0,2,"Rural","90E21EEC",2430738156,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"50",780,NA,"3205-338",2021-07-22,0,2,"Rural","834238CE",2202155214,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"51",782,NA,"3403-108",2021-07-22,0,2,"Rural","1CF914E0",486085856,"Female","33","30-39y","Yes","Other","No","Primary",NA,NA,"No","Yes","Yes",NA
-"52",784,NA,"3403-108",2021-07-22,0,2,"Rural","D2510EC4",3528524556,"Female","14","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"6"
-"53",785,NA,"3403-108",2021-07-22,0,2,"Rural","E1A6B1DE",3785798110,"Female","9","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"6"
-"54",786,NA,"3403-108",2021-07-22,0,2,"Rural","CDB01555",3450869077,"Female","5","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"6"
-"55",820,NA,"3102-088",2021-08-05,0,2,"Rural","92C8407A",2462597242,"Female","70","60+y","No","Unemployed","No","None",NA,"Never","No","No",NA,NA
-"56",822,NA,"3102-088",2021-08-05,0,2,"Rural","F7C6FA98",4157012632,"Female","23","20-29y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"57",823,NA,"3102-088",2021-08-05,0,2,"Rural","43BE9338",1136563000,"Female","8","5-9y","No","Unemployed","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"58",824,NA,"3102-088",2021-08-05,0,2,"Rural","604842FC",1615348476,"Male","4","1-4y","No","Unemployed","No","None","None","Never","No",NA,NA,"2"
-"59",827,NA,"3403-352",2021-07-29,0,2,"Rural","67B99933",1740216627,"Female","22","20-29y","Yes","Other","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"60",828,NA,"3403-352",2021-07-29,0,2,"Rural","144BFE90",340524688,"Male","10","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"61",829,NA,"3403-352",2021-07-29,0,2,"Rural","837D4926",2206026022,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"62",830,NA,"3403-352",2021-07-29,0,2,"Rural","24F443FB",619987963,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
-"63",838,NA,"0105-036",2021-08-05,0,2,"Rural","2D2EAFAA",758034346,"Female","41","40-59y","No","Other","No","Primary",NA,"Never","No","No",NA,NA
-"64",840,NA,"0105-036",2021-08-05,0,2,"Rural","7074A528",1886692648,"Male","11","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"1"
-"65",845,NA,"3305-289",2021-07-29,0,2,"Rural","74289254",1948815956,"Female","12","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","Yes",NA,NA,"9"
-"66",846,NA,"3305-289",2021-07-29,0,2,"Rural","802D79CE",2150463950,"Female","6","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"7"
-"67",848,NA,"3305-241",2021-07-29,0,2,"Rural","3CCF6E22",1020227106,"Female","22","20-29y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"68",849,NA,"3305-241",2021-07-29,0,2,"Rural","256E23CB",627975115,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"69",850,NA,"3305-241",2021-07-29,0,2,"Rural","D26BEBBE",3560288062,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"2"
-"70",855,NA,"3003-468",2021-08-05,0,2,"Rural","295C4781",693913473,"Male","29","20-29y","Yes","Casual laboror","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,NA
-"71",856,NA,"3003-468",2021-08-05,0,2,"Rural","E4A60DBA",3836087738,"Female","28","20-29y","Yes","Unemployed","Yes",NA,"Primary","≤3 times per week","No","Yes","Yes",NA
-"72",869,NA,"3201-281",2021-07-19,0,2,"Rural","C9590E30",0,"Female","60","60+y","No","Unemployed","No","None",NA,"Never","Yes","No",NA,NA
-"73",870,NA,"3201-281",2021-07-19,0,2,"Rural","E40CEEDE",3826052830,"Female","38","30-39y","No","Unemployed","No","None",NA,NA,"Yes","Yes","Yes",NA
-"74",872,NA,"3201-281",2021-07-19,0,2,"Rural","DEF297AF",3740440495,"Male","22","20-29y","No","Casual laboror","No","Primary",NA,"Never","No",NA,NA,NA
-"75",874,NA,"3201-281",2021-07-19,0,2,"Rural","E743747F",3879957631,"Female","10","10-14y","No","Student","Yes",NA,"Primary","Never","Yes",NA,NA,"7"
-"76",875,NA,"3201-281",2021-07-19,0,2,"Rural","030D199D",51190173,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","Yes",NA,NA,"7"
-"77",876,NA,"3201-281",2021-07-19,0,2,"Rural","ADD8D142",291666774,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"7"
-"78",882,NA,"0802-458",2021-07-29,0,2,"Rural","B84335B0",3091412400,"Male","26","20-29y","Yes","Office worker","No","Primary",NA,"Once monthly","No",NA,NA,NA
-"79",889,NA,"0705-101",2021-08-05,0,2,"Rural","E96B3013",3916115987,"Female","31","30-39y","Yes","Other","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
-"80",921,NA,"0706-022",2021-08-16,0,2,"Rural","1CF914E0",486085856,"Female","45","40-59y","No","Farmer","No","None",NA,"Never","No","No",NA,NA
-"81",926,NA,"0706-022",2021-08-16,0,2,"Rural","F7AA9B6A",4155153258,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"9"
-"82",928,NA,"0706-022",2021-08-16,0,2,"Rural","096B42CF",158024399,"Male","2","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"0"
-"83",936,NA,"3102-218",2021-08-14,0,2,"Rural","6F8093F8",1870697464,"Female","50","40-59y","No","Unemployed","No","None",NA,"Daily","No","No",NA,NA
-"84",937,NA,"3102-218",2021-08-14,0,2,"Rural","732DFD29",1932393769,"Female","29","20-29y","No","Unemployed","No","None",NA,"Never","No","Yes","Yes",NA
-"85",940,NA,"1503-124",2021-08-16,1,2,"Rural","0D9F0693",228525715,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
-"86",941,NA,"1503-124",2021-08-16,0,2,"Rural","E1A6B1DE",3785798110,"Female","32","30-39y","Yes","Office worker","Yes",NA,"Secondary","Once monthly","No","No",NA,NA
-"87",984,NA,"2607-124",2021-08-24,0,2,"Rural","ADD8D142",291666774,"Female","75","60+y","No","Unemployed","No","None",NA,"≤3 times per week","No","No",NA,NA
-"88",986,NA,"2607-124",2021-08-24,0,2,"Rural","6B4F691B",1800366363,"Male","3","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"1"
-"89",989,NA,"2607-124",2021-08-26,0,2,"Rural","7074A528",1886692648,"Female","34","30-39y","Yes","Business person","No","Primary",NA,"Once monthly","No","No",NA,NA
-"90",991,NA,"3208-386",2021-08-26,0,2,"Rural","F7C6FA98",4157012632,"Male","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"91",992,NA,"3208-386",2021-08-26,0,2,"Rural","F43FE559",4097828185,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"92",993,NA,"3208-386",2021-08-26,0,2,"Rural","D5401F13",3577749267,"Female","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"4"
-"93",994,NA,"3208-386",2021-08-26,1,2,"Rural","E4A60DBA",3836087738,"Female","1","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"0"
-"94",995,NA,"3209-111",2021-08-26,0,2,"Rural","604842FC",1615348476,"Female","57","40-59y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","No",NA,NA
-"95",996,NA,"3209-111",2021-08-26,0,2,"Rural","5AE89A51",1525193297,"Female","21","20-29y","Yes","Unemployed","Yes",NA,"Secondary","≤3 times per week","No","No",NA,NA
-"96",997,NA,"3209-111",2021-08-26,0,2,"Rural","4A4AADA5",1246408101,"Female","10","10-14y","No","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"3"
-"97",998,NA,"3209-111",2021-08-26,1,2,"Rural","43BE9338",1136563000,"Female","1","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"0"
-"98",999,NA,"3209-111",2021-08-26,0,2,"Rural","834238CE",2202155214,"Male","3","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"0"
-"99",1001,NA,"3406-012",2021-08-26,0,2,"Rural","030D199D",51190173,"Female","48","40-59y","No","Unemployed","No","None",NA,"Rarely","Yes","No",NA,NA
-"100",1002,NA,"3406-012",2021-08-26,0,2,"Rural","144BFE90",340524688,"Female","35","30-39y","Yes","Farmer","No","Primary",NA,NA,"Yes","Yes","Yes",NA
-"101",1003,NA,"3406-012",2021-08-26,0,2,"Rural","3CCF6E22",1020227106,"Female","19","15-19y","Yes","Unemployed","Yes",NA,"Primary","Once monthly","Yes","No",NA,NA
-"102",1005,NA,"3406-012",2021-08-26,0,2,"Rural","D26BEBBE",3560288062,"Male","6","5-9y","No",NA,NA,NA,NA,"Never","Yes",NA,NA,"1"
-"103",1007,NA,"3406-012",2021-08-26,0,2,"Rural","24F443FB",619987963,"Female","4","1-4y","No",NA,"No","None","None","Never","Yes",NA,NA,"1"
-"104",1048,NA,"3406-012",2021-09-03,0,2,"Rural","2D2EAFAA",758034346,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Never","No","Yes","Yes",NA
-"105",1050,NA,"3204-241",2021-09-03,0,2,"Rural","3EA3B441",1050915905,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary",NA,"No",NA,NA,"12"
-"106",1052,NA,"3204-241",2021-09-03,0,2,"Rural","2BCCD1C5",734843333,"Female","90","60+y","No","Unemployed","No","None",NA,"Never","No","No",NA,NA
-"107",1061,NA,"3204-403",2021-09-03,0,2,"Rural","B5349CD7",3040124119,"Female","27","20-29y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"108",1064,NA,"3204-403",2021-09-03,0,2,"Rural","D360933D",3546321725,"Male","11","10-14y","No","Unemployed","Yes",NA,"Primary","Never","No",NA,NA,"0"
-"109",1065,NA,"3204-403",2021-09-03,0,2,"Rural","837D4926",2206026022,"Female","23","20-29y","Yes","Unemployed","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
-"110",1066,NA,"3204-403",2021-09-03,0,2,"Rural","E96B3013",3916115987,"Male","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"111",1067,NA,"3204-403",2021-09-03,0,2,"Rural","ADD16571",2916181361,"Female","1","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"3"
-"112",1068,NA,"3204-403",2021-09-03,0,2,"Rural","92C8407A",2462597242,"Male","2","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"1"
-"113",1089,NA,"3101-288",2021-09-06,0,2,"Rural","70A31CC7",1889737927,"Female","29","20-29y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"114",1090,NA,"3101-288",2021-09-06,0,2,"Rural","ADD16571",2916181361,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"115",1091,NA,"3101-288",2021-09-06,0,2,"Rural","256E23CB",627975115,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"116",1094,NA,"2607-075",2021-09-07,0,2,"Rural","9FDA08E8",2681866472,"Female","15","15-19y","Yes","Student","No","Secondary",NA,"≤3 times per week","No","Yes","Yes","0"
-"117",1096,NA,"2607-075",2021-09-07,0,2,"Rural","295C4781",693913473,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"2"
-"118",1161,NA,"3404-087",2021-09-17,0,2,"Rural","946F180C",2490308620,"Male","26","20-29y","Yes","Office worker","Yes",NA,"Secondary","Daily","Yes",NA,NA,NA
-"119",1162,NA,"3404-087",2021-09-17,0,2,"Rural","74289254",1948815956,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","Yes","No",NA,"3"
-"120",1163,NA,"3404-087",2021-09-17,0,2,"Rural","CDB01555",3450869077,"Female","4","1-4y","No",NA,"No","None","None","Never","Yes",NA,NA,"0"
-"121",1168,NA,"3210-241",2021-09-20,0,2,"Rural","3E46FA85",1044839045,"Female","25","20-29y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"122",1204,NA,"0405-022",2021-09-24,0,2,"Rural","70A31CC7",1889737927,"Female","26","20-29y","Yes","Farmer","No","Primary",NA,"Never","No","Yes","Yes",NA
-"123",1205,NA,"0405-022",2021-09-24,0,2,"Rural","E743747F",3879957631,"Male","18","15-19y","No","Unemployed","No","Primary",NA,NA,"No",NA,NA,NA
-"124",1206,NA,"0405-022",2021-09-24,0,2,"Rural","E1A6B1DE",3785798110,"Female","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"2"
-"125",1209,NA,"3305-287",2021-09-27,0,2,"Rural","2BCCD1C5",734843333,"Female","19","15-19y","No","Farmer","No","None",NA,"Never","No","Yes","Yes",NA
-"126",1210,NA,"3305-287",2021-09-27,0,2,"Rural","53068F21",1392938785,"Female","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"5"
-"127",1211,NA,"3305-287",2021-09-27,0,2,"Rural","9FDA08E8",2681866472,"Female","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
-"128",1220,NA,"3305-275",2021-09-24,0,2,"Rural","D360933D",3546321725,"Female","34","30-39y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","No",NA,NA
-"129",1221,NA,"3305-275",2021-09-24,0,2,"Rural","FEF743B7",4277617591,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"2"
-"130",1225,NA,"3309-002",2021-09-27,0,2,"Rural","837D4926",2206026022,"Male","10","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"131",1228,NA,"3309-002",2021-09-27,0,2,"Rural","DEF297AF",3740440495,"Female","25","20-29y","Yes","Unemployed","No","Primary",NA,"Never","No","Yes","Yes",NA
-"132",1229,NA,"3309-002",2021-09-27,1,2,"Rural","030D199D",51190173,"Female","1","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"2"
-"133",1236,NA,"0702-243",2021-10-05,0,2,"Rural","3777B3F2",930591730,"Male","44","40-59y","No","Unemployed","No","None",NA,NA,"No",NA,NA,NA
-"134",1237,NA,"0702-243",2021-10-05,0,2,"Rural","7D0FAB23",2098178851,"Female","36","30-39y","Yes","Farmer","Yes",NA,"Primary","Rarely","No","Yes","Yes",NA
-"135",1238,NA,"0702-243",2021-10-05,0,2,"Rural","D5401F13",3577749267,"Male","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Daily","No",NA,NA,NA
-"136",1239,NA,"0702-243",2021-10-05,0,2,"Rural","E4A60DBA",3836087738,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"9"
-"137",1240,NA,"0702-243",2021-10-05,0,2,"Rural","ADD8D142",291666774,"Female","6","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"9"
-"138",1261,NA,"0601-034",2021-10-09,1,2,"Rural","67B99933",1740216627,"Female","2","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"1"
-"139",1264,NA,"0606-102",2021-10-09,0,2,"Rural","295C4781",693913473,"Female","21","20-29y","No","Unemployed","No","Primary",NA,"Never","No","No",NA,NA
-"140",1265,NA,"0606-102",2021-10-09,0,2,"Rural","6B4F691B",1800366363,"Female","17","15-19y","Yes","Unemployed","No","Primary",NA,NA,"No","Yes","Yes","1"
-"141",1266,NA,"0606-102",2021-10-09,0,2,"Rural","604842FC",1615348476,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"142",1267,NA,"0606-102",2021-10-09,0,2,"Rural","D26BEBBE",3560288062,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
-"143",1288,NA,"0609-002",2021-10-05,0,2,"Rural","3CCF6E22",1020227106,"Female","35","30-39y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"144",1289,NA,"0609-002",2021-10-05,0,2,"Rural","92C8407A",2462597242,"Male","15","15-19y","Yes","Unemployed","No","Primary",NA,"Never","No",NA,NA,"7"
-"145",1290,NA,"0609-002",2021-10-05,0,2,"Rural","2D2EAFAA",758034346,"Male","13","10-14y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No",NA,NA,"7"
-"146",1291,NA,"0609-002",2021-10-05,0,2,"Rural","256E23CB",627975115,"Male","10","10-14y","No","Unemployed","No","Primary",NA,"Never","No",NA,NA,"7"
-"147",1293,NA,"0609-002",2021-10-05,0,2,"Rural","6AA77C79",1789361273,"Male","6","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"7"
-"148",1294,NA,"0609-002",2021-10-05,0,2,"Rural","63DD40BD",1675444413,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"7"
-"149",1297,NA,"3210-829",2021-10-08,0,2,"Rural","096B42CF",158024399,"Female","26","20-29y","Yes","Unemployed","No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
-"150",1323,NA,"2403-187",2021-10-12,0,2,"Rural","732DFD29",1932393769,"Female","30","30-39y","Yes","Other","No","Primary",NA,"Never","No","No",NA,NA
-"151",1324,NA,"2403-187",2021-10-12,0,2,"Rural","F43FE559",4097828185,"Female","11","10-14y","No","Student","Yes",NA,"Primary","Never","No","No",NA,"3"
-"152",1325,NA,"2403-187",2021-10-12,0,2,"Rural","D2510EC4",3528524556,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"153",1326,NA,"2403-187",2021-10-12,0,2,"Rural","F7C6FA98",4157012632,"Male","5","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"3"
-"154",1327,NA,"2403-187",2021-10-12,1,2,"Rural","E40CEEDE",3826052830,"Female","2","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"3"
-"155",1332,NA,"3403-045",2021-10-14,0,2,"Rural","CDB01555",3450869077,"Female","34","30-39y","Yes","Farmer","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"156",1333,NA,"3403-045",2021-10-14,0,2,"Rural","3E46FA85",1044839045,"Female","13","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"4"
-"157",1334,NA,"3403-045",2021-10-14,0,2,"Rural","74289254",1948815956,"Female","5","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"4"
-"158",1335,NA,"3403-045",2021-10-14,0,2,"Rural","E1A6B1DE",3785798110,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"6"
-"159",1350,NA,"3210-692",2021-10-11,0,2,"Rural","4A4AADA5",1246408101,"Female","26","20-29y","Yes","Unemployed","No","Primary",NA,"Once monthly","No","Yes","Yes",NA
-"160",1351,NA,"3210-692",2021-10-11,0,2,"Rural","144BFE90",340524688,"Female","6","5-9y","No",NA,NA,NA,NA,"≤3 times per week","No",NA,NA,"2"
-"161",1352,NA,"3210-692",2021-10-11,0,2,"Rural","6D573963",1834432867,"Female","3","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"2"
-"162",1357,NA,"2703-148",2021-10-14,0,2,"Rural","FFEFD46D",4293907565,"Female","40","40-59y","No","Unemployed","No","None",NA,"≤3 times per week","No","No",NA,NA
-"163",1358,NA,"2703-148",2021-10-14,0,2,"Rural","802D79CE",2150463950,"Female","20","20-29y","Yes","Unemployed","Yes",NA,"Secondary","≤3 times per week","No","Yes","Yes",NA
-"164",1359,NA,"2703-148",2021-10-14,0,2,"Rural","E743747F",3879957631,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"165",1360,NA,"2703-148",2021-10-14,0,2,"Rural","90E21EEC",2430738156,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"166",1361,NA,"2703-148",2021-10-14,0,2,"Rural","3EA3B441",1050915905,"Female","1","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
-"167",1374,NA,"3204-483",2021-10-21,0,2,"Rural","E96B3013",3916115987,"Female","34","30-39y","Yes","Business person","Yes",NA,"Primary",NA,"No","Yes","Yes",NA
-"168",1375,NA,"3204-483",2021-10-21,0,2,"Rural","096B42CF",158024399,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"4"
-"169",1376,NA,"3204-483",2021-10-21,0,2,"Rural","67B99933",1740216627,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"170",1379,NA,"3204-483",2021-10-21,0,2,"Rural","3777B3F2",930591730,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"171",1398,NA,"3403-235",2021-10-28,0,2,"Rural","24F443FB",619987963,"Female","34","30-39y","Yes","Farmer","No","Primary",NA,NA,"No","Yes","Yes",NA
-"172",1401,NA,"3403-235",2021-10-28,0,2,"Rural","53068F21",1392938785,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"4"
-"173",1409,NA,"1603-198",2021-11-02,0,2,"Rural","CDB01555",3450869077,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"174",1410,NA,"1603-198",2021-11-02,0,2,"Rural","2BCCD1C5",734843333,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
-"175",1411,NA,"1603-198",2021-11-02,0,2,"Rural","70A31CC7",1889737927,"Female","43","40-59y","Yes","Farmer","Yes",NA,"Secondary","Daily","No","No",NA,NA
-"176",1417,NA,"2605-169",2021-11-04,0,2,"Rural","D360933D",3546321725,"Female","25","20-29y","Yes","Farmer","No","Primary",NA,"Never","No","Yes","Yes",NA
-"177",1418,NA,"2605-169",2021-11-04,0,2,"Rural","90E21EEC",2430738156,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"1"
-"178",1423,NA,"3403-037",2021-11-04,0,2,"Rural","3E46FA85",1044839045,"Male","16","15-19y","Yes","Casual laboror","No","None","None","Once monthly","No",NA,NA,"4"
-"179",1424,NA,"3403-037",2021-11-04,0,2,"Rural","F7AA9B6A",4155153258,"Female","16","15-19y","Yes","Farmer","No","Primary",NA,"Never","No","No",NA,"10"
-"180",1425,NA,"3403-037",2021-11-04,0,2,"Rural","92C8407A",2462597242,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"181",1426,NA,"3403-037",2021-11-04,0,2,"Rural","E1A6B1DE",3785798110,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"182",1433,NA,"3304-033",2021-10-26,0,2,"Rural","946F180C",2490308620,"Female","23","20-29y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
-"183",1445,NA,"3301-105",2021-11-01,0,2,"Rural","7D0FAB23",2098178851,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"3"
-"184",1461,NA,"3103-083",2021-10-29,0,2,"Rural","604842FC",1615348476,"Female","29","20-29y","Yes","Unemployed","Yes",NA,"Primary","≤3 times per week","No","Yes","Yes",NA
-"185",1462,NA,"3103-083",2021-10-29,0,2,"Rural","D26BEBBE",3560288062,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"4"
-"186",1464,NA,"3103-083",2021-10-29,0,2,"Rural","6B4F691B",1800366363,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"4"
-"187",1477,NA,"3102-446",2021-11-08,0,2,"Rural","74289254",1948815956,"Female","44","40-59y","No","Unemployed","No","None",NA,"≤3 times per week","No","No",NA,NA
-"188",1479,NA,"3102-446",2021-11-08,0,2,"Rural","63DD40BD",1675444413,"Female","18","15-19y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","No",NA,NA
-"189",1554,NA,"2706-254",2021-11-09,0,2,"Rural","F43FE559",4097828185,"Female","46","40-59y","No","Unemployed","No","None",NA,"≤3 times per week","No","No",NA,NA
-"190",1557,NA,"2706-254",2021-11-09,0,2,"Rural","834238CE",2202155214,"Male","6","5-9y","No",NA,NA,NA,NA,"≤3 times per week","No",NA,NA,"5"
-"191",1571,NA,"2801-203",2021-11-18,0,2,"Rural","FEF743B7",4277617591,"Female","33","30-39y","Yes","Unemployed","No","Secondary",NA,"Once monthly","Yes","Yes","Yes",NA
-"192",1572,NA,"2801-203",2021-11-18,0,2,"Rural","9FDA08E8",2681866472,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","Yes",NA,NA,"2"
-"193",1578,NA,"3405-005",2021-11-16,0,2,"Rural","E4A60DBA",3836087738,"Female","24","20-29y","Yes","Unemployed","No","Primary",NA,NA,"No","Yes","Yes",NA
-"194",1579,NA,"3405-005",2021-11-16,0,2,"Rural","732DFD29",1932393769,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"1"
-"195",1592,NA,"3405-182",2021-11-15,0,2,"Rural","E96B3013",3916115987,"Female","56","40-59y","Yes","Farmer","No","Primary",NA,"Rarely","No","No",NA,NA
-"196",1593,NA,"3405-182",2021-11-15,0,2,"Rural","802D79CE",2150463950,"Female","38","30-39y","Yes","Farmer","Yes",NA,"Primary","≤3 times per week","No","No",NA,NA
-"197",1594,NA,"3405-182",2021-11-15,0,2,"Rural","ADD8D142",291666774,"Male","30","30-39y","Yes","Other","No","Primary",NA,"≤3 times per week","No",NA,NA,NA
-"198",1595,NA,"3405-182",2021-11-15,0,2,"Rural","1CF914E0",486085856,"Male","27","20-29y","Yes","Other","Yes",NA,"Secondary",NA,"No",NA,NA,NA
-"199",1596,NA,"3405-182",2021-11-15,0,2,"Rural","3777B3F2",930591730,"Female","23","20-29y","No","Farmer","No","Primary",NA,"Rarely","No","No",NA,NA
-"200",1597,NA,"3405-182",2021-11-15,0,2,"Rural","6F8093F8",1870697464,"Female","19","15-19y","Yes","Unemployed","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"201",1598,NA,"3405-182",2021-11-15,0,2,"Rural","D2510EC4",3528524556,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No",NA,NA,"4"
-"202",1599,NA,"3405-182",2021-11-15,0,2,"Rural","096B42CF",158024399,"Female","13","10-14y","Yes","Student","Yes",NA,"Primary","Rarely","No","No",NA,"1"
-"203",1643,NA,"1803-130",2021-11-29,0,2,"Rural","946F180C",2490308620,"Female","37","30-39y","Yes","Farmer","No","Primary",NA,"Once monthly","No","No",NA,NA
-"204",1644,NA,"1803-130",2021-11-29,0,2,"Rural","D5401F13",3577749267,"Male","45","40-59y","Yes","Other","Yes",NA,"Primary","Once monthly","No",NA,NA,NA
-"205",1645,NA,"1803-130",2021-11-29,0,2,"Rural","7D0FAB23",2098178851,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"7"
-"206",1646,NA,"1803-130",2021-11-29,0,2,"Rural","3CCF6E22",1020227106,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"6"
-"207",1649,NA,"3202-613",2021-11-30,0,2,"Rural","030D199D",51190173,"Female","25","20-29y","No","Farmer","No","Primary",NA,"Rarely","No","Yes","Yes",NA
-"208",1660,NA,"0506-119",2021-12-02,0,2,"Rural","0D9F0693",228525715,"Male","25","20-29y","Yes","Unemployed","Yes",NA,"College","Once monthly","No",NA,NA,NA
-"209",1661,NA,"0506-119",2021-12-02,0,2,"Rural","B84335B0",3091412400,"Female","22","20-29y","Yes","Unemployed","Yes",NA,"Bachelors or more","Daily","No","Yes","Yes",NA
-"210",1667,NA,"0708-226",2021-11-29,0,2,"Rural","295C4781",693913473,"Male","11","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
-"211",1670,NA,"0708-226",2021-11-29,0,2,"Rural","E1A6B1DE",3785798110,"Male","15","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"4"
-"212",1671,NA,"3101-291",2021-11-30,0,2,"Rural","DEF297AF",3740440495,"Male","61","60+y","No","Unemployed","No","Primary",NA,"Never","No",NA,NA,NA
-"213",1673,NA,"3101-291",2021-11-30,0,2,"Rural","604842FC",1615348476,"Female","35","30-39y","No","Unemployed","No","Primary",NA,"Never","No","Yes","Yes",NA
-"214",1674,NA,"3101-291",2021-11-30,0,2,"Rural","6B4F691B",1800366363,"Male","19","15-19y","Yes","Casual laboror","No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
-"215",1677,NA,"3101-291",2021-11-30,0,2,"Rural","D26BEBBE",3560288062,"Female","9","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"216",1679,NA,"3101-291",2021-11-30,0,2,"Rural","CDB01555",3450869077,"Male","22","20-29y","Yes","Casual laboror","No","Secondary",NA,"Once monthly","No",NA,NA,NA
-"217",1680,NA,"3101-291",2021-11-30,0,2,"Rural","256E23CB",627975115,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
-"218",1685,NA,"0603-029",2021-12-02,0,2,"Rural","3E46FA85",1044839045,"Female","12","10-14y","No","Unemployed","No","None",NA,"Never","No","No",NA,"3"
-"219",1686,NA,"0603-029",2021-12-02,0,2,"Rural","F7C6FA98",4157012632,"Male","10","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
-"220",1687,NA,"0603-029",2021-12-02,0,2,"Rural","2BCCD1C5",734843333,"Male","10","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"221",1688,NA,"0603-029",2021-12-02,1,2,"Rural","2D2EAFAA",758034346,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"2"
-"222",1693,NA,"2705-135",2021-11-29,0,2,"Rural","3EA3B441",1050915905,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
-"223",1697,NA,"2705-255",2021-12-02,0,2,"Rural","E743747F",3879957631,"Male","24","20-29y","Yes","Office worker","Yes",NA,"College","≤3 times per week","No",NA,NA,NA
-"224",1698,NA,"2705-255",2021-12-02,0,2,"Rural","53068F21",1392938785,"Female","23","20-29y","Yes","Office worker","Yes",NA,"College",NA,"No","Yes","Yes",NA
-"225",1699,NA,"2705-255",2021-12-02,0,2,"Rural","74289254",1948815956,"Female","16","15-19y","Yes","Student","Yes",NA,"Secondary","Never","No","No",NA,"2"
-"226",1764,NA,"3202-561",2021-12-02,0,2,"Rural","D2510EC4",3528524556,"Female","37","30-39y","No","Unemployed","No","Primary",NA,"Never","No","No",NA,NA
-"227",1765,NA,"3202-561",2021-12-02,0,2,"Rural","67B99933",1740216627,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"5"
-"228",1766,NA,"3202-561",2021-12-02,0,2,"Rural","F43FE559",4097828185,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"5"
-"229",1767,NA,"3202-561",2021-12-02,0,2,"Rural","3777B3F2",930591730,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"5"
-"230",1768,NA,"3202-561",2021-12-02,1,2,"Rural","B5349CD7",3040124119,"Female","1","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"5"
+"","rec_id","hh_id","date_enrolled","isindex","aim","study_site","sensor_id","hwid","participant_sex","age","participant_age","read_write","occupation","enrolled_school","highest_educ","school_level","transport_use","hh_resp_exposure","child","child_breastfeed","num_sibling"
+"1",714,"3209-291",2021-07-16,1,2,"Rural","FEF743B7",4277617591,"Male","1","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"3"
+"2",722,"0501-031",2021-07-16,1,2,"Rural","92C8407A",2462597242,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
+"3",787,"3403-108",2021-07-22,1,2,"Rural","D5401F13",3577749267,"Male","0","<6mo","No","Child","No","None","None",NA,"No",NA,NA,"6"
+"4",825,"3102-088",2021-08-05,1,2,"Rural","F43FE559",4097828185,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
+"5",826,"3403-352",2021-07-29,1,2,"Rural","3EA3B441",1050915905,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"6",837,"0105-036",2021-08-05,1,2,"Rural","70A31CC7",1889737927,"Female","0","6-11mo","No","Child","No","None","None","Once monthly","No",NA,NA,"0"
+"7",847,"3305-289",2021-07-29,1,2,"Rural","9FDA08E8",2681866472,"Male","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"7"
+"8",892,"0705-101",2021-08-05,1,2,"Rural","F17A9446",0,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"5"
+"9",1051,"3204-241",2021-09-03,1,2,"Rural","7D0FAB23",2098178851,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"0"
+"10",1092,"3101-288",2021-09-06,1,2,"Rural","E40CEEDE",3826052830,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
+"11",1097,"2607-075",2021-09-07,1,2,"Rural","3777B3F2",930591730,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"0"
+"12",1169,"3210-241",2021-09-20,1,2,"Rural","FFEFD46D",4293907565,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
+"13",1212,"3305-287",2021-09-27,1,2,"Rural","24F443FB",619987963,"Female","0","<6mo","No","Child","No","None","None","Never","No",NA,NA,"1"
+"14",1268,"0606-102",2021-10-09,1,2,"Rural","E96B3013",3916115987,"Female","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"1"
+"15",1295,"0609-002",2021-10-05,1,2,"Rural","834238CE",2202155214,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"7"
+"16",1299,"3210-829",2021-10-08,1,2,"Rural","43BE9338",1136563000,"Female","0","<6mo","No","Child","No","None","None","Once monthly","No",NA,NA,"2"
+"17",1331,"3403-045",2021-10-14,1,2,"Rural","6F8093F8",1870697464,"Female","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"10"
+"18",1353,"3210-692",2021-10-11,1,2,"Rural","F7AA9B6A",4155153258,"Female","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"2"
+"19",1377,"3204-483",2021-10-21,1,2,"Rural","ADD8D142",291666774,"Female","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"4"
+"20",1408,"1603-198",2021-11-02,1,2,"Rural","3EA3B441",1050915905,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"2"
+"21",1420,"3403-037",2021-11-04,1,2,"Rural","256E23CB",627975115,"Male","0","<6mo","No","Child","No","None","None","Rarely","No",NA,NA,"0"
+"22",1427,"3403-037",2021-11-04,0,2,"Rural","3CCF6E22",1020227106,"Female","0","<6mo","No","Child","No","None","None","Once monthly","No",NA,NA,"2"
+"23",1438,"3304-033",2021-10-26,1,2,"Rural","030D199D",51190173,"Male","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"4"
+"24",1439,"3204-483",2021-10-26,0,2,"Rural","5AE89A51",1525193297,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
+"25",1447,"3301-105",2021-11-01,1,2,"Rural","D5401F13",3577749267,NA,"0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"3"
+"26",1465,"3103-083",2021-10-29,1,2,"Rural","295C4781",693913473,"Female","0","<6mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"4"
+"27",1574,"2801-203",2021-11-18,1,2,"Rural","ADD16571",2916181361,"Female","0","6-11mo","No","Child","No","None","None","Once monthly","Yes",NA,NA,"2"
+"28",1580,"3405-005",2021-11-16,1,2,"Rural","FFEFD46D",4293907565,"Female","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"1"
+"29",1647,"3202-613",2021-11-30,1,2,"Rural","43BE9338",1136563000,"Male","0","6-11mo","No","Child","No","None","None","Rarely","No",NA,NA,"1"
+"30",1659,"0506-119",2021-12-02,1,2,"Rural","7074A528",1886692648,"Male","0","6-11mo","No","Child","No","None","None","≤3 times per week","No",NA,NA,"1"
+"31",1669,"0708-226",2021-11-29,1,2,"Rural","4A4AADA5",1246408101,"Male","0","6-11mo","No","Child","No","None","None",NA,"No",NA,NA,"1"
+"32",1700,"2705-255",2021-12-02,1,2,"Rural","63DD40BD",1675444413,"Female","0","6-11mo","No","Child","No","None","None","Never","No",NA,NA,"0"
+"33",712,"3209-291",2021-07-16,0,2,"Rural","F17A9446",0,"Female","32","30-39y","No","Other","No","Primary",NA,NA,"No","Yes","Yes",NA
+"34",713,"3209-291",2021-07-16,0,2,"Rural","ADD16571",2916181361,"Male","7","5-9y","No","Other","No","None",NA,"Never","No response",NA,NA,"3"
+"35",717,"0501-031",2021-07-16,0,2,"Rural","096B42CF",158024399,"Female","40","40-59y","No","Homemaker","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"36",719,"0501-031",2021-07-16,0,2,"Rural","70A31CC7",1889737927,"Female","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"3"
+"37",720,"0501-031",2021-07-16,0,2,"Rural","946F180C",2490308620,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"38",777,"3205-338",2021-07-22,0,2,"Rural","6F8093F8",1870697464,"Female","34","30-39y","No","Homemaker","No","Primary",NA,"≤3 times per week","No","No",NA,NA
+"39",778,"3205-338",2021-07-22,0,2,"Rural","B5349CD7",3040124119,"Male","15","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"4"
+"40",779,"3205-338",2021-07-22,0,2,"Rural","90E21EEC",2430738156,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"41",780,"3205-338",2021-07-22,0,2,"Rural","834238CE",2202155214,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"42",782,"3403-108",2021-07-22,0,2,"Rural","1CF914E0",486085856,"Female","33","30-39y","Yes","Other","No","Primary",NA,NA,"No","Yes","Yes",NA
+"43",784,"3403-108",2021-07-22,0,2,"Rural","D2510EC4",3528524556,"Female","14","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"6"
+"44",785,"3403-108",2021-07-22,0,2,"Rural","E1A6B1DE",3785798110,"Female","9","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"6"
+"45",786,"3403-108",2021-07-22,0,2,"Rural","CDB01555",3450869077,"Female","5","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"6"
+"46",820,"3102-088",2021-08-05,0,2,"Rural","92C8407A",2462597242,"Female","70","60+y","No","Unemployed","No","None",NA,"Never","No","No",NA,NA
+"47",822,"3102-088",2021-08-05,0,2,"Rural","F7C6FA98",4157012632,"Female","23","20-29y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"48",823,"3102-088",2021-08-05,0,2,"Rural","43BE9338",1136563000,"Female","8","5-9y","No","Unemployed","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"49",824,"3102-088",2021-08-05,0,2,"Rural","604842FC",1615348476,"Male","4","1-4y","No","Unemployed","No","None","None","Never","No",NA,NA,"2"
+"50",827,"3403-352",2021-07-29,0,2,"Rural","67B99933",1740216627,"Female","22","20-29y","Yes","Other","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"51",828,"3403-352",2021-07-29,0,2,"Rural","144BFE90",340524688,"Male","10","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"52",829,"3403-352",2021-07-29,0,2,"Rural","837D4926",2206026022,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"53",830,"3403-352",2021-07-29,0,2,"Rural","24F443FB",619987963,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
+"54",838,"0105-036",2021-08-05,0,2,"Rural","2D2EAFAA",758034346,"Female","41","40-59y","No","Other","No","Primary",NA,"Never","No","No",NA,NA
+"55",840,"0105-036",2021-08-05,0,2,"Rural","7074A528",1886692648,"Male","11","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"1"
+"56",845,"3305-289",2021-07-29,0,2,"Rural","74289254",1948815956,"Female","12","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","Yes",NA,NA,"9"
+"57",846,"3305-289",2021-07-29,0,2,"Rural","802D79CE",2150463950,"Female","6","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"7"
+"58",848,"3305-241",2021-07-29,0,2,"Rural","3CCF6E22",1020227106,"Female","22","20-29y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"59",849,"3305-241",2021-07-29,0,2,"Rural","256E23CB",627975115,"Female","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"60",850,"3305-241",2021-07-29,0,2,"Rural","D26BEBBE",3560288062,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"2"
+"61",889,"0705-101",2021-08-05,0,2,"Rural","E96B3013",3916115987,"Female","31","30-39y","Yes","Other","No","Secondary",NA,"≤3 times per week","No","Yes","Yes",NA
+"62",936,"3102-218",2021-08-14,0,2,"Rural","6F8093F8",1870697464,"Female","50","40-59y","No","Unemployed","No","None",NA,"Daily","No","No",NA,NA
+"63",937,"3102-218",2021-08-14,0,2,"Rural","732DFD29",1932393769,"Female","29","20-29y","No","Unemployed","No","None",NA,"Never","No","Yes","Yes",NA
+"64",940,"1503-124",2021-08-16,1,2,"Rural","0D9F0693",228525715,"Male","3","1-4y","No",NA,"No","None","None","Rarely","No",NA,NA,"2"
+"65",941,"1503-124",2021-08-16,0,2,"Rural","E1A6B1DE",3785798110,"Female","32","30-39y","Yes","Office worker","Yes",NA,"Secondary","Once monthly","No","No",NA,NA
+"66",984,"2607-124",2021-08-24,0,2,"Rural","ADD8D142",291666774,"Female","75","60+y","No","Unemployed","No","None",NA,"≤3 times per week","No","No",NA,NA
+"67",986,"2607-124",2021-08-24,0,2,"Rural","6B4F691B",1800366363,"Male","3","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"1"
+"68",989,"2607-124",2021-08-26,0,2,"Rural","7074A528",1886692648,"Female","34","30-39y","Yes","Business person","No","Primary",NA,"Once monthly","No","No",NA,NA
+"69",991,"3208-386",2021-08-26,0,2,"Rural","F7C6FA98",4157012632,"Male","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"70",992,"3208-386",2021-08-26,0,2,"Rural","F43FE559",4097828185,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"71",993,"3208-386",2021-08-26,0,2,"Rural","D5401F13",3577749267,"Female","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"4"
+"72",994,"3208-386",2021-08-26,1,2,"Rural","E4A60DBA",3836087738,"Female","1","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"0"
+"73",995,"3209-111",2021-08-26,0,2,"Rural","604842FC",1615348476,"Female","57","40-59y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","No",NA,NA
+"74",996,"3209-111",2021-08-26,0,2,"Rural","5AE89A51",1525193297,"Female","21","20-29y","Yes","Unemployed","Yes",NA,"Secondary","≤3 times per week","No","No",NA,NA
+"75",997,"3209-111",2021-08-26,0,2,"Rural","4A4AADA5",1246408101,"Female","10","10-14y","No","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"3"
+"76",998,"3209-111",2021-08-26,1,2,"Rural","43BE9338",1136563000,"Female","1","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"0"
+"77",999,"3209-111",2021-08-26,0,2,"Rural","834238CE",2202155214,"Male","3","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"0"
+"78",1001,"3406-012",2021-08-26,0,2,"Rural","030D199D",51190173,"Female","48","40-59y","No","Unemployed","No","None",NA,"Rarely","Yes","No",NA,NA
+"79",1002,"3406-012",2021-08-26,0,2,"Rural","144BFE90",340524688,"Female","35","30-39y","Yes","Farmer","No","Primary",NA,NA,"Yes","Yes","Yes",NA
+"80",1003,"3406-012",2021-08-26,0,2,"Rural","3CCF6E22",1020227106,"Female","19","15-19y","Yes","Unemployed","Yes",NA,"Primary","Once monthly","Yes","No",NA,NA
+"81",1005,"3406-012",2021-08-26,0,2,"Rural","D26BEBBE",3560288062,"Male","6","5-9y","No",NA,NA,NA,NA,"Never","Yes",NA,NA,"1"
+"82",1007,"3406-012",2021-08-26,0,2,"Rural","24F443FB",619987963,"Female","4","1-4y","No",NA,"No","None","None","Never","Yes",NA,NA,"1"
+"83",1048,"3406-012",2021-09-03,0,2,"Rural","2D2EAFAA",758034346,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Never","No","Yes","Yes",NA
+"84",1050,"3204-241",2021-09-03,0,2,"Rural","3EA3B441",1050915905,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary",NA,"No",NA,NA,"12"
+"85",1052,"3204-241",2021-09-03,0,2,"Rural","2BCCD1C5",734843333,"Female","90","60+y","No","Unemployed","No","None",NA,"Never","No","No",NA,NA
+"86",1089,"3101-288",2021-09-06,0,2,"Rural","70A31CC7",1889737927,"Female","29","20-29y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"87",1090,"3101-288",2021-09-06,0,2,"Rural","ADD16571",2916181361,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"88",1091,"3101-288",2021-09-06,0,2,"Rural","256E23CB",627975115,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"89",1094,"2607-075",2021-09-07,0,2,"Rural","9FDA08E8",2681866472,"Female","15","15-19y","Yes","Student","No","Secondary",NA,"≤3 times per week","No","Yes","Yes","0"
+"90",1096,"2607-075",2021-09-07,0,2,"Rural","295C4781",693913473,"Male","9","5-9y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"2"
+"91",1161,"3404-087",2021-09-17,0,2,"Rural","946F180C",2490308620,"Male","26","20-29y","Yes","Office worker","Yes",NA,"Secondary","Daily","Yes",NA,NA,NA
+"92",1162,"3404-087",2021-09-17,0,2,"Rural","74289254",1948815956,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","Yes","No",NA,"3"
+"93",1163,"3404-087",2021-09-17,0,2,"Rural","CDB01555",3450869077,"Female","4","1-4y","No",NA,"No","None","None","Never","Yes",NA,NA,"0"
+"94",1168,"3210-241",2021-09-20,0,2,"Rural","3E46FA85",1044839045,"Female","25","20-29y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"95",1209,"3305-287",2021-09-27,0,2,"Rural","2BCCD1C5",734843333,"Female","19","15-19y","No","Farmer","No","None",NA,"Never","No","Yes","Yes",NA
+"96",1210,"3305-287",2021-09-27,0,2,"Rural","53068F21",1392938785,"Female","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"5"
+"97",1211,"3305-287",2021-09-27,0,2,"Rural","9FDA08E8",2681866472,"Female","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
+"98",1220,"3305-275",2021-09-24,0,2,"Rural","D360933D",3546321725,"Female","34","30-39y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","No",NA,NA
+"99",1221,"3305-275",2021-09-24,0,2,"Rural","FEF743B7",4277617591,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"2"
+"100",1236,"0702-243",2021-10-05,0,2,"Rural","3777B3F2",930591730,"Male","44","40-59y","No","Unemployed","No","None",NA,NA,"No",NA,NA,NA
+"101",1237,"0702-243",2021-10-05,0,2,"Rural","7D0FAB23",2098178851,"Female","36","30-39y","Yes","Farmer","Yes",NA,"Primary","Rarely","No","Yes","Yes",NA
+"102",1238,"0702-243",2021-10-05,0,2,"Rural","D5401F13",3577749267,"Male","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Daily","No",NA,NA,NA
+"103",1239,"0702-243",2021-10-05,0,2,"Rural","E4A60DBA",3836087738,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"9"
+"104",1240,"0702-243",2021-10-05,0,2,"Rural","ADD8D142",291666774,"Female","6","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"9"
+"105",1261,"0601-034",2021-10-09,1,2,"Rural","67B99933",1740216627,"Female","2","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"1"
+"106",1264,"0606-102",2021-10-09,0,2,"Rural","295C4781",693913473,"Female","21","20-29y","No","Unemployed","No","Primary",NA,"Never","No","No",NA,NA
+"107",1265,"0606-102",2021-10-09,0,2,"Rural","6B4F691B",1800366363,"Female","17","15-19y","Yes","Unemployed","No","Primary",NA,NA,"No","Yes","Yes","1"
+"108",1266,"0606-102",2021-10-09,0,2,"Rural","604842FC",1615348476,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"109",1267,"0606-102",2021-10-09,0,2,"Rural","D26BEBBE",3560288062,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
+"110",1288,"0609-002",2021-10-05,0,2,"Rural","3CCF6E22",1020227106,"Female","35","30-39y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"111",1289,"0609-002",2021-10-05,0,2,"Rural","92C8407A",2462597242,"Male","15","15-19y","Yes","Unemployed","No","Primary",NA,"Never","No",NA,NA,"7"
+"112",1290,"0609-002",2021-10-05,0,2,"Rural","2D2EAFAA",758034346,"Male","13","10-14y","Yes","Unemployed","No","Primary",NA,"≤3 times per week","No",NA,NA,"7"
+"113",1291,"0609-002",2021-10-05,0,2,"Rural","256E23CB",627975115,"Male","10","10-14y","No","Unemployed","No","Primary",NA,"Never","No",NA,NA,"7"
+"114",1293,"0609-002",2021-10-05,0,2,"Rural","6AA77C79",1789361273,"Male","6","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"7"
+"115",1294,"0609-002",2021-10-05,0,2,"Rural","63DD40BD",1675444413,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"7"
+"116",1297,"3210-829",2021-10-08,0,2,"Rural","096B42CF",158024399,"Female","26","20-29y","Yes","Unemployed","No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
+"117",1332,"3403-045",2021-10-14,0,2,"Rural","CDB01555",3450869077,"Female","34","30-39y","Yes","Farmer","No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"118",1333,"3403-045",2021-10-14,0,2,"Rural","3E46FA85",1044839045,"Female","13","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"4"
+"119",1334,"3403-045",2021-10-14,0,2,"Rural","74289254",1948815956,"Female","5","5-9y","No",NA,NA,NA,NA,"Never","No",NA,NA,"4"
+"120",1335,"3403-045",2021-10-14,0,2,"Rural","E1A6B1DE",3785798110,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"6"
+"121",1350,"3210-692",2021-10-11,0,2,"Rural","4A4AADA5",1246408101,"Female","26","20-29y","Yes","Unemployed","No","Primary",NA,"Once monthly","No","Yes","Yes",NA
+"122",1351,"3210-692",2021-10-11,0,2,"Rural","144BFE90",340524688,"Female","6","5-9y","No",NA,NA,NA,NA,"≤3 times per week","No",NA,NA,"2"
+"123",1352,"3210-692",2021-10-11,0,2,"Rural","6D573963",1834432867,"Female","3","1-4y","No",NA,"No","None","None","≤3 times per week","No",NA,NA,"2"
+"124",1374,"3204-483",2021-10-21,0,2,"Rural","E96B3013",3916115987,"Female","34","30-39y","Yes","Business person","Yes",NA,"Primary",NA,"No","Yes","Yes",NA
+"125",1375,"3204-483",2021-10-21,0,2,"Rural","096B42CF",158024399,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"4"
+"126",1376,"3204-483",2021-10-21,0,2,"Rural","67B99933",1740216627,"Male","14","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"127",1379,"3204-483",2021-10-21,0,2,"Rural","3777B3F2",930591730,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"128",1398,"3403-235",2021-10-28,0,2,"Rural","24F443FB",619987963,"Female","34","30-39y","Yes","Farmer","No","Primary",NA,NA,"No","Yes","Yes",NA
+"129",1401,"3403-235",2021-10-28,0,2,"Rural","53068F21",1392938785,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"4"
+"130",1409,"1603-198",2021-11-02,0,2,"Rural","CDB01555",3450869077,"Female","7","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"131",1410,"1603-198",2021-11-02,0,2,"Rural","2BCCD1C5",734843333,"Female","21","20-29y","Yes","Unemployed","No","Secondary",NA,"Once monthly","No","Yes","Yes",NA
+"132",1411,"1603-198",2021-11-02,0,2,"Rural","70A31CC7",1889737927,"Female","43","40-59y","Yes","Farmer","Yes",NA,"Secondary","Daily","No","No",NA,NA
+"133",1423,"3403-037",2021-11-04,0,2,"Rural","3E46FA85",1044839045,"Male","16","15-19y","Yes","Casual laboror","No","None","None","Once monthly","No",NA,NA,"4"
+"134",1424,"3403-037",2021-11-04,0,2,"Rural","F7AA9B6A",4155153258,"Female","16","15-19y","Yes","Farmer","No","Primary",NA,"Never","No","No",NA,"10"
+"135",1425,"3403-037",2021-11-04,0,2,"Rural","92C8407A",2462597242,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"136",1426,"3403-037",2021-11-04,0,2,"Rural","E1A6B1DE",3785798110,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"137",1433,"3304-033",2021-10-26,0,2,"Rural","946F180C",2490308620,"Female","23","20-29y","No","Unemployed","No","Primary",NA,"≤3 times per week","No","Yes","Yes",NA
+"138",1445,"3301-105",2021-11-01,0,2,"Rural","7D0FAB23",2098178851,"Female","8","5-9y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"3"
+"139",1461,"3103-083",2021-10-29,0,2,"Rural","604842FC",1615348476,"Female","29","20-29y","Yes","Unemployed","Yes",NA,"Primary","≤3 times per week","No","Yes","Yes",NA
+"140",1462,"3103-083",2021-10-29,0,2,"Rural","D26BEBBE",3560288062,"Male","12","10-14y","Yes","Student","Yes",NA,"Primary","≤3 times per week","No",NA,NA,"4"
+"141",1464,"3103-083",2021-10-29,0,2,"Rural","6B4F691B",1800366363,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"4"
+"142",1571,"2801-203",2021-11-18,0,2,"Rural","FEF743B7",4277617591,"Female","33","30-39y","Yes","Unemployed","No","Secondary",NA,"Once monthly","Yes","Yes","Yes",NA
+"143",1572,"2801-203",2021-11-18,0,2,"Rural","9FDA08E8",2681866472,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","Yes",NA,NA,"2"
+"144",1578,"3405-005",2021-11-16,0,2,"Rural","E4A60DBA",3836087738,"Female","24","20-29y","Yes","Unemployed","No","Primary",NA,NA,"No","Yes","Yes",NA
+"145",1579,"3405-005",2021-11-16,0,2,"Rural","732DFD29",1932393769,"Male","7","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"1"
+"146",1643,"1803-130",2021-11-29,0,2,"Rural","946F180C",2490308620,"Female","37","30-39y","Yes","Farmer","No","Primary",NA,"Once monthly","No","No",NA,NA
+"147",1644,"1803-130",2021-11-29,0,2,"Rural","D5401F13",3577749267,"Male","45","40-59y","Yes","Other","Yes",NA,"Primary","Once monthly","No",NA,NA,NA
+"148",1645,"1803-130",2021-11-29,0,2,"Rural","7D0FAB23",2098178851,"Female","11","10-14y","Yes","Student","Yes",NA,"Primary","Never","No","No",NA,"7"
+"149",1646,"1803-130",2021-11-29,0,2,"Rural","3CCF6E22",1020227106,"Male","8","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"6"
+"150",1649,"3202-613",2021-11-30,0,2,"Rural","030D199D",51190173,"Female","25","20-29y","No","Farmer","No","Primary",NA,"Rarely","No","Yes","Yes",NA
+"151",1660,"0506-119",2021-12-02,0,2,"Rural","0D9F0693",228525715,"Male","25","20-29y","Yes","Unemployed","Yes",NA,"College","Once monthly","No",NA,NA,NA
+"152",1661,"0506-119",2021-12-02,0,2,"Rural","B84335B0",3091412400,"Female","22","20-29y","Yes","Unemployed","Yes",NA,"Bachelors or more","Daily","No","Yes","Yes",NA
+"153",1667,"0708-226",2021-11-29,0,2,"Rural","295C4781",693913473,"Male","11","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"4"
+"154",1670,"0708-226",2021-11-29,0,2,"Rural","E1A6B1DE",3785798110,"Male","15","15-19y","Yes","Student","Yes",NA,"Secondary","≤3 times per week","No",NA,NA,"4"
+"155",1671,"3101-291",2021-11-30,0,2,"Rural","DEF297AF",3740440495,"Male","61","60+y","No","Unemployed","No","Primary",NA,"Never","No",NA,NA,NA
+"156",1673,"3101-291",2021-11-30,0,2,"Rural","604842FC",1615348476,"Female","35","30-39y","No","Unemployed","No","Primary",NA,"Never","No","Yes","Yes",NA
+"157",1674,"3101-291",2021-11-30,0,2,"Rural","6B4F691B",1800366363,"Male","19","15-19y","Yes","Casual laboror","No","Secondary",NA,"≤3 times per week","No",NA,NA,NA
+"158",1677,"3101-291",2021-11-30,0,2,"Rural","D26BEBBE",3560288062,"Female","9","5-9y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"159",1679,"3101-291",2021-11-30,0,2,"Rural","CDB01555",3450869077,"Male","22","20-29y","Yes","Casual laboror","No","Secondary",NA,"Once monthly","No",NA,NA,NA
+"160",1680,"3101-291",2021-11-30,0,2,"Rural","256E23CB",627975115,"Female","4","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"1"
+"161",1685,"0603-029",2021-12-02,0,2,"Rural","3E46FA85",1044839045,"Female","12","10-14y","No","Unemployed","No","None",NA,"Never","No","No",NA,"3"
+"162",1686,"0603-029",2021-12-02,0,2,"Rural","F7C6FA98",4157012632,"Male","10","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"3"
+"163",1687,"0603-029",2021-12-02,0,2,"Rural","2BCCD1C5",734843333,"Male","10","10-14y","No","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"164",1688,"0603-029",2021-12-02,1,2,"Rural","2D2EAFAA",758034346,"Male","3","1-4y","No",NA,"No","None","None","Never","No",NA,NA,"2"
+"165",1693,"2705-135",2021-11-29,0,2,"Rural","3EA3B441",1050915905,"Female","9","5-9y","Yes","Student","Yes",NA,"Primary","Never","No",NA,NA,"2"
+"166",1697,"2705-255",2021-12-02,0,2,"Rural","E743747F",3879957631,"Male","24","20-29y","Yes","Office worker","Yes",NA,"College","≤3 times per week","No",NA,NA,NA
+"167",1698,"2705-255",2021-12-02,0,2,"Rural","53068F21",1392938785,"Female","23","20-29y","Yes","Office worker","Yes",NA,"College",NA,"No","Yes","Yes",NA
+"168",1699,"2705-255",2021-12-02,0,2,"Rural","74289254",1948815956,"Female","16","15-19y","Yes","Student","Yes",NA,"Secondary","Never","No","No",NA,"2"
