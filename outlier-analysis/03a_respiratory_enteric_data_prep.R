@@ -101,7 +101,10 @@ contacts_daily_resp$`Both Days`[which(is.na(contacts_daily_resp$`Both Days`))] <
 contacts_daily_resp$`Day1 Only`[which(is.na(contacts_daily_resp$`Day1 Only`))] <- 0
 contacts_daily_resp$`Day2 Only`[which(is.na(contacts_daily_resp$`Day2 Only`))] <- 0
 contacts_daily_resp$`NA`[which(is.na(contacts_daily_resp$`NA`))] <- 0
-contacts_daily_resp$avg_daily_resp_contacts <- ((contacts_daily_resp$`Both Days` * 2)+
+contacts_daily_resp$`Both Days`<- ifelse(contacts_daily_resp$`Both Days` %% 2 == 1,
+                                         contacts_daily_resp$`Both Days`+1,
+                                         contacts_daily_resp$`Both Days`)
+contacts_daily_resp$avg_daily_resp_contacts <- ((contacts_daily_resp$`Both Days` / 2)+
                                                   contacts_daily_resp$`Day1 Only` + 
                                                   contacts_daily_resp$`Day2 Only`+
                                                   contacts_daily_resp$`NA`)/2
@@ -127,7 +130,10 @@ contacts_daily_ent$`Both Days`[which(is.na(contacts_daily_ent$`Both Days`))] <- 
 contacts_daily_ent$`Day1 Only`[which(is.na(contacts_daily_ent$`Day1 Only`))] <- 0
 contacts_daily_ent$`Day2 Only`[which(is.na(contacts_daily_ent$`Day2 Only`))] <- 0
 contacts_daily_ent$`NA`[which(is.na(contacts_daily_ent$`NA`))] <- 0
-contacts_daily_ent$avg_daily_ent_contacts <- ((contacts_daily_ent$`Both Days` * 2)+
+contacts_daily_ent$`Both Days`<- ifelse(contacts_daily_ent$`Both Days` %% 2 == 1,
+                                         contacts_daily_ent$`Both Days`+1,
+                                         contacts_daily_ent$`Both Days`)
+contacts_daily_ent$avg_daily_ent_contacts <- ((contacts_daily_ent$`Both Days` / 2)+
                                                 contacts_daily_ent$`Day1 Only` + 
                                                 contacts_daily_ent$`Day2 Only`+
                                                 contacts_daily_ent$`NA`)/2

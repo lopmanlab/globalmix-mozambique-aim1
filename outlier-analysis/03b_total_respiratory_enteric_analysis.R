@@ -483,7 +483,7 @@ dev.off()
 
 # Save data --------------------------------------------------------------------
 
-write.csv(negbin_daily_resp, "negbin_daily_resp.csv")
-write.csv(negbin_daily_ent, "negbin_daily_ent.csv")
+write.csv(negbin_daily_resp, "data/negbin_daily_resp.csv")
+write.csv(negbin_daily_ent, "data/negbin_daily_ent.csv")
 
 
