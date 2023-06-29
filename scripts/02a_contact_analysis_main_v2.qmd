@@ -955,7 +955,6 @@ moz_day1_contacts_histogram
 
 ```
 
-
 ```{r}
 #| label: figure-one 
 
