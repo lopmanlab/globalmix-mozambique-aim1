@@ -111,3 +111,7 @@ ggplot(daily_ent_q75, aes(x = term, y = estimate, color = log_pvalue)) +
                          guide = "colorbar")+
   ggtitle("Logistic: Q75 Outlier Threshold for Daily Avg Enteric Contacts ~ participant_age + Sex + Site")
 dev.off()
+
+
+write.csv(daily_resp_q75, "data/daily_resp_q75.csv")
+write.csv(daily_ent_q75, "data/daily_ent_q75.csv")

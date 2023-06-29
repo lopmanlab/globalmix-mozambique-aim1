@@ -944,7 +944,7 @@ contacts_daily$`Both Days`[which(is.na(contacts_daily$`Both Days`))] <- 0
 contacts_daily$`Day1 Only`[which(is.na(contacts_daily$`Day1 Only`))] <- 0
 contacts_daily$`Day2 Only`[which(is.na(contacts_daily$`Day2 Only`))] <- 0
 contacts_daily$`NA`[which(is.na(contacts_daily$`NA`))] <- 0
-contacts_daily$avg_daily_contacts <- ((contacts_daily$`Both Days` * 2)+
+contacts_daily$avg_daily_contacts <- ((contacts_daily$`Both Days` / 2)+
                                           contacts_daily$`Day1 Only` + 
                                           contacts_daily$`Day2 Only`+
                                           contacts_daily$`NA`)/2
