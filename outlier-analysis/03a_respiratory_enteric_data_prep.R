@@ -5,8 +5,8 @@ library(ggplot2)
 library(plotly)
 library(tidyverse)
 
-participants <- readRDS(paste0(here(),"/data/clean/participant_data_aim1.RDS"))
-contacts <- readRDS(paste0(here(),"/data/clean/contact_data_aim1.RDS"))
+participants <- readRDS(paste0(here(),"/../","data/clean/participant_data_aim1.RDS"))
+contacts <- readRDS(paste0(here(),"/../", "data/clean/contact_data_aim1.RDS"))
 
 ## Subset contacts to the IDs in participant list only
 contacts <- contacts %>%
@@ -156,15 +156,19 @@ contacts_resp_ent <- left_join(contact_unique_resp,
 contact_summaries <- contacts_resp_ent %>%
   distinct() %>%
   ungroup() %>%
-  dplyr::summarize(unique_resp_q75 = quantile(avg_unique_resp_contacts, probs = 0.75, na.rm=T),
+  dplyr::summarize(unique_resp_q50 = quantile(avg_unique_resp_contacts, probs = 0.50, na.rm=T),
+                   unique_resp_q75 = quantile(avg_unique_resp_contacts, probs = 0.75, na.rm=T),
                    unique_resp_q90 = quantile(avg_unique_resp_contacts, probs = 0.90, na.rm=T),
                    unique_resp_mean = mean(avg_unique_resp_contacts, na.rm=T),
+                   unique_ent_q50 = quantile(avg_unique_ent_contacts, probs = 0.50, na.rm=T),
                    unique_ent_q75 = quantile(avg_unique_ent_contacts, probs = 0.75, na.rm=T),
                    unique_ent_q90 = quantile(avg_unique_ent_contacts, probs = 0.90, na.rm=T),
                    unique_ent_mean = mean(avg_unique_ent_contacts, na.rm=T),
+                   daily_resp_q50 = quantile(avg_daily_resp_contacts, probs = 0.50, na.rm=T),
                    daily_resp_q75 = quantile(avg_daily_resp_contacts, probs = 0.75, na.rm=T),
                    daily_resp_q90 = quantile(avg_daily_resp_contacts, probs = 0.90, na.rm=T),
                    daily_resp_mean = mean(avg_daily_resp_contacts, na.rm=T),
+                   daily_ent_q50 = quantile(avg_daily_ent_contacts, probs = 0.50, na.rm=T),
                    daily_ent_q75 = quantile(avg_daily_ent_contacts, probs = 0.75, na.rm=T),
                    daily_ent_q90 = quantile(avg_daily_ent_contacts, probs = 0.90, na.rm=T),
                    daily_ent_mean = mean(avg_daily_ent_contacts, na.rm=T))
@@ -187,41 +191,72 @@ contacts_resp_ent <- contacts_resp_ent %>%
          unique_ent_q75_outlier = 
            ifelse(avg_unique_ent_contacts > contact_summaries$unique_ent_q75, 1, 0))
 
-saveRDS(contacts_resp_ent, here("outlier-analysis/data/contacts_resp_ent.RDS"))
+# saveRDS(contacts_resp_ent, here("outlier-analysis/data/contacts_resp_ent.RDS"))
 
-#Lite analysis for abstract ---------------------------------------------------
+#Contact Definition Exploration ------------------------------------------------
 #Average/Q75 respiratory and enteric contacts
 contact_summaries
 
-#Include number of outliers as well per each definition 
-table(contacts_resp_ent$daily_ent_q75_outlier)
-336/(336+1024)
-table(contacts_resp_ent$daily_resp_q75_outlier)
-317/(317+1046)
-
-#Number of outliers by site respiratory
-table(contacts_resp_ent$daily_resp_q75_outlier, contacts_resp_ent$study_site)
-#Rural: 31%
-217/(217+479)
-#Urban: 15%
-100/(100+567)
-
-#Number of outliers by site enteric
-table(contacts_resp_ent$daily_ent_q75_outlier, contacts_resp_ent$study_site)
-#Rural: 32%
-220/(220+473)
-#Urban: 17%
-116/(116+551)
-
 # Proportion of contacts that were considered both
 table(df_contact$respiratory == 1 & df_contact$enteric == 1)
-16221 / (16221 + 3708)
+16219 / (16219 + 3708)
 
 # Proportion of contacts that were considered both by site
 table(df_contact$respiratory == 1 & df_contact$enteric == 1, df_contact$study_site)
 #Rural: 78%
 9155/(9155+2627)
 #Urban: 87%
-7066/(7066+1081)
+7064/(7064+1081)
+
+# Respiratory contacts by age group
+table(df_contact$respiratory == 1, df_contact$participant_age)
+df_contact %>%
+  group_by(participant_age, respiratory) %>%
+  summarise(n = n()) %>%
+  mutate(freq = n / sum(n)) %>%
+  write.csv(., "data/participant_age_respiratory.csv")
+
+# Enteric Contacts by Age
+table(df_contact$enteric == 1, df_contact$participant_age)
+df_contact %>%
+  group_by(participant_age, enteric) %>%
+  summarise(n = n()) %>%
+  mutate(freq = n / sum(n)) %>%
+  write.csv(., "data/participant_age_enteric.csv")
 
 #Average respiratory and enteric contacts by rural/urban 
+
+
+#Include number of outliers as well per each definition 
+table(contacts_resp_ent$daily_ent_q75_outlier)
+301/(301+1058)
+table(contacts_resp_ent$daily_resp_q75_outlier)
+304/(301+1058)
+
+#Number of outliers by site respiratory
+table(contacts_resp_ent$daily_resp_q75_outlier, contacts_resp_ent$study_site)
+#Rural: 31%
+213/(213+483)
+#Urban: 14%
+91/(91+575)
+
+#Number of outliers by site enteric
+table(contacts_resp_ent$daily_ent_q75_outlier, contacts_resp_ent$study_site)
+#Rural: 30%
+208/(208+485)
+#Urban: 14%
+93/(93+573)
+
+# Unique contact outliers by site
+table(contacts_resp_ent$unique_resp_q75_outlier, contacts_resp_ent$study_site)
+#Rural: 31%
+218 / (218+478)
+#Urban: 14%
+90 / (90+576)
+
+table(contacts_resp_ent$unique_ent_q75_outlier, contacts_resp_ent$study_site)
+#Rural: 30%
+210 / (210+483)
+#Urban: 14%
+93 / (93+573)
+

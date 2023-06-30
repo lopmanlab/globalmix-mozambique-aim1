@@ -9,19 +9,19 @@ library(ggpubr)
 
 # Read in Data -----------------------------------------------------------------
 
-unique_linear <- read.csv("outlier-analysis/data/unique_linear.csv")
-unique_linear_int <- read.csv("outlier-analysis/data/unique_linear_int.csv")
-unique_poisson <- read.csv("outlier-analysis/data/unique_poisson.csv")
-unique_poisson_int <- read.csv("outlier-analysis/data/unique_poisson_int.csv")
-unique_negbin <- read.csv("outlier-analysis/data/unique_negbin.csv")
-unique_negbin_int <- read.csv("outlier-analysis/data/unique_negbin_int.csv")
+unique_linear <- read.csv("data/unique_linear.csv")
+unique_linear_int <- read.csv("data/unique_linear_int.csv")
+unique_poisson <- read.csv("data/unique_poisson.csv")
+unique_poisson_int <- read.csv("data/unique_poisson_int.csv")
+unique_negbin <- read.csv("data/unique_negbin.csv")
+unique_negbin_int <- read.csv("data/unique_negbin_int.csv")
 
-daily_linear <- read.csv("outlier-analysis/data/daily_linear.csv")
-daily_linear_int <- read.csv("outlier-analysis/data/daily_linear_int.csv")
-daily_poisson <- read.csv("outlier-analysis/data/daily_poisson.csv")
-daily_poisson_int <- read.csv("outlier-analysis/data/daily_poisson_int.csv")
-daily_negbin <- read.csv("outlier-analysis/data/daily_negbin.csv")
-daily_negbin_int <- read.csv("outlier-analysis/data/daily_negbin_int.csv")
+daily_linear <- read.csv("data/daily_linear.csv")
+daily_linear_int <- read.csv("data/daily_linear_int.csv")
+daily_poisson <- read.csv("data/daily_poisson.csv")
+daily_poisson_int <- read.csv("data/daily_poisson_int.csv")
+daily_negbin <- read.csv("data/daily_negbin.csv")
+daily_negbin_int <- read.csv("data/daily_negbin_int.csv")
 
 # Interaction plots-------------------------------------------------------------
 names(daily_linear_int) <- c("term", "estimate", "SE", "test_statistic", "p_value")
@@ -80,7 +80,7 @@ p4 <- ggplot(daily_linear_int %>% filter(facet == "Age*Sex*Site"), aes(x = term,
                          guide = "colorbar")+
   ggtitle("Age*Sex*Site")
 
-png("outlier-analysis/daily_linear_int.png", width=4000, height=5000, res=300)
+png("figs/daily_linear_int.png", width=4000, height=5000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -123,7 +123,7 @@ p4 <- ggplot(daily_poisson_int %>% filter(facet == "Age*Sex*Site"), aes(x = term
                          guide = "colorbar")+
   ggtitle("Age*Sex*Site")
 
-png("outlier-analysis/daily_poisson_int.png", width=4000, height=5000, res=300)
+png("figs/daily_poisson_int.png", width=4000, height=5000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -166,7 +166,7 @@ p4 <- ggplot(daily_negbin_int %>% filter(facet == "Age*Sex*Site"), aes(x = term,
                          guide = "colorbar")+
   ggtitle("Age*Sex*Site")
 
-png("outlier-analysis/daily_negbin_int.png", width=4000, height=5000, res=300)
+png("figs/daily_negbin_int.png", width=4000, height=5000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -210,7 +210,7 @@ p4 <- ggplot(unique_linear_int %>% filter(facet == "Age*Sex*Site"), aes(x = term
   ggtitle("Age*Sex*Site")
 
 
-png("outlier-analysis/unique_linear_int.png", width=4000, height=5000, res=300)
+png("figs/unique_linear_int.png", width=4000, height=5000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -253,7 +253,7 @@ p4 <- ggplot(unique_poisson_int %>% filter(facet == "Age*Sex*Site"), aes(x = ter
                          guide = "colorbar")+
   ggtitle("Age*Sex*Site")
 
-png("outlier-analysis/unique_poisson_int.png", width=4000, height=5000, res=300)
+png("figs/unique_poisson_int.png", width=4000, height=5000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -297,7 +297,7 @@ p4 <- ggplot(unique_negbin_int %>% filter(facet == "Age*Sex*Site"), aes(x = term
   ggtitle("Age*Sex*Site")
 
 
-png("outlier-analysis/unique_negbin_int.png", width=4000, height=5000, res=300)
+png("figs/unique_negbin_int.png", width=4000, height=5000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -312,7 +312,7 @@ names(unique_negbin) <- c("term", "estimate", "SE", "test_statistic", "p_value")
 daily_linear$log_pvalue <- log(round(daily_linear$p_value, 2))
 daily_linear$log_pvalue[which(is.infinite(daily_linear$log_pvalue))] <- -5.99
 
-png("outlier-analysis/daily_linear.png", width=4000, height=1500, res=300)
+png("figs/daily_linear.png", width=4000, height=1500, res=300)
 ggplot(daily_linear, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -328,7 +328,7 @@ dev.off()
 daily_poisson$log_pvalue <- log(round(daily_poisson$p_value, 2))
 daily_poisson$log_pvalue[which(is.infinite(daily_poisson$log_pvalue))] <- -5.99
 
-png("outlier-analysis/daily_poisson.png", width=4000, height=1500, res=300)
+png("figs/daily_poisson.png", width=4000, height=1500, res=300)
 ggplot(daily_poisson, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -342,7 +342,7 @@ dev.off()
 daily_negbin$log_pvalue <- log(round(daily_negbin$p_value, 2))
 daily_negbin$log_pvalue[which(is.infinite(daily_negbin$log_pvalue))] <- -5.99
 
-png("outlier-analysis/daily_negbin.png", width=4000, height=1500, res=300)
+png("figs/daily_negbin.png", width=4000, height=1500, res=300)
 ggplot(daily_negbin, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -356,7 +356,7 @@ dev.off()
 unique_linear$log_pvalue <- log(round(unique_linear$p_value, 2))
 unique_linear$log_pvalue[which(is.infinite(unique_linear$log_pvalue))] <- -5.99
 
-png("outlier-analysis/unique_linear.png", width=4000, height=1500, res=300)
+png("figs/unique_linear.png", width=4000, height=1500, res=300)
 ggplot(unique_linear, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -370,7 +370,7 @@ dev.off()
 unique_poisson$log_pvalue <- log(round(unique_poisson$p_value, 2))
 unique_poisson$log_pvalue[which(is.infinite(unique_poisson$log_pvalue))] <- -5.99
 
-png("outlier-analysis/unique_poisson.png", width=4000, height=1500, res=300)
+png("figs/unique_poisson.png", width=4000, height=1500, res=300)
 ggplot(unique_poisson, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -384,7 +384,7 @@ dev.off()
 unique_negbin$log_pvalue <- log(round(unique_negbin$p_value, 2))
 unique_negbin$log_pvalue[which(is.infinite(unique_negbin$log_pvalue))] <- -5.99
 
-png("outlier-analysis/unique_negbin.png", width=4000, height=1500, res=300)
+png("figs/unique_negbin.png", width=4000, height=1500, res=300)
 ggplot(unique_negbin, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+

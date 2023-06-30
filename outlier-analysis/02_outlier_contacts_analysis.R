@@ -11,8 +11,8 @@ require(MASS)
 library(lmerTest)
 
 # Read in Data -----------------------------------------------------------------
-unique <- readRDS(here("outlier-analysis/data/contact_unique.RDS"))
-daily <- readRDS(here("outlier-analysis/data/contacts_daily.RDS"))
+unique <- readRDS(here("data/contact_unique.RDS"))
+daily <- readRDS(here("data/contacts_daily.RDS"))
 
 contact_summaries <- unique %>%
   distinct() %>%
@@ -95,7 +95,7 @@ names(mean_unique_logistic_int) <- names(mean_daily_logistic)
 mean_daily_logistic$log_pvalue <- log(round(mean_daily_logistic$p_value, 2))
 mean_daily_logistic$log_pvalue[which(is.infinite(mean_daily_logistic$log_pvalue))] <- -5.99
 
-png("outlier-analysis/mean_daily_logistic.png", width=2500, height=1000, res=300)
+png("figs/mean_daily_logistic.png", width=2500, height=1000, res=300)
 ggplot(mean_daily_logistic, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -111,7 +111,7 @@ dev.off()
 mean_unique_logistic$log_pvalue <- log(round(mean_unique_logistic$p_value, 2))
 mean_unique_logistic$log_pvalue[which(is.infinite(mean_unique_logistic$log_pvalue))] <- -5.99
 
-png("outlier-analysis/mean_unique_logistic.png", width=3000, height=1000, res=300)
+png("figs/mean_unique_logistic.png", width=3000, height=1000, res=300)
 ggplot(mean_unique_logistic, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -135,7 +135,7 @@ names(q75_unique_logistic_int) <- names(q75_daily_logistic)
 q75_daily_logistic$log_pvalue <- log(round(q75_daily_logistic$p_value, 2))
 q75_daily_logistic$log_pvalue[which(is.infinite(q75_daily_logistic$log_pvalue))] <- -5.99
 
-png("outlier-analysis/q75_daily_logistic.png", width=3000, height=1000, res=300)
+png("figs/q75_daily_logistic.png", width=3000, height=1000, res=300)
 ggplot(q75_daily_logistic, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -151,7 +151,7 @@ dev.off()
 q75_unique_logistic$log_pvalue <- log(round(q75_unique_logistic$p_value, 2))
 q75_unique_logistic$log_pvalue[which(is.infinite(q75_unique_logistic$log_pvalue))] <- -5.99
 
-png("outlier-analysis/q75_unique_logistic.png", width=3000, height=1000, res=300)
+png("figs/q75_unique_logistic.png", width=3000, height=1000, res=300)
 ggplot(q75_unique_logistic, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -209,7 +209,7 @@ p4 <- ggplot(mean_daily_logistic_int, aes(x = term, y = estimate, color = log_pv
   ggtitle("Age*Sex*Site")
 
 
-png("outlier-analysis/mean_daily_logistic_int.png", width=3000, height=1000, res=300)
+png("figs/mean_daily_logistic_int.png", width=3000, height=1000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -253,7 +253,7 @@ p4 <- ggplot(mean_unique_logistic_int, aes(x = term, y = estimate, color = log_p
   ggtitle("Age*Sex*Site")
 
 
-png("outlier-analysis/mean_unique_logistic_int.png", width=3000, height=1000, res=300)
+png("figs/mean_unique_logistic_int.png", width=3000, height=1000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -304,7 +304,7 @@ p4 <- ggplot(q75_daily_logistic_int, aes(x = term, y = estimate, color = log_pva
   ggtitle("Age*Sex*Site")
 
 
-png("outlier-analysis/q75_daily_logistic_int.png", width=3000, height=1000, res=300)
+png("figs/q75_daily_logistic_int.png", width=3000, height=1000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -348,7 +348,7 @@ p4 <- ggplot(q75_unique_logistic_int, aes(x = term, y = estimate, color = log_pv
   ggtitle("Age*Sex*Site")
 
 
-png("outlier-analysis/q75_unique_logistic_int.png", width=3000, height=1000, res=300)
+png("figs/q75_unique_logistic_int.png", width=3000, height=1000, res=300)
 ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
 dev.off()
 
@@ -392,44 +392,44 @@ poisson_int_model <- glm(outlier_q75 ~ age * sex * site,
 q75_unique_poisson_int <- as.data.frame(summary(poisson_int_model)$coefficients)
 
 # No interaction poisson plots---------------------------------------------------
-mean_daily_poisson <- mean_daily_poisson %>% tibble::rownames_to_column()
-names(mean_daily_poisson) <- c("term", "estimate", "SE", "test_statistic", "p_value")
-mean_daily_poisson_int <- mean_daily_poisson_int %>% tibble::rownames_to_column()
-names(mean_daily_poisson_int) <- names(mean_daily_poisson)
-mean_unique_poisson <- mean_unique_poisson %>% tibble::rownames_to_column()
-names(mean_unique_poisson) <- names(mean_daily_poisson)
-mean_unique_poisson_int <- mean_unique_poisson_int %>% tibble::rownames_to_column()
-names(mean_unique_poisson_int) <- names(mean_daily_poisson)
-
-mean_daily_poisson$log_pvalue <- log(round(mean_daily_poisson$p_value, 2))
-mean_daily_poisson$log_pvalue[which(is.infinite(mean_daily_poisson$log_pvalue))] <- -5.99
-
-png("outlier-analysis/mean_daily_poisson.png", width=3000, height=1000, res=300)
-ggplot(mean_daily_poisson, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradient2(low = "forestgreen",
-                         mid = "goldenrod1",
-                         high = "firebrick", 
-                         midpoint=log(0.05),
-                         guide = "colorbar")+
-  ggtitle("Poisson: Mean Outlier Threshold for Daily Avg Contacts ~ Age + Sex + Site")
-dev.off()
-
-mean_unique_poisson$log_pvalue <- log(round(mean_unique_poisson$p_value, 2))
-mean_unique_poisson$log_pvalue[which(is.infinite(mean_unique_poisson$log_pvalue))] <- -5.99
-
-png("outlier-analysis/mean_unique_poisson.png", width=3000, height=1000, res=300)
-ggplot(mean_unique_poisson, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site")
-dev.off()
+# mean_daily_poisson <- mean_daily_poisson %>% tibble::rownames_to_column()
+# names(mean_daily_poisson) <- c("term", "estimate", "SE", "test_statistic", "p_value")
+# mean_daily_poisson_int <- mean_daily_poisson_int %>% tibble::rownames_to_column()
+# names(mean_daily_poisson_int) <- names(mean_daily_poisson)
+# mean_unique_poisson <- mean_unique_poisson %>% tibble::rownames_to_column()
+# names(mean_unique_poisson) <- names(mean_daily_poisson)
+# mean_unique_poisson_int <- mean_unique_poisson_int %>% tibble::rownames_to_column()
+# names(mean_unique_poisson_int) <- names(mean_daily_poisson)
+# 
+# mean_daily_poisson$log_pvalue <- log(round(mean_daily_poisson$p_value, 2))
+# mean_daily_poisson$log_pvalue[which(is.infinite(mean_daily_poisson$log_pvalue))] <- -5.99
+# 
+# png("figs/mean_daily_poisson.png", width=3000, height=1000, res=300)
+# ggplot(mean_daily_poisson, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradient2(low = "forestgreen",
+#                          mid = "goldenrod1",
+#                          high = "firebrick", 
+#                          midpoint=log(0.05),
+#                          guide = "colorbar")+
+#   ggtitle("Poisson: Mean Outlier Threshold for Daily Avg Contacts ~ Age + Sex + Site")
+# dev.off()
+# 
+# mean_unique_poisson$log_pvalue <- log(round(mean_unique_poisson$p_value, 2))
+# mean_unique_poisson$log_pvalue[which(is.infinite(mean_unique_poisson$log_pvalue))] <- -5.99
+# 
+# png("figs/mean_unique_poisson.png", width=3000, height=1000, res=300)
+# ggplot(mean_unique_poisson, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site")
+# dev.off()
 
 # Interaction Mean Poisson plots------------------------------------------------------
 # mean_daily_poisson_int$facet <- c(rep("Main", 90),
@@ -438,93 +438,93 @@ dev.off()
 #                                    rep("Age*Sex*Site", 56)) ->
 #   mean_unique_poisson_int$facet 
 
-mean_daily_poisson_int$log_pvalue <- log(round(mean_daily_poisson_int$p_value, 2))
-mean_daily_poisson_int$log_pvalue[which(is.infinite(mean_daily_poisson_int$log_pvalue))] <- -5.99
-
-p1 <- ggplot(mean_daily_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
-
-p2 <- ggplot(mean_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex")
-
-p3 <- ggplot(mean_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Site & Sex*Site")
-
-p4 <- ggplot(mean_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex*Site")
-
-
-png("outlier-analysis/mean_daily_poisson_int.png", width=3000, height=1000, res=300)
-ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
-dev.off()
-
-mean_unique_poisson_int$log_pvalue <- log(round(mean_unique_poisson_int$p_value, 2))
-mean_unique_poisson_int$log_pvalue[which(is.infinite(mean_unique_poisson_int$log_pvalue))] <- -5.99
-
-p1 <- ggplot(mean_unique_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
-
-p2 <- ggplot(mean_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex")
-
-p3 <- ggplot(mean_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Site & Sex*Site")
-
-p4 <- ggplot(mean_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex*Site")
-
-
-png("outlier-analysis/mean_unique_poisson_int.png", width=3000, height=1000, res=300)
-ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
-dev.off()
+# mean_daily_poisson_int$log_pvalue <- log(round(mean_daily_poisson_int$p_value, 2))
+# mean_daily_poisson_int$log_pvalue[which(is.infinite(mean_daily_poisson_int$log_pvalue))] <- -5.99
+# 
+# p1 <- ggplot(mean_daily_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
+# 
+# p2 <- ggplot(mean_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex")
+# 
+# p3 <- ggplot(mean_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Site & Sex*Site")
+# 
+# p4 <- ggplot(mean_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex*Site")
+# 
+# 
+# png("figs/mean_daily_poisson_int.png", width=3000, height=1000, res=300)
+# ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
+# dev.off()
+# 
+# mean_unique_poisson_int$log_pvalue <- log(round(mean_unique_poisson_int$p_value, 2))
+# mean_unique_poisson_int$log_pvalue[which(is.infinite(mean_unique_poisson_int$log_pvalue))] <- -5.99
+# 
+# p1 <- ggplot(mean_unique_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
+# 
+# p2 <- ggplot(mean_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex")
+# 
+# p3 <- ggplot(mean_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Site & Sex*Site")
+# 
+# p4 <- ggplot(mean_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex*Site")
+# 
+# 
+# png("figs/mean_unique_poisson_int.png", width=3000, height=1000, res=300)
+# ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
+# dev.off()
 
 # Interaction Q75 Poisson plots-------------------------------------------------
 
@@ -534,91 +534,91 @@ dev.off()
 #                                   rep("Age*Sex*Site", 56)) ->
 #   q75_unique_poisson_int$facet 
 
-q75_daily_poisson_int$log_pvalue <- log(round(q75_daily_poisson_int$p_value, 2))
-q75_daily_poisson_int$log_pvalue[which(is.infinite(q75_daily_poisson_int$log_pvalue))] <- -5.99
-
-p1 <- ggplot(q75_daily_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
-
-p2 <- ggplot(q75_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex")
-
-p3 <- ggplot(q75_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Site & Sex*Site")
-
-p4 <- ggplot(q75_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex*Site")
-
-
-png("outlier-analysis/q75_daily_poisson_int.png", width=3000, height=1000, res=300)
-ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
-dev.off()
-
-q75_unique_poisson_int$log_pvalue <- log(round(q75_unique_poisson_int$p_value, 2))
-q75_unique_poisson_int$log_pvalue[which(is.infinite(q75_unique_poisson_int$log_pvalue))] <- -5.99
-
-p1 <- ggplot(q75_unique_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
-
-p2 <- ggplot(q75_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex")
-
-p3 <- ggplot(q75_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Site & Sex*Site")
-
-p4 <- ggplot(q75_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
-  geom_point() +
-  geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
-  theme(axis.text.x = element_text(angle = 45))+
-  scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
-                         values = rescale(c(0.01,0.05,0.1)),
-                         guide = "colorbar")+
-  ggtitle("Age*Sex*Site")
-
-
-png("outlier-analysis/q75_unique_poisson_int.png", width=3000, height=1000, res=300)
-ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
-dev.off()
+# q75_daily_poisson_int$log_pvalue <- log(round(q75_daily_poisson_int$p_value, 2))
+# q75_daily_poisson_int$log_pvalue[which(is.infinite(q75_daily_poisson_int$log_pvalue))] <- -5.99
+# 
+# p1 <- ggplot(q75_daily_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
+# 
+# p2 <- ggplot(q75_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex")
+# 
+# p3 <- ggplot(q75_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Site & Sex*Site")
+# 
+# p4 <- ggplot(q75_daily_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex*Site")
+# 
+# 
+# png("figs/q75_daily_poisson_int.png", width=3000, height=1000, res=300)
+# ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
+# dev.off()
+# 
+# q75_unique_poisson_int$log_pvalue <- log(round(q75_unique_poisson_int$p_value, 2))
+# q75_unique_poisson_int$log_pvalue[which(is.infinite(q75_unique_poisson_int$log_pvalue))] <- -5.99
+# 
+# p1 <- ggplot(q75_unique_poisson_int , aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Poisson: Mean Outlier Threshold for Unique Avg Contacts ~ Age + Sex + Site\nMain")
+# 
+# p2 <- ggplot(q75_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex")
+# 
+# p3 <- ggplot(q75_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Site & Sex*Site")
+# 
+# p4 <- ggplot(q75_unique_poisson_int, aes(x = term, y = estimate, color = log_pvalue)) + 
+#   geom_point() +
+#   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
+#   theme(axis.text.x = element_text(angle = 45))+
+#   scale_colour_gradientn(colours = c("forestgreen","goldenrod1","firebrick"), 
+#                          values = rescale(c(0.01,0.05,0.1)),
+#                          guide = "colorbar")+
+#   ggtitle("Age*Sex*Site")
+# 
+# 
+# png("figs/q75_unique_poisson_int.png", width=3000, height=1000, res=300)
+# ggarrange(p1, p2, p3, p4, nrow=4, ncol=1)
+# dev.off()
 

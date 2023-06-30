@@ -6,7 +6,7 @@ library(plotly)
 library(tidyverse)
 library(MASS)
 
-contacts_resp_ent <- readRDS(here("outlier-analysis/data/contacts_resp_ent.RDS"))
+contacts_resp_ent <- readRDS(here("data/contacts_resp_ent.RDS"))
 
 contacts_resp_ent$age <- as.numeric(contacts_resp_ent$age)
 contacts_resp_ent$sex <- contacts_resp_ent$participant_sex
@@ -51,7 +51,7 @@ names(daily_ent_q75) <- c("term", "estimate", "SE", "test_statistic", "p_value")
 daily_resp_mean$log_pvalue <- log(round( daily_resp_mean$p_value, 2))
 daily_resp_mean$log_pvalue[which(is.infinite(daily_resp_mean$log_pvalue))] <- -5.99
 
-png("daily_resp_mean.png", width=3000, height=1000, res=300)
+png("figs/daily_resp_mean.png", width=3000, height=1000, res=300)
 ggplot(daily_resp_mean, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -67,7 +67,7 @@ dev.off()
 daily_ent_mean$log_pvalue <- log(round( daily_ent_mean$p_value, 2))
 daily_ent_mean$log_pvalue[which(is.infinite(daily_ent_mean$log_pvalue))] <- -5.99
 
-png("daily_ent_mean.png", width=3000, height=1000, res=300)
+png("figs/daily_ent_mean.png", width=3000, height=1000, res=300)
 ggplot(daily_ent_mean, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -83,7 +83,7 @@ dev.off()
 daily_resp_q75$log_pvalue <- log(round( daily_resp_q75$p_value, 2))
 daily_resp_q75$log_pvalue[which(is.infinite(daily_resp_q75$log_pvalue))] <- -5.99
 
-png("daily_resp_q75.png", width=3000, height=1000, res=300)
+png("figs/daily_resp_q75.png", width=3000, height=1000, res=300)
 ggplot(daily_resp_q75, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
@@ -99,7 +99,7 @@ dev.off()
 daily_ent_q75$log_pvalue <- log(round( daily_ent_q75$p_value, 2))
 daily_ent_q75$log_pvalue[which(is.infinite(daily_ent_q75$log_pvalue))] <- -5.99
 
-png("daily_ent_q75.png", width=3000, height=1000, res=300)
+png("figs/daily_ent_q75.png", width=3000, height=1000, res=300)
 ggplot(daily_ent_q75, aes(x = term, y = estimate, color = log_pvalue)) + 
   geom_point() +
   geom_errorbar(aes(ymin=estimate-1.96*SE, ymax=estimate+1.96*SE))+
