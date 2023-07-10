@@ -22,3 +22,4 @@ scripts/*.html
 scripts/02a_contact_analysis_main_v2_files
 scripts/extract_aim2_metadata_files
 
+.Rproj.user
