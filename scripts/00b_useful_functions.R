@@ -1,4 +1,38 @@
 
+###############################################################################  
+# This file contains comon functions that are used in the analysis script.
+# Author: Moses C Kiti, PhD
+# 
+###############################################################################  
+
+
+# custom plot text theme
+axis_text_theme <- theme_classic() + 
+  theme(
+  #   theme(plot.title = element_text(size = 14), 
+  axis.title.x = element_text(size=22, face="bold"),
+  axis.title.y = element_text(size=12, face="bold"),
+  axis.text.x = element_text(size = 18, angle=90, hjust = 1),
+  axis.text.y = element_text(size= 18),
+  legend.position = c(0.1, 0.9),
+  # legend.position = "top",
+  # legend.justification = "left",
+  legend.title = element_blank())
+
+## Generate boxplots
+fxn_fig_boxplot <- function(data, fill_var) {
+  # Create the ggplot boxplot
+  plot <- ggplot(data, aes(x = participant_age, y = num_contacts, fill = !!rlang::sym(fill_var))) +
+    geom_boxplot(width = 0.4, position = position_dodge(width = 0.5)) +
+    facet_wrap(~study_site, nrow = 2) +
+    scale_fill_manual(values = cols_site) +
+    labs(x = "Participant age", y = "Number of contacts") +
+    ylim(0, 40) +
+    theme_classic() +
+    axis_text_theme
+  
+  return(plot)
+}
 
 ## Functions
 ## Function used to save legend of ggplot2 (allows manipulating legend)
