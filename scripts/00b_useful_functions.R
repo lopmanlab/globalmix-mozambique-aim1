@@ -1,23 +1,44 @@
 
 ###############################################################################  
-# This file contains comon functions that are used in the analysis script.
+# This file contains common functions that are used in the analysis script.
 # Author: Moses C Kiti, PhD
 # 
 ###############################################################################  
 
 
-# custom plot text theme
-axis_text_theme <- theme_classic() + 
+# custom plot text theme option 1
+axis_text_theme1 <- theme_classic() + 
   theme(
-  #   theme(plot.title = element_text(size = 14), 
-  axis.title.x = element_text(size=22, face="bold"),
-  axis.title.y = element_text(size=12, face="bold"),
-  axis.text.x = element_text(size = 18, angle=90, hjust = 1),
-  axis.text.y = element_text(size= 18),
-  legend.position = c(0.1, 0.9),
-  # legend.position = "top",
-  # legend.justification = "left",
-  legend.title = element_blank())
+    plot.title = element_text(size = 12),
+    axis.title.x = element_text(size=12, face="bold"),
+    axis.title.y = element_text(size=12, face="bold"),
+    axis.text.x = element_text(size = 10, angle=90, hjust = 1),
+    axis.text.y = element_text(size= 10),
+    legend.position = c(0.1, 0.7),
+    legend.key.size = unit(1, "lines"),
+    legend.direction = "horizontal",
+    # legend.position = "top",
+    # legend.justification = "left",
+    legend.title = element_blank(),
+    legend.box.background = element_rect(fill='transparent'),
+    legend.background = element_rect(colour ="white"))
+
+# custom plot text theme option 1
+axis_text_theme2 <- theme_classic() + 
+  theme(
+    plot.title = element_text(size = 10),
+    axis.title.x = element_text(size=12, face="bold"),
+    axis.title.y = element_text(size=12, face="bold"),
+    axis.text.x = element_text(size = 8, angle=0, hjust = 1),
+    axis.text.y = element_text(size= 8),
+    legend.position = c(0.1, 0.9),
+    legend.key.size = unit(1, "lines"),
+    legend.direction = "horizontal",
+    # legend.position = "top",
+    # legend.justification = "left",
+    legend.title = element_blank(),
+    legend.box.background = element_rect(fill='transparent'),
+    legend.background = element_rect(colour ="white"))
 
 ## Generate boxplots
 fxn_fig_boxplot <- function(data, fill_var) {
@@ -29,7 +50,7 @@ fxn_fig_boxplot <- function(data, fill_var) {
     labs(x = "Participant age", y = "Number of contacts") +
     ylim(0, 40) +
     theme_classic() +
-    axis_text_theme
+    axis_text_theme1
   
   return(plot)
 }

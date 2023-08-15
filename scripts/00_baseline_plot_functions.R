@@ -29,11 +29,14 @@ fun_sex_plot <- function(data){
          y = "Participant age",
          fill = element_blank()) +
     
-    theme(legend.position = "bottom",
-          # legend.title = element_text(size = 8),
+    theme(legend.key.size = unit(1, "lines"),
+          legend.direction = "horizontal",
+          legend.position = c(0.1, 0.9),
+          # legend.position = "bottom",
+          legend.title = element_text(size = 8),
           legend.text = element_text(size = 10),
-          legend.justification = "center") +
-    # change legend order
+          # legend.justification = "center"
+    ) +
     
     theme(plot.title = element_text(size = 14), 
           axis.title.x = element_text(size=12, face="bold"),
@@ -72,11 +75,14 @@ fun_literacy_plot <- function(data){
          y = "Participant age",
          fill = element_blank()) +
     
-    theme(legend.position = "bottom",
-          legend.title = element_text(size = 10),
-          legend.text = element_text(size = 6),
-          legend.justification = "center") +
-    # change legend order
+    theme(legend.key.size = unit(1, "lines"),
+          legend.direction = "horizontal",
+          legend.position = c(0.1, 0.9),
+          # legend.position = "bottom",
+          legend.title = element_text(size = 8),
+          legend.text = element_text(size = 10),
+          # legend.justification = "center"
+    ) +
     
     theme(plot.title = element_text(size = 14), 
           axis.title.x = element_text(size=12, face="bold"),
@@ -116,11 +122,14 @@ fun_schenrolled_plot <- function(data){
          y = "Participant age",
          fill = element_blank()) +
     
-    theme(legend.position = "bottom",
-          # legend.title = element_text(size = 8),
+    theme(legend.key.size = unit(1, "lines"),
+          legend.direction = "horizontal",
+          legend.position = c(0.1, 0.9),
+          # legend.position = "bottom",
+          legend.title = element_text(size = 8),
           legend.text = element_text(size = 10),
-          legend.justification = "center") +
-    # change legend order
+          # legend.justification = "center"
+    ) +
     
     theme(plot.title = element_text(size = 14), 
           axis.title.x = element_text(size=12, face="bold"),
@@ -159,11 +168,14 @@ fun_highesteduc_plot <- function(data){
          y = "Participant age",
          fill = element_blank()) +
     
-    theme(legend.position = "bottom",
-          # legend.title = element_text(size = 8),
+    theme(legend.key.size = unit(1, "lines"),
+          legend.direction = "horizontal",
+          legend.position = c(0.1, 0.9),
+          # legend.position = "bottom",
+          legend.title = element_text(size = 8),
           legend.text = element_text(size = 10),
-          legend.justification = "center") +
-    # change legend order
+          # legend.justification = "center"
+    ) +
     
     theme(plot.title = element_text(size = 14), 
           axis.title.x = element_text(size=12, face="bold"),
@@ -203,10 +215,14 @@ fun_occupation_plot <- function(data){
          y = "Participant age",
          fill = element_blank()) +
     
-    theme(legend.position = "bottom",
+    theme(legend.key.size = unit(1, "lines"),
+          legend.direction = "horizontal",
+          legend.position = c(0.1, 0.9),
+          # legend.position = "bottom",
           legend.title = element_text(size = 8),
           legend.text = element_text(size = 10),
-          legend.justification = "center") +
+          # legend.justification = "center"
+    ) +
     # change legend order
     
     theme(plot.title = element_text(size = 14), 
