@@ -16,6 +16,7 @@ scripts/00_data_download.R
 # folders
 scripts/old/*
 data/raw/*
+output/figs/*
 
 # html files
 scripts/*.html
