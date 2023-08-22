@@ -6,6 +6,10 @@ scripts/.DS_Store
 
 # Session Data files
 .RData
+.DS_Store
+scripts/.DS_Store
+data/.DS_Store
+output/.DS_Store
 
 # R Environment Variables
 .Renviron
