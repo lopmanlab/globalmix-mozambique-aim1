@@ -421,8 +421,8 @@ exit <- exit %>%
                                 aim == 1 ~ 2)) 
 # Cleaning other variables 
 exit <- exit %>% 
-  dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "Self, # during day 1 and 2",
-                                                   contacts_completedby == 1 ~ "By fieldworker)) # at collection day"))
+  dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "Self", # during day 1 and 2
+                                                   contacts_completedby == 1 ~ "By fieldworker"))  # at collection day
 exit$contacts_completedby <- factor(exit$contacts_completedby, levels = c("Self", "By fieldworker"))
 label(exit$contacts_completedbylb) <- "Who filled the diary?" 
 # throughout day 1 and day 2 or were the contact diaries completed with the Field Worker on the day of collection?"
