@@ -1,0 +1,180 @@
+---
+title: "Globalmix Mozambique analysis"
+author: "M. C. Kiti"
+highlight-style: pygments
+prefer-html: true
+format:
+  docx:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    fig-align: left
+    fig-dpi: 300
+
+execute: 
+  echo: false
+  warning: false
+editor: visual
+date: today
+---
+
+```{r}
+#| include: false
+#| warnings:false
+#| echo:false
+
+# Source data analysis code
+source("../scripts/mozambique_ms_code.qmd") 
+```
+
+# Background
+
+# Methods
+
+## Study objectives
+
+The main aim of this study was to characterize the patterns of social contact and mixing in rural and urban areas of Mozambique. Specifically, we aimed to generate age-specific point estimates and mixing matrices of participants across all ages, quantify individual mixing with groups at different locations, and investigate the transmission of a \[respiratory virus\] in a synthetic population using contact data generated from this study and compare the transmission using data from a Europe-wide study, POLYMOD.
+
+## Study design and site
+
+This was a cross-sectional study that coincided with active SARS-CoV-2 transmission in Mozambique between April 2021 and April 2022. The rural site was the Manhiça Health and Demographic Surveillance Site (Manhiça HDSS) located in the district of Manhiça, Maputo province, while the urban area was in the Polana Caniço HDSS located in Maputo City. The Manhiça HDSS is located about 80km north of Maputo City, the capital of Mozambique. It was established in 1996 and currently hosts approximately 201,000 individuals registered as permanent residents living in 45,300 households. The Polana Caniço HDSS was established in 2018 and partly covers the third most populated urban district of KaMaxaquene in Maputo city. Currently, the urban HDSS has a population of approximately 92,000 inhabitants.
+
+## Sample size
+
+Our sample was stratified into 10 age groups: 0-6 months, 6-11 months, 1-4 years, 5-9 years, 10-19years, 20-20 years, 30-39 years, 40-59 years, and 60 + years. We framed our sample size calculations to detect sufficient precision in the age-group of greatest interest (infants). We powered each age group to have a standard deviation consistent with the precision in the estimate of youngest age group (0-4 years) in the POLYMOD study: standard deviation = 7.65 contacts per day (95% CI 8.2-12.2 contacts per day). We chose to base our sample size calculation on the youngest age group because infants less than six months of age represent the smallest fraction of the overall population size and are traditionally the most difficult population to enroll and get data from. We then inflated the sample size by ten percent for each age group to account for participants not completing the surveys. This resulted in a sample size of 63 per age group, 630 per site, and 1260 in total.
+
+## Data collection tools and procedures
+
+The data collection exercise was divided into three phases: enrollment, dairy keeping, and exit interview. From each site, individuals were randomly selected per age group listed and equally by sex from the HDSS registers. Participants were individually enrolled following a consent process. Children aged \<13 years required parent/ guardian consent, those aged 13-17 required parental consent and individual assent, and those ≥18 years gave individual signed consent. Illiterate adults had a witness to co-sign the consent form. All data were collected using a paper diary or using questionnaires coded in REDCap and available in portable tablets. In addition, participants who wished were given an empty sheet to intermittently record any social contact details in real time during the day which they transferred to the diary later. All children \<10 years old and other illiterate individuals were either assigned or selected a shadow to record contacts on behalf of the participant. Shadows were instructed to be discrete and did not need to follow the participant all day. We defined a social contact as a two way face-to-face encounter that involved either i) physical touch, whereby individuals were standing at arm's length of each other and involved a skin-to-skin or over clothes, or 2) non-physical, whereby two or more individuals had a conversation interaction only while standing at arm's length of each other and with no physical barrier between them.
+
+On enrollment, participants responded to a questionnaire that asked about their personal details including age, sex, occupation, presence of additional household members and their relationship, house details such as building and roofing materials, ownership of household amenities such as electrical appliances, and data on predictors of infectious disease transmission including food handling, hand-washing and latrine use practices, ventilation and water source, and ownership or contact with animals. Participants were then randomly assigned the start day (day 1) using a digital random number generator. Social contact data were collected using a paper diary and an electronic diary. One day before day 1, participants were given a pictorial/ text based paper diary and asked to report details of their social contacts over two continuous days. Participants provided detailed data regarding their contacts, such as age, sex, relationship, the type of contact (physical/ conversation), duration and frequency of contact. Each contact age was represented pictorially using images generated following focus group discussion conducted a priori. In addition, participants kept a detailed log of where they went on each day and how many people, on average, were present at these other locations.
+
+On the diary collection date, the field team conducted an exit interview. Each participant was asked details regarding diary-keeping experiences, any social behavior change, personal movements outside the house, mask use patterns, and COVID-19 infection history in the household. Once all the data were collected and verified, the data manager uploaded all the response to the REDCap server located in Emory University. A full list of the enrollment, diary and exit interview questionnaires are included in SI\[x\]. The full questionnaire coded in REDCap is available upon request.
+
+## Data analysis
+
+### Contact patterns (MCK)
+
+The primary outcome will be mean contact rates per person with 95% confidence intervals (CI) or median contact rates per person with inter-quartile range (IQR) over two days and also stratified by day 1 and day 2 of contact diary data collection. The mean contact rates were calculated as \[insert equation\]... To assess the difference in mean number of contacts reported on day 1 compared to 2, we use the paired sample T-test of significance assuming that there is no difference between the means over the two days (null hypothesis).
+
+Average contact rates were stratified first by site, then further by age, sex, day of the week (weekday vs weekend), type of contact (physical or conversation only, household membership (household member vs non-household member), *COVID-19 infection periods*, and whether the participant reported symptoms of acute respiratory infections (ARI) or acute gastroenteritis (AGE). We used the Wilcoxon rank sum test for significance to assess the difference between median contact rates within the sites for each covariate, and also between the rural and urban sites.
+
+We constructed age-specific contact matrices (by 10-year age bands) from the average number of contacts reported by participants in age group i with contactees in age group j. The matrices were stratified by site and
+
+### Contacts patterns and places visited (CL)
+
+\[text\]
+
+### Transmission modeling (SK)
+
+We applied age-structured contact matrices from the rural and urban sites to a deterministic susceptible-infectious-recovered (SIR) model with a vaccine conferring protection against infection. We compared our contact patterns to those of synthetically projected contacts for Mozambique based on POLYMOD contact patterns \[ref\] and Mozambique-specific demographic data (Prem et al.). We used the National Institute of Statistics 2021 rural and urban population distributions for Mozambique to weigh GlobalMix contacts by age group. Because synthetically derived contact patterns were not split by rural and urban settings, we used Mozambique's entire population size by age group for weighting. We modeled vaccination as 'leaky,' providing partial protection for those vaccinated (50% vaccine coverage, 50% effectiveness), simulated duration of illness as 7 days, and fixed the basic reproduction number at 2.5. We present the attack rate for no vaccine (AR) and vaccine (ARv) scenarios and the overall vaccine effect calculated by the percent reduction of infections in the presence versus absence of vaccine. We used the 'EpiModel' package in R 4.3 to run all transmission models.
+
+## Ethical considerations
+
+This study was be conducted in accordance with the protocol, current Declaration of Helsinki, current GCP Guidelines and all applicable regulatory requirements in Mozambique, including the relevant national and local regulatory bodies having jurisdiction.The investigators or appropriately delegated site study staff shall be responsible for obtaining written informed consent from each participant prior to any data collection. Individuals equal or older than 18 years of age will provide individual consent. For individuals less than 18 years old, consent will be sought from the head of household and parent/legal guardian who is above the age of 18 years. Children 12-17 years old will also be asked to provide written assent. For individuals who do not have the capacity to provide consent, this will be sought from the head of household or parent/legal guardian. If either is absent during the household visit, the subject without capacity to provide individual consent will be excluded. In accordance with GCP Guidelines, the participant shall write his or her own name and date before signing the document. For illiterate participants and minors, the process shall be in accordance with that outlined by the GCP Guidelines, i.e. the participant will make a mark, preferably a thumbprint, on the consent form and a witness will attest to the informed consent process and participant's voluntary consent. The original document shall be filed and maintained as part of the Investigator Site records and a copy shall be provided to the participant.
+
+# Results {#sec-results}
+
+## Baseline characteristics of participants
+
+A total of `r N` individuals participated in the study, with `r N_site$N[1]+N_site$N[2]` (`r 100*round(N_site$N[1]/(N_site$N[1]+N_site$N[2]), 2)`% female) and `r N_site$N[3]+N_site$N[4]` (`r 100*round(N_site$N[3]/(N_site$N[3]+N_site$N[4]), 2)`% female) participants recruited from the rural and urban sites, respectively. @fig-baseline-distributions (A) shows the age and sex characteristics of the participants in the rural and urban site. By site, there was no major difference in number of participants recruited by age, sex, and school enrollment status. However, we did not attain our target sample size for children aged \<5 years in both sites and over-sampled adults aged 40-59 years old.
+
+The mean household size was `r mean_hh_size[1,2]` and `r mean_hh_size[2,2]` in the rural and urban areas, respectively. Occupation categories were mainly invariable by site, with majority being students at various levels (30%), children aged \<5 years (17%), or unemployed adults (15%). Key differences were observed among business people (rural 1%, urban 11%) and office workers (rural 5%, urban 10%). When asked about regular mask use inside or outside the house, 931 (76%) of participants reported wearing a mask with no difference by site. Additionally, one-fifth (209) of participants reported having \>1 ARI symptom and 2% (24) reported at least one AGE symptom. Finally in both sites, almost two-thirds of the participants (701, 57%) were able to read and write. Half (632, 51%) of all participants required assistance from a fieldworker to fill in the diary at the end of the two days and a third of these (239/632) of these were children aged \<5 years.
+
+::: callout-note
+Talk about: - household size, distribution of number of rooms - diary keeping by participant/ shadow - any significant comments regarding challenges experienced during diary keeping? - any changes in behavior reported? - vaccination status?
+:::
+
+```{r}
+table1
+```
+
+```{r}
+fig_baseline_distributions
+```
+
+## Distribution of number of contacts
+
+We present a summary of median (IQR) of the total number of contacts (including repeat contacts) over two study days. Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. (SI 1). In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban). The highest number of contacts were reported with children aged 10-14 yrs (26% rural, 21% urban). Overall, more contacts were reported with women (54%) with no difference between sites.
+
+First, we report the total and mean (and median, see SI 2) number of contacts collected over two days. Overall, the mean number of contacts reported on two days was `r mean_contacts_overall$mean` (95% CI `r ci_contacts_overall$ll`-`r ci_contacts_overall$ul`). We observe a significant difference in the mean number of contacts reported on day 1 (`r mean_contacts_overall_d1` (95% CI `r ci_contacts_overall_d1$ll`-`r ci_contacts_overall_d1$ul`) compared to day 2 (`r mean_contacts_overall_d2` (95% CI `r ci_contacts_overall_d2$ll`-`r ci_contacts_overall_d2$ul`) (paired t-test p=`r  ttest_overall_d1d2`). Since 20% (3089) of total contacts were newly reported on day 2, from here henceforth we report the number of contacts occurring on day 1. Median values for day 1 and 2 by site are available in the SI *(link to table showing day 1 and day 2 median number of contacts)*.
+
+```{r}
+table3
+```
+
+@fig-baseline-distributions shows the median (IQR) distribution of the contacts by rural (C) and urban (D) site and the corresponding median contact rates on day 1 only. Corresponding median values are presented in @tbl-site-contacts-d1. The rural mean contact rate (`r mean_contacts_site_d1[1,2]` (`r ci_contacts_rural_d1$ll`-`r ci_contacts_rural_d1$ul`)) was higher than the urban rate (`r mean_contacts_site_d1[2,2]` (95% CI `r ci_contacts_urban_d1$ll`-`r ci_contacts_urban_d1$ul`) (p=`r ttest_bysite_d1`).
+
+Physical contacts were, on average, higher than conversation only contacts in both rural (`r mean_contacts_touch_rural` vs `r mean_contacts_conv_rural`, p=`r wilcoxtest_bytouch_rural`) and urban areas (`r mean_contacts_touch_urban` vs `r mean_contacts_conv_urban`, p=`r wilcoxtest_bytouch_urban`). Children aged ≤18 years had more physical than conversation contacts in both rural and urban areas and remained invariable for all adults.
+
+```{r}
+fig_contact_covariates <- (fig_sex_box / fig_touch_box) /
+  (fig_ari_box / fig_AGE_box) /
+  (fig_touch_box)
+```
+
+### Unweighted non-symmetrical contact matrices
+
+```{r}
+combined_matrix
+```
+
+```{r}
+#| eval: false
+fig_hhmembership_box
+fig_education_box
+fig_dayweek_box
+fig_weekday_box
+fig_weekyear_site_box
+fig_ari_box
+fig_AGE_box
+fig1_masking
+fig2_duration
+fig3_touch
+```
+
+### Contacts patterns and places visited (CL)
+
+@fig-contact-location shows results of the question "Did the contact occur indoors or outdoors?"
+
+```{r}
+fig4_location
+```
+
+### Transmission modeling (SK)
+
+Overall vaccine effects using synthetically derived contact patterns were higher and attack rates were lower than those using empirically collected GlobalMix contacts across all but the youngest age group, 0-9 years (Table X). GlobalMix adult participants had more contact with children and adolescents than with their own age group, while synthetically derived contact patterns showed stronger assortative mixing by age. Compared to the GlobalMix rural and urban sites, synthetically derived contact patterns overestimated the number of contacts among those aged 0-9 years. This over-projection of contacts yielded higher attack rates (AR: 94.3%, ARv: 78.7%) and lower overall vaccine effects (16.6%) for this group compared to outcomes using empirically collected contact patterns (Rural AR: 91.4%, Rural ARv, 71.8%, Rural vaccine effects: 21.5%; Urban AR: 91.4%, Urban ARv: 72.0%, Urban vaccine effects: 21.2%). Additionally, synthetically derived contacts among those aged ≥60 years were underestimated compared to that of GlobalMix, producing notably lower attack rates among this age group (Synthetic AR: 13.4%, Synthetic ARv: 7.2%; Rural AR: 46.3%, Rural ARv: 26.6%; Urban AR: 40.9%, Urban ARv: 23.2%). Table X.
+
+# Discussion
+
+In some age groups (\<5 yrs and 40-59 yrs) we recruited participants more than the target (n=63).
+
+# Conclusion
+
+# Supplementary Information
+
+## 1. Number of contacts reported over day 1 and 2
+
+```{r}
+table2
+```
+
+## 2. Median (IQR) rural contacts on day 1 and day 2
+
+```{r}
+table4
+```
+
+## 3. Median (IQR) urban contacts on day 1 and day 2
+
+```{r}
+table5
+```
+
+```{r}
+
+literacy_page_plt
+enrolledsch_page_plt
+highesteduc_page_plt
+occupation_page_plt
+```
