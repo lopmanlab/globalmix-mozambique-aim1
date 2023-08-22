@@ -34,7 +34,6 @@ rm(list=ls())
 pacman::p_load(tidyr, dplyr, gtsummary, xlsx, readr)
 ```
 
-
 ```{r}
 #| label: load-data
 #| echo: false
@@ -74,7 +73,9 @@ date_enrolled <- readRDS("../data/clean/household_survey_aim2.RDS") #%>%
 ```
 
 # Summary of raw data
+
 The table below displays a summary of all participants from the Mozambique site as captured in REDCap.
+
 ```{r}
 #| label: tbl-summary-participants-raw
 #| echo: false
@@ -97,12 +98,12 @@ summary_aim2_raw
 
 ```
 
-
 # Cleaning the data
 
 During data cleaning, several discrepancies including lost sensors (resulting in missing hwid, a crucial ID that links participant metadata to sensor data), mis-labelled sensors (wrong sensor_id), and mis-labelled household IDs (resulting in households with single members due to household ID mismatch). We use this script to extract participant metadata for further analysis.
 
 ## Lost sensors
+
 ```{r}
 #| label: lost-sensors
 
@@ -533,10 +534,12 @@ urban_missing_sensorid_tbl
 
 ```
 
-### Cleaning household IDs 
+### Cleaning household IDs
+
 The last step involves confirming that data from all 3 sources overlap. The 3 sources are REDCap (participant data), zipped sensor files (raw sensor data), and h5 files (sensor data that has been decompressed and extracted into usable data for analysis).
 
 #### Rural site
+
 ```{r}
 #| label: rural-household-ids
 
@@ -643,6 +646,7 @@ write.csv(rural_sensors_complete,"../data/sensor_metadata/mozambique_aim2_rural_
 ```
 
 #### Urban site
+
 ```{r}
 #| label: urban-household-ids
 
