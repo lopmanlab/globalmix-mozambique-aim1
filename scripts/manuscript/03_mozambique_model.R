@@ -9,62 +9,51 @@
 #########################################################################################
 
 ##### Load libraries
-library(dplyr)
-library(tidyr)
-library(socialmixr) ## Need socialmixr package version 0.2.0
-library(ggplot2)
-library(table1)
-library(gtsummary)
-library(ggpubr)
-library(cowplot)
-library(EpiModel)
-
-##### Read in datasets
-ind <- readRDS("../data/clean/participant_data_aim1.RDS")
-ind_exit <- readRDS("../data/clean/exit_interview_aim1.RDS")
-contact <- readRDS("../data/clean/contact_data_aim1.RDS")
-hh_survey <- readRDS("../data/clean/household_survey_aim1.RDS")
-loc <- readRDS("..data/clean/locations_visited_aim1.RDS")
+# library(dplyr)
+# library(tidyr)
+# library(socialmixr) ## Need socialmixr package version 0.2.0
+# library(ggplot2)
+# library(table1)
+# library(gtsummary)
+# library(ggpubr)
+# library(cowplot)
+# library(EpiModel)
 
 
+# ##### Read in datasets
+# participants <- readRDS("data/clean/participant_data_aim1.RDS")
+# exit <- readRDS("data/clean/exit_interview_aim1.RDS")
+# contact <- readRDS("data/clean/contact_data_aim1.RDS")
+# household <- readRDS("data/clean/household_survey_aim1.RDS")
+# 
 
-
-#####          CODE FOR PULLING MATRICES          #####
-
-
-##### Data checks
-### Confirm that everyone in ind is in ind_exit
-ind <- ind %>% 
-  filter(rec_id %in% unlist(ind_exit$rec_id))
-# still 1231 obs. 
-
-### Confirm that contacts all belong to those in ind
-contact<- contact %>%
-  filter(rec_id %in% unlist(ind$rec_id))
-# still 19409 contacts
 
 ### Check to see if there are IDs with no contacts reported
-sum(!ind$rec_id %in% contact$rec_id) # 3
+sum(!participants$rec_id %in% contact$rec_id) # 3
 
-missing<- ind %>% 
+missing <- participants %>% 
   filter(!rec_id %in% unlist(contact$rec_id)) %>% 
   arrange(rec_id)
 # 371, 754, 1996
 
 # Remove those without contact diaries
-ind <- ind %>%
+participants <- participants %>%
   filter(!rec_id %in% unlist(missing$rec_id)) 
 
+rm(missing)
+
 ### Check those who live alone
-live_alone <- hh_survey %>% 
-  filter(rec_id %in% unlist(ind$rec_id)) %>%
+live_alone <- household %>% 
+  filter(rec_id %in% unlist(participants$rec_id)) %>%
   filter(hh_occupants==1) 
 # 42
 
 
 ##### Data cleaning for socialmixr package
 contact<- contact %>%
-  left_join(ind%>%select(rec_id, age), by = c("rec_id"="rec_id"))%>%
+  left_join(participants %>% 
+              select(rec_id, age), 
+            by = c("rec_id"="rec_id")) %>%
   rename(age_part = age)
 
 contact <- contact %>%
@@ -106,7 +95,7 @@ contact <-contact %>%
   )
 
 ### read in population distribution
-pop_dist <- read.csv("C:/Users/skim689/OneDrive - Emory University/Desktop/Mixing Studies/Global Mix/Mozambique/Contact Patterns Abstract/Pop Sizes/age_cat_10years.csv") %>%
+pop_dist <- read.csv("C:/Users/skim689/OneDrive - Emory University/Desktop/Mixing Studies/Global Mix/Mozambique/Contact Patterns Abstract/Pop Sizes/mozambique_population_distribution.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -128,7 +117,7 @@ pop_weight <- pop_weight %>%
   mutate(pop_urb_rur =ifelse(study_site=="Rural", rur_pop, urb_pop),
          part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
 
-### join weights into participant data
+### join weights into participants data
 contact <- contact %>%
   left_join(pop_weight %>% select(study_site, weight_cat, part_weight),
             by = c("study_site"="study_site", "weight_cat"="weight_cat"))
@@ -180,7 +169,7 @@ cnt_r <- contact%>%
 
 
 df_r <- survey(
-  participants = cnt_r %>% 
+  participantss = cnt_r %>% 
     select(part_id, part_age,part_weight) %>% 
     unique()%>%
     rename(weights = part_weight) %>%
@@ -243,7 +232,8 @@ mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "co
 ##### Matrix visualization
 
 ### urban
-ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + 
+  theme(legend.position = "bottom") + 
   scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
   xlab("Age of participant")+ylab("Age of contact")+
   geom_tile()+
@@ -251,7 +241,8 @@ ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.p
   theme()
 
 ### rural
-ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + theme(legend.position = "bottom") + 
+ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + 
+  theme(legend.position = "bottom") + 
   scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
   xlab("Age of participant")+ylab("Age of contact")+
   geom_tile()+ 
@@ -347,37 +338,98 @@ seirmod <- function(t, t0, parms) {
       q*c25*(i.num.5/num.5) + 
       q*c26*(i.num.6/num.6) + 
       
-    lambda.v.2 <- (1-psi)*q*c21*(i.num.1/num.1) + (1-psi)*q*c22*(i.num.2/num.2) + (1-psi)*q*c23*(i.num.3/num.3) + (1-psi)*q*c24*(i.num.4/num.4) +
-      (1-psi)*q*c25*(i.num.5/num.5) + (1-psi)*q*c26*(i.num.6/num.6) + (1-psi)*q*c27*(i.num.7/num.7)
+    lambda.v.2 <- (1-psi)*q*c21*(i.num.1/num.1) + 
+      (1-psi)*q*c22*(i.num.2/num.2) + 
+      (1-psi)*q*c23*(i.num.3/num.3) + 
+      (1-psi)*q*c24*(i.num.4/num.4) +
+      (1-psi)*q*c25*(i.num.5/num.5) + 
+      (1-psi)*q*c26*(i.num.6/num.6) + 
+      (1-psi)*q*c27*(i.num.7/num.7)
     
     # force of infection for 20-29 contacts
-    lambda.3 <- q*c31*(i.num.1/num.1) + q*c32*(i.num.2/num.2) + q*c33*(i.num.3/num.3) + q*c34*(i.num.4/num.4) +
-      q*c35*(i.num.5/num.5) + q*c36*(i.num.6/num.6) + q*c37*(i.num.7/num.7)
+    lambda.3 <- q*c31*(i.num.1/num.1) + 
+      q*c32*(i.num.2/num.2) + 
+      q*c33*(i.num.3/num.3) + 
+      q*c34*(i.num.4/num.4) +
+      q*c35*(i.num.5/num.5) + 
+      q*c36*(i.num.6/num.6) + 
+      q*c37*(i.num.7/num.7)
     
-    lambda.v.3 <- (1-psi)*q*c31*(i.num.1/num.1) + (1-psi)*q*c32*(i.num.2/num.2) + (1-psi)*q*c33*(i.num.3/num.3) + (1-psi)*q*c34*(i.num.4/num.4) +
-      (1-psi)*q*c35*(i.num.5/num.5) + (1-psi)*q*c36*(i.num.6/num.6) + (1-psi)*q*c37*(i.num.7/num.7)
+    lambda.v.3 <- (1-psi)*q*c31*(i.num.1/num.1) + 
+      (1-psi)*q*c32*(i.num.2/num.2) + 
+      (1-psi)*q*c33*(i.num.3/num.3) + 
+      (1-psi)*q*c34*(i.num.4/num.4) +
+      (1-psi)*q*c35*(i.num.5/num.5) + 
+      (1-psi)*q*c36*(i.num.6/num.6) + 
+      (1-psi)*q*c37*(i.num.7/num.7)
+    
     # force of infection for 30-39 contacts
-    lambda.4 <- q*c41*(i.num.1/num.1) + q*c42*(i.num.2/num.2) + q*c43*(i.num.3/num.3) + q*c44*(i.num.4/num.4) +
-      q*c45*(i.num.5/num.5) + q*c46*(i.num.6/num.6) + q*c47*(i.num.7/num.7)
+    lambda.4 <- q*c41*(i.num.1/num.1) + 
+      q*c42*(i.num.2/num.2) + 
+      q*c43*(i.num.3/num.3) + 
+      q*c44*(i.num.4/num.4) +
+      q*c45*(i.num.5/num.5) + 
+      q*c46*(i.num.6/num.6) + 
+      q*c47*(i.num.7/num.7)
     
-    lambda.v.4 <- (1-psi)*q*c41*(i.num.1/num.1) + (1-psi)*q*c42*(i.num.2/num.2) + (1-psi)*q*c43*(i.num.3/num.3) + (1-psi)*q*c44*(i.num.4/num.4) +
-      (1-psi)*q*c45*(i.num.5/num.5) + (1-psi)*q*c46*(i.num.6/num.6) + (1-psi)*q*c47*(i.num.7/num.7)
+    lambda.v.4 <- (1-psi)*q*c41*(i.num.1/num.1) + 
+      (1-psi)*q*c42*(i.num.2/num.2) + 
+      (1-psi)*q*c43*(i.num.3/num.3) + 
+      (1-psi)*q*c44*(i.num.4/num.4) +
+      (1-psi)*q*c45*(i.num.5/num.5) + 
+      (1-psi)*q*c46*(i.num.6/num.6) + 
+      (1-psi)*q*c47*(i.num.7/num.7)
     
     # force of infection for 40-49 contacts
-    lambda.5 <- q*c51*(i.num.1/num.1) + q*c52*(i.num.2/num.2) + q*c53*(i.num.3/num.3) + q*c54*(i.num.4/num.4) +
-      q*c55*(i.num.5/num.5) + q*c56*(i.num.6/num.6) + q*c57*(i.num.7/num.7)
-    lambda.v.5 <- (1-psi)*q*c51*(i.num.1/num.1) + (1-psi)*q*c52*(i.num.2/num.2) + (1-psi)*q*c53*(i.num.3/num.3) + (1-psi)*q*c54*(i.num.4/num.4) +
-      (1-psi)*q*c55*(i.num.5/num.5) + (1-psi)*q*c56*(i.num.6/num.6) + (1-psi)*q*c57*(i.num.7/num.7)
+    lambda.5 <- q*c51*(i.num.1/num.1) + 
+      q*c52*(i.num.2/num.2) + 
+      q*c53*(i.num.3/num.3) + 
+      q*c54*(i.num.4/num.4) +
+      q*c55*(i.num.5/num.5) + 
+      q*c56*(i.num.6/num.6) + 
+      q*c57*(i.num.7/num.7)
+    
+    lambda.v.5 <- (1-psi)*q*c51*(i.num.1/num.1) + 
+      (1-psi)*q*c52*(i.num.2/num.2) + 
+      (1-psi)*q*c53*(i.num.3/num.3) + 
+      (1-psi)*q*c54*(i.num.4/num.4) +
+      (1-psi)*q*c55*(i.num.5/num.5) + 
+      (1-psi)*q*c56*(i.num.6/num.6) + 
+      (1-psi)*q*c57*(i.num.7/num.7)
+    
     # force of infection for 50-59 contacts
-    lambda.6 <- q*c61*(i.num.1/num.1) + q*c62*(i.num.2/num.2) + q*c63*(i.num.3/num.3) + q*c64*(i.num.4/num.4) +
-      q*c65*(i.num.5/num.5) + q*c66*(i.num.6/num.6) + q*c67*(i.num.7/num.7)
-    lambda.v.6 <- (1-psi)*q*c61*(i.num.1/num.1) + (1-psi)*q*c62*(i.num.2/num.2) + (1-psi)*q*c63*(i.num.3/num.3) + (1-psi)*q*c64*(i.num.4/num.4) +
-      (1-psi)*q*c65*(i.num.5/num.5) + (1-psi)*q*c66*(i.num.6/num.6) + (1-psi)*q*c67*(i.num.7/num.7)
+    lambda.6 <- q*c61*(i.num.1/num.1) + 
+      q*c62*(i.num.2/num.2) + 
+      q*c63*(i.num.3/num.3) + 
+      q*c64*(i.num.4/num.4) +
+      q*c65*(i.num.5/num.5) + 
+      q*c66*(i.num.6/num.6) + 
+      q*c67*(i.num.7/num.7)
+    
+    lambda.v.6 <- (1-psi)*q*c61*(i.num.1/num.1) + 
+      (1-psi)*q*c62*(i.num.2/num.2) + 
+      (1-psi)*q*c63*(i.num.3/num.3) + 
+      (1-psi)*q*c64*(i.num.4/num.4) +
+      (1-psi)*q*c65*(i.num.5/num.5) + 
+      (1-psi)*q*c66*(i.num.6/num.6) + 
+      (1-psi)*q*c67*(i.num.7/num.7)
+    
     # force of infection for 60+ contacts
-    lambda.7 <- q*c71*(i.num.1/num.1) + q*c72*(i.num.2/num.2) + q*c73*(i.num.3/num.3) + q*c74*(i.num.4/num.4) +
-      q*c75*(i.num.5/num.5) + q*c76*(i.num.6/num.6) + q*c77*(i.num.7/num.7)
-    lambda.v.7 <- (1-psi)*q*c71*(i.num.1/num.1) + (1-psi)*q*c72*(i.num.2/num.2) + (1-psi)*q*c73*(i.num.3/num.3) + (1-psi)*q*c74*(i.num.4/num.4) +
-      (1-psi)*q*c75*(i.num.5/num.5) + (1-psi)*q*c76*(i.num.6/num.6) + (1-psi)*q*c77*(i.num.7/num.7)
+    lambda.7 <- q*c71*(i.num.1/num.1) + 
+      q*c72*(i.num.2/num.2) + 
+      q*c73*(i.num.3/num.3) + 
+      q*c74*(i.num.4/num.4) +
+      q*c75*(i.num.5/num.5) + 
+      q*c76*(i.num.6/num.6) + 
+      q*c77*(i.num.7/num.7)
+    
+    lambda.v.7 <- (1-psi)*q*c71*(i.num.1/num.1) + 
+      (1-psi)*q*c72*(i.num.2/num.2) + 
+      (1-psi)*q*c73*(i.num.3/num.3) + 
+      (1-psi)*q*c74*(i.num.4/num.4) +
+      (1-psi)*q*c75*(i.num.5/num.5) + 
+      (1-psi)*q*c76*(i.num.6/num.6) + 
+      (1-psi)*q*c77*(i.num.7/num.7)
     
     # 3. differential equations 
     dS.1 <- -lambda.1*s.num.1 

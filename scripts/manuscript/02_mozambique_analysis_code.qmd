@@ -24,17 +24,21 @@ date: today
 #| warning: false
 
 rm(list=ls())
-source("../scripts/00_load_libraries.R")
-source("../scripts/00b_useful_functions.R")
-source("../scripts/00_baseline_plot_functions.R")
+source("../../scripts/manuscript/00_customization.R")
 
 # install orca to save plotly plots: https://github.com/plotly/orca#installation
-#  
-if (!require("processx")) install.packages("processx")
 
-participants <- readRDS("../data/clean/participant_data_aim1.RDS") 
-contacts <- readRDS("../data/clean/contact_data_aim1.RDS") 
+participants <- readRDS("../../data/clean/participant_data_aim1.RDS")
+# exit <- readRDS("data/clean/exit_interview_aim1.RDS")
+contact <- readRDS("../../data/clean/contact_data_aim1.RDS")
+household <- readRDS("../../data/clean/household_survey_aim1.RDS")
 
+# merge participants and households file
+participants <- participants %>%
+  dplyr::left_join(household %>% 
+                     select(-c(aim, study_site)), 
+                   by = "rec_id")
+rm(household)
 
 
 # set color themes
@@ -45,28 +49,44 @@ cols_week <- c("#8c564b", "#7f7f7f", "#d62728", "#17becf", "#e377c2", "#bcbd22",
 
 ```
 
-```{r additional-cleaning-participants}
+```{r household-characteristics}
 #| include: false
 #| warning: false
 #| echo: false
 
 mean_hh_size <- participants %>%
-  group_by (study_site) %>%
-  summarize(mean_hh_size = round(mean(hh_size %>% na.omit()),1)) # omits 1
+  dplyr::group_by (study_site) %>%
+  dplyr::summarize(mean_hh_size = round(mean(hh_size %>% na.omit()),1)) # omits 1
+
+household <- household %>%
+  dplyr::mutate(hh_occupants = dplyr::case_when(hh_occupants == "01" ~ "1",
+                                         hh_occupants == "04" ~ "4",
+                                         hh_occupants == "06" ~ "6",
+                                         hh_occupants == "07" ~ "7",
+                                         hh_occupants == "09" ~ "9",
+                                         TRUE ~ hh_occupants),
+                hh_occupants = as.numeric(hh_occupants),
+                
+                hh_occupants_cat = dplyr::case_when(hh_occupants == 1 ~ "1",
+                                                    hh_occupants == 2 | hh_occupants == 3 ~ "2-3",
+                                                    hh_occupants == 4 | hh_occupants == 6 ~ "4-6",
+                                                    hh_occupants == 7 | hh_occupants == 10 ~ "7-10",
+                                                    hh_occupants >10 ~ "10+"),
+                hh_occupants_cat = factor(hh_occupants_cat,
+                                          levels = c("1", "2-3", "4-6", "7-10", "10+")))
+  
 
 # combine some occupation categories
 ```
+
 
 ```{r additional-cleaning-contacts}
 #| include: false
 #| warning: false
 #| echo: false
 
-# ## Subset contacts to the IDs in participant list only
-# contacts <- contacts %>%
-#               dplyr::filter(rec_id %in% unlist(participants$rec_id))
 
-# Filter contact relationship == self (you cannot have a contact with yourself)
+# cleaing contacts
 contacts <- contacts %>%
   dplyr::filter(hh_member_relationship != "Self")
 
@@ -171,6 +191,7 @@ tot_rural_contacts <- nrow(contacts %>% filter(study_site == "Rural"))
 tot_urban_contacts <- nrow(contacts %>% filter(study_site == "Urban"))
 ```
 
+
 ```{r}
 #| label: tbl-participant-summary
 #| tbl-cap: "Participant summary"
@@ -192,6 +213,8 @@ label(participants$mask_uselb) <- "Regular mask use"
 label(participants$age_symptom) <- "Acute gastroenteritis (diarrhea)"
 label(participants$ari_symptom) <- "Acute respiratory infection"
 label(participants$contacts_completedbylb) <- "Who filled the diary?"
+label(participants$all_contactslb) <- "Did you record all contacts?"
+label(participants$behavior_changelb) <- "Did you change your social behavior due to the pandemic?"
 
 table1 <- participants %>%
   # dplyr::filter(aim==1) %>%
@@ -268,10 +291,7 @@ ggsave(fig_sex_age, filename = "../output/figs/fig1_participant_age_sex.pdf",
        height=6, width=10, dpi=300,
        bg="#FFFFFF")
 
-
-
 ```
-
 
 ```{r}
 #| label: fig-diary-filler
@@ -817,7 +837,6 @@ ggsave(fig_baseline_distributions, filename = "../output/figs/fig_baseline_distr
 fig_baseline_distributions
 ```
 
-
 ```{r}
 #| label: fig-contact-boxplot-sex
 #| fig-cap: "Distribution of contacts by sex"
@@ -867,7 +886,6 @@ fig_sex_box
 
 # fig_sex_box
 ```
-
 
 ```{r}
 #| include: false
@@ -1355,7 +1373,6 @@ fig_weekyear_site_box
 
 ```
 
-
 ```{r}
 #| label: fig-contact-boxplot-arisymptom
 #| fig-cap: "Distribution of contacts by ARI status"
@@ -1510,7 +1527,6 @@ m1_urban <- df_contact_d1 %>%
 
 ```
 
-
 ```{r}
 #| label: matrix-functions
 #| echo: false
@@ -1541,7 +1557,6 @@ fun_matrix1_plot <- function(m1data, title){
           axis.text.y = element_text(size= 10))
 }
 ```
-
 
 ```{r}
 #| label: fig-contact-matrix
@@ -1748,7 +1763,6 @@ urban_matrix_conv <- fun_matrix1_plot(m1_urban_conv, "") # Urban site
 # ggplotly(urban_matrix, tooltip = "text")
 ```
 
-
 ```{r}
 #| include: false
 #| 
@@ -1812,7 +1826,6 @@ combined_matrix <- subplot(
 combined_matrix
 
 ```
-
 
 ```{r}
 #| include: false
@@ -2063,7 +2076,6 @@ table2 <- contacts %>%
 
 ```
 
-
 ```{r}
 
 #| label: tbl-site-contacts-d1
@@ -2159,7 +2171,6 @@ rm(t0, t1, t2)
 
 # table3
 ```
-
 
 ```{r}
 #| label: tbl-rural-contact-all
@@ -2317,7 +2328,6 @@ rm(t0, t1, t2)
 # @tbl-urban-contact-table shows a summary of the median (IQR) contacts in the urban area on day 1 and day 2 separately.
 # We observe no difference in the median (IQR) number of contacts reported on day 1 compared to day 2.
 ```
-
 
 ```{r}
 #| label: fig-participant-summary-literacy
