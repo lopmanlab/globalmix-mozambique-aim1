@@ -36,10 +36,15 @@ household <- readRDS("../../data/clean/household_survey_aim1.RDS")
 #| warnings:false
 #| echo:false
 
-source("../../scripts/manuscript/00_customization.R")
+source("00_customization.R")
 
 # Source data analysis code
-source("../scripts/mozambique_ms_code.qmd") 
+source("02_mozambique_analysis_code.qmd") 
+
+#Source place use code
+source("04_placeuse.R")
+
+
 ```
 
 # Background
@@ -154,7 +159,7 @@ Analysis of the place-use survey showed that, in both urban and rural areas, pro
 \@fig-contact-location shows results of the question "Did the contact occur indoors or outdoors?"
 
 ```{r}
-fig4_location
+#fig4_location
 fig4_locvisit_timespent
 tab1_loc
 ```

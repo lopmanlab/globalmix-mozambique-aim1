@@ -5,12 +5,12 @@ library(ggpubr)
 library(cowplot)
 
 ## Read in data
-ind <- readRDS("../data/clean/participant_data_aim1.RDS")
-ind_exit <- readRDS("../data/clean/exit_interview_aim1.RDS")
-contact <- readRDS("../data/clean/contact_data_aim1.RDS")
+ind <- readRDS("../../data/clean/participant_data_aim1.RDS")
+ind_exit <- readRDS("../../data/clean/exit_interview_aim1.RDS")
+contact <- readRDS("../../data/clean/contact_data_aim1.RDS")
 #contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
-hh_survey <- readRDS("../data/clean/household_survey_aim1.RDS")
-loc <- readRDS("../data/clean/locations_visited_aim1.RDS") ## loc clean
+hh_survey <- readRDS("../../data/clean/household_survey_aim1.RDS")
+loc <- readRDS("../../data/clean/locations_visited_aim1.RDS") ## loc clean
 #loc_orig <- readRDS("../data/clean/old_data/ind_location_visit.RDS")
 #loc_orig2 <- readRDS("../data/clean/old_data/ind_location_visit2.RDS")
 
