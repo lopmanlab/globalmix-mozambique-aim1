@@ -19,33 +19,22 @@ date: today
 ---
 
 ```{r}
-#| label: import-data
-#| echo: false
-
-
-participants <- readRDS("../../data/clean/participant_data_aim1.RDS")
-# exit <- readRDS("../../data/clean/exit_interview_aim1.RDS")
-contact <- readRDS("../../data/clean/contact_data_aim1.RDS")
-household <- readRDS("../../data/clean/household_survey_aim1.RDS")
-
-```
-
-```{r}
 #| label: import-analysis-codes
 #| include: false
-#| warnings:false
-#| echo:false
+#| warnings: false
 
 source("00_customization.R")
 
 # Source data analysis code
-source("02_mozambique_analysis_code.qmd") 
+source("02_mozambique_analysis_code.R") 
 
-#Source place use code
+# Source place use code
 source("04_placeuse.R")
 
 
 ```
+
+# Abstract
 
 # Background
 
@@ -57,11 +46,11 @@ The main aim of this study was to characterize the patterns of social contact an
 
 ## Study design and site
 
-This was a cross-sectional study that coincided with active SARS-CoV-2 transmission in Mozambique between April 2021 and April 2022. The rural site was the Manhiça Health and Demographic Surveillance Site (Manhiça HDSS) located in the district of Manhiça, Maputo province, while the urban area was in the Polana Caniço HDSS located in Maputo City. The Manhiça HDSS is located about 80km north of Maputo City, the capital of Mozambique. It was established in 1996 and currently hosts approximately 201,000 individuals registered as permanent residents living in 45,300 households. The Polana Caniço HDSS was established in 2018 and partly covers the third most populated urban district of KaMaxaquene in Maputo city. Currently, the urban HDSS has a population of approximately 92,000 inhabitants.
+This was a cross-sectional study conducted between April 2021 and April 2022, thus coinciding with active SARS-CoV-2 transmission in Mozambique. The rural site was the Manhiça Health and Demographic Surveillance Site (Manhiça HDSS) located in the district of Manhiça, Maputo province, while the urban area was in the Polana Caniço HDSS located in Maputo City. The Manhiça HDSS is located about 80km north of Maputo City, the capital of Mozambique. It was established in 1996 and currently hosts approximately 201,000 individuals registered as permanent residents living in 45,300 households. The Polana Caniço HDSS was established in 2018 and partly covers the third most populated urban district of KaMaxaquene in Maputo city. Currently, the urban HDSS has a population of approximately 92,000 inhabitants.
 
 ## Sample size
 
-Our sample was stratified into 10 age groups: 0-6 months, 6-11 months, 1-4 years, 5-9 years, 10-19years, 20-20 years, 30-39 years, 40-59 years, and 60 + years. We framed our sample size calculations to detect sufficient precision in the age-group of greatest interest (infants). We powered each age group to have a standard deviation consistent with the precision in the estimate of youngest age group (0-4 years) in the POLYMOD study: standard deviation = 7.65 contacts per day (95% CI 8.2-12.2 contacts per day). We chose to base our sample size calculation on the youngest age group because infants less than six months of age represent the smallest fraction of the overall population size and are traditionally the most difficult population to enroll and get data from. We then inflated the sample size by ten percent for each age group to account for participants not completing the surveys. This resulted in a sample size of 63 per age group, 630 per site, and 1260 in total.
+Our sample was stratified into 10 age groups: 0-6 months, 6-11 months, 1-4 years, 5-9 years, 10-19years, 20-20 years, 30-39 years, 40-59 years, and 60+ years. We framed our sample size calculations to detect sufficient precision in the age-group of greatest interest (infants). We powered each age group to have a standard deviation consistent with the precision in the estimate of youngest age group (0-4 years) in the POLYMOD study: standard deviation (sd) = 7.65 contacts per day (95% CI 8.2-12.2 contacts per day). We chose to base our sample size calculation on the youngest age group because infants less than six months of age represent the smallest fraction of the overall population size and are traditionally the most difficult population to enroll and get data from. We then inflated the sample size by ten percent for each age group to account for participants not completing the surveys. This resulted in a sample size of 63 per age group, 630 per site, and 1260 in total.
 
 ## Data collection tools and procedures
 
@@ -75,7 +64,7 @@ On the diary collection date, the field team conducted an exit interview. Each p
 
 ### Contact patterns (MCK)
 
-The primary outcome will be mean contact rates per person with 95% confidence intervals (CI) or median contact rates per person with inter-quartile range (IQR) over two days and also stratified by day 1 and day 2 of contact diary data collection. The mean contact rates were calculated as \[insert equation\]... To assess the difference in mean number of contacts reported on day 1 compared to 2, we use the paired sample T-test of significance assuming that there is no difference between the means over the two days (null hypothesis).
+The primary outcome was mean contact rates per person with 95% confidence intervals (CI) or median contact rates per person with inter-quartile range (IQR) over two days and also stratified by day 1 and day 2 of contact diary data collection. The mean contact rates were calculated as \[insert equation\]... To assess the difference in mean number of contacts reported on day 1 compared to 2, we use the paired sample T-test of significance assuming that there is no difference between the means over the two days (null hypothesis).
 
 Average contact rates were stratified first by site, then further by age, sex, day of the week (weekday vs weekend), type of contact (physical or conversation only, household membership (household member vs non-household member), *COVID-19 infection periods*, and whether the participant reported symptoms of acute respiratory infections (ARI) or acute gastroenteritis (AGE). We used the Wilcoxon rank sum test for significance to assess the difference between median contact rates within the sites for each covariate, and also between the rural and urban sites.
 
@@ -83,7 +72,7 @@ We constructed age-specific contact matrices (by 10-year age bands) from the ave
 
 ### Proximity contact exposures through places visited (CL)
 
-It is commonly assumed that higher population density in urban areas increases close contact, facilitating increases in person-to-person transmission of directly transmitted infections. However, social cohesion is lower in urban areas, potentially diminishing number of close contacts. We compare close contacts reported in contact diaries (capturing close, known contacts) and place-use surveys (capturing proximity or \"co-location\" to others without direct interaction) in rural and urban Mozambique to explore the effect of urbanicity on contact patterns. We first describe the number of unique visits to various types of places including other person's home, street, market/shop, transport/hub, agricultural field, school, work, place of worship, well, playground or other and the distribution of time spent at each place. We then compare the number of total "proximal" persons present per participant at each location type, study day to the total social contacts per participant at the same location type and study day.
+It is commonly assumed that higher population density in urban areas increases close contact, facilitating increases in person-to-person transmission of directly transmitted infections. However, social cohesion is lower in urban areas, potentially diminishing number of close contacts. We compare close contacts reported in contact diaries (capturing close, known contacts) and place-use surveys (capturing proximity or "co-location" to others without direct interaction) in rural and urban Mozambique to explore the effect of urbanicity on contact patterns. We first describe the number of unique visits to various types of places including other person's home, street, market/shop, transport/hub, agricultural field, school, work, place of worship, well, playground or other and the distribution of time spent at each place. We then compare the number of total "proximal" persons present per participant at each location type, study day to the total social contacts per participant at the same location type and study day.
 
 ### Transmission modeling (SK)
 
@@ -107,7 +96,7 @@ In both sites, almost two-thirds of the participants (701, 57%) were able to rea
 table1
 ```
 
-```{r}
+```{r fig.height=6}
 fig_baseline_distributions
 ```
 
@@ -131,13 +120,78 @@ fig_contact_covariates <- (fig_sex_box / fig_touch_box) /
   (fig_touch_box)
 ```
 
-### Unweighted non-symmetrical contact matrices
+### Contact matrices
 
 ```{r}
+#| label: fig-site-matrix
+# crude_matrix
+```
+@fig-site-matrix suggests that the patterns of age-specific social contacts are strikingly similar when comparing rural and urban sites. However, the latter depicts lower average number of contacts compared to the rural site. Mean contacts tended to be assortative especially for ages 5-14 and 30-59 years in both rural and urban areas. Participants aged 10-14 and 15-19 years reported the highest mean number of contacts with 10-14 year olds in both sites. Another peak in mean number of contacts is observed between 40-59 year olds. In both sites, no contacts are reported between infants <6 months old. The average number of contacts with infants generally rises with age to peak at 10-14 years in rural and 20-29 years among urban dwellers.
+
+When stratified by conversation and physical contacts (SI figure @contact-type-matrix), no clear patterns are observed in conversational contacts in rural (panel A) and urban (panel B) sites. On average, physical contacts are higher than conversation contacts in both rural (`r mean_contacts_touch_rural` vs `rmean_contacts_conv_rural`, p<0.05) and urban sites (`r mean_contacts_touch_urban` vs `rmean_contacts_conv_urban`, p<0.05). Comparing type of contact by sites, both physical and conversation contacts were higher in the urban compared to rural sites (p<0.05 for both).
+
+### Patterns of contact by location
+
+Analysis of the place-use data revealed that in both urban and rural areas, proximity contacts at locations visited by participants drastically exceeded the number of close contacts, with differences more pronounced among urban participants. We estimated a mean of 26.9 (95% CI 23.5-30.3) proximity contacts per person per day compared to 6.3 (6-6.6) close contacts in urban areas and 23.1 (20.3-25.9) proximity and 8.8 (8.4-9.2) close contacts in rural areas. This pattern was consistent across multiple public locations (streets, markets, transport, schools etc) even as rural and urban participants were equally likely to visit public locations. Urban participants were substantially less likely to visit another person's home, contributing to lower close contact: 34% and 68% participants from urban and rural areas visited another home, with differences persisting across all age groups.
+
+```{r}
+#| label: fig-contact-location
+fig4_locvisit_timespent
+tab1_loc
+```
+
+### Transmission modeling (SK)
+
+Overall vaccine effects using synthetically derived contact patterns were higher and attack rates were lower than those using empirically collected GlobalMix contacts across all but the youngest age group, 0-9 years (Table X). GlobalMix adult participants had more contact with children and adolescents than with their own age group, while synthetically derived contact patterns showed stronger assortative mixing by age. Compared to the GlobalMix rural and urban sites, synthetically derived contact patterns overestimated the number of contacts among those aged 0-9 years. This over-projection of contacts yielded higher attack rates (AR: 94.3%, ARv: 78.7%) and lower overall vaccine effects (16.6%) for this group compared to outcomes using empirically collected contact patterns (Rural AR: 91.4%, Rural ARv, 71.8%, Rural vaccine effects: 21.5%; Urban AR: 91.4%, Urban ARv: 72.0%, Urban vaccine effects: 21.2%). Additionally, synthetically derived contacts among those aged ≥60 years were underestimated compared to that of GlobalMix, producing notably lower attack rates among this age group (Synthetic AR: 13.4%, Synthetic ARv: 7.2%; Rural AR: 46.3%, Rural ARv: 26.6%; Urban AR: 40.9%, Urban ARv: 23.2%). Table X.
+
+# Discussion
+
+
+# Conclusion
+
+# Acknowledgements
+
+# Funding
+
+# Availability of data and materials
+All data generated or analysed during this study are available through our github link ().
+
+# Authors contribution
+
+# Competing interests
+The authors declare they have no competing interest.
+
+# Supplementary Information
+
+## SI 1. Number of contacts reported over day 1 and 2
+
+```{r}
+table2
+```
+
+## SI 2. Median (IQR) rural contacts on day 1 and day 2
+
+```{r}
+table4
+```
+
+## SI 3. Median (IQR) urban contacts on day 1 and day 2
+
+```{r}
+table5
+```
+
+## SI 4. Matrices of conversation only and physical only contacts by site.
+
+The panels are arranged by rural and urban conversation (A and B) and rural and urban physical contacts (C and D), respectively.
+
+```{r}
+#| label: contact-type-matrix
 combined_matrix
 ```
 
 ```{r}
+#| label: additional-figs
 #| eval: false
 fig_hhmembership_box
 fig_education_box
@@ -149,52 +203,6 @@ fig_AGE_box
 fig1_masking
 fig2_duration
 fig3_touch
-```
-
-### Contacts patterns and places visited (CL)
-
-Analysis of the place-use survey showed that, in both urban and rural areas, proximity contacts at locations visited by participants drastically exceeded the number of close contacts, with differences more pronounced among urban participants. We estimated a mean of 26.9 (95% CI 23.5-30.3) proximity contacts per person per day compared to 6.3 (6-6.6) close contacts in urban areas and  23.1 (20.3-25.9) proximity and 8.8 (8.4-9.2) close contacts in rural areas. This pattern was consistent across multiple public locations (streets, markets, transport, schools etc) even as rural and urban participants were equally likely to visit public locations. Urban participants were substantially less likely to visit another person\'s home, contributing to lower close contact: 34% and 68% participants from urban and rural areas visited another home, with differences persisting across all age groups.
-
-
-\@fig-contact-location shows results of the question "Did the contact occur indoors or outdoors?"
-
-```{r}
-#fig4_location
-fig4_locvisit_timespent
-tab1_loc
-```
-
-### Transmission modeling (SK)
-
-Overall vaccine effects using synthetically derived contact patterns were higher and attack rates were lower than those using empirically collected GlobalMix contacts across all but the youngest age group, 0-9 years (Table X). GlobalMix adult participants had more contact with children and adolescents than with their own age group, while synthetically derived contact patterns showed stronger assortative mixing by age. Compared to the GlobalMix rural and urban sites, synthetically derived contact patterns overestimated the number of contacts among those aged 0-9 years. This over-projection of contacts yielded higher attack rates (AR: 94.3%, ARv: 78.7%) and lower overall vaccine effects (16.6%) for this group compared to outcomes using empirically collected contact patterns (Rural AR: 91.4%, Rural ARv, 71.8%, Rural vaccine effects: 21.5%; Urban AR: 91.4%, Urban ARv: 72.0%, Urban vaccine effects: 21.2%). Additionally, synthetically derived contacts among those aged ≥60 years were underestimated compared to that of GlobalMix, producing notably lower attack rates among this age group (Synthetic AR: 13.4%, Synthetic ARv: 7.2%; Rural AR: 46.3%, Rural ARv: 26.6%; Urban AR: 40.9%, Urban ARv: 23.2%). Table X.
-
-# Discussion
-
-In some age groups (\<5 yrs and 40-59 yrs) we recruited participants more than the target (n=63).
-
-# Conclusion
-
-# Supplementary Information
-
-## 1. Number of contacts reported over day 1 and 2
-
-```{r}
-table2
-```
-
-## 2. Median (IQR) rural contacts on day 1 and day 2
-
-```{r}
-table4
-```
-
-## 3. Median (IQR) urban contacts on day 1 and day 2
-
-```{r}
-table5
-```
-
-```{r}
 
 literacy_page_plt
 enrolledsch_page_plt
