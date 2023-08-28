@@ -1,31 +1,10 @@
-#########################################################################################
-
-# Impact of Contact Pattern Assumptions on Vaccine Intervention Effects
-# GlobalMix Mozambique
-# Aim 1 only
-# Sara Kim
-# 18 August 2023
-
-#########################################################################################
-
-##### Load libraries
-# library(dplyr)
-# library(tidyr)
-# library(socialmixr) ## Need socialmixr package version 0.2.0
-# library(ggplot2)
-# library(table1)
-# library(gtsummary)
-# library(ggpubr)
-# library(cowplot)
-# library(EpiModel)
 
 
-# ##### Read in datasets
-# participants <- readRDS("data/clean/participant_data_aim1.RDS")
-# exit <- readRDS("data/clean/exit_interview_aim1.RDS")
-# contact <- readRDS("data/clean/contact_data_aim1.RDS")
-# household <- readRDS("data/clean/household_survey_aim1.RDS")
-# 
+###############################################################################  
+# This file contains scripts to analyze and visualize place use data.
+# Author: Sara Kim
+# Date: 08/18/2023
+############################################################################### 
 
 
 ### Check to see if there are IDs with no contacts reported
@@ -50,7 +29,7 @@ live_alone <- household %>%
 
 
 ##### Data cleaning for socialmixr package
-contact<- contact %>%
+contact <- contact %>%
   left_join(participants %>% 
               select(rec_id, age), 
             by = c("rec_id"="rec_id")) %>%
