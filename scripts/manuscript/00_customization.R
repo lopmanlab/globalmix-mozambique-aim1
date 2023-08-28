@@ -1,23 +1,25 @@
-
 ###############################################################################  
 # This file contains common functions that are used in the analysis script.
 # Author: Moses C Kiti, PhD
 # 
 ###############################################################################  
 
-## 1. Install and load packages
-
 rm(list=ls())
+
+## 1. Install and load packages
 
 # install.packages("pacman") # install this package first if not installed
 
 ## Installing required packages
-pacman::p_load(cowplot, ggplot2, ggthemes, grid, gtsummary, 
-               knitr, kableExtra, lubridate,
-               patchwork, plotly, readr, socialmixr, table1, tidyr)
+# install_packages <- c("pacman", "processx", "EpiModel", "qpcR")
+# if (!require(install_packages)) install.packages(install_packages)
 
-if (!require("processx")) install.packages("processx")
+pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid, 
+               gtsummary, knitr, kableExtra, lubridate, patchwork, plotly,
+               readr, socialmixr, table1, tidyr)
 
+
+# install orca to save plotly plots: https://github.com/plotly/orca#installation
 
 # custom plot text theme option 1
 axis_text_theme1 <- theme_classic() + 
@@ -73,7 +75,7 @@ fxn_fig_boxplot <- function(data, fill_var) {
 
 ## 2. Functions
 ## Function used to save legend of ggplot2 (allows manipulating legend)
-get_legend<-function(myggplot){
+get_legend <- function(myggplot){
   tmp <- ggplot_gtable(ggplot_build(myggplot))
   leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
   legend <- tmp$grobs[[leg]]
@@ -83,27 +85,28 @@ get_legend<-function(myggplot){
 ## Function used to visualize age-specific contact mixing matrix with controls 
 ## over title, text size, mid and max points for legend and legend position
 
-contactmatrix_viz <- function(matrix1, title, txt_size, mid, max, legendpos) {
-  ggplot(data = matrix1, aes(x=factor(participant_age), y=factor(contact_age), fill=avg_cont)) +  
-    ## x is age of participant, y is age of contact
-    geom_raster(hjust = 0.5, vjust = 0.5, show.legend=T) +
-    scale_colour_discrete(na.translate = F) +
-    scale_fill_gradient2(low = "#ffffcc", mid = "#fd8d3c", high = "#bd0026", 
-                         midpoint = mid, limit = c(0, max)) +
-    xlab("Participant age") + 
-    ylab("Contact age") + 
-    labs(fill = "Avg \ncontact") +
+# function to generate overall matrices
+fun_matrix1_plot <- function(m1data, title){
+  m1data %>%
+    ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
+    geom_raster() +
+    geom_text(aes(participant_age, contact_age, label = average_contact), 
+              color = "black", size = 3) +
     theme_classic() +
+    scale_fill_gradient2(low="#99d594", mid="#ffffbf", high="#fc8d59", 
+                         limits=c(0,8), breaks=(c(0,4,8))) +
+    labs(x ="Participant age", 
+         y = "Contact age",
+         title = title,
+         fill = "Average\ncontacts") +
     theme(legend.title = element_text(size = 10),
-          legend.text = element_text(size = 10),
-          legend.justification = "right",
-          legend.position = legendpos) +
-    theme(plot.title = element_text(size = 10), 
-          axis.title.x = element_text(size=10, face="bold", angle=0),
-          axis.title.y = element_text(size=10, face="bold"),
-          axis.text.x = element_text(size = 10),
-          axis.text.y = element_text(size= 10)) +
-    ggtitle(title)
+          legend.text = element_text(size = 9),
+          legend.justification = "right") +
+    theme(plot.title = element_text(size = 12), 
+          axis.title.x = element_text(size=12), # , face="bold"
+          axis.title.y = element_text(size=12), # , face="bold"
+          axis.text.x = element_text(size = 9, angle=90),
+          axis.text.y = element_text(size= 9))
 }
 
 
