@@ -1,20 +1,11 @@
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(ggpubr)
-library(cowplot)
+###############################################################################  
+# This file contains scripts to analyze and visualize place use data.
+# Author: Carol Liu
+# 
+###############################################################################  
 
-## Read in data
-ind <- readRDS("../../data/clean/participant_data_aim1.RDS")
-ind_exit <- readRDS("../../data/clean/exit_interview_aim1.RDS")
-contact <- readRDS("../../data/clean/contact_data_aim1.RDS")
-#contact_nonhh <- readRDS("../data/clean/ind_contact_nonhh.RDS")
-hh_survey <- readRDS("../../data/clean/household_survey_aim1.RDS")
-loc <- readRDS("../../data/clean/locations_visited_aim1.RDS") ## loc clean
-#loc_orig <- readRDS("../data/clean/old_data/ind_location_visit.RDS")
-#loc_orig2 <- readRDS("../data/clean/old_data/ind_location_visit2.RDS")
 
-loc <- loc %>% mutate(
+location <- location %>% mutate(
   time_visited_cat = case_when(
     time_visited%in%c("<5 mins","5-15 mins")~ "<15 mins",
     time_visited%in%c("16-30 mins","31 mins-1 hr")~ "15 mins-1 hr",
@@ -27,7 +18,7 @@ loc <- loc %>% mutate(
                                                         "Work", "Other", "Place of worship", "Well", "Playground", NA))
   )
 
-fig4_locvisit_timespent <- loc%>%
+fig4_locvisit_timespent <- location %>%
   group_by(study_site, place_visited,time_visited_cat)%>%
   filter(place_visited!="My home")%>%
   summarise(place_time = n())%>%
@@ -38,9 +29,10 @@ fig4_locvisit_timespent <- loc%>%
   scale_fill_brewer(palette="Blues", name="Time spent")+
   theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1))+
   ylab("Number of unique visits over 2 days")+
-  xlab("Type of location")
+  xlab("Type of location") +
+  axis_text_theme1
 
-tab1_loc <- loc %>%
+tab1_loc <- location %>%
   mutate(num_pax_place=as.numeric(num_pax_place))%>%
   group_by(place_visited, study_site)%>%
   arrange(place_visited)%>%
@@ -58,19 +50,21 @@ tab1_loc <- loc %>%
 loc_label<-data.frame(
   seq=seq(from=0,to=11, by=1),
   text = "location_contact___",
-  place_visited=c("My home","Other home","School","Work","Transport/Hub","Market/Shop","Street","Well","Agricultural Field",
+  place_visited=c("My home","Other home","School","Work","Transport/Hub", 
+                  "Market/Shop","Street","Well","Agricultural Field",
                   "Playground", "Place of worship","Other")
 ) %>%
   mutate(place = paste(text,seq,sep=""))
 
-cont_sum <- contact%>%select(rec_id,study_day, location_contact___0:location_contact___11)%>%
+cont_sum <- contacts %>%
+  select(rec_id,study_day, location_contact___0:location_contact___11) %>%
   pivot_longer(cols=location_contact___0:location_contact___11, names_to="place",values_to="val")%>%
-  filter(val==1)%>%
+  filter(val==1) %>%
   left_join(loc_label%>%select(place, place_visited))%>%
   group_by(study_day, rec_id, place_visited)%>%
   summarise(social_contact=n())
 
-loc_sum <- loc%>%
+loc_sum <- location%>%
   group_by(rec_id, place_visited, study_day,study_site)%>%
   mutate(num_pax_place=as.numeric(num_pax_place))%>%
   summarise(unique_places = n(),
@@ -98,8 +92,9 @@ figsi_compdist_urb <- cont_loc_sum%>%
   facet_wrap(~place_visited)+
   scale_fill_brewer(palette="PuRd",name="")+
   ylab("Distribution of persons")+
-  xlab("")+theme_bw()+
-  theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1))
+  xlab("") + theme_bw() +
+  theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1)) +
+  axis_text_theme1
 
 
 figsi_compdist_rur <- cont_loc_sum%>%
@@ -110,8 +105,9 @@ figsi_compdist_rur <- cont_loc_sum%>%
   facet_wrap(~place_visited)+
   scale_fill_brewer(palette="PuRd",name="")+
   ylab("Distribution of persons (log scale)")+
-  xlab("")+theme_bw()+
-  theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1))
+  xlab("") + theme_bw() +
+  theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1)) +
+  axis_text_theme1
 
 figsi_compdist_rur_all <- cont_loc_sum%>%
   filter(!is.na(place_visited))%>%
@@ -122,4 +118,6 @@ figsi_compdist_rur_all <- cont_loc_sum%>%
   scale_fill_brewer(palette="PuRd",name="")+
   ylab("Distribution of persons (log scale)")+
   xlab("")+theme_bw()+
-  theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1))
+  theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1)) +
+  axis_text_theme1
+
