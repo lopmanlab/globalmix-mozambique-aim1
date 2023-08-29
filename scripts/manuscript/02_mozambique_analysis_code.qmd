@@ -30,21 +30,13 @@ source("../../scripts/manuscript/00_customization.R")
 
 participants <- readRDS("../../data/clean/participant_data_aim1.RDS")
 # exit <- readRDS("data/clean/exit_interview_aim1.RDS")
-contact <- readRDS("../../data/clean/contact_data_aim1.RDS")
+contacts <- readRDS("../../data/clean/contact_data_aim1.RDS")
 household <- readRDS("../../data/clean/household_survey_aim1.RDS")
-
-# merge participants and households file
-participants <- participants %>%
-  dplyr::left_join(household %>% 
-                     select(-c(aim, study_site)), 
-                   by = "rec_id")
-rm(household)
-
 
 # set color themes
 # cols_site <- c("#1f77b4", "#ff7f0e")
 cols_site <- c("#d8b365", "#5ab4ac")
-cols_sex <- c("#9467bd", "#aec7e8") #c ("#ef8a62", "#67a9cf")
+cols_sex <- c("Female" = "#9467bd", "Male" = "#aec7e8") #c ("#ef8a62", "#67a9cf")
 cols_week <- c("#8c564b", "#7f7f7f", "#d62728", "#17becf", "#e377c2", "#bcbd22", "#800080")
 
 ```
@@ -58,7 +50,7 @@ mean_hh_size <- participants %>%
   dplyr::group_by (study_site) %>%
   dplyr::summarize(mean_hh_size = round(mean(hh_size %>% na.omit()),1)) # omits 1
 
-household <- household %>%
+participants <- participants %>%
   dplyr::mutate(hh_occupants = dplyr::case_when(hh_occupants == "01" ~ "1",
                                          hh_occupants == "04" ~ "4",
                                          hh_occupants == "06" ~ "6",
@@ -78,7 +70,6 @@ household <- household %>%
 
 # combine some occupation categories
 ```
-
 
 ```{r additional-cleaning-contacts}
 #| include: false
@@ -191,7 +182,6 @@ tot_rural_contacts <- nrow(contacts %>% filter(study_site == "Rural"))
 tot_urban_contacts <- nrow(contacts %>% filter(study_site == "Urban"))
 ```
 
-
 ```{r}
 #| label: tbl-participant-summary
 #| tbl-cap: "Participant summary"
@@ -258,6 +248,7 @@ fig_sex_age <- sex_page %>%
   ggplot(., aes(x=participant_age, y=total, fill=participant_sex)) +
   geom_bar(aes(x = participant_age, y = total, fill = participant_sex), 
            position = "stack", col="white", stat="identity") +
+  scale_fill_manual(values = cols_sex) +  # Set custom fill colors
   facet_wrap(~study_site) +
   annotation_custom(grobTree(textGrob("Target=63", x=0.5, y=0.7, hjust=-0.2,
                                       gp=gpar(fontsize=8)))) +
@@ -268,7 +259,7 @@ fig_sex_age <- sex_page %>%
        y = "N",
        fill = element_blank()) +
   axis_text_theme2 +
-  theme(legend.position = c(0.4, 0.2),
+  theme(legend.position = c(0.4, 0.4),
         legend.key.size = unit(0.5, "lines"),
         strip.background = element_blank(),
         legend.direction  = "vertical",
@@ -287,9 +278,9 @@ fig_sex_age
 
 
 
-ggsave(fig_sex_age, filename = "../output/figs/fig1_participant_age_sex.pdf",
-       height=6, width=10, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_sex_age, filename = "../output/figs/fig1_participant_age_sex.pdf",
+#        height=6, width=10, dpi=300,
+#        bg="#FFFFFF")
 
 ```
 
@@ -472,9 +463,9 @@ hist_urban <- contacts_site %>%
 
 contact_hist_overall <- hist_rural / hist_urban 
 
-ggsave(contact_hist_overall, filename = "../output/figs/fig1_contact_hist_overall.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(contact_hist_overall, filename = "../output/figs/fig1_contact_hist_overall.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 contact_hist_overall
 
@@ -716,10 +707,10 @@ contact_hist_urban_d1 <- contacts_site_d1 %>%
 # hist_urban
 
 contact_hist_d1 <- contact_hist_rural_d1 | contact_hist_urban_d1
-
-ggsave(contact_hist_d1, filename = "../output/figs/fig_contact_hist_d1.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# 
+# ggsave(contact_hist_d1, filename = "../output/figs/fig_contact_hist_d1.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # contact_hist_d1
 # ggpubr::ggarrange(hist_rural_d1, hist_urban_d1, 
@@ -780,9 +771,9 @@ contact_hist_urban_d2 <- contacts_site_d2 %>%
 
 contact_hist_d2 <- contact_hist_rural_d2 / contact_hist_urban_d2
 
-ggsave(contact_hist_d2, filename = "../output/figs/fig_contact_hist_d2.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(contact_hist_d2, filename = "../output/figs/fig_contact_hist_d2.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # contact_hist_d2
 
@@ -803,18 +794,19 @@ contacts_age <- df_contact_d1 %>%
 fig_contacts_age_box <- ggplot(contacts_age, aes(x = participant_age, 
                                                  y = num_contacts, 
                                                  fill = study_site)) +
-  geom_boxplot(width = 0.4, position = position_dodge(width = 0.5)) +
+  geom_boxplot(width = 0.4, position = position_dodge(width = 0.5), outlier.shape = NA) +
   scale_fill_manual(values = cols_site) +
   labs(x = "Participant age", y = "# of contacts") +
-  ylim(0, 40) +
+  ylim(0, 30) +
   theme_classic() +
   axis_text_theme2 +
-  theme(legend.key.size = unit(1, "lines"),
-        legend.direction = "horizontal")
+  theme(legend.position = "none") 
+  # theme(legend.key.size = unit(1, "lines"),
+  #       legend.direction = "horizontal")
 
-ggsave(fig_contacts_age_box, filename = "../output/figs/fig_contact_age_box.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_contacts_age_box, filename = "../output/figs/fig_contact_age_box.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 fig_contacts_age_box
 
@@ -830,11 +822,10 @@ fig_baseline_distributions <- wrap_plots(fig_sex_age, contact_hist_d1, fig_conta
 
 fig_baseline_distributions
 
-ggsave(fig_baseline_distributions, filename = "../output/figs/fig_baseline_distributions.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_baseline_distributions, filename = "../output/figs/fig_baseline_distributions.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
-fig_baseline_distributions
 ```
 
 ```{r}
@@ -916,10 +907,10 @@ wilcoxtest_bytouch_urban
 fig_touch_box <- fxn_fig_boxplot(contacts_type, "touch_contact") +
   axis_text_theme2
 fig_touch_box
-
-ggsave(fig_touch_box, filename = "../output/figs/fig_contact_touch_box.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# 
+# ggsave(fig_touch_box, filename = "../output/figs/fig_contact_touch_box.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # fig_touch_box
 
@@ -1055,9 +1046,9 @@ wilcoxtest_urban_byschool
 fig_education_box <- fxn_fig_boxplot(contacts_education, "enrolled_school") +
   axis_text_theme2
 
-ggsave(fig_education_box, filename = "../output/figs/fig_education_box.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_education_box, filename = "../output/figs/fig_education_box.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # fig_education_box
 
@@ -1086,9 +1077,9 @@ fig_dayweek_box <- contacts_dayweek %>%
   axis_text_theme2  +
    theme(legend.position = c(0.4, 0.9))
 
-ggsave(fig_dayweek_box, filename = "../output/figs/fig_dayweek_box.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_dayweek_box, filename = "../output/figs/fig_dayweek_box.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 fig_dayweek_box
 
@@ -1183,9 +1174,9 @@ fig_weekday_box <- fxn_fig_boxplot(contacts_weekday, "weekday") +
   axis_text_theme2  +
    theme(legend.position = c(0.3, 0.9))
 
-ggsave(fig_weekday_box, filename = "../output/figs/fig_weekday_box.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_weekday_box, filename = "../output/figs/fig_weekday_box.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 
 # fig7_weekday_rural_box <- contacts_weekday %>%
@@ -1435,9 +1426,9 @@ fig_ari_box <- fxn_fig_boxplot(contacts_ari, "ari_symptom") +
   axis_text_theme2 +
    theme(legend.position = c(0.3, 0.9))
 
-ggsave(fig_ari_box, filename = "../output/figs/fig_ARI_box.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_ari_box, filename = "../output/figs/fig_ARI_box.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 #        
 fig_ari_box
 
@@ -1771,12 +1762,14 @@ urban_matrix_conv <- fun_matrix1_plot(m1_urban_conv, "") # Urban site
 #   (rural_matrix_touch | urban_matrix_touch)
 # combined_matrix
 
-combined_matrix1 <- subplot(style(
-  rural_matrix, showlegend = F) %>% 
+combined_matrix1 <- subplot(
+  style(
+    rural_matrix, showlegend = F) %>% 
     layout(xaxis = list(title = "")), 
   urban_matrix, shareY = TRUE) %>% 
   layout(xaxis = list(tickvals = NULL, ticktext = NULL),
          xaxis = list(title = ""))
+combined_matrix1
 
 combined_matrix2 <- subplot(style(
   rural_matrix_conv, showlegend = F) %>%  
@@ -1798,23 +1791,25 @@ combined_matrix2 <- subplot(style(
 #          )
 #   )
 
-combined_matrix3 <- subplot(style(rural_matrix_touch, showlegend = F), 
-                            urban_matrix_touch, shareY = TRUE)  %>% 
+combined_matrix3 <- subplot(
+  style(rural_matrix_touch, showlegend = F), 
+  urban_matrix_touch, shareY = TRUE)  %>% 
   layout(annotations = list(  # Add x-axis title annotation
-           list(
-             x = 0.5,
-             y = -0.6,
-             text = "Participant age",
-             xref = "paper",
-             yref = "paper",
-             xanchor = "center",
-             yanchor = "bottom",
-             showarrow = FALSE
-           )
-         )
+    list(
+      x = 0.5,
+      y = -0.6,
+      text = "Participant age",
+      xref = "paper",
+      yref = "paper",
+      xanchor = "center",
+      yanchor = "bottom",
+      showarrow = FALSE
+    )
+  )
   )
 
 
+# delete x-axis values
 combined_matrix <- subplot(
   combined_matrix1,
   combined_matrix2,
@@ -2050,7 +2045,7 @@ fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
 
 label(contacts$contact_sex) <- "Contact sex"
 label(contacts$contact_age) <- "Contact age"
-label(contacts$contact_mask) <- "Was the mask wearing a contact?"
+label(contacts$contact_mask) <- "Was the contact wearing a mask?"
 label(contacts$known_contact) <- "How long have you known this contact?"
 label(contacts$duration_contact) <- "How long did the contact last?"
 label(contacts$frequency_contact) <- "How many times do you have a contact with this person?"
@@ -2344,9 +2339,9 @@ literacy_page <- participants %>%
 literacy_page_plt <- fun_literacy_plot(literacy_page) +
   axis_text_theme2
 
-ggsave(literacy_page_plt, filename = "../output/figs/1a_participant_literate.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(literacy_page_plt, filename = "../output/figs/1a_participant_literate.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # literacy_page_plt
 ```
@@ -2365,9 +2360,9 @@ enrolledsch_page <- participants %>%
 
 enrolledsch_page_plt <- fun_schenrolled_plot(enrolledsch_page)
 
-ggsave(enrolledsch_page_plt, filename = "../output/figs/1a_participant_enrolledschool.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(enrolledsch_page_plt, filename = "../output/figs/1a_participant_enrolledschool.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # enrolledsch_page_plt
 ```
@@ -2386,9 +2381,9 @@ highesteduc_page <- participants %>%
 
 highesteduc_page_plt <- fun_highesteduc_plot(highesteduc_page)
 
-ggsave(highesteduc_page_plt, filename = "../output/figs/1a_participant_educlevel.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(highesteduc_page_plt, filename = "../output/figs/1a_participant_educlevel.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # highesteduc_page_plt
 ```
@@ -2407,9 +2402,9 @@ occupation_page <- participants %>%
 
 occupation_page_plt <- fun_occupation_plot(occupation_page)
 
-ggsave(occupation_page_plt, filename = "../output/figs/1a_participant_occupation.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(occupation_page_plt, filename = "../output/figs/1a_participant_occupation.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 # occupation_page_plt
 ```
