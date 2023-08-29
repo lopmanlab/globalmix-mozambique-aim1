@@ -1970,7 +1970,7 @@ fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
 
 label(contacts$contact_sex) <- "Contact sex"
 label(contacts$contact_age) <- "Contact age"
-label(contacts$contact_mask) <- "Was the mask wearing a contact?"
+label(contacts$contact_mask) <- "Was the contact wearing a mask?"
 label(contacts$known_contact) <- "How long have you known this contact?"
 label(contacts$duration_contact) <- "How long did the contact last?"
 label(contacts$frequency_contact) <- "How many times do you have a contact with this person?"
