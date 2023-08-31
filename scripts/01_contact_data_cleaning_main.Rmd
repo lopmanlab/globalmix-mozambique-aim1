@@ -40,54 +40,9 @@ data <- readRDS("../raw/all_data_09142022.RDS")
 data$study_site[data$rec_id=="1686"] <- "1"
 
 # there are some records that we need to delete from the dataset
-drop_recid <- c(405, 443, 445, 1815, 1827, 1828, 6843, 1188,
-                1191, 1314, 1315, 1514, 1516, 1522, 1566, 
-                1859,1897)
-
-# # these records have missing household data
-drop_missing_hhdata <- c(331,343,seq(406,409), seq(412,416), seq(420,424),
-                         434,435,seq(456,458),seq(467,473),seq(475,477),seq(479,487),
-                         seq(504,511),521,seq(523,531),579,580,seq(596,598),seq(611,617),
-                         662,663,seq(703,708),710,711,seq(713,715),seq(717,722),seq(724,726),
-                         seq(731,733),seq(736,739),seq(746,748),seq(757,764),774,775,
-                         seq(777,781),seq(783,787),seq(807,812),seq(821,825),seq(827,830),
-                         seq(838,840),seq(845,857),seq(849,851),856,857,seq(868,876),
-                         878,879,882,883,seq(890,892),seq(899,902),seq(904,910),seq(921,929),
-                         seq(936,938),941,942,seq(966,972),seq(974,981),seq(985,987),
-                         seq(990,994),seq(996,999),seq(1001,1008),1018,1026,seq(1030,1033),
-                         seq(1035,1041),seq(1049,1052),seq(1061,1070),seq(1090,1092),
-                         seq(1094,1097),1110,1111,seq(1117,1119),seq(1112,1126),seq(1130,1132),
-                         1141,1142,seq(1146,1148),seq(1160,1163),1169,seq(1182,1184),
-                         seq(1191,1196),1202,seq(1204,1207), seq(1209,1212),seq(1220,1223),
-                         seq(1225,1229),seq(1236,1240),seq(1250,1256),seq(1258,1260),
-                         1262,1263,seq(1265,1268),seq(1270,1274),1278,1279,seq(1284,1285),
-                         seq(1289,1295),1298,1299,1304,1305,seq(1324,1327),seq(1332,1335),
-                         seq(1344,1347),seq(1351,1353),seq(1358,1362),seq(1366,1369),1371,
-                         seq(1375,1379),1382,seq(1385,1391),seq(1399,1402),seq(1409,1411),
-                         1418,1419,seq(1421,1427),seq(1434,1439),seq(1444,1447),1451,1452,
-                         seq(1462,1465),seq(1467,1469),seq(1478,1480),seq(1485,1487),
-                         seq(1489,1491),seq(1493,1495),seq(1497,1504),seq(1506,1508),
-                         seq(1510,1512),seq(1514,1516),seq(1518,1524),seq(1526,1530),
-                         seq(1540,1542),seq(1555,1558),seq(1567,1569),seq(1571,1574),
-                         1579,1580,seq(1592,1600),seq(1603,1605),1607,1610,seq(1612,1617),
-                         1619,1620,seq(1623,1626),seq(1628,1630),seq(1632,1635),1637,1638,
-                         seq(1643,1646),1648,1649,seq(1656,1568),seq(1660,1662),seq(1660,1670),
-                         seq(1672,1680),seq(1683,1689),seq(1693,1695),seq(1697,1700),
-                         1716,1717,seq(1720,1722),seq(1725,1727),seq(1729,1733),1735,1736,
-                         1738,1739,seq(1741,1747),seq(1764,1768),1778,1779,1781,1782,1826,
-                         1910,seq(1951,1955),1967,1968,1970,1998,2008,2064,2065,2095,
-                         2197,seq(2228,2230),2242,2253,seq(2255,2261),5794,5796,5800,5801,
-                         seq(5805,5807),5826,5884,6844,6845,seq(6847,6849), seq(6851,6854)) #762 records)
-#                          
-# On calculating household size, there were ~180 records that did not have 
-# details collected on their household members. meaning that our estimates of 
-# family size will not be accurate.                         
-
-# 
-missing_hhdata <- data %>%
-  filter(rec_id %in% drop_missing_hhdata)
-
-# table(missing_hhdata$aim)
+drop_recid <- c("405", "443", "445", "1815", "1827", "1828", "6843", "1188",
+                "1191", "1314", "1315", "1514", "1516", "1522", "1566", 
+                "1859","1897")
 
 drop_recid2 <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv",
                         show_col_types = FALSE)
@@ -108,11 +63,7 @@ data <- data %>%
                            rec_id == "1219" ~ "3305-275",
                            rec_id == "1466" ~ "3204-316",
                            rec_id == "1696" ~ "2705-255",
-                           TRUE ~ hh_id)) # 46673 records
-
-# # drop additional data identified in REDCap
-# data <- data %>%
-#   filter(!rec_id %in% drop_missing_hhdata) # 33276 records
+                           TRUE ~ hh_id))
 
 # This file corrects hh_id entries. In REDCap, some individuals did not have a
 # hh_id that corresponds to where they were recruited for the study. Hence, we
@@ -121,7 +72,7 @@ data <- data %>%
 source("../scripts/moz_hhid_corrections.R")
 
 
-rm(drop_recid, drop_recid2, drop_hhs, drop_missing_hhdata)
+rm(drop_recid, drop_recid2, drop_hhs)
 ```
 
 
@@ -129,7 +80,7 @@ rm(drop_recid, drop_recid2, drop_hhs, drop_missing_hhdata)
 # study site
 study_site <- data %>%
   filter(redcap_event_name=="household_survey_arm_1") %>%
-  select(rec_id, study_site, aim, isindex) %>%
+  select("rec_id", "study_site", "aim", "isindex") %>%
   filter(!is.na(study_site)) # 
 
 table(study_site$study_site, study_site$aim)
@@ -289,7 +240,7 @@ label(participant$highest_educ) <- "What is the highest level of education that 
 label(participant$occupation___0) <- "Unemployed"
 label(participant$occupation___1) <- "Student"
 label(participant$occupation___2) <- "Office worker"
-label(participant$occupation___3) <- "Business person"
+label(participant$occupation___3) <- "Businessperson"
 label(participant$occupation___4) <- "Casual laboror"
 label(participant$occupation___5) <- "Farmer"
 label(participant$occupation___6) <- "Fisherman"
@@ -302,7 +253,7 @@ participant <- participant %>%
   dplyr::mutate(occupation = case_when(occupation___0 == 1 ~ "Unemployed",
                                        occupation___1 == 1 ~ "Student",
                                        occupation___2 == 1 ~ "Office worker",
-                                       occupation___3 == 1 ~ "Business person",
+                                       occupation___3 == 1 ~ "Businessperson",
                                        occupation___4 == 1 ~ "Casual laboror",
                                        occupation___5 == 1 ~ "Farmer",
                                        occupation___6 == 1 ~ "Fisherman",
@@ -317,11 +268,11 @@ participant <- participant %>%
 participant$occupation <- factor(participant$occupation, 
                                  levels = c("Child", "Unemployed", "Student", "Homemaker/Housewife",
                                             "Casual laboror", "Farmer", "Fisherman", 
-                                            "Business person", "Office worker", "Retired",
+                                            "Businessperson", "Office worker", "Retired",
                                             "Other"),
                                  labels = c("Child", "Unemployed", "Student", "Homemaker",
                                             "Casual laboror", "Farmer", "Fisherman", 
-                                            "Business person", "Office worker", "Retired",
+                                            "Businessperson", "Office worker", "Retired",
                                             "Other"))
 label(participant$occupation) <- "What is your occupation?"
 
@@ -421,8 +372,8 @@ exit <- exit %>%
                                 aim == 1 ~ 2)) 
 # Cleaning other variables 
 exit <- exit %>% 
-  dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "Self", # during day 1 and 2
-                                                   contacts_completedby == 1 ~ "By fieldworker"))  # at collection day
+  dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "Self, # during day 1 and 2",
+                                                   contacts_completedby == 1 ~ "By fieldworker)) # at collection day"))
 exit$contacts_completedby <- factor(exit$contacts_completedby, levels = c("Self", "By fieldworker"))
 label(exit$contacts_completedbylb) <- "Who filled the diary?" 
 # throughout day 1 and day 2 or were the contact diaries completed with the Field Worker on the day of collection?"
@@ -731,8 +682,7 @@ exit <- exit %>%
 data <- data %>% 
   filter(rec_id %in% participant_ids)
 
-# previously, the total number records is 1960.
-# after running the drop_missing_hhdata, we remain with 1322 recordsS
+# now, the total number of total records is 1960.
 length(unique(study_site$rec_id))
 length(unique(participant$rec_id))
 length(unique(exit$rec_id))
@@ -936,7 +886,7 @@ contact_name <- data %>%
   group_by(rec_id) %>%
   select(rec_id, hh_member_name)
 
-# generate unique number for each household member contact
+# generate unique number for each contact
 contact_name$hh_member_id <- NA
 
 for (i in unique(contact_name$rec_id)) {
@@ -951,7 +901,6 @@ contact_name_full <- contact_name_full %>%
   left_join(contact_name, by=c("rec_id", "hh_member_id")) %>%
   mutate(hh_member_id2 = paste(rec_id, hh_member_id, sep="-")) %>%
   select(rec_id, hh_member_id, hh_member_id2, hh_member_name)
-
 ```
 
 
@@ -1820,12 +1769,7 @@ contact_hh_all <- contact_hh_all %>%
 contact_nonhh_all <- contact_nonhh_all %>%
   select(any_of(contact_vars))
 
-# keep only ids that are common in both data sets. this should move up in cleaning, 
-# to keep only ids that are in participant file. 
-# intersect_ids <- intersect(unique(contact_hh_all$rec_id),
-#                            unique(contact_nonhh_all$rec_id))
-# length(intersect_ids)
-# 
+
 # nrow(contact_hh_all) # n=1950
 # nrow(contact_nonhh_all) # n=24460
 # 
@@ -1935,29 +1879,24 @@ contact_all$age_group_contact <- factor(contact_all$age_group_contact,
 #                       "transport_use", "hh_resp_exposure", "child_breastfeed", 
 #                       "num_sibling")
 
-# merge participants and households file
-
-
 participants_aim1 <- participant %>% 
-  filter(aim == 1)  %>%
+  filter(aim == 1) %>%
   # merge with hh size data
   left_join(hh_size, by = "rec_id")
 
 participants_aim2_index <- participant %>% 
-  filter(aim==2, participant_age %in% c("<6mo","6-11mo", "1-4y"))
-
-participants_aim2_index <- participants_aim2_index %>%
+  filter(aim==2, participant_age %in% c("<6mo","6-11mo", "1-4y")) %>%
   # merge with hh size data
   left_join(hh_size, by = "rec_id")
-  
 
 participants_aim1 <- rbind(participants_aim1, participants_aim2_index) %>%
-  rename(# participant_sex = sex, participant_age = participant_age,
+  rename(
+    # participant_sex = sex,
+    # participant_age = participant_age,
     highest_education = highest_educ,
     number_sibling = num_sibling) %>%
   mutate(aim = case_when(aim == 2 ~ 1,
                          TRUE ~ 1))
-
 
 # add index contacts from aim 2 to aim 1 data for analysis
 contacts_aim1 <- contact_all %>% 
@@ -1972,6 +1911,10 @@ contacts_aim1 <- rbind(contacts_aim1, contacts_aim2_index)
 
 contacts_aim1 <- contacts_aim1 %>%
   dplyr::filter(rec_id %in% unlist(participants_aim1$rec_id))
+
+# save participant and contact data for aim 1
+saveRDS(participants_aim1, "../data/clean/participant_data_aim1.RDS")
+saveRDS(contacts_aim1, "../data/clean/contact_data_aim1.RDS")
 
 ```
 
@@ -1996,6 +1939,14 @@ contacts_aim2 <- contact_all %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
+# save participant and contact data for aim 2
+saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
+saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
+
+
+saveRDS(participants_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/participant_data_aim2.RDS")
+
+saveRDS(contacts_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/contact_data_aim2.RDS")
 ```
 
 \
@@ -2278,11 +2229,13 @@ hh_id <- hh_survey %>%
   select(rec_id, hh_id)
 
 
+
 # keep aim 1 data only
 hh_survey_aim1 <- hh_survey %>%
   filter(rec_id %in% participants_aim1$rec_id) %>%
   select(-c(hoh_id))
 
+saveRDS(hh_survey_aim1, "../data/clean/household_survey_aim1.RDS")
 
 # keep aim 2 data only
 hh_survey_aim2 <- hh_survey %>%
@@ -2291,7 +2244,11 @@ hh_survey_aim2 <- hh_survey %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
+saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
 
+saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/household_survey_aim2.RDS")
+
+# rm(hh_survey, hh_survey_aim1, hh_survey_aim2)
 ```
 
 
@@ -2422,7 +2379,7 @@ loc_visit <- loc_visit %>%
 # keep aim 1 data only
 loc_visit_aim1 <- loc_visit %>%
   filter(rec_id %in% participants_aim1$rec_id)
-
+saveRDS(loc_visit_aim1, "../data/clean/locations_visited_aim1.RDS")
 
 # keep aim 2 data only
 loc_visit_aim2 <- loc_visit %>%
@@ -2430,6 +2387,7 @@ loc_visit_aim2 <- loc_visit %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
+saveRDS(loc_visit_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/locations_visited_aim2.RDS")
 
 rm(loc_visit_d1, loc_visit_d2)
 ```
@@ -2440,6 +2398,7 @@ rm(loc_visit_d1, loc_visit_d2)
 # keep aim 1 data only
 exit_interview_aim1 <- exit %>%
   filter(rec_id %in% participants_aim1$rec_id)
+saveRDS(exit_interview_aim1, "../data/clean/exit_interview_aim1.RDS")
 
 # keep aim 2 data only
 exit_interview_aim2 <- exit %>%
@@ -2447,7 +2406,7 @@ exit_interview_aim2 <- exit %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
-
+saveRDS(exit_interview_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/exit_interview_aim2.RDS")
 
 # rm(exit_interview_aim1, exit_interview_aim2)
 
@@ -2455,45 +2414,6 @@ exit_interview_aim2 <- exit %>%
 
 
 ```{r data-export-rds, echo=FALSE}
-
-# export data
-participants_aim1 <- participants_aim1 %>%
-  dplyr::left_join(hh_survey_aim1 %>% 
-                     select(-c(aim, study_site)), 
-                   by = "rec_id")
-
-
-# save participant and contact data for aim 1
-saveRDS(participants_aim1, "../data/clean/participant_data_aim1.RDS")
-saveRDS(contacts_aim1, "../data/clean/contact_data_aim1.RDS")
-saveRDS(hh_survey_aim1, "../data/clean/household_survey_aim1.RDS")
-saveRDS(loc_visit_aim1, "../data/clean/locations_visited_aim1.RDS")
-saveRDS(exit_interview_aim1, "../data/clean/exit_interview_aim1.RDS")
-
-
-# save participant and contact data for aim 2
-saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
-saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
-saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
-saveRDS(loc_visit_aim2, "../data/clean/locations_visited_aim2.RDS")
-saveRDS(exit_interview_aim2, "../data/clean/exit_interview_aim2.RDS")
-
-
-
-saveRDS(participants_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/participant_data_aim2.RDS")
-
-saveRDS(contacts_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/contact_data_aim2.RDS")
-
-saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/household_survey_data_aim2.RDS")
-
-saveRDS(loc_visit_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/locations_visited_aim2.RDS")
-
-saveRDS(exit_interview_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/exit_interview_aim2.RDS")
-
-
-# saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/household_survey_aim2.RDS")
-
-
 # Export data to GlobalMix shared folder.
 
 EXPORT_PATH <- "~/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-country-data/Mozambique/aim_1/data"
