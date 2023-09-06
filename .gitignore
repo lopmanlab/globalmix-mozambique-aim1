@@ -2,7 +2,10 @@
 .Rhistory
 .Rapp.history
 scripts/.DS_Store
-.DS_Store
+.Rproj.user
+
+output/*.pdf
+scripts/manuscript/*.docx
 
 # Session Data files
 .RData
@@ -10,6 +13,7 @@ scripts/.DS_Store
 scripts/.DS_Store
 data/.DS_Store
 output/.DS_Store
+output/figs/.DS_Store
 
 # R Environment Variables
 .Renviron
@@ -27,4 +31,4 @@ scripts/*.html
 scripts/02a_contact_analysis_main_v2_files
 scripts/extract_aim2_metadata_files
 
-.Rproj.user
+
