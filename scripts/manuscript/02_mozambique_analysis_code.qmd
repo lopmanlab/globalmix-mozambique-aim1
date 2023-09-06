@@ -552,7 +552,7 @@ df_contact_d2 <- left_join(df_contact_d2, day2_num_contacts, by="rec_id" )
 
 # mean overall number of contacts on day 2 only
 ci_contacts_overall_d2 <- lm(num_contacts ~ 1, day2_num_contacts)
-mean_contacts_overall_d2 <- ci_contacts_overall_d2$coefficients
+mean_contacts_overall_d2 <- round(ci_contacts_overall_d2$coefficients, 1)
 #   df_contact_d2 %>%
 #   dplyr::summarize(mean = round(mean(num_contacts),1), .groups = "drop")
 ci_contacts_overall_d2 <- as.data.frame(round(confint(ci_contacts_overall_d2), 1))
@@ -891,10 +891,10 @@ contacts_conv_rural <- contacts_type %>% filter(touch_contact == "No") %>% filte
 contacts_touch_urban <- contacts_type %>% filter(touch_contact == "Yes") %>% filter(study_site == "Urban")
 contacts_conv_urban <- contacts_type %>% filter(touch_contact == "No")  %>% filter(study_site == "Urban")
 
-mean_contacts_touch_rural <- mean(contacts_touch_rural$num_contacts)
-mean_contacts_conv_rural <- mean(contacts_conv_rural$num_contacts)
-mean_contacts_touch_urban <- mean(contacts_touch_urban$num_contacts)
-mean_contacts_conv_urban <- mean(contacts_conv_urban$num_contacts)
+mean_contacts_touch_rural <- round(mean(contacts_touch_rural$num_contacts), 1)
+mean_contacts_conv_rural <- round(mean(contacts_conv_rural$num_contacts), 1)
+mean_contacts_touch_urban <- round(mean(contacts_touch_urban$num_contacts), 1)
+mean_contacts_conv_urban <- round(mean(contacts_conv_urban$num_contacts), 1)
 
 wilcoxtest_bytouch_rural <- round(wilcox.test(contacts_touch_rural$num_contacts, 
                                               contacts_conv_rural$num_contacts)$p.value, 10) 

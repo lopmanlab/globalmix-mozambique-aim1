@@ -10,7 +10,7 @@ contacts <- readRDS("../../data/clean/contact_data_aim1.RDS")
 household <- readRDS("../../data/clean/household_survey_aim1.RDS")
 location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
 # 
-
+xx
 # set color themes
 # cols_site <- c("#1f77b4", "#ff7f0e")
 cols_site <- c("#d8b365", "#5ab4ac")
@@ -26,7 +26,10 @@ cols_week <- c("#8c564b", "#7f7f7f", "#d62728", "#17becf", "#e377c2", "#bcbd22",
 
 mean_hh_size <- participants %>%
   dplyr::group_by (study_site) %>%
-  dplyr::summarize(mean_hh_size = round(mean(hh_size %>% na.omit()),1)) # omits 1
+  dplyr::summarize(mean_hh_size = round(mean(hh_size %>% na.omit()), 1)) # omits 1
+# check range of houehold size
+# rur_hhsize <- participants %>% filter(study_site=="Rural"); range(rur_hhsize$hh_size)
+# rur_hhsize <- participants %>% filter(study_site=="Rural"); range(rur_hhsize$hh_size)
 
 participants <- participants %>%
   dplyr::mutate(

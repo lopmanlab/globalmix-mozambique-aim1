@@ -9,28 +9,37 @@ location <- location %>% mutate(
   time_visited_cat = case_when(
     time_visited%in%c("<5 mins","5-15 mins")~ "<15 mins",
     time_visited%in%c("16-30 mins","31 mins-1 hr")~ "15 mins-1 hr",
-    TRUE~ time_visited
-  ))%>%
+    TRUE~ time_visited)) %>%
+  filter(!is.na(place_visited)) %>% # dropped 2 NAs
+  filter(!is.na(time_visited)) %>%
   mutate(
     time_visited_cat = factor(time_visited_cat, levels = c("<15 mins","15 mins-1 hr","1-4 hrs",">4 hrs")),
     place_visited =    factor(place_visited, levels = c("My home","Other home","Street","Market/Shop",
                                                         "Transport/Hub", "Agricultural Field", "School",
-                                                        "Work", "Other", "Place of worship", "Well", "Playground", NA))
+                                                        "Work", "Other", "Place of worship", "Well", "Playground"))
   )
 
+# figure included in ms
 fig4_locvisit_timespent <- location %>%
-  group_by(study_site, place_visited,time_visited_cat)%>%
-  filter(place_visited!="My home")%>%
-  summarise(place_time = n())%>%
+  group_by(study_site, place_visited, time_visited_cat) %>%
+  filter(place_visited!="My home") %>%
+  summarise(place_time = n()) %>%
   #pivot_wider(names_from="time_visited",values_from = "place_time")%>%
-  ggplot(aes(x=place_visited, y=place_time,fill=time_visited_cat))+
-  geom_col(position=position_stack())+
-  facet_wrap(~study_site)+theme_bw()+
+  ggplot(aes(x=place_visited, y=place_time,fill=time_visited_cat)) +
+  geom_col(position=position_stack()) +
+  # Remove the "NA" label from the legend
+  guides(color = guide_legend(override.aes = list(label = ""))) +
+  facet_wrap(~study_site)+theme_bw() +
   scale_fill_brewer(palette="Blues", name="Time spent")+
   theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1))+
   ylab("Number of unique visits over 2 days")+
   xlab("Type of location") +
-  axis_text_theme1
+  axis_text_theme1 +
+  theme(legend.position = c(0.4, 0.9))
+
+ggsave(fig4_locvisit_timespent, filename = "output/figs/fig_locvisit_timespent.pdf",
+       height=4, width=6, dpi=300,
+       bg="#FFFFFF")
 
 tab1_loc <- location %>%
   mutate(num_pax_place=as.numeric(num_pax_place))%>%
