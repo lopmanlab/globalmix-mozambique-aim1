@@ -8,10 +8,10 @@
 
 
 ### Check to see if there are IDs with no contacts reported
-sum(!participants$rec_id %in% contact$rec_id) # 3
+sum(!participants$rec_id %in% contacts$rec_id) # 3
 
 missing <- participants %>% 
-  filter(!rec_id %in% unlist(contact$rec_id)) %>% 
+  filter(!rec_id %in% unlist(contacts$rec_id)) %>% 
   arrange(rec_id)
 # 371, 754, 1996
 
@@ -25,17 +25,17 @@ rm(missing)
 live_alone <- household %>% 
   filter(rec_id %in% unlist(participants$rec_id)) %>%
   filter(hh_occupants==1) 
-# 42
+# 35
 
 
 ##### Data cleaning for socialmixr package
-contact <- contact %>%
+contacts <- contacts %>%
   left_join(participants %>% 
-              select(rec_id, age), 
+              select(rec_id, participant_age), 
             by = c("rec_id"="rec_id")) %>%
-  rename(age_part = age)
+  mutate(age_part = participant_age) 
 
-contact <- contact %>%
+contacts <- contacts %>%
   mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
          cnt_school = ifelse(location_contact___2==1, 1,0),
          cnt_work = ifelse(location_contact___3==1, 1,0),
@@ -49,18 +49,18 @@ contact <- contact %>%
                                    location_contact___10==1 | 
                                    location_contact___11==1,1,0))
 
-contact <- contact %>%
-  rename(part_id = rec_id) %>% 
-  rename(part_age = age_part)
+contacts <- contacts %>%
+  mutate(part_id = rec_id,
+         part_age = age_part)
 
 
 ##### Weighting
 ### age categories to join with population weighting
-contact <-contact %>% 
+contacts <- contacts %>%
   mutate(
     part_age = as.numeric(part_age),
-    weight_cat = case_when(              
-      part_age ==0 ~ "0",
+    weight_cat = case_when(
+      part_age ==1 ~ "0",
       part_age<=4  ~ "1-4y",
       part_age<=9  ~ "5-9y",
       part_age<=14 ~ "10-14y",
@@ -73,8 +73,18 @@ contact <-contact %>%
     )
   )
 
+contacts <- contacts %>%
+  mutate(
+    part_age = as.numeric(part_age),
+    weight_cat = case_when(
+      participant_age == "<6mo" ~ "0",
+      participant_age == "6-11mo" ~ "0",
+      TRUE ~ participant_age
+    )
+  )
+
 ### read in population distribution
-pop_dist <- read.csv("C:/Users/skim689/OneDrive - Emory University/Desktop/Mixing Studies/Global Mix/Mozambique/Contact Patterns Abstract/Pop Sizes/mozambique_population_distribution.csv") %>%
+pop_dist <- read.csv("scripts/manuscript/mozambique_population_distribution.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -82,8 +92,8 @@ pop_dist <- read.csv("C:/Users/skim689/OneDrive - Emory University/Desktop/Mixin
   ))
 
 ### weight cleaning
-pop_weight <- contact %>%
-  select(part_id, study_site,weight_cat) %>% 
+pop_weight <- contacts %>%
+  select(part_id, study_site, weight_cat) %>% 
   unique() %>%
   group_by(study_site, weight_cat) %>%
   summarise(n=n())
@@ -92,18 +102,20 @@ rur_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="rural")])
 
 pop_weight <- pop_weight %>% 
   left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
-  left_join(pop_weight %>% group_by(study_site) %>% summarise(tot_site = sum(n)), by = c("study_site"="study_site")) %>%
+  left_join(pop_weight %>% 
+              group_by(study_site) %>% 
+              summarise(tot_site = sum(n)), by = c("study_site"="study_site")) %>%
   mutate(pop_urb_rur =ifelse(study_site=="Rural", rur_pop, urb_pop),
          part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
 
 ### join weights into participants data
-contact <- contact %>%
+contacts <- contacts %>%
   left_join(pop_weight %>% select(study_site, weight_cat, part_weight),
             by = c("study_site"="study_site", "weight_cat"="weight_cat"))
 
 
 ##### Create survey structures for input into socialmixr package
-contact <- contact %>% 
+contacts <- contacts %>% 
   mutate(part_age = as.numeric(part_age),
          contact_age = as.character(contact_age),
          
@@ -140,20 +152,20 @@ contact <- contact %>%
   ) 
 
 ### One urban and one rural
-cnt_u <- contact %>% 
+cnt_u <- contacts %>% 
   filter(study_site == "Urban")
 
-cnt_r <- contact%>% 
+cnt_r <- contacts %>% 
   filter(study_site == "Rural")
 
 
 df_r <- survey(
-  participantss = cnt_r %>% 
-    select(part_id, part_age,part_weight) %>% 
-    unique()%>%
+  participants = cnt_r %>% 
+    select(part_id, part_age, part_weight) %>% 
+    unique() %>%
     rename(weights = part_weight) %>%
-    mutate(country=rep("Mozambique"),
-           year=rep(2020)),
+    mutate(country = rep("Mozambique"),
+           year = rep(2020)),
   
   contacts = cnt_r %>%
     select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)

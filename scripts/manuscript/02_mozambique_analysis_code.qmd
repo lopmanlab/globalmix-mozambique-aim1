@@ -51,21 +51,13 @@ mean_hh_size <- participants %>%
   dplyr::summarize(mean_hh_size = round(mean(hh_size %>% na.omit()),1)) # omits 1
 
 participants <- participants %>%
-  dplyr::mutate(hh_occupants = dplyr::case_when(hh_occupants == "01" ~ "1",
-                                         hh_occupants == "04" ~ "4",
-                                         hh_occupants == "06" ~ "6",
-                                         hh_occupants == "07" ~ "7",
-                                         hh_occupants == "09" ~ "9",
-                                         TRUE ~ hh_occupants),
-                hh_occupants = as.numeric(hh_occupants),
-                
-                hh_occupants_cat = dplyr::case_when(hh_occupants == 1 ~ "1",
-                                                    hh_occupants == 2 | hh_occupants == 3 ~ "2-3",
-                                                    hh_occupants == 4 | hh_occupants == 6 ~ "4-6",
-                                                    hh_occupants == 7 | hh_occupants == 10 ~ "7-10",
-                                                    hh_occupants >10 ~ "10+"),
-                hh_occupants_cat = factor(hh_occupants_cat,
-                                          levels = c("1", "2-3", "4-6", "7-10", "10+")))
+  dplyr::mutate(hh_size_cat = dplyr::case_when(hh_size == 1 ~ "1",
+                                               hh_size == 2 | hh_size == 3 ~ "2-3",
+                                               hh_size == 4 | hh_size == 6 ~ "4-6",
+                                               hh_size == 7 | hh_size == 10 ~ "7-10",
+                                               hh_size >10 ~ "10+"),
+                hh_size_cat = factor(hh_size_cat,
+                                     levels = c("1", "2-3", "4-6", "7-10", "10+")))
   
 
 # combine some occupation categories
@@ -1565,7 +1557,7 @@ crude_matrix <- rural_matrix | urban_matrix
 crude_matrix <- subplot(style(rural_matrix, showlegend = F) %>% 
                           layout(xaxis = list(title = "Participant age")), 
                         urban_matrix, shareY = TRUE) %>%
-  layout(title = 'Contact matrices in Mozambique',
+  layout(title = '',
          xaxis = list(title = "Participant age"),
          annotations = list(
            list(x=0.2, y=1.0,
@@ -1610,12 +1602,12 @@ m1_rural_touch <- df_contact_d1 %>%
   left_join(n_participants_rural, by="participant_age")  %>%
   dplyr::mutate(average_contact = round(total_contacts / n_participants_rural$n_participants, digits = 1))
 
-missing_data_rural_conv <- data.frame(participant_age = c("<6mo","1-4y","10-14y","15-19y","20-29y","30-39y",
-                                                          "5-9y","6-11mo","<6mo","10-14y","20-29y","30-39y",
-                                                          "40-59y","6-11mo","<6mo"),
-                                      contact_age = c("<6mo","<6mo","<6mo","<6mo","<6mo","<6mo","<6mo","<6mo",
-                                                      "6-11mo","6-11mo","6-11mo","6-11mo","6-11mo","6-11mo",
-                                                      "60+y"),
+missing_data_rural_conv <- data.frame(participant_age = c("<6mo", "1-4y", "10-14y", "15-19y", "20-29y",
+                                                          "30-39y", "5-9y", "6-11mo", "<6mo", "10-14y",
+                                                          "20-29y", "30-39y", "40-59y", "6-11mo", "<6mo"),
+                                      contact_age = c("<6mo","<6mo","<6mo","<6mo", "<6mo", "<6mo", "<6mo",
+                                                      "<6mo", "6-11mo", "6-11mo", "6-11mo", "6-11mo",
+                                                      "6-11mo", "6-11mo", "60+y"),
                                       total_contacts = c(rep(0, each=15))) %>%
   left_join(n_participants_rural, by = "participant_age")
 
@@ -1755,6 +1747,30 @@ urban_matrix_conv <- fun_matrix1_plot(m1_urban_conv, "") # Urban site
 ```
 
 ```{r}
+# Define shared y-axis
+y_axis_shared <- scale_y_discrete(name = "Contact age")
+
+# Combine the plots into a 2x3 grid with shared x-axes and a common legend
+combined_plot <- (
+  (rural_matrix + urban_matrix) /
+    (rural_matrix_conv + urban_matrix_conv) /
+    (rural_matrix_touch + urban_matrix_touch)
+  ) &
+y_axis_shared
+combined_plot
+
+# Customize x-axis text in the third row
+combined_plot <- combined_plot + 
+  plot_annotation(
+    tag_levels = 'A',
+    theme(plot.tag = element_text(size = 12))
+  ) +
+  plot_layout(ncol = 2, heights = c(1, 1, 0.1), guides = "collect") +
+  theme(legend.position = "bottom")  # Move legend to the bottom
+combined_plot
+```
+
+```{r}
 #| include: false
 #| 
 # combined_matrix <- (rural_matrix | urban_matrix) / 
@@ -1767,29 +1783,19 @@ combined_matrix1 <- subplot(
     rural_matrix, showlegend = F) %>% 
     layout(xaxis = list(title = "")), 
   urban_matrix, shareY = TRUE) %>% 
-  layout(xaxis = list(tickvals = NULL, ticktext = NULL),
-         xaxis = list(title = ""))
+  layout(xaxis = list(tickvals = NULL, ticktext = NULL, title = ""))
 combined_matrix1
 
-combined_matrix2 <- subplot(style(
-  rural_matrix_conv, showlegend = F) %>%  
-    layout(xaxis = list(title = "")), 
-  urban_matrix_conv, shareY = TRUE)  %>% 
-  layout(xaxis = list(tickvals = NULL, ticktext = NULL)) 
-# %>%
-#   layout(annotations = list(  # Add x-axis title annotation
-#            list(
-#              x = -0.15,
-#              y = 0.1,
-#              text = "Contact age",
-#              xref = "paper",
-#              yref = "paper",
-#              xanchor = "center",
-#              yanchor = "bottom",
-#              showarrow = FALSE
-#            )
-#          )
-#   )
+combined_matrix2 <- rural_matrix_conv | urban_matrix_conv
+combined_matrix2 
+
+combined_matrix2 <- subplot(
+  style(
+    rural_matrix_conv, showlegend = FALSE) %>%  
+    layout(xaxis = list(title = "Contact age")), 
+  urban_matrix_conv, shareY = TRUE) %>% 
+  layout(xaxis = list(showticklabels = FALSE)) 
+combined_matrix2
 
 combined_matrix3 <- subplot(
   style(rural_matrix_touch, showlegend = F), 
@@ -1797,16 +1803,14 @@ combined_matrix3 <- subplot(
   layout(annotations = list(  # Add x-axis title annotation
     list(
       x = 0.5,
-      y = -0.6,
+      y = -0.7,
       text = "Participant age",
       xref = "paper",
       yref = "paper",
       xanchor = "center",
       yanchor = "bottom",
       showarrow = FALSE
-    )
-  )
-  )
+    )))
 
 
 # delete x-axis values
@@ -2071,6 +2075,87 @@ table2 <- contacts %>%
 
 ```
 
+
+```{r}
+
+participant_variables <- data.frame(var=c("participant_sex","participant_age",  
+                                          "occupation", "hh_size_cat", "enrolled_school", 
+                                          "weekday", "ari_symptom", "age_symptom"),
+                                    name=c("Sex", "Age", "Occupation", "Household size",
+                                           "Enrolled in school", "Weekday/Weekend", 
+                                           "ARI symptoms", "AGE symptoms")) %>% 
+  mutate(var = as.character(var),
+         name = as.character(name))
+
+# Define a function to calculate the mean and CI
+calculate_mean_ci <- function(data, var, alpha = 0.05) {
+  # Group the data by the specified variable
+  grouped_data <- data %>%
+    group_by({{ var }})
+  
+  # Calculate the mean and CI for the num_contacts variable
+  result <- grouped_data %>%
+    summarise(
+      mean_contact = mean(num_contacts, na.rm = TRUE),
+      lower_ci = quantile(num_contacts, probs = alpha / 2, na.rm = TRUE),
+      upper_ci = quantile(num_contacts, probs = 1 - alpha / 2, na.rm = TRUE)
+    )
+  
+  return(result)
+}
+
+# Create an empty list to store the results
+results_list <- list()
+
+# Loop through the participant_variables
+for (i in 1:nrow(participant_variables)) {
+  # Get the variable name
+  var_name <- participant_variables$var[[i]]
+  
+  # Calculate mean and CI for day 1
+  t1_result <- df_contact_d1 %>%
+    filter(study_site == "Rural") %>%
+    select({{ var_name }}, num_contacts) %>%
+    calculate_mean_ci(var = {{ var_name }})
+  
+  t1_result$mean_contact <- sprintf("%.1f (%.1f-%.1f)", t1_result$mean_contact,
+                                    t1_result$lower_ci, t1_result$upper_ci)
+
+  # Calculate mean and CI for day 2
+  t2_result <- df_contact_d2 %>%
+    filter(study_site == "Rural") %>%
+    select({{ var_name }}, num_contacts) %>%
+    calculate_mean_ci(var = {{ var_name }})
+  
+  t2_result$mean_contact <- sprintf("%.1f (%.1f-%.1f)", t2_result$mean_contact,
+                                    t2_result$lower_ci, t2_result$upper_ci)
+  
+  # Combine the results
+  combined_result <- qpcR:::cbind.na(t1_result, t2_result)
+  combined_result$Total <- paste("(", combined_result$Total, ")", sep = "")
+
+  # Set the rownames
+  rownames(combined_result) <- participant_variables$name[[i]]
+  
+  # Add the result to the list
+  results_list[[i]] <- combined_result
+}
+
+# View the results for the first variable
+print(results_list[[1]])
+
+# This code defines a calculate_mean_ci function to calculate the mean and 95% confidence intervals for a given variable. It then loops through the participant_variables, calculates the means and CIs for each variable separately for both day 1 and day 2, and stores the results in the results_list. You can access the results for each variable from this list.
+
+
+
+
+
+results_list
+
+```
+
+
+
 ```{r}
 
 #| label: tbl-site-contacts-d1
@@ -2082,24 +2167,27 @@ table2 <- contacts %>%
 list <- list(0)  ## empty list
 
 ## specify participant characteristic stratification for cross tabs/analysis
-variables <- data.frame(var=c("participant_sex","participant_age",  
-                              "hh_membership","occupation", "weekday", "enrolled_school",
-                              "touch_contact", "where_contact", "frequency_contact",
-                              "known_contact", "contact_mask2", "ari_symptom", "age_symptom"),
-                        name=c("Sex", "Age", "Household membership", "Occupation", "Weekday/Weekend",
-                               "Enrolled in school", "Did you touch?", "Contact location",
-                               "Frequency of contact", "Do you know the contact?", 
-                               "Contact wearing mask", "ARI symptoms", "AGE symptoms")) %>% 
-
-  
+participant_variables <- data.frame(var=c("participant_sex","participant_age",  
+                                          "occupation", "hh_size_cat", "enrolled_school", 
+                                          "weekday", "ari_symptom", "age_symptom"),
+                                    name=c("Sex", "Age", "Occupation", "Household size",
+                                           "Enrolled in school", "Weekday/Weekend", 
+                                           "ARI symptoms", "AGE symptoms")) %>% 
   mutate(var = as.character(var),
          name = as.character(name))
 
+contact_variables <- data.frame(var=c("hh_membership","touch_contact", "where_contact",
+                                      "frequency_contact", "known_contact", "contact_mask2"),
+                                name=c("Household membership", "Did you touch?", "Contact location", 
+                                       "Frequency of contact", "Do you know the contact?", 
+                                       "Was contact wearing mask?"))  %>% 
+  mutate(var = as.character(var),
+         name = as.character(name))
 
-for (i in 1:nrow(variables)){
-  x <- df_contact_d1[,variables$var[[i]]] 
+for (i in 1:nrow(participant_variables)){
+  x <- df_contact_d1[,participant_variables$var[[i]]] 
   # include another variable n as the number of participants per strata
-  variables$var[[i]]
+  participant_variables$var[[i]]
   
   # Number and proportion of contacts in each strata
   
@@ -2111,41 +2199,66 @@ for (i in 1:nrow(variables)){
   Tot <- rep("",5)
   
   # Rural median contacts for day 1
-  t1 <- df_contact_d1 %>%
+  t1_median <- df_contact_d1 %>%
     dplyr::filter(study_site == "Rural") %>%
     # since this is total contacts per person, keep only 1 distinct record
     distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>% 
     # na.omit() %>%
     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
+  t1_median$med_contact <- as.character(paste(t1_median$X50.,
+                                              "(",t1_median$X25., "-", t1_median$X75.,")", sep=""))
+  
+  # Calculate mean and 95% confidence intervals for day 1
+  t1_mean <- df_contact_d1 %>%
+    dplyr::filter(study_site == "Rural") %>%
+    distinct(rec_id, .keep_all = TRUE) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    summarise(mean_contact = mean(num_contacts, na.rm = TRUE),
+              lower_ci = quantile(num_contacts, na.rm = TRUE, probs = 0.025),
+              upper_ci = quantile(num_contacts, na.rm = TRUE, probs = 0.975))
+  t1_mean$mean_contact <- sprintf("%.1f (%.1f-%.1f)", t1_mean$mean_contact, t1_mean$lower_ci,
+                                  t1_mean$upper_ci)
+
   
   # Median contacts for day 2
-  t2 <- df_contact_d1 %>%
+  t2_median <- df_contact_d1 %>%
     dplyr::filter(study_site == "Urban") %>%
     # since this is total contacts per person, keep only 1 distinct record
     distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
     # na.omit() %>%
     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
-  
-  # Bind columns together and select relevant columns
-  t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
+  t2_median$med_contact <- as.character(paste(t2_median$X50.,
+                                              " (",t2_median$X25.,"-",t2_median$X75.,")",sep="")) # Formatting for export
 
-  # convert to numerical and round off?
-  
-  t0<- t0[,c(1,2,3,4)]
+  # Calculate mean and 95% confidence intervals for day 1
+  t2_mean <- df_contact_d2 %>%
+    dplyr::filter(study_site == "Rural") %>%
+    distinct(rec_id, .keep_all = TRUE) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    summarise(mean_contact = mean(num_contacts, na.rm = TRUE),
+              lower_ci = quantile(num_contacts, na.rm = TRUE, probs = 0.025),
+              upper_ci = quantile(num_contacts, na.rm = TRUE, probs = 0.975))
+  t2_mean$mean_contact <- sprintf("%.1f (%.1f-%.1f)", t2_mean$mean_contact, t2_mean$lower_ci,
+                                  t2_mean$upper_ci)
+
+    
+  # Bind columns together and select relevant columns
+  t0<-qpcR:::cbind.na(t0, t1_median$med_contact, t1_mean$mean_contact,
+                      t2_median$med_contact, t2_mean$mean_contact) 
+
+  t0<- t0[,c(1,2,3,4,5,6)]
   
   # rename total column
   t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
-  t0 <- t0[,c(1,3,4)]
+  t0 <- t0[,c(1,3,4,5,6)]
   t0[,1]<-as.character(t0[,1])
   t0[,2]<-as.character(t0[,2])
   
   t0<-rbind(Tot, t0)
   
-  rownames(t0)[1]<-variables$name[[i]]
+  rownames(t0)[1]<-participant_variables$name[[i]]
   list[[i]] <- t0
 }
 
@@ -2157,14 +2270,14 @@ res_restruct<- function(res) {
 }
 
 table3 <- res_restruct(list)
-colnames(table3) <- c("Total (%)", "Rural", "Urban")
+colnames(table3) <- c("Total (%)", "Median", "Mean", "Median", "Mean")
 
 table3 <- kable(table3, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 rm(t0, t1, t2)
 
-# table3
+table3
 ```
 
 ```{r}
