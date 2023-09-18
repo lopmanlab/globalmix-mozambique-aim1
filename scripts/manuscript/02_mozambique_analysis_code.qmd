@@ -33,6 +33,7 @@ participants <- readRDS("../../data/clean/participant_data_aim1.RDS")
 contacts <- readRDS("../../data/clean/contact_data_aim1.RDS")
 household <- readRDS("../../data/clean/household_survey_aim1.RDS")
 
+
 # set color themes
 # cols_site <- c("#1f77b4", "#ff7f0e")
 cols_site <- c("#d8b365", "#5ab4ac")
@@ -2075,7 +2076,6 @@ table2 <- contacts %>%
 
 ```
 
-
 ```{r}
 
 participant_variables <- data.frame(var=c("participant_sex","participant_age",  
@@ -2153,8 +2153,6 @@ print(results_list[[1]])
 results_list
 
 ```
-
-
 
 ```{r}
 
