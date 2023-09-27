@@ -8,35 +8,36 @@
 
 
 ### Check to see if there are IDs with no contacts reported
-sum(!participants$rec_id %in% contacts$rec_id) # 3
-
-missing <- participants %>% 
-  filter(!rec_id %in% unlist(contacts$rec_id)) %>% 
-  arrange(rec_id)
-# 371, 754, 1996
-
-# Remove those without contact diaries
-participants <- participants %>%
-  filter(!rec_id %in% unlist(missing$rec_id)) 
-
-rm(missing)
+# sum(!participants$rec_id %in% contacts$rec_id) # 0
+# 
+# missing <- participants %>% 
+#   filter(!rec_id %in% unlist(contacts$rec_id)) %>% 
+#   arrange(rec_id)
+# # 371, 754, 1996
+# 
+# # Remove those without contact diaries
+# participants <- participants %>%
+#   filter(!rec_id %in% unlist(missing$rec_id)) 
+# 
+# rm(missing)
 
 ### Check those who live alone
 live_alone <- household %>% 
   filter(rec_id %in% unlist(participants$rec_id)) %>%
   filter(hh_occupants==1) 
-# 35
+# 42
 
 
 ##### Data cleaning for socialmixr package
-contacts <- contacts %>%
+contacts2 <- contacts %>%
   left_join(participants %>% 
-              select(rec_id, participant_age), 
+              select(rec_id, "participant_age"), 
             by = c("rec_id"="rec_id")) %>%
-  mutate(age_part = participant_age) 
+  mutate(part_age = participant_age,
+         part_id = rec_id) 
 
 
-contacts <- contacts %>%
+contacts2 <- contacts2 %>%
   mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
          cnt_school = ifelse(location_contact___2==1, 1,0),
          cnt_work = ifelse(location_contact___3==1, 1,0),
@@ -50,14 +51,9 @@ contacts <- contacts %>%
                                    location_contact___10==1 | 
                                    location_contact___11==1,1,0))
 
-contacts <- contacts %>%
-  mutate(part_id = rec_id,
-         part_age = age_part)
-
-
 ##### Weighting
 ### age categories to join with population weighting
-contacts <- contacts %>%
+contacts2 <- contacts2 %>%
   mutate(
    part_age = as.character(part_age),
    weight_cat = case_when(
@@ -86,7 +82,7 @@ contacts <- contacts %>%
   #)
 
 ### read in population distribution
-pop_dist <- read.csv("scripts/manuscript/moz_pop_dist_new.csv") %>%
+pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -94,7 +90,7 @@ pop_dist <- read.csv("scripts/manuscript/moz_pop_dist_new.csv") %>%
   ))
 
 ### weight cleaning
-pop_weight <- contacts %>%
+pop_weight <- contacts2 %>%
   select(part_id, study_site, weight_cat) %>% 
   unique() %>%
   group_by(study_site, weight_cat) %>%
@@ -111,13 +107,13 @@ pop_weight <- pop_weight %>%
          part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
 
 ### join weights into participants data
-contacts <- contacts %>%
+contacts2 <- contacts2 %>%
   left_join(pop_weight %>% select(study_site, weight_cat, part_weight),
             by = c("study_site"="study_site", "weight_cat"="weight_cat"))
 
 
 ##### Create survey structures for input into socialmixr package
-contacts <- contacts %>% 
+contacts2 <- contacts2 %>% 
   mutate(
          part_age = as.character(part_age),
          contact_age = as.character(contact_age),
@@ -184,29 +180,29 @@ contacts <- contacts %>%
   ) 
 
 ### One urban and one rural
-cnt_u <- contacts %>% 
+cnt_u <- contacts2 %>% 
   filter(study_site == "Urban")
 
-cnt_r <- contacts %>% 
+cnt_r <- contacts2 %>% 
   filter(study_site == "Rural")
 
 
 df_r <- survey(
   participants = cnt_r %>% 
-    select(part_id, part_age_est_min, part_age_est_max, part_weight) %>% 
+    select(part_id, part_age, part_age_est_min, part_age_est_max, part_weight) %>% 
     unique() %>%
     rename(weights = part_weight) %>%
     mutate(country = rep("Mozambique"),
            year = rep(2020)),
   
   contacts = cnt_r %>%
-    select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
+    select(part_id, cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
   
 )
 
 df_u <- survey(
   participants = cnt_u %>% 
-    select(part_id, part_age_est_min, part_age_est_max, part_weight) %>% 
+    select(part_id, part_age, part_age_est_min, part_age_est_max, part_weight) %>% 
     unique()%>%
     rename(weights = part_weight) %>%
     mutate(country=rep("Mozambique"),
@@ -225,8 +221,10 @@ m_u <- contact_matrix(df_u,
                       age.limits = c(0,10,20,30,40,60), ##Specify age bands for the matrix
                       symmetric=T,  ##symmetric matrix
                       estimated.participant.age = "sample",
-                      missing.contact.age="sample", 
-                      estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      missing.contact.age="sample",
+                      # missing.participant.age="remove",
+                      estimated.contact.age = "sample",  
+                      ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = T,
                       return.part.weights=T,
                       n=1000)     ##Number of bootstraps
@@ -260,29 +258,31 @@ mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "co
 
 ##### Matrix visualization
 
-### urban
-urbanmatrix <- ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + 
-  theme(legend.position = "bottom") + 
-  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
-  xlab("Age of participant")+ylab("Age of contact")+
-  geom_tile()+
-  geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
-  theme()
-
 ### rural
 ruralmatrix <- ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + 
   theme(legend.position = "bottom") + 
-  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
+  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 7.5, limit = c(0,15))+
   xlab("Age of participant")+ylab("Age of contact")+
   geom_tile()+ 
   geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
   theme()
+# ruralmatrix
+
+### urban
+urbanmatrix <- ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + 
+  theme(legend.position = "bottom") + 
+  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 7.5, limit = c(0,15))+
+  xlab("Age of participant")+ylab("Age of contact")+
+  geom_tile()+
+  geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
+  theme()
+# urbanmatrix
+
+# prem matrix
+source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
 
 
-
-
-#####          CODE FOR TRANSMISSION MODEL           #####
-
+##### CODE FOR TRANSMISSION MODEL #####
 ### Fix R0. 2.5 to get q parameter
 
 # function
@@ -292,7 +292,7 @@ getr0 <- function(q,CM,d){
   print(r0)
 }
 
-# globalmix rural matrix
+# globalmix rural matrix values
 rural <- c(4.49, 4.46, 2.35, 2.67, 2.69, 2.45,
            3.28, 13.72, 5.40, 4.91, 5.03, 3.44,
            1.18, 3.69, 3.25, 2.62, 2.63, 1.80,
@@ -729,7 +729,7 @@ AR.rural <- rbind(AR.rur.0_9, AR.rur.10_19, AR.rur.20_29, AR.rur.30_39, AR.rur.4
 ARV.rural <- rbind(ARv.rur.0_9, ARv.rur.10_19, ARv.rur.20_29, ARv.rur.30_39, ARv.rur.40_59, ARv.rur.60)
 
 allAR.rural <- cbind(AR.rural, ARV.rural)
-allAR.rural.melt <- melt(allAR.rural, id.vars="Xax")
+allAR.rural.melt <- reshape2::melt(allAR.rural, id.vars="Xax")
 allAR.rural.melt <- allAR.rural.melt %>%
   mutate(vax = case_when(Var2 == 1 ~ "No Vaccine",
                          Var2 == 2 ~ "Vaccine")) %>%
@@ -753,7 +753,7 @@ AR.urban <- rbind(AR.urb.0_9, AR.urb.10_19, AR.urb.20_29, AR.urb.30_39, AR.urb.4
 ARV.urban <- rbind(ARv.urb.0_9, ARv.urb.10_19, ARv.urb.20_29, ARv.urb.30_39, ARv.urb.40_59, ARv.urb.60)
 
 allAR.urban <- cbind(AR.urban, ARV.urban)
-allAR.urban.melt <- melt(allAR.urban, id.vars="Xax")
+allAR.urban.melt <- reshape2::melt(allAR.urban, id.vars="Xax")
 allAR.urban.melt <- allAR.urban.melt %>%
   mutate(vax = case_when(Var2 == 1 ~ "No Vaccine",
                          Var2 == 2 ~ "Vaccine")) %>%
@@ -776,7 +776,7 @@ AR.prem <- rbind(AR.prem.0_9, AR.prem.10_19, AR.prem.20_29, AR.prem.30_39, AR.pr
 ARV.prem <- rbind(ARv.prem.0_9, ARv.prem.10_19, ARv.prem.20_29, ARv.prem.30_39, ARv.prem.40_59, ARv.prem.60)
 
 allAR.prem <- cbind(AR.prem, ARV.prem)
-allAR.prem.melt <- melt(allAR.prem, id.vars="Xax")
+allAR.prem.melt <- reshape2::melt(allAR.prem, id.vars="Xax")
 allAR.prem.melt <- allAR.prem.melt %>%
   mutate(vax = case_when(Var2 == 1 ~ "No Vaccine",
                          Var2 == 2 ~ "Vaccine")) %>%
@@ -795,7 +795,26 @@ AR.prem.plot <- ggplot(allAR.prem.melt, aes(age_group, value, fill=vax)) +
 AR.prem.plot
 
 # combine all plots and matrices into one figure
-modelplots <- plot_grid(ruralmatrix, urbanmatrix, premmatrix, AR.rural.plot, AR.urban.plot, AR.prem.plot,
-          labels = c('GlobalMix Rural', 'GlobalMix Urban', 'Synthetically Derived',
-                     'GlobalMix Rural', 'GlobalMix Urban', 'Synthetically Derived', label_size = 12, vjust = 3))
-modelplots
+
+# ADDED BY MCK TO TEST
+modelplots <- plot_grid(ruralmatrix, urbanmatrix,
+                        AR.rural.plot, AR.urban.plot,
+                        labels = c('GlobalMix Rural', 'GlobalMix Urban',
+                                   'GlobalMix Rural', 'GlobalMix Urban',
+                                   label_size = 12, vjust = 3))
+
+# premmatrix MISSING. WILL NEED SOME REFORMATING E.G. COMBINING LEGENDS AND 
+# CONFORMING TEXTS TO axis_text-theme2 AVAILABLE IN CUSTOMIZATION CODE.
+# modelplots <- plot_grid(ruralmatrix, urbanmatrix, premmatrix, 
+#                         AR.rural.plot, AR.urban.plot, AR.prem.plot,
+#           labels = c('GlobalMix Rural', 'GlobalMix Urban', 'Synthetically Derived',
+#                      'GlobalMix Rural', 'GlobalMix Urban', 'Synthetically Derived', 
+#                      label_size = 12, vjust = 3))
+
+ggsave(modelplots, filename = "../../output/figs/fig_modelplot.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF")
+# modelplots
+# 
+
+cat("End of model script.")
