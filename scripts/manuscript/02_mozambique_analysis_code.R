@@ -10,7 +10,7 @@ contacts <- readRDS("../../data/clean/contact_data_aim1.RDS")
 household <- readRDS("../../data/clean/household_survey_aim1.RDS")
 location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
 # 
-xx
+
 # set color themes
 # cols_site <- c("#1f77b4", "#ff7f0e")
 cols_site <- c("#d8b365", "#5ab4ac")
@@ -27,38 +27,24 @@ cols_week <- c("#8c564b", "#7f7f7f", "#d62728", "#17becf", "#e377c2", "#bcbd22",
 mean_hh_size <- participants %>%
   dplyr::group_by (study_site) %>%
   dplyr::summarize(mean_hh_size = round(mean(hh_size %>% na.omit()), 1)) # omits 1
-# check range of houehold size
+# check range of household size
 # rur_hhsize <- participants %>% filter(study_site=="Rural"); range(rur_hhsize$hh_size)
 # rur_hhsize <- participants %>% filter(study_site=="Rural"); range(rur_hhsize$hh_size)
 
 participants <- participants %>%
-  dplyr::mutate(
-    # hh_occupants = dplyr::case_when(hh_occupants == "01" ~ "1",
-    #                                 hh_occupants == "04" ~ "4",
-    #                                 hh_occupants == "06" ~ "6",
-    #                                 hh_occupants == "07" ~ "7",
-    #                                 hh_occupants == "09" ~ "9",
-    #                                 TRUE ~ hh_occupants),
-    # hh_occupants = as.numeric(hh_occupants),
-    
-    hh_occupants_cat = dplyr::case_when(hh_occupants == 1 ~ "1",
-                                        hh_occupants == 2 | hh_occupants == 3 ~ "2-3",
-                                        hh_occupants == 4 | hh_occupants == 6 ~ "4-6",
-                                        hh_occupants == 7 | hh_occupants == 10 ~ "7-10",
-                                        hh_occupants >10 ~ "10+"),
-    hh_occupants_cat = factor(hh_occupants_cat,
-                              levels = c("1", "2-3", "4-6", "7-10", "10+")))
-
+  dplyr::mutate(hh_size_cat = dplyr::case_when(hh_size == 1 ~ "1",
+                                               hh_size == 2 | hh_size == 3 ~ "2-3",
+                                               hh_size == 4 | hh_size == 6 ~ "4-6",
+                                               hh_size == 7 | hh_size == 10 ~ "7-10",
+                                               hh_size >10 ~ "10+"),
+                hh_size_cat = factor(hh_size_cat,
+                                     levels = c("1", "2-3", "4-6", "7-10", "10+")))
 
 # combine some occupation categories
-
- # additional-cleaning-contacts
-#| include: false
-#| warning: false
-#| echo: false
+# additional-cleaning-contacts
 
 
-# cleaing contacts
+# cleaning contacts
 contacts <- contacts %>%
   dplyr::filter(hh_member_relationship != "Self")
 
@@ -163,12 +149,7 @@ tot_rural_contacts <- nrow(contacts %>% filter(study_site == "Rural"))
 tot_urban_contacts <- nrow(contacts %>% filter(study_site == "Urban"))
 
 
-
 #| label: tbl-participant-summary
-#| tbl-cap: "Participant summary"
-#| include: false
-#| warning: false
-
 label(participants$study_site) <- "Site"
 label(participants$aim) <- "Aim"
 label(participants$participant_sex) <- "Sex"
@@ -180,18 +161,18 @@ label(participants$highest_educ) <- "Highest education level attained"
 label(participants$school_level) <- "Current school level"
 # label(participants$transport_use) <- "Transport use last 3 months"
 label(participants$occupation) <- "Occupation"
-label(participants$mask_uselb) <- "Regular mask use"
+label(participants$mask_use) <- "Regular mask use"
 label(participants$age_symptom) <- "Acute gastroenteritis (diarrhea)"
 label(participants$ari_symptom) <- "Acute respiratory infection"
-label(participants$contacts_completedbylb) <- "Who filled the diary?"
-label(participants$all_contactslb) <- "Did you record all contacts?"
-label(participants$behavior_changelb) <- "Did you change your social behavior due to the pandemic?"
+label(participants$contacts_completedby) <- "Who filled the diary?"
+label(participants$all_contacts) <- "Did you record all contacts?"
+label(participants$behavior_change) <- "Any social behavior due to the pandemic?"
 
 table1 <- participants %>%
   # dplyr::filter(aim==1) %>%
   dplyr::select(study_site, participant_sex, participant_age,  read_write, 
-                enrolled_school, occupation, mask_uselb, age_symptom, 
-                ari_symptom, contacts_completedbylb) %>% # day_of_week, year, study_site
+                enrolled_school, occupation, mask_use, age_symptom, 
+                ari_symptom, contacts_completedby) %>% # day_of_week, year, study_site
   tbl_summary(by=study_site, 
               percent="column",
               digits = all_categorical() ~ 0,
@@ -210,20 +191,11 @@ table1 <- participants %>%
 
 
 #| label: fig-participant-summary-agesex
-#| fig-cap: "Participant age and sex distribution"
-#| include: false
-#| warning: false
-
 # Sex by participant_age
 sex_page <- participants %>% 
   group_by(participant_sex, participant_age, study_site) %>% 
   dplyr::summarise(total = n(), .groups = "drop") %>%
   na.omit()
-
-# sex_page_plt <- fun_sex_plot(sex_page) +
-#       scale_color_manual(values = c("#E7B800", "#2E9FDF")) +
-#       geom_vline(xintercept=0.5, linetype="dashed")
-library(grid)
 
 fig_sex_age <- sex_page %>%
   ggplot(., aes(x=participant_age, y=total, fill=participant_sex)) +
@@ -240,7 +212,7 @@ fig_sex_age <- sex_page %>%
        y = "N",
        fill = element_blank()) +
   axis_text_theme2 +
-  theme(legend.position = c(0.4, 0.5),
+  theme(legend.position = c(0.4, 0.4),
         legend.key.size = unit(0.5, "lines"),
         strip.background = element_blank(),
         legend.direction  = "vertical",
@@ -248,22 +220,10 @@ fig_sex_age <- sex_page %>%
         panel.spacing = unit(2, "lines")) +
   geom_hline(yintercept=63, linetype="dashed")
 
-fig_sex_age
-
-# theme(legend.position = "bottom",
-#       # legend.title = element_text(size = 8),
-#       legend.text = element_text(size = 10),
-#       legend.justification = "center") +
-
-# change legend order
-
-
-
+# fig_sex_age
 ggsave(fig_sex_age, filename = "../../output/figs/fig1_participant_age_sex.pdf",
        height=6, width=10, dpi=300,
        bg="#FFFFFF")
-
-
 
 
 #| label: fig-diary-filler
@@ -271,15 +231,15 @@ ggsave(fig_sex_age, filename = "../../output/figs/fig1_participant_age_sex.pdf",
 
 # diary filler by participant_age
 diary_filler <- participants %>% 
-  group_by(contacts_completedbylb, participant_age, study_site) %>% 
+  group_by(contacts_completedby, participant_age, study_site) %>% 
   dplyr::summarise(total = n(), .groups = "drop") %>%
   na.omit() %>%
   group_by(study_site) %>%  # Group by study_site
-  mutate(proportion = total / sum(total))  # Calculate proportion within each study_site
+  mutate(proportion = total/sum(total))  # Calculate proportion within each study_site
 
 
 fig_diary_filler <- diary_filler %>%
-  ggplot(aes(x = participant_age, y = proportion, fill = contacts_completedbylb)) +
+  ggplot(aes(x = participant_age, y = proportion, fill = contacts_completedby)) +
   geom_bar(stat="identity", position = "fill", col = "white") +
   geom_text(aes(label = scales::percent(proportion)),  # Provide the label aesthetic
             position = position_fill(vjust = 0.5), show.legend = FALSE) +
@@ -298,14 +258,7 @@ fig_diary_filler <- diary_filler %>%
         # strip.text = element_blank(), # remove facet titles
         panel.spacing = unit(2, "lines"))
 
-fig_diary_filler
-
-
-
-#| label: overall-contacts-2-days
-#| echo: false
-#| warning: false
-#| include: false
+# fig_diary_filler
 
 # merge participant and contact data
 df_contact <- contacts %>%
@@ -382,14 +335,8 @@ names(ci_contacts_urban)[1] <- "ll"
 names(ci_contacts_urban)[2] <- "ul"
 
 
-
-
 #| eval: true
 #| label: fig-contact-distribution-overall-plotly
-#| fig-cap: "Overall distribution of contacts over two days by site."
-#| warning: false
-#| echo: false
-#| include: false
 
 # # rural histogram
 hist_rural <- contacts_site %>%
@@ -444,11 +391,11 @@ hist_urban <- contacts_site %>%
 
 contact_hist_overall <- hist_rural / hist_urban 
 
-ggsave(contact_hist_overall, filename = "../../output/figs/fig1_contact_hist_overall.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(contact_hist_overall, filename = "../output/figs/fig1_contact_hist_overall.pdf",
+#        height=6, width=8, dpi=300,
+#        bg="#FFFFFF")
 
-contact_hist_overall
+# contact_hist_overall
 
 # overall_contacts_hist <- cowplot::plot_grid(hist_rural, hist_urban,
 #                                             labels = c("A", "B"),
@@ -464,10 +411,6 @@ contact_hist_overall
 
 
 #| label: contacts-by-day
-#| echo: false
-#| warning: false
-#| include: false
-
 # number of contacts per participant by study day
 
 # contacts that happened on day 1 only
@@ -533,7 +476,7 @@ df_contact_d2 <- left_join(df_contact_d2, day2_num_contacts, by="rec_id" )
 
 # mean overall number of contacts on day 2 only
 ci_contacts_overall_d2 <- lm(num_contacts ~ 1, day2_num_contacts)
-mean_contacts_overall_d2 <- ci_contacts_overall_d2$coefficients
+mean_contacts_overall_d2 <- round(ci_contacts_overall_d2$coefficients, 1)
 #   df_contact_d2 %>%
 #   dplyr::summarize(mean = round(mean(num_contacts),1), .groups = "drop")
 ci_contacts_overall_d2 <- as.data.frame(round(confint(ci_contacts_overall_d2), 1))
@@ -581,12 +524,12 @@ nrow(day1_num_contacts) == nrow(day2_num_contacts)
 # assign a value of 0 to num_contacts.
 checkd1 <- day1_num_contacts %>%
   filter(!rec_id %in% unlist(day2_num_contacts$rec_id)) %>%
-  dplyr::select("rec_id") %>%
+  select(rec_id) %>%
   mutate(num_contacts = 0)
 
 checkd2 <- day2_num_contacts %>%
   filter(!rec_id %in% unlist(day1_num_contacts$rec_id)) %>%
-  dplyr::select(rec_id) %>%
+  select(rec_id) %>%
   mutate(num_contacts = 0)
 
 day1_num_contacts <- rbind(day1_num_contacts, checkd2)
@@ -609,10 +552,10 @@ wilcoxtest_overall_d1d2 <- round(wilcox.test(day1_num_contacts$num_contacts,
 # Wilcoxon rank-sum test comparing rural and urban contacts
 rural_day1_contacts <- day1_num_contacts %>%
   filter(study_site == "Rural") %>%
-  dplyr::select(num_contacts)
+  select(num_contacts)
 urban_day1_contacts <- day1_num_contacts %>%
   filter(study_site == "Urban")  %>%
-  dplyr::select(num_contacts)
+  select(num_contacts)
 
 ttest_bysite_d1 <- round(t.test(rural_day1_contacts $num_contacts, 
                                 urban_day1_contacts $num_contacts)$p.value,2)
@@ -636,19 +579,25 @@ wilcoxtest_bysite_d1 <- round(wilcox.test(rural_day1_contacts $num_contacts,
 #              linetype="dashed", color="black", size=0.5) +
 #   labs(x = "Num of contacts", y = "Count", title = "Number of contacts by study site") +
 #   theme_classic() 
+# wilcoxtest_bysite_d1 # p<0.05
+
+# plot
+# overall_contacts_summary <- contacts_site_d1 %>%
+#   group_by(study_site) %>%
+#   summarize(mean_num_contacts = round(mean(num_contacts), 1), 
+#             ci_low = round(mean_num_contacts - 1.96 * sd(num_contacts) / sqrt(n()), 1), 
+#             ci_high = round(mean_num_contacts + 1.96 * sd(num_contacts) / sqrt(n()),1))
+# 
+# ggplot(contacts_site_d1, aes(x=num_contacts)) +
+#   geom_histogram(binwidth=1, alpha=0.7) +
+#   facet_wrap(~study_site, ncol=1) +
+#   geom_vline(data = overall_contacts_summary, aes(xintercept = mean_num_contacts), 
+#              linetype="dashed", color="black", size=0.5) +
+#   labs(x = "Num of contacts", y = "Count", title = "Number of contacts by study site") +
+#   theme_classic() 
 
 
-
-
-#| eval: true
-#| label: fig-contact-distribution-d1
-#| warning: false
-#| include: false
-
-# # rural histogram
-# df_hist_rural_d1 <- contacts_site_d1 %>%
-#   dplyr::filter(study_site == "Rural")
-# # rural histogram
+## rural histogram
 contact_hist_rural_d1 <- contacts_site_d1 %>%
   dplyr::filter(study_site == "Rural") %>%
   ggplot(., aes(x=num_contacts)) +
@@ -693,25 +642,8 @@ contact_hist_d1 <- contact_hist_rural_d1 | contact_hist_urban_d1
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 
-# contact_hist_d1
-# ggpubr::ggarrange(hist_rural_d1, hist_urban_d1, 
-#                   ncol = 1, nrow = 2,
-#                   common.legend = FALSE, legend = "bottom",
-#                   common.axis = TRUE, axis="both",
-#                   align = "hv", heights = c(2, 2))
 
-
-
-
-
-#| eval: true
-#| label: fig-contact-distribution-d2
-#| warning: false
-#| include: false
-
-# # rural histogram
-# df_hist_rural_d2 <- contacts_site_d2 %>%
-#   dplyr::filter(study_site == "Rural")
+## rural histogram
 contact_hist_rural_d2 <- contacts_site_d2 %>%
   dplyr::filter(study_site == "Rural") %>%
   ggplot(., aes(x=num_contacts)) +
@@ -759,13 +691,7 @@ contact_hist_d2 <- contact_hist_rural_d2 / contact_hist_urban_d2
 # contact_hist_d2
 
 
-
-
 #| label: fig-contact-boxplot-age
-#| fig-cap: "Overall distribution of contacts by rural and urban site"
-#| warning: false
-#| include: false
-
 # median by attributes
 # 1. age
 contacts_age <- df_contact_d1 %>%
@@ -776,48 +702,33 @@ fig_contacts_age_box <- ggplot(contacts_age, aes(x = participant_age,
                                                  y = num_contacts, 
                                                  fill = study_site)) +
   geom_boxplot(width = 0.4, position = position_dodge(width = 0.5), outlier.shape = NA) +
-  # geom_boxplot(outlier.shape = NA)
   scale_fill_manual(values = cols_site) +
   labs(x = "Participant age", y = "# of contacts") +
   ylim(0, 30) +
   theme_classic() +
   axis_text_theme2 +
-  theme(legend.position = "none")
-  # theme(legend.key.size = unit(1, "lines"),
-  #       legend.direction = "horizontal")
+  theme(legend.position = "none") 
+# theme(legend.key.size = unit(1, "lines"),
+#       legend.direction = "horizontal")
 
-# ggsave(fig_contacts_age_box, filename = "../../output/figs/fig_contact_age_box.pdf",
+# ggsave(fig_contacts_age_box, filename = "../output/figs/fig_contact_age_box.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 
 fig_contacts_age_box
 
 
-
-
 #| label: fig-baseline-distributions
 #| include: false
-# baseline_plot_heights <- c(300, 300, 400)
+
 fig_baseline_distributions <- wrap_plots(fig_sex_age, contact_hist_d1, fig_contacts_age_box) + 
-  plot_annotation(tag_levels = 'A') + 
-  theme(plot.tag = element_text(size = 12)) +
-  plot_layout(nrow=3, heights = c(200, 100, 200))
+  plot_annotation(tag_levels = 'A') + theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(400, 200, 200))
 
-fig_baseline_distributions
-
-# ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_distributions.pdf",
-#        height=6, width=8, dpi=300,
-#        bg="#FFFFFF")
-
-fig_baseline_distributions
-
+# fig_baseline_distributions
 
 
 #| label: fig-contact-boxplot-sex
-#| fig-cap: "Distribution of contacts by sex"
-#| warning: false
-#| include: false
-
 contacts_sex <- df_contact_d1 %>%
   # group by id and count number of contacts
   dplyr::group_by(rec_id, study_site, participant_age, participant_sex) %>%   
@@ -839,7 +750,7 @@ mean_contacts_male_rural <- mean(contacts_male_rural$num_contacts)
 mean_contacts_female_rural <- mean(contacts_female_rural$num_contacts)
 wilcoxtest_rural_bysex <- round(wilcox.test(contacts_male_rural$num_contacts,
                                             contacts_female_rural$num_contacts)$p.value,2)
-wilcoxtest_rural_bysex # p=0.34
+# wilcoxtest_rural_bysex # p=0.11
 
 contacts_male_urban <- contacts_male %>% filter(study_site == "Urban")
 contacts_female_urban <- contacts_female %>% filter(study_site == "Urban")
@@ -847,13 +758,13 @@ mean_contacts_male_urban <- mean(contacts_male_urban$num_contacts)
 mean_contacts_female_urban <- mean(contacts_female_urban$num_contacts)
 wilcoxtest_urban_bysex <- round(wilcox.test(contacts_male_urban$num_contacts,
                                             contacts_female_urban$num_contacts)$p.value,2) # p=0.35
-wilcoxtest_urban_bysex # p=0.02
+wilcoxtest_urban_bysex # p=0.34
 
 fig_sex_box <- fxn_fig_boxplot(contacts_sex %>% 
                                  filter(!is.na(participant_sex)), 
                                "participant_sex") +
   axis_text_theme2
-fig_sex_box
+# fig_sex_box
 
 # ggsave(fig_sex_box, filename = "../../output/figs/moz_sex_site_boxplot.pdf",
 #        height=6, width=8, dpi=300,
@@ -875,37 +786,18 @@ contacts_conv_rural <- contacts_type %>% filter(touch_contact == "No") %>% filte
 contacts_touch_urban <- contacts_type %>% filter(touch_contact == "Yes") %>% filter(study_site == "Urban")
 contacts_conv_urban <- contacts_type %>% filter(touch_contact == "No")  %>% filter(study_site == "Urban")
 
-mean_contacts_touch_rural <- mean(contacts_touch_rural$num_contacts)
-ci_contacts_rural_touch <- lm(num_contacts ~ 1, contacts_touch_rural)
-ci_contacts_rural_touch <- as.data.frame(round(confint(ci_contacts_rural_touch),1))
-names(ci_contacts_rural_touch)[1] <- "ll"
-names(ci_contacts_rural_touch)[2] <- "ul"
-
-mean_contacts_conv_rural <- mean(contacts_conv_rural$num_contacts)
-ci_contacts_rural_conv <- lm(num_contacts ~ 1, contacts_conv_rural)
-ci_contacts_rural_conv <- as.data.frame(round(confint(ci_contacts_rural_conv),1))
-names(ci_contacts_rural_conv)[1] <- "ll"
-names(ci_contacts_rural_conv)[2] <- "ul"
-
-mean_contacts_touch_urban <- mean(contacts_touch_urban$num_contacts)
-ci_contacts_urban_touch <- lm(num_contacts ~ 1, contacts_touch_urban)
-ci_contacts_urban_touch <- as.data.frame(round(confint(ci_contacts_urban_touch),1))
-names(ci_contacts_urban_touch)[1] <- "ll"
-names(ci_contacts_urban_touch)[2] <- "ul"
-
-mean_contacts_conv_urban <- mean(contacts_conv_urban$num_contacts)
-ci_contacts_urban_conv <- lm(num_contacts ~ 1, contacts_conv_urban)
-ci_contacts_urban_conv <- as.data.frame(round(confint(ci_contacts_urban_conv),1))
-names(ci_contacts_urban_conv)[1] <- "ll"
-names(ci_contacts_urban_conv)[2] <- "ul"
+mean_contacts_touch_rural <- round(mean(contacts_touch_rural$num_contacts), 1)
+mean_contacts_conv_rural <- round(mean(contacts_conv_rural$num_contacts), 1)
+mean_contacts_touch_urban <- round(mean(contacts_touch_urban$num_contacts), 1)
+mean_contacts_conv_urban <- round(mean(contacts_conv_urban$num_contacts), 1)
 
 wilcoxtest_bytouch_rural <- round(wilcox.test(contacts_touch_rural$num_contacts, 
                                               contacts_conv_rural$num_contacts)$p.value, 10) 
-wilcoxtest_bytouch_rural # p<0.05
+wilcoxtest_bytouch_rural# p<0.05
 
 wilcoxtest_bytouch_urban <- round(wilcox.test(contacts_touch_urban$num_contacts, 
-                                              contacts_conv_urban$num_contacts)$p.value, 20) # p<0.05
-wilcoxtest_bytouch_urban # p=0
+                                              contacts_conv_urban$num_contacts)$p.value, 2) # p<0.05
+wilcoxtest_bytouch_urban
 
 fig_touch_box <- fxn_fig_boxplot(contacts_type, "touch_contact") +
   axis_text_theme2
@@ -917,36 +809,8 @@ fig_touch_box
 
 # fig_touch_box
 
-### LONG CODE
-# fig2_rural_touch_box <- contacts_type %>%
-#   filter(study_site=="Rural") %>%
-#   ggplot(aes(x = participant_age, y = num_contacts, fill = touch_contact)) +
-#   geom_boxplot(position = position_dodge(width = 0.8)) +
-#   scale_fill_manual(values = c("#ef8a62", "#67a9cf")) +
-#   labs(x = "", y = "Number of contacts") +
-#   ylim(0, 40) +
-#   theme_minimal()
-# # fig2_rural_touch_box
-# 
-# fig2_urban_touch_box <- contacts_type %>%
-#   filter(study_site=="Urban") %>%
-#   ggplot(aes(x = participant_age, y = num_contacts, fill = touch_contact)) +
-#   geom_boxplot(position = position_dodge(width = 0.8)) +
-#   scale_fill_manual(values = c("#ef8a62", "#67a9cf")) +
-#   labs(x = "Participant age", y = "Number of contacts") +
-#   ylim(0, 40) +
-#   theme_minimal()
-# 
-# fig_touch <- fig2_rural_touch_box / fig2_urban_touch_box + plot_layout(ncol = 1, nrow = 2)
-
-
-
 
 #| label: fig-contact-boxplot-hhmembership
-#| fig-cap: "Distribution of contacts by household membership"
-#| warning: false
-#| include: false
-
 # overall
 contacts_hhmember <- df_contact_d1 %>%
   dplyr::group_by(rec_id, study_site, participant_age, hh_membership) %>% 
@@ -956,7 +820,7 @@ fig_hhmembership_box <- fxn_fig_boxplot(contacts_hhmember, "hh_membership") +
   axis_text_theme2 +
   theme(legend.position = c(0.3, 0.9))
 fig_hhmembership_box
-# ggsave(fig_hhmembership_box, filename = "../../output/figs/moz_hh_membership_boxplot.pdf",
+# ggsave(fig_hhmembership_box, filename = "../output/figs/moz_hh_membership_boxplot.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 
@@ -989,16 +853,10 @@ wilcoxtest_hhmember_urban <- round(wilcox.test(contacts_hhmember_urban$num_conta
 # wilcoxtest_hhmember_urban # p<0.05
 
 rm(hhmember, nonmember) 
-
 # fig_hhmembership_box
 
 
-
-
 #| label: fig-contact-boxplot-education
-#| fig-cap: "Distribution of contacts by school enrollment"
-#| warning: false
-#| include: false
 
 # enrolled in school
 contacts_education <- df_contact_d1 %>%
@@ -1049,7 +907,7 @@ wilcoxtest_urban_byschool
 fig_education_box <- fxn_fig_boxplot(contacts_education, "enrolled_school") +
   axis_text_theme2
 
-# ggsave(fig_education_box, filename = "../../output/figs/fig_education_box.pdf",
+# ggsave(fig_education_box, filename = "../output/figs/fig_education_box.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 
@@ -1057,12 +915,7 @@ fig_education_box <- fxn_fig_boxplot(contacts_education, "enrolled_school") +
 
 
 
-
 #| label: fig-contact-boxplot-dayweek
-#| fig-cap: "Distribution of contacts by day of the week"
-#| warning: false
-#| include: false
-
 # day of week
 contacts_dayweek <- df_contact_d1 %>%
   dplyr::group_by(rec_id, study_site, participant_age, participant_sex, day_of_week) %>%
@@ -1080,44 +933,15 @@ fig_dayweek_box <- contacts_dayweek %>%
   axis_text_theme2  +
   theme(legend.position = c(0.4, 0.9))
 
-# ggsave(fig_dayweek_box, filename = "../../output/figs/fig_dayweek_box.pdf",
+# ggsave(fig_dayweek_box, filename = "../output/figs/fig_dayweek_box.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 
 fig_dayweek_box
 
-# fig6_dayweek_rural_box <- contacts_dayweek %>%
-#   dplyr::filter(study_site == "Rural") %>%
-#   plotly::plot_ly(x=~participant_age,  y=~num_contacts,  color=~day_of_week,  
-#                   type = 'box',  colors = c("#a6bddb", "#67a9cf", "#3690c0", 
-#                                             "#02818a", "#02818a", "#fed976", "#fd8d3c")) %>%
-#   plotly::layout(#annotations = title_rural_d1,
-#     xaxis = list(title= 'Participant age'),  
-#     yaxis = list(title='Number of contacts',
-#                  range=list(0,40))) %>%
-#   plotly::layout(boxmode = "group")
-# 
-# fig6_dayweek_urban_box <- contacts_dayweek %>%
-#   dplyr::filter(study_site == "Urban") %>%
-#   plotly::plot_ly(x=~participant_age,  y=~num_contacts,  color=~day_of_week,  
-#                   type = 'box',  colors = c("#a6bddb", "#67a9cf", "#3690c0", 
-#                                             "#02818a", "#02818a", "#fed976", "#fd8d3c")) %>%
-#   plotly::layout(#annotations = title_urban_d1,
-#     xaxis = list(title= 'Participant age'),  
-#     yaxis = list(title='Number of contacts',
-#                  range=list(0,40))) %>%
-#   plotly::layout(boxmode = "group")
-# 
-# subplot(style(fig6_dayweek_rural_box, showlegend = F), nrows=2, fig6_dayweek_urban_box, 
-#         shareX = TRUE, margin=0.05)
-
-
 
 
 #| label: fig-contact-boxplot-weekday
-#| fig-cap: "Distribution of contacts by weekday/weekend"
-#| warning: false
-#| include: false
 
 # weekday/weekend
 contacts_weekday <- df_contact_d1 %>%
@@ -1209,12 +1033,9 @@ fig_weekday_box <- fxn_fig_boxplot(contacts_weekday, "weekday") +
 
 
 #| label: fig-contact-boxplot-weekyear
-#| fig-cap: "Distribution of contacts by week of the year"
-#| warning: false
-#| include: false
-
 # week numbers for 2021: https://www.epochconverter.com/weeks/2021
 
+# week of the year
 # week of the year
 contacts_weekyear <- df_contact_d1 %>%
   dplyr::group_by(rec_id, study_site, participant_age, weekyear) %>%
@@ -1225,44 +1046,6 @@ contacts_weekyear <- df_contact_d1 %>%
 participants_weekyear <- df_contact_d1 %>%
   dplyr::group_by(study_site, weekyear) %>%
   dplyr::summarize(n_participants = length(unique(rec_id)))
-
-# # function to draw plots
-# fxn_weekyear_rural_box <- function(data, site) {
-#   # Filter the data based on the provided study_site
-#   filtered_data <- data %>%
-#     dplyr::filter(study_site == site)
-#   
-#   # Convert weekyear to a factor or character
-#   filtered_data$weekyear <- as.character(filtered_data$weekyear)
-#   # Or, use the following line instead if weekyear is in date format
-#   # filtered_data$weekyear <- as.character(filtered_data$weekyear)
-#   
-#   # Create the ggplot boxplot
-#   plot <- ggplot(filtered_data, aes(x = weekyear, y = num_contacts, fill = study_site)) +
-#     geom_boxplot(position = position_dodge(width = 0.8)) +
-#     scale_fill_manual(values = c("#ef8a62", "#67a9cf")) +
-#     labs(x = 'Week of year', y = 'Number of contacts') +
-#     ylim(0, 40) +
-#     theme_minimal() +
-#     # Add COVID-19 period highlights
-#     geom_rect(data = NULL, aes(xmin = as.Date("2020-10-01"), xmax = as.Date("2021-02-28"), 
-#                                ymin = -Inf, ymax = Inf), fill = "#bdbdbd", alpha = 0.3) +
-#     geom_rect(data = NULL, aes(xmin = as.Date("2021-04-26"), xmax = as.Date("2021-08-02"), 
-#                                ymin = -Inf, ymax = Inf), fill = "#bdbdbd", alpha = 0.3) +
-#     geom_rect(data = NULL, aes(xmin = as.Date("2021-10-01"), xmax = as.Date("2022-01-31"), 
-#                                ymin = -Inf, ymax = Inf), fill = "#bdbdbd", alpha = 0.3) +
-#     # Add annotations
-#     annotate("text", x = as.Date("2021-01-01"), y = 30, 
-#              label = "Wave 2, Oct 2020 - Feb 2021", size = 4, hjust = 0, vjust = 0) +
-#     annotate("text", x = as.Date("2021-06-15"), y = 30, 
-#              label = "Wave 3, Delta, Apr 26 - Aug 2, 2021", size = 4, hjust = 0, vjust = 0) +
-#     annotate("text", x = as.Date("2021-11-15"), y = 30, 
-#              label = "Wave 4, Omicron, Oct 2021 - Jan 2022", size = 4, hjust = 0, vjust = 0)
-#   
-#   return(plot)
-# }
-# fxn_weekyear_rural_box(data = contacts_weekyear, site = "Rural")
-
 
 fig_weekyear_rural_box <- contacts_weekyear %>%
   dplyr::filter(study_site == "Rural") %>%
@@ -1316,9 +1099,6 @@ fig_weekyear_urban_box <- contacts_weekyear %>%
                  range=list(0,40))) %>%
   plotly::layout(boxmode = "group")  %>%
   
-  # highlight COVID-19 periods: refs
-  # https://allafrica.com/stories/202106281037.html
-  # https://www.science.org/doi/10.1126/science.abq5358
   plotly::layout(shapes = list(
     # wave 2, Oct 2020-Feb 2021. restrictions eased in May
     
@@ -1367,13 +1147,7 @@ fig_weekyear_site_box <- subplot(style(fig_weekyear_rural_box, showlegend = F), 
 fig_weekyear_site_box
 
 
-
-
 #| label: fig-contact-boxplot-arisymptom
-#| fig-cap: "Distribution of contacts by ARI status"
-#| warning: false
-#| include: false
-
 table(participants$ari_symptom) # 
 # overall
 contacts_ari <- df_contact_d1 %>%
@@ -1430,20 +1204,14 @@ fig_ari_box <- fxn_fig_boxplot(contacts_ari, "ari_symptom") +
   axis_text_theme2 +
   theme(legend.position = c(0.3, 0.9))
 
-# ggsave(fig_ari_box, filename = "../../output/figs/fig_ARI_box.pdf",
+# ggsave(fig_ari_box, filename = "../output/figs/fig_ARI_box.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 #        
-# fig_ari_box
-
-
+fig_ari_box
 
 
 #| label: fig-contact-boxplot-agesymptom
-#| fig-cap: "Distribution of contacts by AGE infection status"
-#| warning: false
-#| include: false
-
 # table(participants$age_symptom) # 24/1207 with AGE symptoms
 
 # overall
@@ -1466,9 +1234,6 @@ fig_AGE_box <- fxn_fig_boxplot(contacts_age, "age_symptom")  +
 
 
 #| label: martix-calculations
-#| echo: false
-#| include: false
-#| warning: false
 
 # this only assumes contacts occur within the same age groups, hence the paired ages
 standard_str <- data.frame(participant_age = rep(unique(df_contact$participant_age), each=10),
@@ -1521,26 +1286,9 @@ m1_urban <- df_contact_d1 %>%
                                                 "30-39y", "40-59y", "60+y")))
 
 
-
-
-#| label: matrix-functions
-#| echo: false
-#| warning: false
-#| include: false
-
-
-
-
-
 #| label: fig-contact-matrix
-#| fig-cap: "Crude contact matrices in rural and urban Mozambique"
-#| include: false
-
 rural_matrix <- fun_matrix1_plot(m1_rural, "") # Rural site
-# ggplotly(rural_matrix, tooltip = "text")
-
 urban_matrix <- fun_matrix1_plot(m1_urban, "") # Urban site
-# ggplotly(urban_matrix, tooltip = "text")
 
 crude_matrix <- rural_matrix | urban_matrix
 
@@ -1826,27 +1574,21 @@ contact_behav <- df_contact_d1 %>%
   mutate(prop = round(n/tot_contacts, digits=1)) %>%
   mutate(value = factor(value, 
                         levels = c("Yes", "No", 
-                                   
                                    "Yes", "No", 
                                    # " Never met before", "<1 yr", "1-2 yrs", "3-5 yrs", 
                                    # " 6-10 yrs", ">10 yrs",
                                    
                                    "Indoors", "Outdoors", "Both",
-                                   
                                    "<5mins","5-30mins","31mins-1hr",">1hr"),
                         
-                        labels = c("Yes", "No",    
-                                   
+                        labels = c("Yes", "No",  
                                    "Yes", "No", 
                                    
                                    # " Never met", "<1yr", "1-2yrs ", "3-5yrs ", 
                                    # " 6-10yrs", ">10yrs",
                                    
                                    "Indoors", "Outdoors", "Both",
-                                   
                                    "<5mins","5-30mins","31mins-1hr",">1hr")))
-
-# function to plot behavior of contacts by age
 
 unhighlighed_col_darker <- 'grey60'
 
@@ -1898,79 +1640,35 @@ contact_behav_fun <- function(df, action){
 }
 
 
-
-
 #| label: fig-mask-wearing
-#| include: false
-#| fig-cap: "Mask wearing"
-#| fig-cap-location: bottom
-#| fig-width: 13
-#| fig-height: 6
-
-
 fig1_masking <- contact_behav_fun(contact_behav, "contact_mask2") +
   labs(title = "", # Was the contact wearing a mask?
        x = "% of contacts") 
-
 # fig1_masking
 
 
-
 #| label: fig-contact-duration
-#| fig-cap: "Duration of contact"
-#| fig-cap-location: bottom
-#| fig-width: 13
-#| fig-height: 6
-#| include: false
-
 fig2_duration <- contact_behav_fun(contact_behav, "duration_contact2")+
   labs(title = "", # What was the duration of the contact?
        x = "% of contacts") 
 # fig2_duration 
 
-# check why contact duration <5 mins is not showingS
-
-
 
 #| label: fig-contact-type
-#| fig-cap: "Type of contact"
-#| #| fig-cap-location: bottom
-#| fig-width: 13
-#| fig-height: 6
-#| include: false
-
-
 fig3_touch <- contact_behav_fun(contact_behav, "touch_contact") +
   labs(title = "", # Did you have a physical contact?
        x = "% of contacts") 
-
 # fig3_touch 
 
 
-
-
-
-
 #| label: fig-contact-location
-#| fig-cap: "Location of contact"
-#| #| fig-cap-location: bottom
-#| fig-width: 13
-#| fig-height: 6
-#| include: false
-
 fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
   labs(title = "", # Where did the contact occur?
        x = "% of contacts") 
 # fig4_location 
 
 
-
 #| label: tbl-contact-characteristics
-#| tbl-cap: "Characteristics of contacts"
-#| warning:  false
-#| include: true
-
-
 label(contacts$contact_sex) <- "Contact sex"
 label(contacts$contact_age) <- "Contact age"
 label(contacts$contact_mask) <- "Was the contact wearing a mask?"
@@ -1999,35 +1697,33 @@ table2 <- contacts %>%
 
 
 
-
-
-#| label: tbl-site-contacts-d1
-#| tbl-cap: "Summary of day 1 contacts by site"
-#| warning: false
-#| include: false
+#| label: tbl-average-contacts-d1
 
 # table of contacts by day of study: both days, day 1 and day 2
-list <- list(0)  ## empty list
+results_list <- list(0)  ## empty list
 
 ## specify participant characteristic stratification for cross tabs/analysis
-variables <- data.frame(var=c("participant_sex","participant_age",  
-                              "hh_membership","occupation", "weekday", "enrolled_school",
-                              "touch_contact", "where_contact", "frequency_contact",
-                              "known_contact", "contact_mask2", "ari_symptom", "age_symptom"),
-                        name=c("Sex", "Age", "Household membership", "Occupation", "Weekday/Weekend",
-                               "Enrolled in school", "Did you touch?", "Contact location",
-                               "Frequency of contact", "Do you know the contact?", 
-                               "Contact wearing mask", "ARI symptoms", "AGE symptoms")) %>% 
-  
-  
+participant_variables <- data.frame(var=c("participant_sex","participant_age",  
+                                          "occupation", "hh_size_cat", "enrolled_school", 
+                                          "weekday", "ari_symptom", "age_symptom"),
+                                    name=c("Sex", "Age", "Occupation", "Household size",
+                                           "Enrolled in school", "Weekday/Weekend", 
+                                           "ARI symptoms", "AGE symptoms")) %>% 
   mutate(var = as.character(var),
          name = as.character(name))
 
+contact_variables <- data.frame(var=c("hh_membership","touch_contact", "where_contact",
+                                      "frequency_contact", "known_contact", "contact_mask2"),
+                                name=c("Household membership", "Did you touch?", "Contact location", 
+                                       "Frequency of contact", "Do you know the contact?", 
+                                       "Was contact wearing mask?"))  %>% 
+  mutate(var = as.character(var),
+         name = as.character(name))
 
-for (i in 1:nrow(variables)){
-  x <- df_contact_d1[,variables$var[[i]]] 
+for (i in 1:nrow(participant_variables)){
+  x <- df_contact_d1[,participant_variables$var[[i]]] 
   # include another variable n as the number of participants per strata
-  variables$var[[i]]
+  participant_variables$var[[i]]
   
   # Number and proportion of contacts in each strata
   
@@ -2039,42 +1735,71 @@ for (i in 1:nrow(variables)){
   Tot <- rep("",5)
   
   # Rural median contacts for day 1
-  t1 <- df_contact_d1 %>%
+  t1_median <- df_contact_d1 %>%
     dplyr::filter(study_site == "Rural") %>%
     # since this is total contacts per person, keep only 1 distinct record
     distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    # na.omit() %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>% 
+    drop_na(participant_variables$var[[i]]) %>%
     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
+  t1_median$med_contact <- as.character(paste(
+    t1_median$X50., " (",t1_median$X25., "-", t1_median$X75.,")", sep=""))
+  
+  # Calculate mean and 95% confidence intervals for day 1
+  t1_mean <- df_contact_d1 %>%
+    dplyr::filter(study_site == "Rural") %>%
+    distinct(rec_id, .keep_all = TRUE) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    drop_na(participant_variables$var[[i]]) %>%
+    summarise(
+      mean_contact = round(mean(num_contacts, na.rm = TRUE), 1),
+      lower_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[1], 1),
+      upper_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[2], 1),
+    )
+  t1_mean$mean_contact <- as.character(paste(
+    t1_mean$mean_contact," (",t1_mean$lower_ci, "-", t1_mean$upper_ci,")", sep=""))
   
   # Median contacts for day 2
-  t2 <- df_contact_d1 %>%
+  t2_median <- df_contact_d1 %>%
     dplyr::filter(study_site == "Urban") %>%
     # since this is total contacts per person, keep only 1 distinct record
     distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    drop_na(participant_variables$var[[i]]) %>%
     # na.omit() %>%
     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
+  t2_median$med_contact <- as.character(paste(
+    t2_median$X50.," (",t2_median$X25.,"-",t2_median$X75.,")",sep="")) # Formatting for export
+  
+  # Calculate mean and 95% confidence intervals for day 1
+  t2_mean <- df_contact_d1 %>%
+    dplyr::filter(study_site == "Urban") %>%
+    distinct(rec_id, .keep_all = TRUE) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    drop_na(participant_variables$var[[i]]) %>%
+    summarise(
+      mean_contact = round(mean(num_contacts, na.rm = TRUE), 1),
+      lower_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[1], 1),
+      upper_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[2], 1),
+    )
+  t2_mean$mean_contact <- as.character(paste(
+    t2_mean$mean_contact, " (",t2_mean$lower_ci, "-", t2_mean$upper_ci,")", sep=""))
   
   # Bind columns together and select relevant columns
-  t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
-  
-  # convert to numerical and round off?
-  
-  t0<- t0[,c(1,2,3,4)]
-  
+  t0<-qpcR:::cbind.na(t0, t1_median$med_contact, t1_mean$mean_contact,
+                      t2_median$med_contact, t2_mean$mean_contact)
+  colnames(t0)[3:6] <- c("Rural Median", "Rural Mean", "Urban Median", "Urban Mean")
+
   # rename total column
   t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
-  t0 <- t0[,c(1,3,4)]
-  t0[,1]<-as.character(t0[,1])
-  t0[,2]<-as.character(t0[,2])
+  t0 <- t0[,c(1,3,4,5,6)]
+  t0[,1] <- as.character(t0[,1])
+  t0[,2] <- as.character(t0[,2])
   
   t0<-rbind(Tot, t0)
   
-  rownames(t0)[1]<-variables$name[[i]]
-  list[[i]] <- t0
+  rownames(t0)[1] <- participant_variables$name[[i]]
+  results_list[[i]] <- t0
 }
 
 # format table
@@ -2084,28 +1809,26 @@ res_restruct<- function(res) {
   return(res1)
 }
 
-table3 <- res_restruct(list)
-colnames(table3) <- c("Total (%)", "Rural", "Urban")
+table3 <- res_restruct(results_list)
+# colnames(table3) <- c("Total (%)", "Median", "Mean", "Median", "Mean")
 
 table3 <- kable(table3, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
-rm(t0, t1, t2)
-
 # table3
 
+rm(t0, t1, t2)
 
 
-#| label: tbl-rural-contact-all
-#| tbl-cap: "Summary of rural contacts over two days"
-#| warning: false
-#| include: false
 
+#| label: tbl-average-contacts-d2
+# table of contacts day 2
+results_list <- list(0)  ## empty list
 
-for (i in 1:nrow(variables)){
-  x <- df_contact_rural[,variables$var[[i]]] 
+for (i in 1:nrow(participant_variables)){
+  x <- df_contact_d2[,participant_variables$var[[i]]] 
   # include another variable n as the number of participants per strata
-  variables$var[[i]]
+  participant_variables$var[[i]]
   
   # Number and proportion of contacts in each strata
   
@@ -2116,137 +1839,81 @@ for (i in 1:nrow(variables)){
   colnames(t0)[1:2] <- c("Total","Col") 
   Tot <- rep("",5)
   
-  # Median contacts for day 1
-  t1 <- df_contact_d1 %>%
+  # Rural median contacts for day 1
+  t1_median <- df_contact_d2 %>%
     dplyr::filter(study_site == "Rural") %>%
     # since this is total contacts per person, keep only 1 distinct record
     distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    # na.omit() %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>% 
+    drop_na(participant_variables$var[[i]]) %>%
     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
+  t1_median$med_contact <- as.character(paste(
+    t1_median$X50., " (",t1_median$X25., "-", t1_median$X75.,")", sep=""))
   
-  # Median contacts for day 2
-  t2 <- df_contact_d2 %>%
+  # Calculate mean and 95% confidence intervals for day 1
+  t1_mean <- df_contact_d2 %>%
     dplyr::filter(study_site == "Rural") %>%
+    distinct(rec_id, .keep_all = TRUE) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    drop_na(participant_variables$var[[i]]) %>%
+    summarise(
+      mean_contact = round(mean(num_contacts, na.rm = TRUE), 1),
+      lower_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[1], 1),
+      upper_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[2], 1),
+    )
+  t1_mean$mean_contact <- as.character(paste(
+    t1_mean$mean_contact," (",t1_mean$lower_ci, "-", t1_mean$upper_ci,")", sep=""))
+ 
+  # Median contacts for day 2
+  t2_median <- df_contact_d2 %>%
+    dplyr::filter(study_site == "Urban") %>%
     # since this is total contacts per person, keep only 1 distinct record
     distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>%
-    # na.omit() %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    drop_na(participant_variables$var[[i]]) %>%
     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
+  t2_median$med_contact <- as.character(paste(
+    t2_median$X50.," (",t2_median$X25.,"-",t2_median$X75.,")",sep="")) # Formatting for export
+  
+  # Calculate mean and 95% confidence intervals for day 1
+  t2_mean <- df_contact_d2 %>%
+    dplyr::filter(study_site == "Urban") %>%
+    distinct(rec_id, .keep_all = TRUE) %>%
+    dplyr::group_by(.dots = participant_variables$var[[i]]) %>%
+    drop_na(participant_variables$var[[i]]) %>%
+    summarise(
+      mean_contact = round(mean(num_contacts, na.rm = TRUE), 1),
+      lower_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[1], 1),
+      upper_ci = round(t.test(num_contacts, na.rm = TRUE)$conf.int[2], 1),
+    )
+  t2_mean$mean_contact <- as.character(paste(
+    t2_mean$mean_contact, " (",t2_mean$lower_ci, "-", t2_mean$upper_ci,")", sep=""))
   
   # Bind columns together and select relevant columns
-  t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
-  
-  # convert to numerical and round off?
-  
-  t0<- t0[,c(1,2,3,4)]
+  t0<-qpcR:::cbind.na(t0, t1_median$med_contact, t1_mean$mean_contact,
+                      t2_median$med_contact, t2_mean$mean_contact)
+  colnames(t0)[3:6] <- c("Rural Median", "Rural Mean", "Urban Median", "Urban Mean")
   
   # rename total column
   t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
-  t0 <- t0[,c(1,3,4)]
-  t0[,1]<-as.character(t0[,1])
-  t0[,2]<-as.character(t0[,2])
+  t0 <- t0[,c(1,3,4,5,6)]
+  t0[,1] <- as.character(t0[,1])
+  t0[,2] <- as.character(t0[,2])
   
   t0<-rbind(Tot, t0)
   
-  rownames(t0)[1]<-variables$name[[i]]
-  list[[i]] <- t0
+  rownames(t0)[1] <- participant_variables$name[[i]]
+  results_list[[i]] <- t0
 }
-# 
-# # format table
-# res_restruct<- function(res){
-#   res1 <- lapply(res, as.data.frame)
-#   res1 <- do.call(rbind, res1)
-#   return(res1)
-# }
 
-table4 <- res_restruct(list)
-colnames(table4) <- c("Total (%)", "Day 1", "Day 2")
+table4 <- res_restruct(results_list)
+colnames(table5) <- c("Total (%)", "Day 1", "Day 2")
 
 table4 <- kable(table4, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-rm(t0, t1, t2)
-
-# table4
-
-
-
-#| label: tbl-urban-contact-d2
-#| tbl-cap: "Summary of urban contacts over two days"
-#| warning: false
-#| include: false
-
-### Urban contacts
-
-
-# table of contacts by day of study: both days, day 1 and day 2
-list <- list(0)  ## empty list
-
-for (i in 1:nrow(variables)){
-  x <- df_contact_urban[,variables$var[[i]]] # this should be for urban contacts only
-  variables$var[[i]]
-  
-  # Number and proportion of participants in each strata
-  
-  t0 <- as.data.frame(cbind(table(x), # Total 
-                            round(prop.table(table(x))*100, digits=0))) # Proportion
-  
-  colnames(t0)[1:2] <- c("Total","Col") 
-  Tot <- rep("",5)
-  
-  # Median contacts for day 1
-  t1 <- df_contact_d1 %>%
-    dplyr::filter(study_site == "Urban") %>%
-    # since this is total contacts per person, keep only 1 distinct record
-    distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
-  
-  # Median contacts for day 2
-  t2 <- df_contact_d2 %>%
-    dplyr::filter(study_site == "Urban") %>%
-    # since this is total contacts per person, keep only 1 distinct record
-    distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
-  
-  # Bind columns together and select relevant columns
-  t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
-  t0<- t0[,c(1,2,3,4)]
-  
-  # rename total column
-  t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
-  t0 <- t0[,c(1,3,4)]
-  t0[,1]<-as.character(t0[,1])
-  t0[,2]<-as.character(t0[,2])
-  
-  t0<-rbind(Tot, t0)
-  
-  rownames(t0)[1]<-variables$name[[i]]
-  list[[i]] <- t0
-}
-
-# format table
-res_restruct<- function(res){
-  res1 <- lapply(res, as.data.frame)
-  res1 <- do.call(rbind, res1)
-  return(res1)
-}
-
-table5 <- res_restruct(list)
-colnames(table5) <- c("Total (%)", "Day 1", "Day 2")
-
-table5 <- kable(table5, digits = 0, align = "r") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 # table4
 
 rm(t0, t1, t2)
-
 
 # @tbl-urban-contact-table shows a summary of the median (IQR) contacts in the urban area on day 1 and day 2 separately.
 # We observe no difference in the median (IQR) number of contacts reported on day 1 compared to day 2.
@@ -2254,10 +1921,6 @@ rm(t0, t1, t2)
 
 
 #| label: fig-participant-summary-literacy
-#| fig-cap: "Literacy level"
-#| include: false
-#| warning: false
-
 # read_write by age
 literacy_page <- participants %>%
   group_by(read_write, participant_age, study_site) %>% 
@@ -2276,10 +1939,6 @@ literacy_page_plt <- fun_literacy_plot(literacy_page) +
 
 
 #| label: fig-participant-summary-enrolledsch
-#| fig-cap: "Participant currently enrolled in school"
-#| include: false
-#| warning: false
-
 # enrolled_school by age, "Currently enrolled in school"
 enrolledsch_page <- participants %>%
   group_by(enrolled_school, participant_age, study_site) %>% 
@@ -2297,10 +1956,6 @@ enrolledsch_page_plt <- fun_schenrolled_plot(enrolledsch_page)
 
 
 #| label: fig-participant-summary-educationlevel
-#| fig-cap: "Participant education level"
-#| include: false
-#| warning: false
-
 # highest_educ by age <- "Highest education level attained"
 highesteduc_page <- participants %>%
   group_by(highest_educ, participant_age, study_site) %>% 
@@ -2318,10 +1973,6 @@ highesteduc_page_plt <- fun_highesteduc_plot(highesteduc_page)
 
 
 #| label: fig-participant-summary-occupation
-#| fig-cap: "Participant ccupation"
-#| include: false
-#| warning: false
-
 # occupation by age <- "Occupation"
 occupation_page <- participants %>%
   group_by(occupation, participant_age, study_site) %>%
@@ -2333,6 +1984,6 @@ occupation_page_plt <- fun_occupation_plot(occupation_page)
 # ggsave(occupation_page_plt, filename = "../../output/figs/1a_participant_occupation.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
+#        
 
-
-
+cat("End of main analysis script")
