@@ -33,8 +33,7 @@ source("02_mozambique_analysis_code.R")
 source("03_mozambique_model.R")
 
 # Source place use code
-# source("04_placeuse.R")
-
+source("04_placeuse.R")
 
 ```
 
@@ -140,7 +139,7 @@ Analysis of the place-use data revealed that in both urban and rural areas, prox
 
 ```{r}
 #| label: fig-contact-location
-#| eval: false
+#| eval: true
 
 fig4_locvisit_timespent
 tab1_loc
@@ -201,7 +200,7 @@ The panels are arranged by rural and urban conversation (A and B) and rural and 
 
 ```{r}
 #| label: contact-type-matrix
-combined_matrix
+fig_matrix_type
 ```
 
 ```{r}
@@ -227,7 +226,7 @@ occupation_page_plt
 ## XXX. Violin plots comparing the distribution of social contact versus proximity contact reported by participants at each location type in urban versus rural areas
 
 ```{r}
-#| eval: false
+#| eval: true
 figsi_compdist_urb
 figsi_compdist_rur
 ```
