@@ -7,50 +7,57 @@
 
 location <- location %>% mutate(
   time_visited_cat = case_when(
-    time_visited%in%c("<5 mins","5-15 mins")~ "<15 mins",
-    time_visited%in%c("16-30 mins","31 mins-1 hr")~ "15 mins-1 hr",
+    time_visited %in% c("<5 mins","5-15 mins") ~ "<15 mins",
+    time_visited %in% c("16-30 mins","31 mins-1 hr") ~ "15 mins-1 hr",
     TRUE~ time_visited)) %>%
   filter(!is.na(place_visited)) %>% # dropped 2 NAs
   filter(!is.na(time_visited)) %>%
   mutate(
     time_visited_cat = factor(time_visited_cat, levels = c("<15 mins","15 mins-1 hr","1-4 hrs",">4 hrs")),
-    place_visited =    factor(place_visited, levels = c("My home","Other home","Street","Market/Shop",
+    
+    place_visited = factor(place_visited, levels = c("My home","Other home","Street","Market/Shop",
                                                         "Transport/Hub", "Agricultural Field", "School",
                                                         "Work", "Other", "Place of worship", "Well", "Playground"))
   )
 
 # figure included in ms
-fig4_locvisit_timespent <- location %>%
+fig_locvisit_timespent <- location %>%
   group_by(study_site, place_visited, time_visited_cat) %>%
   filter(place_visited!="My home") %>%
   summarise(place_time = n()) %>%
-  #pivot_wider(names_from="time_visited",values_from = "place_time")%>%
-  ggplot(aes(x=place_visited, y=place_time,fill=time_visited_cat)) +
-  geom_col(position=position_stack()) +
-  # Remove the "NA" label from the legend
+  group_by(study_site, place_visited) %>%  # Group by site and place
+  mutate(place_time_proportion = round((place_time / sum(place_time)) * 100), 0) %>%  # Calculate proportions
+  ggplot(aes(x = place_visited, y = place_time_proportion, fill = time_visited_cat)) +
+  geom_col(position = position_stack(), col="white") +
+  # # Remove the "NA" label from the legend
   guides(color = guide_legend(override.aes = list(label = ""))) +
-  facet_wrap(~study_site)+theme_bw() +
-  scale_fill_brewer(palette="Blues", name="Time spent")+
+  facet_wrap(~study_site) +
+  coord_flip() +
+  # scale_fill_brewer(palette="Blues", name="Time spent") +
+  scale_fill_manual(values = c("#ccebc5", "#7bccc4", "#43a2ca", "#0868ac"), name="Time spent") +
   theme(axis.text.x = element_text(angle=45,vjust=1, hjust=1))+
-  ylab("Number of unique visits over 2 days")+
-  xlab("Type of location") +
-  axis_text_theme1 +
-  theme(legend.position = c(0.4, 0.9))
+  ylab("Proportion of unique visits over 2 days")+
+  xlab("Location") +
+  axis_text_theme2 +
+  theme(axis.text.x = element_text(angle=0)) +
+  theme(legend.position = c(0.6, 0.9),
+        legend.text = element_text(size=6))
+fig_locvisit_timespent
 
-ggsave(fig4_locvisit_timespent, filename = "output/figs/fig_locvisit_timespent.pdf",
+ggsave(fig_locvisit_timespent, filename = "../../output/figs/fig_locvisit_timespent.pdf",
        height=4, width=6, dpi=300,
        bg="#FFFFFF")
 
 tab1_loc <- location %>%
-  mutate(num_pax_place=as.numeric(num_pax_place))%>%
+  mutate(num_pax_place = as.numeric(num_pax_place))%>%
   group_by(place_visited, study_site)%>%
-  arrange(place_visited)%>%
-  summarise(n=n(),
+  arrange(place_visited) %>%
+  summarise(n = n(),
             ppl_med = median(num_pax_place, na.rm=T),
             ppl_25 = quantile(num_pax_place, probs=0.25, na.rm=T),
-            ppl_75 = quantile(num_pax_place, probs=0.75, na.rm=T))%>%
-  filter(place_visited != "My home")%>%
-  filter(!is.na(study_site)&!is.na(place_visited))%>%
+            ppl_75 = quantile(num_pax_place, probs=0.75, na.rm=T)) %>%
+  filter(place_visited != "My home") %>%
+  filter(!is.na(study_site) & !is.na(place_visited))%>%
   pivot_wider(names_from = study_site, values_from = c(n, ppl_med, ppl_25, ppl_75))%>%
   mutate(med_Rural = paste(ppl_med_Rural, "(", ppl_25_Rural, "-",ppl_75_Rural,")",sep=""),
          med_Urban = paste(ppl_med_Urban, "(", ppl_25_Urban, "-",ppl_75_Urban, ")",sep=""))%>%
@@ -85,12 +92,17 @@ cont_loc_sum <- loc_sum %>%
             by = c("rec_id"="rec_id",
                    "study_day"="study_day",
                    "place_visited"="place_visited"))%>%
-  left_join(participants %>% select(rec_id, study_site), by=c("rec_id"="rec_id"))%>%
+  left_join(participants %>% 
+              select(rec_id, study_site), by=c("rec_id"="rec_id"))%>%
   
-  mutate(social_contact = ifelse(is.na(social_contact),0,social_contact),
-         place_visited =    factor(place_visited, levels = c("My home","Other home","Street","Market/Shop",
-                                                             "Transport/Hub", "Agricultural Field", "School",
-                                                             "Work", "Other", "Place of worship", "Well", "Playground", NA)))%>%
+  mutate(social_contact = ifelse(is.na(social_contact), 0,
+                                 social_contact),
+         place_visited =    factor(place_visited, 
+                                   levels = c("My home","Other home","Street",
+                                              "Market/Shop","Transport/Hub", 
+                                              "Agricultural Field", "School",
+                                              "Work", "Other", "Place of worship", 
+                                              "Well", "Playground", NA))) %>%
   pivot_longer(cols=tot_persons:social_contact, values_to="num_persons",names_to="type")
 
 figsi_compdist_urb <- cont_loc_sum%>%
