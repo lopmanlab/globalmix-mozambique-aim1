@@ -32,7 +32,7 @@ participants <- readRDS("../../data/clean/participant_data_aim1.RDS")
 # exit <- readRDS("data/clean/exit_interview_aim1.RDS")
 contacts <- readRDS("../../data/clean/contact_data_aim1.RDS")
 household <- readRDS("../../data/clean/household_survey_aim1.RDS")
-ss
+
 
 # set color themes
 # cols_site <- c("#1f77b4", "#ff7f0e")
@@ -396,7 +396,7 @@ hist_rural <- contacts_site %>%
            label=paste0(mean_contacts_site$mean[1],
                         " (95% CI ", ci_contacts_rural$ll,"-",
                         ci_contacts_rural$ul,")"),
-           hjust=0, size=4) +
+           hjust=0, size=5) +
   labs(title = "Rural",
        x="",
        y="Freq.") +
@@ -422,7 +422,7 @@ hist_urban <- contacts_site %>%
            label=paste0(mean_contacts_site$mean[2],
                         " (95% CI ", ci_contacts_urban$ll,"-",
                         ci_contacts_urban$ul,")"),
-           hjust=0, size=4) +
+           hjust=0, size=5) +
   labs(title = "Urban",
        x="",
        y="Frequency") +
@@ -651,11 +651,12 @@ contact_hist_rural_d1 <- contacts_site_d1 %>%
            label=paste0(mean_contacts_site_d1$mean[1],
                         " (", ci_contacts_rural_d1$ll,"-", #" (95% CI ", 
                         ci_contacts_rural_d1$ul,")"),
-           hjust=0, size=2.5) +
+           hjust=0, size=4) +
   labs(title = "Rural", # Rural
        x="",
-       y="Freq.") + # Frequency
-  axis_text_theme2
+       y="Frequency of \ncontact") + # Frequency
+  axis_text_theme2  +
+  theme(axis.text.x = element_text(angle=0))
 # hist_rural
 
 ## urban histogram
@@ -670,14 +671,16 @@ contact_hist_urban_d1 <- contacts_site_d1 %>%
            label=paste0(mean_contacts_site_d1$mean[2],
                        " (", ci_contacts_urban_d1$ll,"-", # " (95% CI ", 
                         ci_contacts_urban_d1$ul,")"),
-           hjust=0, size=2.5) +
+           hjust=0, size=4) +
   labs(title = "Urban", # Urban
        x="",
        y="") +
-  axis_text_theme2
+  axis_text_theme2 +
+  theme(axis.text.x = element_text(angle=0))
 # hist_urban
 
 contact_hist_d1 <- contact_hist_rural_d1 | contact_hist_urban_d1
+contact_hist_d1
 # 
 # ggsave(contact_hist_d1, filename = "../output/figs/fig_contact_hist_d1.pdf",
 #        height=6, width=8, dpi=300,
@@ -715,7 +718,8 @@ contact_hist_rural_d2 <- contacts_site_d2 %>%
            hjust=0, size=4) +
   labs(x="", y="Freq.") +
   theme_classic() +
-  axis_text_theme2
+  axis_text_theme2  +
+  theme(axis.text.x = element_text(angle=0))
 # hist_rural
 
 ## urban histogram
@@ -735,7 +739,8 @@ contact_hist_urban_d2 <- contacts_site_d2 %>%
   labs(x="",
        y="Freq.") +
   theme_classic() +
-  axis_text_theme2
+  axis_text_theme2  +
+  theme(axis.text.x = element_text(angle=0))
 # hist_urban
 
 contact_hist_d2 <- contact_hist_rural_d2 / contact_hist_urban_d2
@@ -765,7 +770,7 @@ fig_contacts_age_box <- ggplot(contacts_age, aes(x = participant_age,
                                                  fill = study_site)) +
   geom_boxplot(width = 0.4, position = position_dodge(width = 0.5), outlier.shape = NA) +
   scale_fill_manual(values = cols_site) +
-  labs(x = "Participant age", y = "# of contacts") +
+  labs(x = "Participant age", y = "Number of contacts") +
   ylim(0, 30) +
   theme_classic() +
   axis_text_theme2 +
@@ -778,22 +783,6 @@ fig_contacts_age_box <- ggplot(contacts_age, aes(x = participant_age,
 #        bg="#FFFFFF")
 
 fig_contacts_age_box
-
-```
-
-```{r}
-#| label: fig-baseline-distributions
-#| include: false
-
-fig_baseline_distributions <- wrap_plots(fig_sex_age, contact_hist_d1, fig_contacts_age_box) + 
-  plot_annotation(tag_levels = 'A') + theme(plot.tag = element_text(size = 12)) +
-  plot_layout(nrow=3, heights = c(400, 200, 200))
-
-fig_baseline_distributions
-
-# ggsave(fig_baseline_distributions, filename = "../output/figs/fig_baseline_distributions.pdf",
-#        height=6, width=8, dpi=300,
-#        bg="#FFFFFF")
 
 ```
 
@@ -1488,79 +1477,98 @@ m1_urban <- df_contact_d1 %>%
 ```
 
 ```{r}
-#| label: matrix-functions
-#| echo: false
-#| warning: false
-#| include: false
-
-# function to generate overall matrices
-fun_matrix1_plot <- function(m1data, title){
-  m1data %>%
-    ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
-    geom_raster() +
-    geom_text(aes(participant_age, contact_age, label = average_contact), 
-              color = "black", size = 3) +
-    theme_classic() +
-    scale_fill_gradient2(low="#0571b0", mid="#92c5de", high="#ca0020", 
-                         limits=c(0,8), breaks=(c(0,2,4,6,8))) +
-    labs(x ="Participant age", 
-         y = "Contact age",
-         title = title,
-         fill = "Average\ncontacts") +
-    theme(legend.title = element_text(size = 10),
-          legend.text = element_text(size = 8),
-          legend.justification = "right") +
-    theme(plot.title = element_text(size = 20), 
-          axis.title.x = element_text(size=16, face="bold"),
-          axis.title.y = element_text(size=16, face="bold"),
-          axis.text.x = element_text(size = 10, angle=90),
-          axis.text.y = element_text(size= 10))
-}
-```
-
-```{r}
 #| label: fig-contact-matrix
 #| fig-cap: "Crude contact matrices in rural and urban Mozambique"
 #| include: false
 
-rural_matrix <- fun_matrix1_plot(m1_rural, "") # Rural site
-# ggplotly(rural_matrix, tooltip = "text")
+# Rural site
+rural_matrix <- fun_matrix1_plot(m1_rural, "Rural", xlab = "Participant age", ylab = "Contact age") 
+matrix_legend <- get_legend(rural_matrix)
+rural_matrix <- rural_matrix + theme(legend.position = "none")
+# rural_matrix
 
-urban_matrix <- fun_matrix1_plot(m1_urban, "") # Urban site
-# ggplotly(urban_matrix, tooltip = "text")
+# Urban site
+urban_matrix <- fun_matrix1_plot(m1_urban, "Urban", xlab = "Participant age", ylab = "") +
+  theme(axis.text.y = element_blank())
+# urban_matrix
 
-crude_matrix <- rural_matrix | urban_matrix
 
-crude_matrix <- subplot(style(rural_matrix, showlegend = F) %>% 
-                          layout(xaxis = list(title = "Participant age")), 
+## save graph
+fig_crude_matrix <- rural_matrix | urban_matrix
+
+fig_crude_matrix2 <- subplot(style(rural_matrix, showlegend = F),
                         urban_matrix, shareY = TRUE) %>%
   layout(title = '',
-         xaxis = list(title = "Participant age"),
+         # xaxis = list(title = "Participant age"),
          annotations = list(
-           list(x=0.2, y=1.0,
-                text = "Rural",
+           list(x=0.05, y=1.0,
+                text = "A. Rural",
                 xref = "paper",
                 yref = "paper",
                 xanchor = "center",
                 yanchor = "bottom",
                 showarrow = FALSE),
-           list(x=0.8, y=1.0,
-                text = "Urban",
+           list(x=0.57, y=1.0,
+                text = "B. Urban",
                 xref = "paper",
                 yref = "paper",
                 xanchor = "center",
                 yanchor = "bottom",
-                showarrow = FALSE)))
+                showarrow = FALSE),
+           list(x=0.5, y=-0.3,
+                text = "Participant age",
+                xref = "paper",
+                yref = "paper",
+                xanchor = "center",
+                yanchor = "bottom",
+                showarrow = FALSE,
+                font = list(size = 18, face = "bold")
+                )),
+         height = 400)
+fig_crude_matrix2
+orca(fig_crude_matrix2, "../../output/figs/fig_contacts_crude_matrix.pdf")
+rm(fig_crude_matrix2)
 
 
-# orca(crude_matrix, "../output/figs/fig_contacts_crude_matrix.pdf")
-
-crude_matrix
+# # Combine plots using gridExtra 
+# combined_plot <- grid.arrange(
+#   rural_matrix + labs(title = ""),  # Remove title for the first plot
+#   urban_matrix + labs(title = "") + theme(axis.text.y = element_blank()),  # Remove title for the second plot
+#   ncol = 2,  # Adjust the number of columns as needed
+#   widths=c(2.1, 2.3)
+# )
+# plot(combined_plot)
+# 
+# ggsave(combined_plot, filename = "../../output/figs/fig_contacts_crude_matrix.pdf",
+#        height=4, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 ```
 
+
 ```{r}
-#| label: fig-matrix-touch
+#| label: fig-baseline-distributions
+#| include: false
+
+# fig_sex_age, removed
+fig_baseline_distributions <- wrap_plots(contact_hist_d1, 
+                                         fig_contacts_age_box, 
+                                         fig_crude_matrix) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(600, 600, 600))
+
+fig_baseline_distributions
+
+ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_distributions_v2.pdf",
+       height=10, width=8, dpi=300,
+       bg="#FFFFFF")
+
+```
+
+
+```{r}
+#| label: fig-matrix-type
 
 # n_participants_rural_touch <- participants %>%
 #   dplyr::filter(study_site == "Rural") %>%
@@ -1610,31 +1618,17 @@ m1_rural_conv <- df_contact_d1 %>%
                                                 "10-14y", "15-19y", "20-29y", 
                                                 "30-39y", "40-59y", "60+y")))
 
-rural_matrix_touch <- fun_matrix1_plot(m1_rural_touch, "") # Rural site
-rural_matrix_conv <- fun_matrix1_plot(m1_rural_conv, "") # Rural site
+rural_matrix_touch <- fun_matrix2_plot(m1_rural_touch, "A. Rural physical", 
+                                       xlab = "Participant age", ylab = "Contact age") + 
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank())
 
-# # rural_matrix_touch <- rural_matrix_touch | rural_matrix_conv
-# rural_matrix_touch <- subplot(style(rural_matrix_conv, showlegend = F), 
-#                               rural_matrix_touch, shareY = TRUE) %>%
-#   layout(title = 'Rural contacts by type',
-#          annotations = list(
-#            list(x=0.2, y=1.0,
-#                 text = "Conversation only",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE),
-#            list(x=0.8, y=1.0,
-#                 text = "Touch",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE)))
-# rural_matrix_touch
+rural_matrix_conv <- fun_matrix2_plot(m1_rural_conv, "C. Rural conversation", 
+                                      xlab = "Participant age", ylab = "Contact age") + 
+  theme(legend.position = "none")
 
-# ====
+
 # urban contacts
 missing_data_urban_touch <- data.frame(participant_age = "15-19y",
                                        contact_age = "<6mo",
@@ -1662,13 +1656,19 @@ m1_urban_touch <- df_contact_d1 %>%
                                                 "10-14y", "15-19y", "20-29y", 
                                                 "30-39y", "40-59y", "60+y")))
 
-missing_data_urban_conv <- data.frame(participant_age = c("<6mo","6-11mo","1-4y","5-9y","10-14y","15-19y",
-                                                          "20-29y","30-39y","40-59y","10-14y","6-11mo","1-4y",
-                                                          "1-4y","20-29y","15-19y","20-29y","5-9y","6-11mo",
-                                                          "60+y","5-9y","6-11mo"), 
-                                      contact_age=c("<6mo","<6mo","<6mo","<6mo","<6mo","<6mo","<6mo","<6mo",
-                                                    "<6mo","1-4y","1-4y","20-29y","40-59y","5-9y","6-11mo",
-                                                    "6-11mo","6-11mo","6-11mo","6-11mo","60+y","60+y"), 
+missing_data_urban_conv <- data.frame(participant_age = c("<6mo", "6-11mo", "1-4y", "5-9y", 
+                                                          "10-14y", "15-19y", "20-29y", 
+                                                          "30-39y", "40-59y", "10-14y", 
+                                                          "6-11mo", "1-4y", "1-4y", 
+                                                          "20-29y", "15-19y", "20-29y", 
+                                                          "5-9y", "6-11mo", "60+y", 
+                                                          "5-9y", "6-11mo"), 
+                                      contact_age=c("<6mo", "<6mo", "<6mo", "<6mo", 
+                                                    "<6mo", "<6mo", "<6mo", "<6mo",
+                                                    "<6mo", "1-4y", "1-4y", "20-29y", 
+                                                    "40-59y", "5-9y", "6-11mo", "6-11mo", 
+                                                    "6-11mo", "6-11mo", "6-11mo", "60+y", 
+                                                    "60+y"), 
                                       total_contacts=c(rep(0,each=21))) %>%
   left_join(n_participants_urban, , by = "participant_age")
 
@@ -1694,114 +1694,40 @@ m1_urban_conv <- df_contact_d1 %>%
                                                 "10-14y", "15-19y", "20-29y", 
                                                 "30-39y", "40-59y", "60+y")))
 
-urban_matrix_touch <- fun_matrix1_plot(m1_urban_touch, "") # Urban site
-urban_matrix_conv <- fun_matrix1_plot(m1_urban_conv, "") # Urban site
+urban_matrix_touch <- fun_matrix2_plot(m1_urban_touch, "B. Urban physical", 
+                                       xlab = "Participant age", ylab = "Contact age") +
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank())
+# get legend
+# matrix_type_legend <- get_legend(urban_matrix_touch)
+# hide legend
+# urban_matrix_touch <- urban_matrix_touch +
+#   theme(legend.position = "none")
 
-# urban_matrix_touch <- urban_matrix_touch | urban_matrix_conv
-# urban_matrix_touch <- subplot(style(urban_matrix_conv, showlegend = F), 
-#                               urban_matrix_touch, shareY = TRUE) %>%
-#   layout(title = 'Urban contacts by type',
-#          annotations = list(
-#            list(x=0.2, y=1.0,
-#                 text = "Conversation only",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE),
-#            list(x=0.8, y=1.0,
-#                 text = "Touch",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE)))
-# urban_matrix_touch
-# 
-# matrix_touch <- (rural_matrix_touch | rural_matrix_conv) / (urban_matrix_touch | urban_matrix_conv)
-# matrix_touch
-# ggplotly(urban_matrix, tooltip = "text")
+urban_matrix_conv <- fun_matrix2_plot(m1_urban_conv, "D. Urban conversation", 
+                                      xlab = "Participant age", ylab = "Contact age") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+
+# rural_matrix_type
+rural_matrix_type <- rural_matrix_touch | urban_matrix_touch
+# urban_matrix_type
+urban_matrix_type <-  rural_matrix_conv | urban_matrix_conv
+
+# generate comb ined matrix
+fig_matrix_type <- rural_matrix_type / urban_matrix_type
+
+
+ggsave(fig_matrix_type, filename = "../../output/figs/fig_matrix_type.pdf",
+       height=8, width=8, dpi=1024,
+       bg="#FFFFFF")
+
+fig_matrix_type
 ```
 
-```{r}
-# Define shared y-axis
-y_axis_shared <- scale_y_discrete(name = "Contact age")
-
-# Combine the plots into a 2x3 grid with shared x-axes and a common legend
-combined_plot <- (
-  (rural_matrix + urban_matrix) /
-    (rural_matrix_conv + urban_matrix_conv) /
-    (rural_matrix_touch + urban_matrix_touch)
-  ) &
-y_axis_shared
-combined_plot
-
-# Customize x-axis text in the third row
-combined_plot <- combined_plot + 
-  plot_annotation(
-    tag_levels = 'A',
-    theme(plot.tag = element_text(size = 12))
-  ) +
-  plot_layout(ncol = 2, heights = c(1, 1, 0.1), guides = "collect") +
-  theme(legend.position = "bottom")  # Move legend to the bottom
-combined_plot
-```
-
-```{r}
-#| include: false
-#| 
-# combined_matrix <- (rural_matrix | urban_matrix) / 
-#   (rural_matrix_conv | urban_matrix_conv) / 
-#   (rural_matrix_touch | urban_matrix_touch)
-# combined_matrix
-
-combined_matrix1 <- subplot(
-  style(
-    rural_matrix, showlegend = F) %>% 
-    layout(xaxis = list(title = "")), 
-  urban_matrix, shareY = TRUE) %>% 
-  layout(xaxis = list(tickvals = NULL, ticktext = NULL, title = ""))
-combined_matrix1
-
-combined_matrix2 <- rural_matrix_conv | urban_matrix_conv
-combined_matrix2 
-
-combined_matrix2 <- subplot(
-  style(
-    rural_matrix_conv, showlegend = FALSE) %>%  
-    layout(xaxis = list(title = "Contact age")), 
-  urban_matrix_conv, shareY = TRUE) %>% 
-  layout(xaxis = list(showticklabels = FALSE)) 
-combined_matrix2
-
-combined_matrix3 <- subplot(
-  style(rural_matrix_touch, showlegend = F), 
-  urban_matrix_touch, shareY = TRUE)  %>% 
-  layout(annotations = list(  # Add x-axis title annotation
-    list(
-      x = 0.5,
-      y = -0.7,
-      text = "Participant age",
-      xref = "paper",
-      yref = "paper",
-      xanchor = "center",
-      yanchor = "bottom",
-      showarrow = FALSE
-    )))
-
-
-# delete x-axis values
-combined_matrix <- subplot(
-  combined_matrix1,
-  combined_matrix2,
-  combined_matrix3,
-  nrows = 3
-) %>% layout(
-  height = c(1, 1, 1)  # Adjust heights to increase space between rows
-)
-combined_matrix
-
-```
 
 ```{r}
 #| include: false
@@ -1859,7 +1785,6 @@ combined_matrix
 #| label: contact-behavior
 #| include: false
 
-theme_set(theme_minimal())
 
 contact_behav <- df_contact_d1 %>% 
   dplyr::select(study_site, participant_age, touch_contact, where_contact, contact_mask2, duration_contact2) %>%
@@ -1876,7 +1801,7 @@ contact_behav <- df_contact_d1 %>%
               dplyr::group_by(participant_age, study_site) %>%
               dplyr::summarize(tot_contacts=n()), by = c("participant_age"="participant_age", 
                                                          "study_site" = "study_site")) %>%
-  mutate(prop = round(n/tot_contacts, digits=1)) %>%
+  mutate(prop = round(n/tot_contacts, digits=2)) %>%
   mutate(value = factor(value, 
                         levels = c("Yes", "No", 
                                    
@@ -1916,7 +1841,6 @@ contact_behav_fun <- function(df, action){
           strip.text.x = element_blank(), # remove facet titles
           panel.spacing = unit(2, "lines")) + # increase space between facets
     
-    theme(axis.text.x = element_text(angle = 45, hjust=1)) +
     labs(title = "",
          x = "", 
          y = "Participant age",
@@ -1928,26 +1852,28 @@ contact_behav_fun <- function(df, action){
                     clip = 'off') + # allows drawing outside of panel
     
     # move x-axis title to the top and format
-    scale_x_continuous(labels = function(x) format(x*100, digits=0, nsmall=0), 
+    scale_x_continuous(labels = function(x) format(x*100, digits=2, nsmall=0), 
                        breaks = seq(0, 1, 0.2),
-                       position="top") + #breaks = seq(0, 1, 0.2)) +
-    theme(axis.line.x = element_line(colour = "black"), 
-          axis.ticks.x = element_line(colour = "black")) +
+                       position="top") + 
+    axis_text_theme2 +
+    theme(axis.text.x = element_text(angle = 0, hjust=1),
+          axis.line.x = element_line(colour = "black"), 
+          axis.ticks.x = element_line(colour = "black")) # +
     #       axis.text = element_text(colour = unhighlighed_col_darker),
     #       text = element_text(colour = unhighlighed_col_darker),
     #       plot.title = element_text(colour = 'black')) +
     
-    # format titles
-    theme(plot.title = element_text(size = 26, face="bold"),
-          plot.title.position = "plot", 
-          axis.title.y = element_text(size=22), #face="bold"),
-          axis.title.x = element_text(size=22), # face="bold"),
-          axis.text.y = element_text(size = 14),
-          axis.text.x = element_text(size = 14, angle=0)) +
-    theme(legend.title = element_text(size=18),
-          legend.text = element_text(size = 14),
-          legend.position = "top",
-          legend.box = "vertical")
+    # # format titles
+    # theme(plot.title = element_text(size = 26, face="bold"),
+    #       plot.title.position = "plot", 
+    #       axis.title.y = element_text(size=22), #face="bold"),
+    #       axis.title.x = element_text(size=22), # face="bold"),
+    #       axis.text.y = element_text(size = 14),
+    #       axis.text.x = element_text(size = 14, angle=0)) +
+    # theme(legend.title = element_text(size=18),
+    #       legend.text = element_text(size = 14),
+    #       legend.position = "top",
+    #       legend.box = "vertical")
 }
 
 ```
@@ -1961,27 +1887,12 @@ contact_behav_fun <- function(df, action){
 #| fig-height: 6
 
 
-fig1_masking <- contact_behav_fun(contact_behav, "contact_mask2") +
-  labs(title = "", # Was the contact wearing a mask?
-       x = "% of contacts") 
+fig_masking <- contact_behav_fun(contact_behav, "contact_mask2") +
+  labs(title = "A. Contact with mask?", # Was the contact wearing a mask?
+       x = "% of contacts") +
+  theme(legend.text = element_text(size=8))
 
-# fig1_masking
-```
-
-```{r}
-#| label: fig-contact-duration
-#| fig-cap: "Duration of contact"
-#| fig-cap-location: bottom
-#| fig-width: 13
-#| fig-height: 6
-#| include: false
-
-fig2_duration <- contact_behav_fun(contact_behav, "duration_contact2")+
-  labs(title = "", # What was the duration of the contact?
-       x = "% of contacts") 
-# fig2_duration 
-
-# check why contact duration <5 mins is not showingS
+fig_masking
 ```
 
 ```{r}
@@ -1993,15 +1904,16 @@ fig2_duration <- contact_behav_fun(contact_behav, "duration_contact2")+
 #| include: false
 
 
-fig3_touch <- contact_behav_fun(contact_behav, "touch_contact") +
-  labs(title = "", # Did you have a physical contact?
-       x = "% of contacts") 
+fig_touch <- contact_behav_fun(contact_behav, "touch_contact") +
+  labs(title = "B. Physical contact?", # Did you have a physical contact?
+       x = "% of contacts") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.text = element_text(size=8))
 
-# fig3_touch 
+fig_touch
 ```
 
-\
-\
 
 ```{r}
 #| label: fig-contact-location
@@ -2011,11 +1923,43 @@ fig3_touch <- contact_behav_fun(contact_behav, "touch_contact") +
 #| fig-height: 6
 #| include: false
 
-fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
-  labs(title = "", # Where did the contact occur?
-       x = "% of contacts") 
-# fig4_location 
+fig_location <- contact_behav_fun(contact_behav, "where_contact") +
+  labs(title = "C. Contact location", # Where did the contact occur?
+       x = "") +
+  theme(legend.position = c(0.6, 0.9),
+        legend.text = element_text(size=8))
+fig_location
 ```
+
+```{r}
+#| label: fig-contact-duration
+#| fig-cap: "Duration of contact"
+#| fig-cap-location: bottom
+#| fig-width: 13
+#| fig-height: 6
+#| include: false
+
+fig_duration <- contact_behav_fun(contact_behav, "duration_contact2") +
+  labs(title = "D. Contact duration", # What was the duration of the contact?
+       x = "") +
+  scale_fill_manual(values = c("#ccebc5", "#7bccc4", "#43a2ca", "#0868ac"))  +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = c(0.5, 0.9),
+        legend.text = element_text(size=8))
+fig_duration
+```
+
+```{r}
+#| label:  fig-contact-behavior
+
+fig_contact_behavior <- (fig_masking | fig_touch) / (fig_location | fig_duration)
+
+ggsave(fig_contact_behavior, filename = "../../output/figs/fig_matrix_type.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
+```
+
 
 ```{r}
 #| label: tbl-contact-characteristics
