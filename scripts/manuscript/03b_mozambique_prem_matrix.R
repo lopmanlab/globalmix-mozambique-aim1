@@ -78,7 +78,7 @@ moz_prem10 <- moz_prem %>%
 ### plot
 premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contacts)) + 
   theme(legend.position = "bottom") + 
-  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 10, limit = c(0,20))+
+  scale_fill_gradient2(low = "#91bfdb", mid="#fee090", high="#d73027", midpoint = 10, limit = c(0,20))+
   xlab("Age of participant")+ylab("Age of contact")+
   geom_tile()+
   geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
