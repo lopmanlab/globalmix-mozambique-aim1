@@ -1548,7 +1548,7 @@ rm(fig_crude_matrix2)
 
 ```{r}
 #| label: fig-baseline-distributions
-#| include: false
+#| include: true
 
 # fig_sex_age, removed
 fig_baseline_distributions <- wrap_plots(contact_hist_d1, 

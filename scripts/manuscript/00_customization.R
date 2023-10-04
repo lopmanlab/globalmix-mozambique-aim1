@@ -15,8 +15,8 @@ rm(list=ls())
 # if (!require(install_packages)) install.packages(install_packages)
 
 pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid, 
-               gtsummary, knitr, kableExtra, lubridate, patchwork, plotly,
-               readr, socialmixr, table1, tidyr)
+               gridExtra, gtsummary, knitr, kableExtra, lubridate, patchwork, 
+               plotly, readr, socialmixr, table1, tidyr)
 
 
 # install orca to save plotly plots: https://github.com/plotly/orca#installation
@@ -41,11 +41,11 @@ axis_text_theme1 <- theme_classic() +
 # custom plot text theme option 2
 axis_text_theme2 <- theme_classic() + 
   theme(
-    plot.title = element_text(size = 10),
-    axis.title.x = element_text(size=10, face="bold"),
-    axis.title.y = element_text(size=10, face="bold"),
-    axis.text.x = element_text(size = 8, angle=0, hjust = 1),
-    axis.text.y = element_text(size= 8),
+    plot.title = element_text(size = 14),
+    axis.title.x = element_text(size=14, face="bold"),
+    axis.title.y = element_text(size=14, face="bold"),
+    axis.text.x = element_text(size = 10, angle=90, hjust = 1),
+    axis.text.y = element_text(size= 10),
     legend.position = c(0.2, 0.9),
     legend.key.size = unit(1, "lines"),
     legend.direction = "horizontal",
@@ -86,27 +86,51 @@ get_legend <- function(myggplot){
 ## over title, text size, mid and max points for legend and legend position
 
 # function to generate overall matrices
-fun_matrix1_plot <- function(m1data, title){
+fun_matrix1_plot <- function(m1data, title, xlab, ylab){
   m1data %>%
     ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
     geom_raster() +
     geom_text(aes(participant_age, contact_age, label = average_contact), 
               color = "black", size = 3) +
     theme_classic() +
-    scale_fill_gradient2(low="#99d594", mid="#ffffbf", high="#fc8d59", 
-                         limits=c(0,8), breaks=(c(0,4,8))) +
-    labs(x ="Participant age", 
-         y = "Contact age",
+    scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                         midpoint = 3.5, limits=c(0,7), breaks=(c(0,1,3,5,7))) +
+    labs(x = xlab, 
+         y = ylab,
          title = title,
          fill = "Average\ncontacts") +
     theme(legend.title = element_text(size = 10),
-          legend.text = element_text(size = 9),
+          legend.text = element_text(size = 8),
           legend.justification = "right") +
-    theme(plot.title = element_text(size = 12), 
-          axis.title.x = element_text(size=12), # , face="bold"
-          axis.title.y = element_text(size=12), # , face="bold"
-          axis.text.x = element_text(size = 9, angle=90),
-          axis.text.y = element_text(size= 9))
+    theme(plot.title = element_text(size = 14), 
+          axis.title.x = element_text(size=14, face="bold"),
+          axis.title.y = element_text(size=14, face="bold"),
+          axis.text.x = element_text(size = 10, angle=90),
+          axis.text.y = element_text(size= 10))
+}
+
+# function to matrices by touch
+fun_matrix2_plot <- function(m1data, title, xlab, ylab){
+  m1data %>%
+    ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
+    geom_raster() +
+    geom_text(aes(participant_age, contact_age, label = average_contact), 
+              color = "black", size = 3) +
+    theme_classic() +
+    scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                         midpoint = 2.5, limits=c(0,5), breaks=(c(0,1,3,5))) +
+    labs(x = xlab, 
+         y = ylab,
+         title = title,
+         fill = "Average\ncontacts") +
+    theme(legend.title = element_text(size = 10),
+          legend.text = element_text(size = 8),
+          legend.justification = "right") +
+    theme(plot.title = element_text(size = 14), 
+          axis.title.x = element_text(size=14, face="bold"),
+          axis.title.y = element_text(size=14, face="bold"),
+          axis.text.x = element_text(size = 10, angle=90),
+          axis.text.y = element_text(size= 10))
 }
 
 

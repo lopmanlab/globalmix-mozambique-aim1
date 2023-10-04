@@ -1291,6 +1291,7 @@ m1_urban <- df_contact_d1 %>%
 #| include: false
 
 # Rural site
+# Rural site
 rural_matrix <- fun_matrix1_plot(m1_rural, "Rural", xlab = "Participant age", ylab = "Contact age") 
 matrix_legend <- get_legend(rural_matrix)
 rural_matrix <- rural_matrix + theme(legend.position = "none")
@@ -1334,25 +1335,9 @@ fig_crude_matrix2 <- subplot(style(rural_matrix, showlegend = F),
                 font = list(size = 18, face = "bold")
            )),
          height = 400)
-fig_crude_matrix2
+# fig_crude_matrix2
 orca(fig_crude_matrix2, "../../output/figs/fig_contacts_crude_matrix.pdf")
-rm(fig_crude_matrix2)
-
-
-# # Combine plots using gridExtra 
-# combined_plot <- grid.arrange(
-#   rural_matrix + labs(title = ""),  # Remove title for the first plot
-#   urban_matrix + labs(title = "") + theme(axis.text.y = element_blank()),  # Remove title for the second plot
-#   ncol = 2,  # Adjust the number of columns as needed
-#   widths=c(2.1, 2.3)
-# )
-# plot(combined_plot)
-# 
-# ggsave(combined_plot, filename = "../../output/figs/fig_contacts_crude_matrix.pdf",
-#        height=4, width=8, dpi=300,
-#        bg="#FFFFFF")
-
-#| label: fig-baseline-distributions
+# rm(fig_crude_matrix2)
 
 
 # fig_sex_age, removed
@@ -1371,6 +1356,13 @@ ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_di
 
 
 #| label: fig-matrix-type
+
+#| label: fig-matrix-type
+
+# n_participants_rural_touch <- participants %>%
+#   dplyr::filter(study_site == "Rural") %>%
+#   dplyr::group_by(participant_age) %>%
+#   summarize(n_participants = n())
 
 m1_rural_touch <- df_contact_d1 %>%
   dplyr::filter(study_site == "Rural") %>%
@@ -1498,7 +1490,11 @@ urban_matrix_touch <- fun_matrix2_plot(m1_urban_touch, "B. Urban physical",
         axis.text.y = element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank())
-
+# get legend
+# matrix_type_legend <- get_legend(urban_matrix_touch)
+# hide legend
+# urban_matrix_touch <- urban_matrix_touch +
+#   theme(legend.position = "none")
 
 urban_matrix_conv <- fun_matrix2_plot(m1_urban_conv, "D. Urban conversation", 
                                       xlab = "Participant age", ylab = "Contact age") +
@@ -1518,38 +1514,7 @@ ggsave(fig_matrix_type, filename = "../../output/figs/fig_matrix_type.pdf",
        height=8, width=8, dpi=1024,
        bg="#FFFFFF")
 
-fig_matrix_type
-
-
-combined_matrix <- (rural_matrix_conv | urban_matrix_conv) /
-  (rural_matrix_touch | urban_matrix_touch) +
-  plot_annotation(tag_levels = 'A') + 
-  theme(plot.tag = element_text(size = 12)) +
-  plot_layout(nrow=2, heights = c(400, 400))
-
-# combined_matrix
-
-# combined_matrix <- wrap_plots(
-#   conv_matrix,
-#   touch_matrix,
-#   ncol = 2  # Arrange in 2 columns
-# )
-# # Print the combined figure
-# print(combined_figure)
-
-# combined_matrix <- subplot(
-#   combined_matrix1,
-#   combined_matrix2,
-#   combined_matrix3,
-#   nrows = 3) %>% 
-#   layout(height = c(1, 1, 1)  # Adjust heights to increase space between rows
-# )
-# combined_matrix
-
-
-
-
-#| include: false
+# fig_matrix_type
 
 ### Weighted contact matrix
 
@@ -1600,11 +1565,9 @@ combined_matrix <- (rural_matrix_conv | urban_matrix_conv) /
 # colnames(m_rural_w) <- col_names
 
 
-
 #| label: contact-behavior
 #| include: false
 
-theme_set(theme_minimal())
 
 contact_behav <- df_contact_d1 %>% 
   dplyr::select(study_site, participant_age, touch_contact, where_contact, contact_mask2, duration_contact2) %>%
@@ -1621,24 +1584,30 @@ contact_behav <- df_contact_d1 %>%
               dplyr::group_by(participant_age, study_site) %>%
               dplyr::summarize(tot_contacts=n()), by = c("participant_age"="participant_age", 
                                                          "study_site" = "study_site")) %>%
-  mutate(prop = round(n/tot_contacts, digits=1)) %>%
+  mutate(prop = round(n/tot_contacts, digits=2)) %>%
   mutate(value = factor(value, 
                         levels = c("Yes", "No", 
+                                   
                                    "Yes", "No", 
                                    # " Never met before", "<1 yr", "1-2 yrs", "3-5 yrs", 
                                    # " 6-10 yrs", ">10 yrs",
                                    
                                    "Indoors", "Outdoors", "Both",
+                                   
                                    "<5mins","5-30mins","31mins-1hr",">1hr"),
                         
-                        labels = c("Yes", "No",  
+                        labels = c("Yes", "No",    
+                                   
                                    "Yes", "No", 
                                    
                                    # " Never met", "<1yr", "1-2yrs ", "3-5yrs ", 
                                    # " 6-10yrs", ">10yrs",
                                    
                                    "Indoors", "Outdoors", "Both",
+                                   
                                    "<5mins","5-30mins","31mins-1hr",">1hr")))
+
+# function to plot behavior of contacts by age
 
 unhighlighed_col_darker <- 'grey60'
 
@@ -1655,7 +1624,6 @@ contact_behav_fun <- function(df, action){
           strip.text.x = element_blank(), # remove facet titles
           panel.spacing = unit(2, "lines")) + # increase space between facets
     
-    theme(axis.text.x = element_text(angle = 45, hjust=1)) +
     labs(title = "",
          x = "", 
          y = "Participant age",
@@ -1667,57 +1635,77 @@ contact_behav_fun <- function(df, action){
                     clip = 'off') + # allows drawing outside of panel
     
     # move x-axis title to the top and format
-    scale_x_continuous(labels = function(x) format(x*100, digits=0, nsmall=0), 
+    scale_x_continuous(labels = function(x) format(x*100, digits=2, nsmall=0), 
                        breaks = seq(0, 1, 0.2),
-                       position="top") + #breaks = seq(0, 1, 0.2)) +
-    theme(axis.line.x = element_line(colour = "black"), 
-          axis.ticks.x = element_line(colour = "black")) +
-    #       axis.text = element_text(colour = unhighlighed_col_darker),
-    #       text = element_text(colour = unhighlighed_col_darker),
-    #       plot.title = element_text(colour = 'black')) +
-    
-    # format titles
-    theme(plot.title = element_text(size = 26, face="bold"),
-          plot.title.position = "plot", 
-          axis.title.y = element_text(size=22), #face="bold"),
-          axis.title.x = element_text(size=22), # face="bold"),
-          axis.text.y = element_text(size = 14),
-          axis.text.x = element_text(size = 14, angle=0)) +
-    theme(legend.title = element_text(size=18),
-          legend.text = element_text(size = 14),
-          legend.position = "top",
-          legend.box = "vertical")
+                       position="top") + 
+    axis_text_theme2 +
+    theme(axis.text.x = element_text(angle = 0, hjust=1),
+          axis.line.x = element_line(colour = "black"), 
+          axis.ticks.x = element_line(colour = "black")) # +
+  #       axis.text = element_text(colour = unhighlighed_col_darker),
+  #       text = element_text(colour = unhighlighed_col_darker),
+  #       plot.title = element_text(colour = 'black')) +
+  
+  # # format titles
+  # theme(plot.title = element_text(size = 26, face="bold"),
+  #       plot.title.position = "plot", 
+  #       axis.title.y = element_text(size=22), #face="bold"),
+  #       axis.title.x = element_text(size=22), # face="bold"),
+  #       axis.text.y = element_text(size = 14),
+  #       axis.text.x = element_text(size = 14, angle=0)) +
+  # theme(legend.title = element_text(size=18),
+  #       legend.text = element_text(size = 14),
+  #       legend.position = "top",
+  #       legend.box = "vertical")
 }
 
 
 #| label: fig-mask-wearing
-fig1_masking <- contact_behav_fun(contact_behav, "contact_mask2") +
-  labs(title = "", # Was the contact wearing a mask?
-       x = "% of contacts") 
-# fig1_masking
-
-
-#| label: fig-contact-duration
-fig2_duration <- contact_behav_fun(contact_behav, "duration_contact2")+
-  labs(title = "", # What was the duration of the contact?
-       x = "% of contacts") 
-# fig2_duration 
-
+fig_masking <- contact_behav_fun(contact_behav, "contact_mask2") +
+  labs(title = "A. Contact with mask?", # Was the contact wearing a mask?
+       x = "% of contacts") +
+  theme(legend.text = element_text(size=8))
+# fig_masking
 
 #| label: fig-contact-type
-fig3_touch <- contact_behav_fun(contact_behav, "touch_contact") +
-  labs(title = "", # Did you have a physical contact?
-       x = "% of contacts") 
-# fig3_touch 
+fig_touch <- contact_behav_fun(contact_behav, "touch_contact") +
+  labs(title = "B. Physical contact?", # Did you have a physical contact?
+       x = "% of contacts") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.text = element_text(size=8))
+# fig_touch
 
 
 #| label: fig-contact-location
-fig4_location <- contact_behav_fun(contact_behav, "where_contact") +
-  labs(title = "", # Where did the contact occur?
-       x = "% of contacts") 
-# fig4_location 
+fig_location <- contact_behav_fun(contact_behav, "where_contact") +
+  labs(title = "C. Contact location", # Where did the contact occur?
+       x = "") +
+  theme(legend.position = c(0.6, 0.9),
+        legend.text = element_text(size=8))
+fig_location
+
+#| label: fig-contact-duration
+fig_duration <- contact_behav_fun(contact_behav, "duration_contact2") +
+  labs(title = "D. Contact duration", # What was the duration of the contact?
+       x = "") +
+  scale_fill_manual(values = c("#ccebc5", "#7bccc4", "#43a2ca", "#0868ac"))  +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = c(0.5, 0.9),
+        legend.text = element_text(size=8))
+fig_duration
+
+#| label:  fig-contact-behavior
+fig_contact_behavior <- (fig_masking | fig_touch) / (fig_location | fig_duration)
+
+ggsave(fig_contact_behavior, filename = "../../output/figs/fig_matrix_type.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
 
 
+## TABLES OF CHARACTERISTICS OF CONTACTS
+ 
 #| label: tbl-contact-characteristics
 label(contacts$contact_sex) <- "Contact sex"
 label(contacts$contact_age) <- "Contact age"
@@ -1745,10 +1733,7 @@ table2 <- contacts %>%
 # %>% modify_caption("**Table 2: Contact distribution by covariates in Mozambique**")
 
 
-
-
 #| label: tbl-average-contacts-d1
-
 # table of contacts by day of study: both days, day 1 and day 2
 results_list <- list(0)  ## empty list
 
