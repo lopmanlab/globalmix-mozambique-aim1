@@ -611,8 +611,8 @@ ttest_bysite_d1 <- round(t.test(rural_day1_contacts $num_contacts,
                           urban_day1_contacts $num_contacts)$p.value,2)
 # ttest_bysite_d1 # p<0.05
 
-wilcoxtest_bysite_d1 <- round(wilcox.test(rural_day1_contacts $num_contacts, 
-                                    urban_day1_contacts $num_contacts)$p.value,2)
+wilcoxtest_bysite_d1 <- (wilcox.test(rural_day1_contacts $num_contacts, 
+                                    urban_day1_contacts $num_contacts)$p.value)
 # wilcoxtest_bysite_d1 # p<0.05
 
 # plot
@@ -1496,38 +1496,43 @@ urban_matrix <- fun_matrix1_plot(m1_urban, "Urban", xlab = "Participant age", yl
 ## save graph
 fig_crude_matrix <- rural_matrix | urban_matrix
 
-fig_crude_matrix2 <- subplot(style(rural_matrix, showlegend = F),
-                        urban_matrix, shareY = TRUE) %>%
-  layout(title = '',
-         # xaxis = list(title = "Participant age"),
-         annotations = list(
-           list(x=0.05, y=1.0,
-                text = "A. Rural",
-                xref = "paper",
-                yref = "paper",
-                xanchor = "center",
-                yanchor = "bottom",
-                showarrow = FALSE),
-           list(x=0.57, y=1.0,
-                text = "B. Urban",
-                xref = "paper",
-                yref = "paper",
-                xanchor = "center",
-                yanchor = "bottom",
-                showarrow = FALSE),
-           list(x=0.5, y=-0.3,
-                text = "Participant age",
-                xref = "paper",
-                yref = "paper",
-                xanchor = "center",
-                yanchor = "bottom",
-                showarrow = FALSE,
-                font = list(size = 18, face = "bold")
-                )),
-         height = 400)
-fig_crude_matrix2
-orca(fig_crude_matrix2, "../../output/figs/fig_contacts_crude_matrix.pdf")
-rm(fig_crude_matrix2)
+ggsave(fig_crude_matrix, 
+       filename = "../../output/figs/fig_crude_matrix.pdf",
+       height=4, width=8, dpi=300,
+       bg="#FFFFFF")
+
+# fig_crude_matrix2 <- subplot(style(rural_matrix, showlegend = F),
+#                         urban_matrix, shareY = TRUE) %>%
+#   layout(title = '',
+#          # xaxis = list(title = "Participant age"),
+#          annotations = list(
+#            list(x=0.05, y=1.0,
+#                 text = "A. Rural",
+#                 xref = "paper",
+#                 yref = "paper",
+#                 xanchor = "center",
+#                 yanchor = "bottom",
+#                 showarrow = FALSE),
+#            list(x=0.57, y=1.0,
+#                 text = "B. Urban",
+#                 xref = "paper",
+#                 yref = "paper",
+#                 xanchor = "center",
+#                 yanchor = "bottom",
+#                 showarrow = FALSE),
+#            list(x=0.5, y=-0.3,
+#                 text = "Participant age",
+#                 xref = "paper",
+#                 yref = "paper",
+#                 xanchor = "center",
+#                 yanchor = "bottom",
+#                 showarrow = FALSE,
+#                 font = list(size = 18, face = "bold")
+#                 )),
+#          height = 400)
+# fig_crude_matrix2
+# orca(fig_crude_matrix2, "../../output/figs/fig_contacts_crude_matrix.pdf")
+# rm(fig_crude_matrix2)
 
 
 # # Combine plots using gridExtra 
@@ -1544,7 +1549,6 @@ rm(fig_crude_matrix2)
 #        bg="#FFFFFF")
 
 ```
-
 
 ```{r}
 #| label: fig-baseline-distributions
@@ -1565,7 +1569,6 @@ ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_di
        bg="#FFFFFF")
 
 ```
-
 
 ```{r}
 #| label: fig-matrix-type
@@ -1727,7 +1730,6 @@ ggsave(fig_matrix_type, filename = "../../output/figs/fig_matrix_type.pdf",
 
 fig_matrix_type
 ```
-
 
 ```{r}
 #| include: false
@@ -1914,7 +1916,6 @@ fig_touch <- contact_behav_fun(contact_behav, "touch_contact") +
 fig_touch
 ```
 
-
 ```{r}
 #| label: fig-contact-location
 #| fig-cap: "Location of contact"
@@ -1959,7 +1960,6 @@ ggsave(fig_contact_behavior, filename = "../../output/figs/fig_matrix_type.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
 ```
-
 
 ```{r}
 #| label: tbl-contact-characteristics
