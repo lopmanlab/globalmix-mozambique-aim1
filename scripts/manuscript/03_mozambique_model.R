@@ -1,5 +1,3 @@
-
-
 ###############################################################################  
 # This file contains scripts to analyze and visualize place use data.
 # Author: Sara Kim
@@ -236,7 +234,7 @@ mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$m
 #Make into long form
 mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
   left_join(data.frame(age1 = c(1,2,3,4,5,6),
-                       age_part = c("[0,10)","[10,20)","[20,30)","[30,40)","[40,60)","60+")),
+                       age_part = c("0-9y","10-19y","20-29y","30-39y","40-59y","60+y")),
             by="age1")
 
 ### Do same for rural
@@ -252,38 +250,55 @@ m_r <- contact_matrix(df_r, age.limits = c(0,10,20,30,40,60),
 mr_r <- Reduce("+", lapply(m_r$matrices, function(x) {x$matrix})) / length(m_r$matrices)
 mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
   left_join(data.frame(age1 = c(1,2,3,4,5,6),
-                       age_part = c("[0,10)","[10,20)","[20,30)","[30,40)","[40,60)","60+")),
+                       age_part = c("0-9y","10-19y","20-29y","30-39y","40-59y","60+y")),
             by="age1")
 
 
 ##### Matrix visualization
-
 ### rural
-ruralmatrix <- ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + 
+ruralmatrix <- mat_r %>%
+  mutate(age_cont = case_when(age_cont == "[0,10)" ~ "0-9y", 
+                              age_cont == "[10,20)" ~ "10-19y", 
+                              age_cont == "[20,30)" ~ "20-29y",
+                              age_cont == "[30,40)" ~ "30-39y", 
+                              age_cont == "[40,60)" ~  "40-59y",
+                              age_cont == "60+" ~ "60+y")) %>%
+  ggplot(aes(x = age_part, y = age_cont, fill = contacts)) + 
   geom_tile() + 
-  scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", midpoint = 10, limit = c(0,25)) +
-  xlab("Participant age") +
+  scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                       midpoint = 8, limit = c(0,20)) +
+  xlab("") +
   ylab("Contact age") +
   geom_text(aes(label=round(contacts, digits=1)), 
             colour = "black", check_overlap = TRUE, size=3) +
   axis_text_theme2 +  
-  theme(legend.position = "none")
-# ruralmatrix
+  theme(legend.position = "right",
+        legend.direction = "vertical")
+ruralmatrix
 
 ### urban
-urbanmatrix <- ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) +
+urbanmatrix <- mat_u %>%
+  mutate(age_cont = case_when(age_cont == "[0,10)" ~ "0-9y", 
+                              age_cont == "[10,20)" ~ "10-19y", 
+                              age_cont == "[20,30)" ~ "20-29y",
+                              age_cont == "[30,40)" ~ "30-39y", 
+                              age_cont == "[40,60)" ~  "40-59y",
+                              age_cont == "60+" ~ "60+y")) %>%
+  ggplot(aes(x = age_part, y = age_cont, fill = contacts)) +
   geom_tile() +
-  scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", midpoint = 10, limit = c(0,20))+
-  xlab("Participant age") +
-  ylab("") +
+  scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                       midpoint = 8, limit = c(0,20))+
+  xlab("") +
+  ylab("Contact age") +
   geom_text(aes(label=round(contacts, digits=1)), colour = "black", 
             check_overlap = TRUE, size=3) +
   axis_text_theme2 + 
-  theme(legend.position = "none",
-        axis.text.y = element_blank(),
-        axis.title.y = element_blank())
+  theme(legend.position = "right",
+        legend.direction = "vertical")
+# axis.text.y = element_blank(),
+# axis.title.y = element_blank()
   
-# urbanmatrix
+urbanmatrix
 
 # generate prem matrix
 # source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
@@ -296,18 +311,18 @@ age_cat_part <- data.frame(part_age1=c("0_4","5_9","10_14","15_19","20_24","25_2
                                        "30_34","35_39", "40_44","45_49","50_54",
                                        "55_59","60_64","65_69","70_74","75"),
                            
-                           part_age2 =c("[0,9)", "[0,9)", "[10,19)","[10,19)", 
-                                        "[20,29)", "[20,29)", "[30,39)", "[30,39)", 
-                                        "[40,59)","[40,59)", "[40,59)", "[40,59)",  
-                                        "60+", "60+", "60+", "60+"))
+                           part_age2 =c("0-9y", "0-9y", "10-19y","10-19y", 
+                                        "20-29y", "20-29y", "30-39y", "30-39y", 
+                                        "40-59y","40-59y", "40-59y", "40-59y",  
+                                        "60+y", "60+y", "60+y", "60+y"))
 
 
 ### Generate data frame of contact age groups for orig prem matrix matched to contact age groups for target matrix
 age_cat_cont <- data.frame(cont_age1 = colnames(moz_prem),
-                           cont_age2 = c("[0,9)", "[0,9)", "[10,19)","[10,19)", 
-                                         "[20,29)", "[20,29)", "[30,39)", "[30,39)", 
-                                         "[40,59)","[40,59)", "[40,59)", "[40,59)",  
-                                         "60+", "60+", "60+", "60+"))
+                           cont_age2 = c("0-9y", "0-9y", "10-19y","10-19y", 
+                                         "20-29y", "20-29y", "30-39y", "30-39y", 
+                                         "40-59y","40-59y", "40-59y", "40-59y",  
+                                         "60+y", "60+y", "60+y", "60+y"))
 
 moz_prem$part_age1 <- age_cat_part$part_age1
 
@@ -330,13 +345,13 @@ moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
 ### population data for 10-year population distribution in Moz
 moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
-  mutate(part_age2 = case_when(part_age2 == "0_9" ~ "[0,9)", 
-                               part_age2 == "10_19" ~ "[10,19)", 
-                               part_age2 == "20_29" ~ "[20,29)",
-                               part_age2 == "30_39" ~ "[30,39)", 
-                               part_age2 == "40_49" ~  "[40,59)",
-                               part_age2 == "50_59" ~  "[40,59)",
-                               part_age2 == "60" ~ "60+")) %>%
+  mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
+                               part_age2 == "10_19" ~ "10-19y", 
+                               part_age2 == "20_29" ~ "20-29y",
+                               part_age2 == "30_39" ~ "30-39y", 
+                               part_age2 == "40_49" ~  "40-59y",
+                               part_age2 == "50_59" ~  "40-59y",
+                               part_age2 == "60" ~ "60+y")) %>%
   group_by(part_age2) %>%
   summarize(pop10yr = sum(pop10yr))
 
@@ -354,18 +369,18 @@ moz_prem10 <- moz_prem %>%
 premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contacts)) + 
   geom_tile() +
   scale_fill_gradient2(low = "#91bfdb", mid="#fee090", high="#d73027",
-                       midpoint = 10, limit = c(0,20))+
+                       midpoint = 8, limit = c(0,20))+
   xlab("Participant age") + 
-  ylab("") +
+  ylab("Contact age") +
   geom_text(aes(label=round(contacts, digits=1)), 
             colour = "black", check_overlap = TRUE, size=3) +
   axis_text_theme2 +
   theme(legend.position = "right",
-        legend.direction  = "vertical",
-        axis.text.y = element_blank(),
-        axis.title.y = element_blank())
+        legend.direction  = "vertical")
+# axis.text.y = element_blank(),
+# axis.title.y = element_blank()
   
-# premmatrix
+premmatrix
 
 
 ##### CODE FOR TRANSMISSION MODEL #####
@@ -499,7 +514,7 @@ seirmod <- function(t, t0, parms) {
       (1-psi)*q*c55*(i.num.5/num.5) + 
       (1-psi)*q*c56*(i.num.6/num.6) 
     
-    # force of infection for 60+ contacts
+    # force of infection for 60+y contacts
     lambda.6 <- q*c61*(i.num.1/num.1) + 
       q*c62*(i.num.2/num.2) + 
       q*c63*(i.num.3/num.3) + 
@@ -790,7 +805,7 @@ ov.eff.prem.40_59 <- print(overall.eff(df.vax.prem$si.flow.5, df.novax.prem$si.f
 
 
 
-### age group 60+
+### age group 60+y
 # rural
 AR.rur.60 <- print(AR(df.novax.rur$si.flow.6, init.novax.rur$s.num.6)) 
 ARv.rur.60 <- print(ARv(df.vax.rur$si.flow.6, init.novax.rur$s.num.6)) 
@@ -806,9 +821,6 @@ AR.prem.60 <- print(AR(df.novax.prem$si.flow.6, init.novax.prem$s.num.6))
 ARv.prem.60 <- print(ARv(df.vax.prem$si.flow.6, init.novax.prem$s.num.6)) 
 ov.eff.prem.60 <- print(overall.eff(df.vax.prem$si.flow.6, df.novax.prem$si.flow.6)) 
 
-
-
-### create combined figure that has contact matrices and AR
 
 # create a dataframe with the attack rates RURAL 
 AR.rural <- rbind(AR.rur.0_9, AR.rur.10_19, AR.rur.20_29, AR.rur.30_39, AR.rur.40_59, AR.rur.60)
@@ -829,16 +841,6 @@ allAR.rural.melt <- allAR.rural.melt %>%
 
 rural.ve <- c("26%", "13%", "30%", "32%", "49%", "41%")
 
-AR.rural.plot <- ggplot(allAR.rural.melt, aes(age_group, value, fill=vax)) + 
-  geom_bar(stat = "identity", position = 'dodge') +
-  coord_flip() +
-  xlab("Age Group") + 
-  ylab("Attack Rate (%)") + 
-  labs(fill = NULL)  +
-  axis_text_theme2 +
-  theme(legend.position = "none")
-# AR.rural.plot
-
 # create a dataframe with the attack rates URBAN 
 AR.urban <- rbind(AR.urb.0_9, AR.urb.10_19, AR.urb.20_29, AR.urb.30_39, AR.urb.40_59, AR.urb.60)
 ARV.urban <- rbind(ARv.urb.0_9, ARv.urb.10_19, ARv.urb.20_29, ARv.urb.30_39, ARv.urb.40_59, ARv.urb.60)
@@ -856,18 +858,6 @@ allAR.urban.melt <- allAR.urban.melt %>%
                                Var1 == "AR.urb.60" ~ "60+y",)) %>%
   select(age_group, vax, value)
 
-
-AR.urban.plot <- ggplot(allAR.urban.melt, aes(age_group, value, fill=vax)) +
-  coord_flip() +
-  geom_bar(stat = "identity", position = 'dodge') + 
-  xlab("Age Group") + 
-  ylab("Attack Rate (%)") + 
-  labs(fill = NULL) +
-  axis_text_theme2 +
-  theme(legend.position = "none",
-        axis.text.y = element_blank(),
-        axis.title.y = element_blank())
-# AR.urban.plot
 
 # create a dataframe with the attack rates PREM
 AR.prem <- rbind(AR.prem.0_9, AR.prem.10_19, AR.prem.20_29, AR.prem.30_39, AR.prem.40_59, AR.prem.60)
@@ -887,20 +877,112 @@ allAR.prem.melt <- allAR.prem.melt %>%
   select(age_group, vax, value)
 
 
-AR.prem.plot <- ggplot(allAR.prem.melt, aes(age_group, value, fill=vax)) + 
-  geom_bar(stat = "identity", position = 'dodge') + 
-  coord_flip() +
-  xlab("Age Group") + 
-  ylab("Attack Rate (%)") + 
-  labs(fill = NULL)  +
-  axis_text_theme2 +
-  theme(legend.position = "right",
-        legend.direction = "vertical",
-        axis.text.y = element_blank(),
-        axis.title.y = element_blank())
-# AR.prem.plot
+ss
+# function to create dot plot for attack rates
+cols_model <- c("#9467bd","#aec7e8")
+
+fxn_create_dot_plot <- function(data) {
+  segment_helper <- data %>%
+    mutate(vax = case_when(vax == "Vaccine" ~ "Yes",
+                           vax == "No Vaccine" ~ "No"),
+           vax = factor(vax,
+                        levels = c("Yes", "No"))) %>%
+    pivot_wider(names_from = vax, values_from = value, names_prefix = 'v_') %>%
+    mutate(change = v_Yes - v_No )
+  
+  ggplot() + 
+    geom_segment(data = segment_helper,
+                 aes(x = v_No, xend = v_Yes, y = age_group, yend = age_group),
+                 col = 'grey60',
+                 linewidth = 1.25) +
+    geom_point(
+      data = data,
+      aes(x = value, y = age_group, col = vax), size = 4) +
+    axis_text_theme2 +
+    labs(
+      x = 'Attack rate (%)',
+      y = 'Age group') +
+    scale_color_manual(values = cols_model) +
+    scale_x_continuous(limits = c(0, 100)) +
+    theme(
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 0),
+      legend.position = "right",
+      legend.direction = "vertical")
+    # scale_x_continuous(expand = expansion(mult = 0.01))
+}
+
+# plot
+AR.rural.plot <- fxn_create_dot_plot(allAR.rural.melt) +
+  labs(x = '')
+AR.rural.plot
+
+AR.urban.plot <- fxn_create_dot_plot(allAR.urban.melt) +
+  labs(x = '')
+AR.urban.plot
+
+AR.prem.plot <- fxn_create_dot_plot(allAR.prem.melt)
+AR.prem.plot  
 
 # combine all plots and matrices into one figure
+rural_model <- ruralmatrix | AR.rural.plot
+urban_model <- urbanmatrix | AR.urban.plot
+prem_model <- premmatrix | AR.prem.plot
+
+
+fig_model <- wrap_plots(rural_model,
+                        urban_model,
+                        prem_model) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(800, 800, 800))
+fig_model
+
+ggsave(fig_model, filename = "output/figs/fig_modelplot.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
+
+cat("End of model script.")
+
+
+# ALTERNATIVE CODE FOR GRAPHS
+# 
+# # AR.urban.plot
+# AR.urban.plot <- ggplot(allAR.urban.melt, aes(age_group, value, fill=vax)) +
+#   coord_flip() +
+#   geom_bar(stat = "identity", position = 'dodge') + 
+#   xlab("Age Group") + 
+#   ylab("Attack Rate (%)") + 
+#   labs(fill = NULL) +
+#   axis_text_theme2 +
+#   theme(legend.position = "none",
+#         axis.text.y = element_blank(),
+#         axis.title.y = element_blank())
+
+# # AR.rural.plot
+# AR.rural.plot <- ggplot(allAR.rural.melt, aes(age_group, value, fill=vax)) + 
+#   geom_bar(stat = "identity", position = 'dodge') +
+#   coord_flip() +
+#   xlab("Age Group") + 
+#   ylab("Attack Rate (%)") + 
+#   labs(fill = NULL)  +
+#   axis_text_theme2 +
+#   theme(legend.position = "none")
+
+# # AR.prem.plot
+# AR.prem.plot <- ggplot(allAR.prem.melt, aes(age_group, value, fill=vax)) + 
+#   geom_bar(stat = "identity", position = 'dodge') + 
+#   coord_flip() +
+#   xlab("Age Group") + 
+#   ylab("Attack Rate (%)") + 
+#   labs(fill = NULL)  +
+#   axis_text_theme2 +
+#   theme(legend.position = "right",
+#         legend.direction = "vertical",
+#         axis.text.y = element_blank(),
+#         axis.title.y = element_blank())
+
 
 # # ADDED BY MCK TO TEST
 # modelplots <- plot_grid(ruralmatrix, urbanmatrix,
@@ -911,31 +993,12 @@ AR.prem.plot <- ggplot(allAR.prem.melt, aes(age_group, value, fill=vax)) +
 
 # premmatrix MISSING. WILL NEED SOME REFORMATING E.G. COMBINING LEGENDS AND
 # CONFORMING TEXTS TO axis_text-theme2 AVAILABLE IN CUSTOMIZATION CODE.
-model_matrices <- ruralmatrix | urbanmatrix | premmatrix
-model_ar <- AR.rural.plot | AR.urban.plot | AR.prem.plot
 
-fig_model <- wrap_plots(model_matrices,
-                        model_ar) + 
-  plot_annotation(tag_levels = 'A') + 
-  theme(plot.tag = element_text(size = 12)) +
-  plot_layout(nrow=2, heights = c(600, 600))
+# model_matrices <- ruralmatrix | urbanmatrix | premmatrix
+# model_ar <- AR.rural.plot | AR.urban.plot | AR.prem.plot
+# fig_model <- wrap_plots(model_matrices,
+#                         model_ar) + 
+#   plot_annotation(tag_levels = 'A') + 
+#   theme(plot.tag = element_text(size = 12)) +
+#   plot_layout(nrow=2, heights = c(600, 600))
 
-fig_model
-
-ggsave(fig_model, filename = "../../output/figs/fig_modelplot.pdf",
-       height=6, width=8, dpi=300,
-       bg="#FFFFFF")
-
-# modelplots <- plot_grid(ruralmatrix, urbanmatrix, premmatrix,
-#                         AR.rural.plot, AR.urban.plot, AR.prem.plot,
-#           labels = c('Rural', 'Urban', 'Synthetic',
-#                      # 'GlobalMix Rural', 'GlobalMix Urban', 'Synthetically Derived',
-#                      label_size = 10, vjust = 5))
-
-# ggsave(modelplots, filename = "../../output/figs/fig_modelplot.pdf",
-#        height=6, width=8, dpi=300,
-#        bg="#FFFFFF")
-# # modelplots
-# 
-
-cat("End of model script.")
