@@ -1357,8 +1357,6 @@ ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_di
 
 #| label: fig-matrix-type
 
-#| label: fig-matrix-type
-
 # n_participants_rural_touch <- participants %>%
 #   dplyr::filter(study_site == "Rural") %>%
 #   dplyr::group_by(participant_age) %>%
@@ -1513,7 +1511,7 @@ fig_matrix_type <- rural_matrix_type / urban_matrix_type
 ggsave(fig_matrix_type, filename = "../../output/figs/fig_matrix_type.pdf",
        height=8, width=8, dpi=1024,
        bg="#FFFFFF")
-
+ss
 # fig_matrix_type
 
 ### Weighted contact matrix
@@ -1699,7 +1697,7 @@ fig_duration
 #| label:  fig-contact-behavior
 fig_contact_behavior <- (fig_masking | fig_touch) / (fig_location | fig_duration)
 
-ggsave(fig_contact_behavior, filename = "../../output/figs/fig_matrix_type.pdf",
+ggsave(fig_contact_behavior, filename = "../../output/figs/fig_contact_behavior.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
 
