@@ -877,7 +877,7 @@ allAR.prem.melt <- allAR.prem.melt %>%
   select(age_group, vax, value)
 
 
-ss
+
 # function to create dot plot for attack rates
 cols_model <- c("#9467bd","#aec7e8")
 
@@ -939,50 +939,89 @@ fig_model <- wrap_plots(rural_model,
   plot_layout(nrow=3, heights = c(800, 800, 800))
 fig_model
 
-ggsave(fig_model, filename = "output/figs/fig_modelplot.pdf",
-       height=8, width=8, dpi=300,
-       bg="#FFFFFF")
+# ggsave(fig_model, filename = "output/figs/fig_modelplot.pdf",
+#        height=8, width=8, dpi=300,
+#        bg="#FFFFFF")
 
 cat("End of model script.")
 
 
 # ALTERNATIVE CODE FOR GRAPHS
-# 
-# # AR.urban.plot
-# AR.urban.plot <- ggplot(allAR.urban.melt, aes(age_group, value, fill=vax)) +
-#   coord_flip() +
-#   geom_bar(stat = "identity", position = 'dodge') + 
-#   xlab("Age Group") + 
-#   ylab("Attack Rate (%)") + 
-#   labs(fill = NULL) +
-#   axis_text_theme2 +
-#   theme(legend.position = "none",
-#         axis.text.y = element_blank(),
-#         axis.title.y = element_blank())
 
-# # AR.rural.plot
-# AR.rural.plot <- ggplot(allAR.rural.melt, aes(age_group, value, fill=vax)) + 
-#   geom_bar(stat = "identity", position = 'dodge') +
-#   coord_flip() +
-#   xlab("Age Group") + 
-#   ylab("Attack Rate (%)") + 
-#   labs(fill = NULL)  +
-#   axis_text_theme2 +
-#   theme(legend.position = "none")
+# AR.rural.plot
+AR.rural.plot2 <- allAR.rural.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.2%"),
+           hjust=0, size=5) +
+  coord_flip() +
+  xlab("Age Group") +
+  ylab("") +
+  labs(fill = NULL)  +
+  axis_text_theme2 +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle=0))
+AR.rural.plot2
 
-# # AR.prem.plot
-# AR.prem.plot <- ggplot(allAR.prem.melt, aes(age_group, value, fill=vax)) + 
-#   geom_bar(stat = "identity", position = 'dodge') + 
-#   coord_flip() +
-#   xlab("Age Group") + 
-#   ylab("Attack Rate (%)") + 
-#   labs(fill = NULL)  +
-#   axis_text_theme2 +
-#   theme(legend.position = "right",
-#         legend.direction = "vertical",
-#         axis.text.y = element_blank(),
-#         axis.title.y = element_blank())
+# AR.urban.plot
+AR.urban.plot2 <- allAR.urban.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  coord_flip() +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.2%"),
+           hjust=0, size=5) +
+  xlab("Age Group") +
+  ylab("Attack Rate (%)") +
+  labs(fill = NULL) +
+  axis_text_theme2 +
+  theme(legend.position = "none",
+        # axis.text.y = element_blank(),
+        # axis.title.y = element_blank(),
+        axis.text.x = element_text(angle=0))
+AR.urban.plot2
 
+# AR.prem.plot
+AR.prem.plot2 <- allAR.prem.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.9, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.9%"),
+           hjust=0, size=5) +
+  coord_flip() +
+  xlab("Age Group") +
+  ylab("Attack Rate (%)") +
+  labs(fill = NULL)  +
+  axis_text_theme2 +
+  theme(legend.position = "right",
+        legend.direction = "vertical",
+        # axis.text.y = element_blank(),
+        # axis.title.y = element_blank(),
+        axis.text.x = element_text(angle=0))
+AR.prem.plot2
+
+rural_model2 <- ruralmatrix | AR.rural.plot2
+urban_model2 <- urbanmatrix | AR.urban.plot2
+prem_model2 <- premmatrix | AR.prem.plot2
+
+fig_model2 <- wrap_plots(rural_model2,
+                        urban_model2,
+                        prem_model2) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(800, 800, 800))
+fig_model2
+
+ggsave(fig_model2, filename = "output/figs/fig_modelplot_v2.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
 
 # # ADDED BY MCK TO TEST
 # modelplots <- plot_grid(ruralmatrix, urbanmatrix,
