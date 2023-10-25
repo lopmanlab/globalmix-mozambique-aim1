@@ -946,98 +946,79 @@ fig_model
 cat("End of model script.")
 
 
-# ALTERNATIVE CODE FOR GRAPHS
-
-# AR.rural.plot
-AR.rural.plot2 <- allAR.rural.melt %>%
-  filter(vax == "Vaccine") %>%
-  ggplot(aes(age_group, value, fill=vax)) +
-  geom_bar(stat = "identity", position = 'dodge') +
-  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
-  annotate("text", x=6, y=28,
-           label=paste0("VE = 26.2%"),
-           hjust=0, size=5) +
-  coord_flip() +
-  xlab("Age Group") +
-  ylab("") +
-  labs(fill = NULL)  +
-  axis_text_theme2 +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle=0))
-AR.rural.plot2
-
-# AR.urban.plot
-AR.urban.plot2 <- allAR.urban.melt %>%
-  filter(vax == "Vaccine") %>%
-  ggplot(aes(age_group, value, fill=vax)) +
-  coord_flip() +
-  geom_bar(stat = "identity", position = 'dodge') +
-  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
-  annotate("text", x=6, y=28,
-           label=paste0("VE = 26.2%"),
-           hjust=0, size=5) +
-  xlab("Age Group") +
-  ylab("Attack Rate (%)") +
-  labs(fill = NULL) +
-  axis_text_theme2 +
-  theme(legend.position = "none",
-        # axis.text.y = element_blank(),
-        # axis.title.y = element_blank(),
-        axis.text.x = element_text(angle=0))
-AR.urban.plot2
-
-# AR.prem.plot
-AR.prem.plot2 <- allAR.prem.melt %>%
-  filter(vax == "Vaccine") %>%
-  ggplot(aes(age_group, value, fill=vax)) +
-  geom_bar(stat = "identity", position = 'dodge') +
-  geom_hline(yintercept = 26.9, color="black", linetype = "dashed", linewidth=1.3) +
-  annotate("text", x=6, y=28,
-           label=paste0("VE = 26.9%"),
-           hjust=0, size=5) +
-  coord_flip() +
-  xlab("Age Group") +
-  ylab("Attack Rate (%)") +
-  labs(fill = NULL)  +
-  axis_text_theme2 +
-  theme(legend.position = "right",
-        legend.direction = "vertical",
-        # axis.text.y = element_blank(),
-        # axis.title.y = element_blank(),
-        axis.text.x = element_text(angle=0))
-AR.prem.plot2
-
-rural_model2 <- ruralmatrix | AR.rural.plot2
-urban_model2 <- urbanmatrix | AR.urban.plot2
-prem_model2 <- premmatrix | AR.prem.plot2
-
-fig_model2 <- wrap_plots(rural_model2,
-                        urban_model2,
-                        prem_model2) + 
-  plot_annotation(tag_levels = 'A') + 
-  theme(plot.tag = element_text(size = 12)) +
-  plot_layout(nrow=3, heights = c(800, 800, 800))
-fig_model2
-
-ggsave(fig_model2, filename = "output/figs/fig_modelplot_v2.pdf",
-       height=8, width=8, dpi=300,
-       bg="#FFFFFF")
-
-# # ADDED BY MCK TO TEST
-# modelplots <- plot_grid(ruralmatrix, urbanmatrix,
-#                         AR.rural.plot, AR.urban.plot,
-#                         labels = c('GlobalMix Rural', 'GlobalMix Urban',
-#                                    'GlobalMix Rural', 'GlobalMix Urban',
-#                                    label_size = 12, vjust = 3))
-
-# premmatrix MISSING. WILL NEED SOME REFORMATING E.G. COMBINING LEGENDS AND
-# CONFORMING TEXTS TO axis_text-theme2 AVAILABLE IN CUSTOMIZATION CODE.
-
-# model_matrices <- ruralmatrix | urbanmatrix | premmatrix
-# model_ar <- AR.rural.plot | AR.urban.plot | AR.prem.plot
-# fig_model <- wrap_plots(model_matrices,
-#                         model_ar) + 
+# # ALTERNATIVE CODE FOR GRAPHS
+# # PRESENTATION PLOT
+# # AR.rural.plot
+# AR.rural.plot2 <- allAR.rural.melt %>%
+#   filter(vax == "Vaccine") %>%
+#   ggplot(aes(age_group, value, fill=vax)) +
+#   geom_bar(stat = "identity", position = 'dodge') +
+#   geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+#   annotate("text", x=6, y=28,
+#            label=paste0("VE = 26.2%"),
+#            hjust=0, size=5) +
+#   coord_flip() +
+#   xlab("Age Group") +
+#   ylab("") +
+#   labs(fill = NULL)  +
+#   axis_text_theme2 +
+#   theme(legend.position = "none",
+#         axis.text.x = element_text(angle=0))
+# AR.rural.plot2
+# 
+# # AR.urban.plot
+# AR.urban.plot2 <- allAR.urban.melt %>%
+#   filter(vax == "Vaccine") %>%
+#   ggplot(aes(age_group, value, fill=vax)) +
+#   coord_flip() +
+#   geom_bar(stat = "identity", position = 'dodge') +
+#   geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+#   annotate("text", x=6, y=28,
+#            label=paste0("VE = 26.2%"),
+#            hjust=0, size=5) +
+#   xlab("Age Group") +
+#   ylab("Attack Rate (%)") +
+#   labs(fill = NULL) +
+#   axis_text_theme2 +
+#   theme(legend.position = "none",
+#         # axis.text.y = element_blank(),
+#         # axis.title.y = element_blank(),
+#         axis.text.x = element_text(angle=0))
+# AR.urban.plot2
+# 
+# # AR.prem.plot
+# AR.prem.plot2 <- allAR.prem.melt %>%
+#   filter(vax == "Vaccine") %>%
+#   ggplot(aes(age_group, value, fill=vax)) +
+#   geom_bar(stat = "identity", position = 'dodge') +
+#   geom_hline(yintercept = 26.9, color="black", linetype = "dashed", linewidth=1.3) +
+#   annotate("text", x=6, y=28,
+#            label=paste0("VE = 26.9%"),
+#            hjust=0, size=5) +
+#   coord_flip() +
+#   xlab("Age Group") +
+#   ylab("Attack Rate (%)") +
+#   labs(fill = NULL)  +
+#   axis_text_theme2 +
+#   theme(legend.position = "right",
+#         legend.direction = "vertical",
+#         # axis.text.y = element_blank(),
+#         # axis.title.y = element_blank(),
+#         axis.text.x = element_text(angle=0))
+# AR.prem.plot2
+# 
+# rural_model2 <- ruralmatrix | AR.rural.plot2
+# urban_model2 <- urbanmatrix | AR.urban.plot2
+# prem_model2 <- premmatrix | AR.prem.plot2
+# 
+# fig_model2 <- wrap_plots(rural_model2,
+#                         urban_model2,
+#                         prem_model2) + 
 #   plot_annotation(tag_levels = 'A') + 
 #   theme(plot.tag = element_text(size = 12)) +
-#   plot_layout(nrow=2, heights = c(600, 600))
-
+#   plot_layout(nrow=3, heights = c(800, 800, 800))
+# fig_model2
+# 
+# ggsave(fig_model2, filename = "output/figs/fig_modelplot_v2.pdf",
+#        height=8, width=8, dpi=300,
+#        bg="#FFFFFF")
