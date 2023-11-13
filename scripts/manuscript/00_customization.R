@@ -86,7 +86,7 @@ get_legend <- function(myggplot){
 ## over title, text size, mid and max points for legend and legend position
 
 # function to generate overall matrices
-fun_matrix1_plot <- function(m1data, title, xlab, ylab){
+fun_matrix1_plot <- function(m1data, title){ #, xlab, ylab
   m1data %>%
     ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
     geom_raster() +
