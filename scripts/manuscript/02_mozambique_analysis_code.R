@@ -9,8 +9,7 @@ participants <- readRDS("../../data/clean/participant_data_aim1.RDS")
 contacts <- readRDS("../../data/clean/contact_data_aim1.RDS")
 household <- readRDS("../../data/clean/household_survey_aim1.RDS")
 location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
-# 
-xx
+
 # set color themes
 # cols_site <- c("#1f77b4", "#ff7f0e")
 cols_site <- c("#d8b365", "#5ab4ac")
@@ -180,7 +179,7 @@ label(participants$behavior_change) <- "Did you change your social behavior due 
 table1 <- participants %>%
   # dplyr::filter(aim==1) %>%
   dplyr::select(study_site, participant_sex, participant_age,  read_write, 
-                enrolled_school, occupation2, mask_use, age_symptom, 
+                enrolled_school, occupation, mask_use, age_symptom, 
                 ari_symptom, contacts_completedby) %>% # day_of_week, year, study_site
   tbl_summary(by=study_site, 
               percent="column",
@@ -256,7 +255,7 @@ ggsave(fig_sex_age, filename = "../../output/figs/fig1_participant_age_sex.pdf",
 
 # diary filler by participant_age
 diary_filler <- participants %>% 
-  group_by(contacts_completedbylb, participant_age, study_site) %>% 
+  group_by(contacts_completedby, participant_age, study_site) %>% 
   dplyr::summarise(total = n(), .groups = "drop") %>%
   na.omit() %>%
   group_by(study_site) %>%  # Group by study_site
@@ -264,7 +263,7 @@ diary_filler <- participants %>%
 
 
 fig_diary_filler <- diary_filler %>%
-  ggplot(aes(x = participant_age, y = proportion, fill = contacts_completedbylb)) +
+  ggplot(aes(x = participant_age, y = proportion, fill = contacts_completedby)) +
   geom_bar(stat="identity", position = "fill", col = "white") +
   geom_text(aes(label = scales::percent(proportion)),  # Provide the label aesthetic
             position = position_fill(vjust = 0.5), show.legend = FALSE) +
@@ -900,7 +899,7 @@ contacts_hhmember <- df_contact_d1 %>%
 fig_hhmembership_box <- fxn_fig_boxplot(contacts_hhmember, "hh_membership") +
   axis_text_theme2 +
   theme(legend.position = c(0.3, 0.9))
-fig_hhmembership_box
+# fig_hhmembership_box
 # ggsave(fig_hhmembership_box, filename = "../../output/figs/moz_hh_membership_boxplot.pdf",
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
@@ -1453,26 +1452,26 @@ urban_matrix <- fun_matrix1_plot(m1_urban, "") # Urban site
 
 crude_matrix <- rural_matrix | urban_matrix
 
-crude_matrix <- subplot(style(rural_matrix, showlegend = F) %>% 
-                          layout(xaxis = list(title = "Participant age")), 
-                        urban_matrix, shareY = TRUE) %>%
-  layout(title = '',
-         xaxis = list(title = "Participant age"),
-         annotations = list(
-           list(x=0.2, y=1.0,
-                text = "Rural",
-                xref = "paper",
-                yref = "paper",
-                xanchor = "center",
-                yanchor = "bottom",
-                showarrow = FALSE),
-           list(x=0.8, y=1.0,
-                text = "Urban",
-                xref = "paper",
-                yref = "paper",
-                xanchor = "center",
-                yanchor = "bottom",
-                showarrow = FALSE)))
+# crude_matrix <- subplot(style(rural_matrix, showlegend = F) %>% 
+#                           layout(xaxis = list(title = "Participant age")), 
+#                         urban_matrix, shareY = TRUE) %>%
+#   layout(title = '',
+#          xaxis = list(title = "Participant age"),
+#          annotations = list(
+#            list(x=0.2, y=1.0,
+#                 text = "Rural",
+#                 xref = "paper",
+#                 yref = "paper",
+#                 xanchor = "center",
+#                 yanchor = "bottom",
+#                 showarrow = FALSE),
+#            list(x=0.8, y=1.0,
+#                 text = "Urban",
+#                 xref = "paper",
+#                 yref = "paper",
+#                 xanchor = "center",
+#                 yanchor = "bottom",
+#                 showarrow = FALSE)))
 
 # install.packages("keleido")
 # library(kaleido)
@@ -1876,7 +1875,7 @@ result_list <- list(0)  ## empty list
 
 ## specify participant characteristic stratification for cross tabs/analysis
 participant_variables <- data.frame(var=c("participant_sex","participant_age",
-                                          "occupation2", "hh_size_cat", "enrolled_school",
+                                          "occupation", "hh_size_cat", "enrolled_school",
                                           "weekday", "ari_symptom", "age_symptom"),
                                     name=c("Sex", "Age", "Occupation", "Household size",
                                            "Enrolled in school", "Weekday/Weekend",
@@ -2008,139 +2007,134 @@ table3 <- kable(table3, digits = 0, align = "r") %>%
 #| label: tbl-rural-contact-all
 #| tbl-cap: "Summary of rural contacts over two days"
 
-for (i in 1:nrow(variables)){
-  x <- df_contact_rural[,variables$var[[i]]] 
-  # include another variable n as the number of participants per strata
-  variables$var[[i]]
-  
-  # Number and proportion of contacts in each strata
-  
-  t0 <- as.data.frame(cbind(table(x), # Total 
-                            round(prop.table(table(x))*100, digits=0) # Proportion
-  )) # number of participants
-  
-  colnames(t0)[1:2] <- c("Total","Col") 
-  Tot <- rep("",5)
-  
-  # Median contacts for day 1
-  t1 <- df_contact_d1 %>%
-    dplyr::filter(study_site == "Rural") %>%
-    # since this is total contacts per person, keep only 1 distinct record
-    distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    # na.omit() %>%
-    do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
-  
-  # Median contacts for day 2
-  t2 <- df_contact_d2 %>%
-    dplyr::filter(study_site == "Rural") %>%
-    # since this is total contacts per person, keep only 1 distinct record
-    distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>%
-    # na.omit() %>%
-    do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
-  
-  # Bind columns together and select relevant columns
-  t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
-  
-  # convert to numerical and round off?
-  
-  t0<- t0[,c(1,2,3,4)]
-  
-  # rename total column
-  t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
-  t0 <- t0[,c(1,3,4)]
-  t0[,1]<-as.character(t0[,1])
-  t0[,2]<-as.character(t0[,2])
-  
-  t0<-rbind(Tot, t0)
-  
-  rownames(t0)[1]<-variables$name[[i]]
-  list[[i]] <- t0
-}
+# for (i in 1:nrow(participant_variables)){
+#   x <- df_contact_rural[,participant_variables$var[[i]]] 
+#   # include another variable n as the number of participants per strata
+#   participant_variables$var[[i]]
+#   
+#   # Number and proportion of contacts in each strata
+#   
+#   t0 <- as.data.frame(cbind(table(x), # Total 
+#                             round(prop.table(table(x))*100, digits=0) # Proportion
+#   )) # number of participants
+#   
+#   colnames(t0)[1:2] <- c("Total","Col") 
+#   Tot <- rep("",5)
+#   
+#   # Median contacts for day 1
+#   t1 <- df_contact_d1 %>%
+#     dplyr::filter(study_site == "Rural") %>%
+#     # since this is total contacts per person, keep only 1 distinct record
+#     distinct(rec_id, .keep_all = TRUE) %>% 
+#     dplyr::group_by(across(all_of(participant_variables$var[[i]]))) %>%
+#     # na.omit() %>%
+#     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
+#   t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
+#   
+#   # Median contacts for day 2
+#   t2 <- df_contact_d2 %>%
+#     dplyr::filter(study_site == "Rural") %>%
+#     # since this is total contacts per person, keep only 1 distinct record
+#     distinct(rec_id, .keep_all = TRUE) %>% 
+#     dplyr::group_by(across(all_of(participant_variables$var[[i]]))) %>%
+#     # na.omit() %>%
+#     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
+#   t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
+#   
+#   # Bind columns together and select relevant columns
+#   t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
+#   
+#   # convert to numerical and round off?
+#   
+#   t0<- t0[,c(1,2,3,4)]
+#   
+#   # rename total column
+#   t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
+#   t0 <- t0[,c(1,3,4)]
+#   t0[,1]<-as.character(t0[,1])
+#   t0[,2]<-as.character(t0[,2])
+#   
+#   t0<-rbind(Tot, t0)
+#   
+#   rownames(t0)[1]<-participant_variables$name[[i]]
+#   result_list[[i]] <- t0
+# }
+# 
+# table4 <- res_restruct(list)
+# colnames(table4) <- c("Total (%)", "Day 1", "Day 2")
+# 
+# table4 <- kable(table4, digits = 0, align = "r") %>%
+#   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+# 
+# rm(t0, t1, t2)
+# 
+# # table4
+# 
+# 
+# #| label: tbl-urban-contact-d2
+# #| tbl-cap: "Summary of urban contacts over two days"
+# 
+# 
+# ### Urban contacts
+# # table of contacts by day of study: both days, day 1 and day 2
+# list <- list(0)  ## empty list
+# 
+# for (i in 1:nrow(participant_variables)){
+#   x <- df_contact_urban[,participant_variables$var[[i]]] # this should be for urban contacts only
+#   participant_variables$var[[i]]
+#   
+#   # Number and proportion of participants in each strata
+#   
+#   t0 <- as.data.frame(cbind(table(x), # Total 
+#                             round(prop.table(table(x))*100, digits=0))) # Proportion
+#   
+#   colnames(t0)[1:2] <- c("Total","Col") 
+#   Tot <- rep("",5)
+#   
+#   # Median contacts for day 1
+#   t1 <- df_contact_d1 %>%
+#     dplyr::filter(study_site == "Urban") %>%
+#     # since this is total contacts per person, keep only 1 distinct record
+#     distinct(rec_id, .keep_all = TRUE) %>% 
+#     dplyr::group_by(across(all_of(participant_variables$var[[i]]))) %>%
+#     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
+#   t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
+#   
+#   # Median contacts for day 2
+#   t2 <- df_contact_d2 %>%
+#     dplyr::filter(study_site == "Urban") %>%
+#     # since this is total contacts per person, keep only 1 distinct record
+#     distinct(rec_id, .keep_all = TRUE) %>% 
+#     dplyr::group_by(across(all_of(participant_variables$var[[i]]))) %>%
+#     do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
+#   t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
+#   
+#   # Bind columns together and select relevant columns
+#   t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
+#   t0<- t0[,c(1,2,3,4)]
+#   
+#   # rename total column
+#   t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
+#   t0 <- t0[,c(1,3,4)]
+#   t0[,1]<-as.character(t0[,1])
+#   t0[,2]<-as.character(t0[,2])
+#   
+#   t0<-rbind(Tot, t0)
+#   
+#   rownames(t0)[1]<-participant_variables$name[[i]]
+#   result_list[[i]] <- t0
+# }
+# 
 
-table4 <- res_restruct(list)
-colnames(table4) <- c("Total (%)", "Day 1", "Day 2")
-
-table4 <- kable(table4, digits = 0, align = "r") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-rm(t0, t1, t2)
-
-# table4
-
-
-#| label: tbl-urban-contact-d2
-#| tbl-cap: "Summary of urban contacts over two days"
-
-
-### Urban contacts
-# table of contacts by day of study: both days, day 1 and day 2
-list <- list(0)  ## empty list
-
-for (i in 1:nrow(variables)){
-  x <- df_contact_urban[,variables$var[[i]]] # this should be for urban contacts only
-  variables$var[[i]]
-  
-  # Number and proportion of participants in each strata
-  
-  t0 <- as.data.frame(cbind(table(x), # Total 
-                            round(prop.table(table(x))*100, digits=0))) # Proportion
-  
-  colnames(t0)[1:2] <- c("Total","Col") 
-  Tot <- rep("",5)
-  
-  # Median contacts for day 1
-  t1 <- df_contact_d1 %>%
-    dplyr::filter(study_site == "Urban") %>%
-    # since this is total contacts per person, keep only 1 distinct record
-    distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t1$med_contact <- as.character(paste(t1$X50.," (",t1$X25.,"-",t1$X75.,")",sep="")) # Formatting for export
-  
-  # Median contacts for day 2
-  t2 <- df_contact_d2 %>%
-    dplyr::filter(study_site == "Urban") %>%
-    # since this is total contacts per person, keep only 1 distinct record
-    distinct(rec_id, .keep_all = TRUE) %>% 
-    dplyr::group_by(.dots = variables$var[[i]]) %>% 
-    do(data.frame(t(quantile(.$num_contacts, na.rm=TRUE, probs=c(0.25,0.5,0.75))))) # Median and IQR      
-  t2$med_contact <- as.character(paste(t2$X50.," (",t2$X25.,"-",t2$X75.,")",sep="")) # Formatting for export
-  
-  # Bind columns together and select relevant columns
-  t0<-qpcR:::cbind.na(t0, t1$med_contact, t2$med_contact) 
-  t0<- t0[,c(1,2,3,4)]
-  
-  # rename total column
-  t0$Total <- paste(t0$Total," (","", t0$Col,")",sep="")
-  t0 <- t0[,c(1,3,4)]
-  t0[,1]<-as.character(t0[,1])
-  t0[,2]<-as.character(t0[,2])
-  
-  t0<-rbind(Tot, t0)
-  
-  rownames(t0)[1]<-variables$name[[i]]
-  list[[i]] <- t0
-}
-
-# format table
-res_restruct<- function(res){
-  res1 <- lapply(res, as.data.frame)
-  res1 <- do.call(rbind, res1)
-  return(res1)
-}
-
-table5 <- res_restruct(list)
-colnames(table5) <- c("Total (%)", "Day 1", "Day 2")
-
-table5 <- kable(table5, digits = 0, align = "r") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-# table4
-
-rm(t0, t1, t2)
+# 
+# table5 <- res_restruct(list)
+# colnames(table5) <- c("Total (%)", "Day 1", "Day 2")
+# 
+# table5 <- kable(table5, digits = 0, align = "r") %>%
+#   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+# # table4
+# 
+# rm(t0, t1, t2)
 
 
 # @tbl-urban-contact-table shows a summary of the median (IQR) contacts in the urban area on day 1 and day 2 separately.
