@@ -4,21 +4,23 @@
 # 
 ###############################################################################  
 
+location <- readRDS("data/clean/locations_visited_aim1.RDS") %>%
+  filter(study_day == 1)
 
-location <- location %>% mutate(
-  time_visited_cat = case_when(
-    time_visited %in% c("<5 mins","5-15 mins") ~ "<15 mins",
-    time_visited %in% c("16-30 mins","31 mins-1 hr") ~ "15 mins-1 hr",
-    TRUE~ time_visited)) %>%
+location <- location %>% 
+  dplyr::mutate(
+    time_visited_cat = case_when(
+      time_visited %in% c("<5 mins","5-15 mins") ~ "<15 mins",
+      time_visited %in% c("16-30 mins","31 mins-1 hr") ~ "15 mins-1 hr",
+      TRUE~ time_visited)) %>%
   filter(!is.na(place_visited)) %>% # dropped 2 NAs
   filter(!is.na(time_visited)) %>%
   mutate(
     time_visited_cat = factor(time_visited_cat, levels = c("<15 mins","15 mins-1 hr","1-4 hrs",">4 hrs")),
     
     place_visited = factor(place_visited, levels = c("My home","Other home","Street","Market/Shop",
-                                                        "Transport/Hub", "Agricultural Field", "School",
-                                                        "Work", "Other", "Place of worship", "Well", "Playground"))
-  )
+                                                     "Transport/Hub", "Agricultural Field", "School",
+                                                     "Work", "Other", "Place of worship", "Well", "Playground")))
 
 # figure included in ms
 fig_locvisit_timespent <- location %>%
@@ -49,7 +51,7 @@ ggsave(fig_locvisit_timespent, filename = "../../output/figs/fig_locvisit_timesp
        bg="#FFFFFF")
 
 tab1_loc <- location %>%
-  mutate(num_pax_place = as.numeric(num_pax_place))%>%
+  mutate(num_pax_place = as.numeric(num_pax_place)) %>%
   group_by(place_visited, study_site)%>%
   arrange(place_visited) %>%
   summarise(n = n(),
