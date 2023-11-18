@@ -55,6 +55,16 @@ axis_text_theme2 <- theme_classic() +
     legend.box.background = element_rect(fill='transparent'),
     legend.background = element_rect(colour ="white"))
 
+# matrix theme for presentation
+matrix_presentation_theme <- theme_classic() +
+  theme(legend.title = element_text(size = 25),
+        legend.text = element_text(size = 20),
+        legend.justification = "bottom",
+        plot.title = element_text(size = 30),
+        axis.title.x = element_text(size=25, face="bold"),
+        axis.title.y = element_text(size=25, face="bold"),
+        axis.text.x = element_text(size = 18, angle=90),
+        axis.text.y = element_text(size= 18))
 
 ## Generate boxplots
 fxn_fig_boxplot <- function(data, fill_var) {
@@ -94,7 +104,7 @@ fun_matrix1_plot <- function(m1data, title){ #, xlab, ylab
               color = "black", size = 3) +
     theme_classic() +
     scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
-                         midpoint = 3.5, limits=c(0,7), breaks=(c(0,1,3,5,7))) +
+                         midpoint = 3.5, limits=c(0, 7), breaks = seq(0,7, by = 1)) +
     labs(x = xlab, 
          y = ylab,
          title = title,
@@ -109,7 +119,7 @@ fun_matrix1_plot <- function(m1data, title){ #, xlab, ylab
           axis.text.y = element_text(size= 10))
 }
 
-# function to matrices by touch
+# function to generate matrices by touch
 fun_matrix2_plot <- function(m1data, title, xlab, ylab){
   m1data %>%
     ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
