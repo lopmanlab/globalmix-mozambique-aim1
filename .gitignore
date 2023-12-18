@@ -25,6 +25,7 @@ scripts/00_data_download.R
 scripts/old/*
 data/raw/*
 output/figs/*
+data/clean/old_data.zip
 
 # html files
 scripts/*.html
