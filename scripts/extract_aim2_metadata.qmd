@@ -133,7 +133,7 @@ summary_lost_sensors
 lost_sensor_recid <- lost_sensors_df %>%
   select(rec_id)
 
-# currently, we have 703 observations (300 urban).
+# currently, we have 602 observations (300 urban).
 data <- data %>%
   filter(!rec_id %in% lost_sensor_recid$rec_id)
 # after dropping, we have 684 records (281 urban), so we have dropped 19 records.
