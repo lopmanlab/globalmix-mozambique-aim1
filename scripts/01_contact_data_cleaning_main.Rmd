@@ -40,9 +40,54 @@ data <- readRDS("../raw/all_data_09142022.RDS")
 data$study_site[data$rec_id=="1686"] <- "1"
 
 # there are some records that we need to delete from the dataset
-drop_recid <- c("405", "443", "445", "1815", "1827", "1828", "6843", "1188",
-                "1191", "1314", "1315", "1514", "1516", "1522", "1566", 
-                "1859","1897")
+drop_recid <- c(405, 443, 445, 1815, 1827, 1828, 6843, 1188,
+                1191, 1314, 1315, 1514, 1516, 1522, 1566, 
+                1859,1897)
+
+# # these records have missing household data
+drop_missing_hhdata <- c(331,343,seq(406,409), seq(412,416), seq(420,424),
+                         434,435,seq(456,458),seq(467,473),seq(475,477),seq(479,487),
+                         seq(504,511),521,seq(523,531),579,580,seq(596,598),seq(611,617),
+                         662,663,seq(703,708),710,711,seq(713,715),seq(717,722),seq(724,726),
+                         seq(731,733),seq(736,739),seq(746,748),seq(757,764),774,775,
+                         seq(777,781),seq(783,787),seq(807,812),seq(821,825),seq(827,830),
+                         seq(838,840),seq(845,857),seq(849,851),856,857,seq(868,876),
+                         878,879,882,883,seq(890,892),seq(899,902),seq(904,910),seq(921,929),
+                         seq(936,938),941,942,seq(966,972),seq(974,981),seq(985,987),
+                         seq(990,994),seq(996,999),seq(1001,1008),1018,1026,seq(1030,1033),
+                         seq(1035,1041),seq(1049,1052),seq(1061,1070),seq(1090,1092),
+                         seq(1094,1097),1110,1111,seq(1117,1119),seq(1112,1126),seq(1130,1132),
+                         1141,1142,seq(1146,1148),seq(1160,1163),1169,seq(1182,1184),
+                         seq(1191,1196),1202,seq(1204,1207), seq(1209,1212),seq(1220,1223),
+                         seq(1225,1229),seq(1236,1240),seq(1250,1256),seq(1258,1260),
+                         1262,1263,seq(1265,1268),seq(1270,1274),1278,1279,seq(1284,1285),
+                         seq(1289,1295),1298,1299,1304,1305,seq(1324,1327),seq(1332,1335),
+                         seq(1344,1347),seq(1351,1353),seq(1358,1362),seq(1366,1369),1371,
+                         seq(1375,1379),1382,seq(1385,1391),seq(1399,1402),seq(1409,1411),
+                         1418,1419,seq(1421,1427),seq(1434,1439),seq(1444,1447),1451,1452,
+                         seq(1462,1465),seq(1467,1469),seq(1478,1480),seq(1485,1487),
+                         seq(1489,1491),seq(1493,1495),seq(1497,1504),seq(1506,1508),
+                         seq(1510,1512),seq(1514,1516),seq(1518,1524),seq(1526,1530),
+                         seq(1540,1542),seq(1555,1558),seq(1567,1569),seq(1571,1574),
+                         1579,1580,seq(1592,1600),seq(1603,1605),1607,1610,seq(1612,1617),
+                         1619,1620,seq(1623,1626),seq(1628,1630),seq(1632,1635),1637,1638,
+                         seq(1643,1646),1648,1649,seq(1656,1568),seq(1660,1662),seq(1660,1670),
+                         seq(1672,1680),seq(1683,1689),seq(1693,1695),seq(1697,1700),
+                         1716,1717,seq(1720,1722),seq(1725,1727),seq(1729,1733),1735,1736,
+                         1738,1739,seq(1741,1747),seq(1764,1768),1778,1779,1781,1782,1826,
+                         1910,seq(1951,1955),1967,1968,1970,1998,2008,2064,2065,2095,
+                         2197,seq(2228,2230),2242,2253,seq(2255,2261),5794,5796,5800,5801,
+                         seq(5805,5807),5826,5884,6844,6845,seq(6847,6849), seq(6851,6854)) #762 records)
+#                          
+# On calculating household size, there were ~180 records that did not have 
+# details collected on their household members. meaning that our estimates of 
+# family size will not be accurate.                         
+
+# 
+missing_hhdata <- data %>%
+  filter(rec_id %in% drop_missing_hhdata)
+
+# table(missing_hhdata$aim)
 
 drop_recid2 <- read_csv("../data/sensor_metadata/records_to_remove_09062022.csv",
                         show_col_types = FALSE)
@@ -63,7 +108,11 @@ data <- data %>%
                            rec_id == "1219" ~ "3305-275",
                            rec_id == "1466" ~ "3204-316",
                            rec_id == "1696" ~ "2705-255",
-                           TRUE ~ hh_id))
+                           TRUE ~ hh_id)) # 46673 records
+
+# # drop additional data identified in REDCap
+# data <- data %>%
+#   filter(!rec_id %in% drop_missing_hhdata) # 33276 records
 
 # This file corrects hh_id entries. In REDCap, some individuals did not have a
 # hh_id that corresponds to where they were recruited for the study. Hence, we
@@ -72,7 +121,7 @@ data <- data %>%
 source("../scripts/moz_hhid_corrections.R")
 
 
-rm(drop_recid, drop_recid2, drop_hhs)
+rm(drop_recid, drop_recid2, drop_hhs, drop_missing_hhdata)
 ```
 
 
@@ -80,7 +129,7 @@ rm(drop_recid, drop_recid2, drop_hhs)
 # study site
 study_site <- data %>%
   filter(redcap_event_name=="household_survey_arm_1") %>%
-  select("rec_id", "study_site", "aim", "isindex") %>%
+  select(rec_id, study_site, aim, isindex) %>%
   filter(!is.na(study_site)) # 
 
 table(study_site$study_site, study_site$aim)
@@ -240,7 +289,7 @@ label(participant$highest_educ) <- "What is the highest level of education that 
 label(participant$occupation___0) <- "Unemployed"
 label(participant$occupation___1) <- "Student"
 label(participant$occupation___2) <- "Office worker"
-label(participant$occupation___3) <- "Businessperson"
+label(participant$occupation___3) <- "Business person"
 label(participant$occupation___4) <- "Casual laboror"
 label(participant$occupation___5) <- "Farmer"
 label(participant$occupation___6) <- "Fisherman"
@@ -253,33 +302,26 @@ participant <- participant %>%
   dplyr::mutate(occupation = case_when(occupation___0 == 1 ~ "Unemployed",
                                        occupation___1 == 1 ~ "Student",
                                        occupation___2 == 1 ~ "Office worker",
-                                       occupation___3 == 1 ~ "Businessperson",
+                                       occupation___3 == 1 ~ "Business person",
                                        occupation___4 == 1 ~ "Casual laboror",
                                        occupation___5 == 1 ~ "Farmer",
                                        occupation___6 == 1 ~ "Fisherman",
                                        occupation___7 == 1 ~ "Retired",
-                                       occupation___8 == 1 ~ "Homemaker",
+                                       occupation___8 == 1 ~ "Homemaker/Housewife",
                                        occupation___9 == 1 ~ "Other"),
                 occupation = case_when(participant_age == "<6mo" ~ "Child",
                                        participant_age == "6-11mo" ~ "Child",
                                        participant_age == "1-4yo" ~ "Student",
                                        participant_age == "5-9yo" ~ "Student",
-                                       # additional cleaning
-                                       (is.na(occupation) & participant_age == "1-4y") ~ "Child",
-                                       (occupation == "Unemployed" & participant_age == "1-4y") ~ "Child",
-                                       (is.na(occupation) & participant_age == "5-9y") ~ "Student",
-                                       occupation == "Fisherman" ~ "Other", 
                                        TRUE ~ occupation))
 participant$occupation <- factor(participant$occupation, 
-                                 levels = c("Child", "Unemployed", "Student", 
-                                            "Homemaker", "Casual laboror", 
-                                            "Farmer", "Businessperson", 
-                                            "Office worker", "Retired",
+                                 levels = c("Child", "Unemployed", "Student", "Homemaker/Housewife",
+                                            "Casual laboror", "Farmer", "Fisherman", 
+                                            "Business person", "Office worker", "Retired",
                                             "Other"),
-                                 labels = c("Child", "Unemployed", "Student", 
-                                            "Homemaker", "Casual laboror", 
-                                            "Farmer", "Businessperson", 
-                                            "Office worker", "Retired",
+                                 labels = c("Child", "Unemployed", "Student", "Homemaker",
+                                            "Casual laboror", "Farmer", "Fisherman", 
+                                            "Business person", "Office worker", "Retired",
                                             "Other"))
 label(participant$occupation) <- "What is your occupation?"
 
@@ -379,61 +421,61 @@ exit <- exit %>%
                                 aim == 1 ~ 2)) 
 # Cleaning other variables 
 exit <- exit %>% 
-  dplyr::mutate(contacts_completedby = case_when(contacts_completedby == 0 ~ "Self",  # during day 1 and 2
-                                                 contacts_completedby == 1 ~ "By fieldworker")) # )) # at collection day
+  dplyr::mutate(contacts_completedbylb = case_when(contacts_completedby == 0 ~ "Self", # during day 1 and 2
+                                                   contacts_completedby == 1 ~ "By fieldworker"))  # at collection day
 exit$contacts_completedby <- factor(exit$contacts_completedby, levels = c("Self", "By fieldworker"))
-label(exit$contacts_completedby) <- "Who filled the diary?" 
+label(exit$contacts_completedbylb) <- "Who filled the diary?" 
 # throughout day 1 and day 2 or were the contact diaries completed with the Field Worker on the day of collection?"
 
 exit <- exit %>% 
-  dplyr::mutate(all_contacts = case_when(all_contacts == 0 ~ "No",
-                                         all_contacts == 1 ~ "Yes",
-                                         all_contacts == 2 ~ "No response"))
-exit$all_contacts <- factor(exit$all_contacts, levels = c("Yes", "No", 
-                                                          "No response"))
-label(exit$all_contacts) <- "Were you able to include every single contact?"
+  dplyr::mutate(all_contactslb = case_when(all_contacts == 0 ~ "No",
+                                           all_contacts == 1 ~ "Yes",
+                                           all_contacts == 2 ~ "No response"))
+exit$all_contactslb <- factor(exit$all_contactslb, levels = c("Yes", "No", 
+                                                              "No response"))
+label(exit$all_contactslb) <- "Were you able to include every single contact?"
 
 exit <- exit %>% 
-  dplyr::mutate(contact_compare = case_when(contact_compare == 1 ~ "Fewer", # Much fewer contacts then usual
-                                            contact_compare == 2 ~ "Fewer", #Fewer contacts than usual
-                                            contact_compare == 3 ~ "Same", # About the same as usual
-                                            contact_compare == 4 ~ "More", # More contacts than usual
-                                            contact_compare == 5 ~ "More")) #Much more contacts than usual"))
-exit$contact_compare <- factor(exit$contact_compare, levels = c("Fewer", "Same", "More"))
-label(exit$contact_compare) <- "How did the 2 days on which you reported your contact compare to a typical day?"
+  dplyr::mutate(contact_comparelb = case_when(contact_compare == 1 ~ "Fewer", # Much fewer contacts then usual
+                                              contact_compare == 2 ~ "Fewer", #Fewer contacts than usual
+                                              contact_compare == 3 ~ "Same", # About the same as usual
+                                              contact_compare == 4 ~ "More", # More contacts than usual
+                                              contact_compare == 5 ~ "More")) #Much more contacts than usual"))
+exit$contact_comparelb <- factor(exit$contact_comparelb, levels = c("Fewer", "Same", "More"))
+label(exit$contact_comparelb) <- "How did the 2 days on which you reported your contact compare to a typical day?"
 # "On a scale of 1-5, how did the 2 days on which you reported your contact compare to a typical day?"
 
 exit <- exit %>% 
-  dplyr::mutate(behavior_change = case_when(behavior_change == 1 ~ "No change", 
-                                            #I interact with people the same way that I used to before",
-                                            behavior_change == 2 ~ "Increased interactions", # My interactions have increased
-                                            behavior_change == 3 ~ "Reduced interactions", # My interactions have reduced
-                                            behavior_change == 4 ~ "No response"))
-exit$behavior_change <- factor(exit$behavior_change, levels = c("Increased interactions", "No change",  
-                                                                "Reduced interactions", "No response"))
-label(exit$behavior_change) <- "How has your social behavior has changed following the start of COVID-19?" 
+  dplyr::mutate(behavior_changelb = case_when(behavior_change == 1 ~ "No change", 
+                                              #I interact with people the same way that I used to before",
+                                              behavior_change == 2 ~ "Increased interactions", # My interactions have increased
+                                              behavior_change == 3 ~ "Reduced interactions", # My interactions have reduced
+                                              behavior_change == 4 ~ "No response"))
+exit$behavior_changelb <- factor(exit$behavior_changelb, levels = c("Increased interactions", "No change",  
+                                                                    "Reduced interactions", "No response"))
+label(exit$behavior_changelb) <- "How has your social behavior has changed following the start of COVID-19?" 
 # Social behavior refers to your interactions with other people, such as talking face-to-face, visiting their homes, meeting outside # the home, etc."
 
 exit <- exit %>% 
-  dplyr::mutate(movement_change = case_when(movement_change == 1 ~ "No change",
-                                            #I still move around the same way that I used to before",
-                                            movement_change == 2 ~ "Increased movement",
-                                            movement_change == 3 ~ "Reduced movement",
-                                            movement_change == 4 ~ "No response"))
-exit$movement_change <- factor(exit$movement_change, levels = c("Increased", "No change",  
-                                                                "Reduced", "No response"))
-label(exit$movement_change) <- "How do you think your movements have changed following the start of COVID-19?"
+  dplyr::mutate(movement_changelb = case_when(movement_change == 1 ~ "No change",
+                                              #I still move around the same way that I used to before",
+                                              movement_change == 2 ~ "Increased movement",
+                                              movement_change == 3 ~ "Reduced movement",
+                                              movement_change == 4 ~ "No response"))
+exit$movement_changelb <- factor(exit$movement_changelb, levels = c("Increased", "No change",  
+                                                                    "Reduced", "No response"))
+label(exit$movement_changelb) <- "How do you think your movements have changed following the start of COVID-19?"
 
 exit <- exit %>% 
-  dplyr::mutate(days_left_home = case_when(days_left_home == 0 ~ "0",
-                                           days_left_home == 1 ~ "1-3",
-                                           days_left_home == 2 ~ "4-7",
-                                           days_left_home == 3 ~ ">7",
-                                           days_left_home == 4 ~ "No response",
-                                           days_left_home == 5 ~ "No response")) #No response
-exit$days_left_home <- factor(exit$days_left_home, levels = c("0", "1-3", "4-7", 
-                                                              ">7", "No response"))
-label(exit$days_left_home) <- "During the past 14 days, how many days did you leave your home?"
+  dplyr::mutate(days_left_homelb = case_when(days_left_home == 0 ~ "0",
+                                             days_left_home == 1 ~ "1-3",
+                                             days_left_home == 2 ~ "4-7",
+                                             days_left_home == 3 ~ ">7",
+                                             days_left_home == 4 ~ "No response",
+                                             days_left_home == 5 ~ "No response")) #No response
+exit$days_left_homelb <- factor(exit$days_left_homelb, levels = c("0", "1-3", "4-7", 
+                                                                  ">7", "No response"))
+label(exit$days_left_homelb) <- "During the past 14 days, how many days did you leave your home?"
 
 # activities
 label(exit$activities___1) <- "Go to work"
@@ -446,68 +488,68 @@ label(exit$activities___7) <-  "Did not leave home"
 label(exit$activities___8) <-  "Other"
 
 exit <- exit %>% 
-  dplyr::mutate(yesterday_left_home = case_when(yesterday_left_home == 0 ~ "No",
-                                                yesterday_left_home == 1 ~ "Yes"))
-exit$yesterday_left_home <- factor(exit$yesterday_left_home, 
-                                   levels = c("Yes", "No"))
-label(exit$yesterday_left_home) <- "Did you leave your home yesterday?"
+  dplyr::mutate(yesterday_left_homelb = case_when(yesterday_left_home == 0 ~ "No",
+                                                  yesterday_left_home == 1 ~ "Yes"))
+exit$yesterday_left_homelb <- factor(exit$yesterday_left_homelb, 
+                                     levels = c("Yes", "No"))
+label(exit$yesterday_left_homelb) <- "Did you leave your home yesterday?"
 
 # quarantine
 exit <- exit %>% 
-  dplyr::mutate(quarantine = case_when(quarantine == 0 ~ "No",
-                                       quarantine == 1 ~ "Yes",
-                                       quarantine == 2 ~ "No response"))
-exit$quarantine <- factor(exit$quarantine, levels = c("Yes", "No",
-                                                      "No response"))
-label(exit$quarantine) <- "Have you been required to go into quarantine due to COVID-19 in the last 14 days?"
+  dplyr::mutate(quarantinelb = case_when(quarantine == 0 ~ "No",
+                                         quarantine == 1 ~ "Yes",
+                                         quarantine == 2 ~ "No response"))
+exit$quarantinelb <- factor(exit$quarantinelb, levels = c("Yes", "No",
+                                                          "No response"))
+label(exit$quarantinelb) <- "Have you been required to go into quarantine due to COVID-19 in the last 14 days?"
 
 exit <- exit %>% 
-  dplyr::mutate(quarantine_behavior = case_when(quarantine_behavior == 0 ~ "Continued to mingle with other family members",
-                                                quarantine_behavior == 1 ~ "Stayed in separate room away from other family members",
-                                                quarantine_behavior == 2 ~ "Went out of the house",
-                                                quarantine_behavior == 3 ~ "No response"))
-label(exit$quarantine_behavior) <- "How was your social behavior during quarantine?"
+  dplyr::mutate(quarantine_behaviorlb = case_when(quarantine_behavior == 0 ~ "Continued to mingle with other family members",
+                                                  quarantine_behavior == 1 ~ "Stayed in separate room away from other family members",
+                                                  quarantine_behavior == 2 ~ "Went out of the house",
+                                                  quarantine_behavior == 3 ~ "No response"))
+label(exit$quarantine_behaviorlb) <- "How was your social behavior during quarantine?"
 
 # isolation
 exit <- exit %>% 
-  dplyr::mutate(self_isolation = case_when(self_isolation == 0 ~ "No",
-                                           self_isolation == 1 ~ "Yes",
-                                           self_isolation == 2 ~ "No response"))
-exit$self_isolation <- factor(exit$self_isolation, levels = c("Yes", "No",
-                                                              "No response"))
-label(exit$self_isolation) <- "Have you been required to isolate yourself in the last 14 days?"
+  dplyr::mutate(self_isolationlb = case_when(self_isolation == 0 ~ "No",
+                                             self_isolation == 1 ~ "Yes",
+                                             self_isolation == 2 ~ "No response"))
+exit$self_isolationlb <- factor(exit$self_isolationlb, levels = c("Yes", "No",
+                                                                  "No response"))
+label(exit$self_isolationlb) <- "Have you been required to isolate yourself in the last 14 days?"
 
 exit <- exit %>% 
-  dplyr::mutate(self_isolation_location = case_when(self_isolation_location == 0 ~ "At home",
-                                                    self_isolation_location == 1 ~ "Away from home"))
-label(exit$self_isolation_location) <- "If yes, where did the isolation happen?"
+  dplyr::mutate(self_isolation_locationlb = case_when(self_isolation_location == 0 ~ "At home",
+                                                      self_isolation_location == 1 ~ "Away from home"))
+label(exit$self_isolation_locationlb) <- "If yes, where did the isolation happen?"
 
 exit <- exit %>% 
-  dplyr::mutate(self_isolation_home = case_when(self_isolation_home == 0 ~ "Continued to mingle with other family members",
-                                                self_isolation_home == 1 ~ "Stayed in separate room away from other family members",
-                                                self_isolation_home == 2 ~ "Went out of the house",
-                                                self_isolation_home == 3 ~ "Prefer not to answer"))
-label(exit$self_isolation_home) <- "How was your social behavior during isolation at home?"
+  dplyr::mutate(self_isolation_homelb = case_when(self_isolation_home == 0 ~ "Continued to mingle with other family members",
+                                                  self_isolation_home == 1 ~ "Stayed in separate room away from other family members",
+                                                  self_isolation_home == 2 ~ "Went out of the house",
+                                                  self_isolation_home == 3 ~ "Prefer not to answer"))
+label(exit$self_isolation_homelb) <- "How was your social behavior during isolation at home?"
 
 exit <- exit %>% 
-  dplyr::mutate(self_isolation_away = case_when(self_isolation_away == 0 ~ "Continued to mingle with other individuals",
-                                                self_isolation_away == 1 ~ "Stayed in separate room away from other individuals",
-                                                self_isolation_away == 2 ~ "Went out of the isolation facility",
-                                                self_isolation_away == 3 ~ "Prefer not to answer"))
-label(exit$self_isolation_away) <- "How was your social behavior at the isolation facility?"
+  dplyr::mutate(self_isolation_awaylb = case_when(self_isolation_away == 0 ~ "Continued to mingle with other individuals",
+                                                  self_isolation_away == 1 ~ "Stayed in separate room away from other individuals",
+                                                  self_isolation_away == 2 ~ "Went out of the isolation facility",
+                                                  self_isolation_away == 3 ~ "Prefer not to answer"))
+label(exit$self_isolation_awaylb) <- "How was your social behavior at the isolation facility?"
 
 exit <- exit %>% 
-  dplyr::mutate(isolation_ability = case_when(isolation_ability == 0 ~ "No",
-                                              isolation_ability == 1 ~ "Yes"))
-exit$isolation_ability <- factor(exit$isolation_ability, levels = c("Yes", "No"))
-label(exit$isolation_ability) <- "If you were diagnosed with COVID-19 now, would you be able to isolate yourself from other members of the home?"
+  dplyr::mutate(isolation_abilitylb = case_when(isolation_ability == 0 ~ "No",
+                                                isolation_ability == 1 ~ "Yes"))
+exit$isolation_abilitylb <- factor(exit$isolation_abilitylb, levels = c("Yes", "No"))
+label(exit$isolation_abilitylb) <- "If you were diagnosed with COVID-19 now, would you be able to isolate yourself from other members of the home?"
 
 exit <- exit %>% 
-  dplyr::mutate(mask_use = case_when(mask_use == 0 ~ "No",
-                                     mask_use == 1 ~ "Yes",
-                                     mask_use == 2 ~ "No response"))
-exit$mask_use <- factor(exit$mask_use, levels = c("Yes", "No", "No response"))
-label(exit$mask_use) <- "Did you wear a face mask in the last 14 days?"
+  dplyr::mutate(mask_uselb = case_when(mask_use == 0 ~ "No",
+                                       mask_use == 1 ~ "Yes",
+                                       mask_use == 2 ~ "No response"))
+exit$mask_uselb <- factor(exit$mask_uselb, levels = c("Yes", "No", "No response"))
+label(exit$mask_uselb) <- "Did you wear a face mask in the last 14 days?"
 
 label(exit$mask_use_location___0) <- "At home"
 label(exit$mask_use_location___1) <- "Everywhere outside my house"
@@ -562,71 +604,71 @@ label(exit$age_symptom) <- "Acute gastroenteritis (diarrhoea)"
 
 
 exit <- exit %>% 
-  dplyr::mutate(contact_with_infected = case_when(contact_with_infected == 0 ~ "No",
-                                                  contact_with_infected == 1 ~ "Yes",
-                                                  contact_with_infected == 2 ~ "No response"))
-exit$contact_with_infected <- factor(exit$contact_with_infected, levels = c("Yes", "No",
-                                                                            "No response"))
-label(exit$contact_with_infected) <- "Did you visit a health care facility for any of these symptoms?"
+  dplyr::mutate(contact_with_infectedlb = case_when(contact_with_infected == 0 ~ "No",
+                                                    contact_with_infected == 1 ~ "Yes",
+                                                    contact_with_infected == 2 ~ "No response"))
+exit$contact_with_infectedlb <- factor(exit$contact_with_infectedlb, levels = c("Yes", "No",
+                                                                                "No response"))
+label(exit$contact_with_infectedlb) <- "Did you visit a health care facility for any of these symptoms?"
 
 exit <- exit %>% 
-  dplyr::mutate(self_covid_test = case_when(self_covid_test == 0 ~ "No, I don't think I need it",
-                                            self_covid_test == 1 ~ "No, I didn't have the opportunity",
-                                            self_covid_test == 2 ~ "Yes, I tested positive",
-                                            self_covid_test == 3 ~ "Yes, I tested negative",
-                                            self_covid_test == 4 ~ "Yes, waiting for results",
-                                            self_covid_test == 5 ~ "No response"))
-exit$self_covid_test <- factor(exit$self_covid_test, 
-                               levels = c("No, I don't think I need it",
-                                          "No, I didn't have the opportunity",
-                                          "Yes, I tested positive",
-                                          "Yes, waiting for results",
-                                          "No response"))
-label(exit$self_covid_test) <- "Have you been tested for COVID-19?"  
+  dplyr::mutate(self_covid_testlb = case_when(self_covid_test == 0 ~ "No, I don't think I need it",
+                                              self_covid_test == 1 ~ "No, I didn't have the opportunity",
+                                              self_covid_test == 2 ~ "Yes, I tested positive",
+                                              self_covid_test == 3 ~ "Yes, I tested negative",
+                                              self_covid_test == 4 ~ "Yes, waiting for results",
+                                              self_covid_test == 5 ~ "No response"))
+exit$self_covid_testlb <- factor(exit$self_covid_testlb, 
+                                 levels = c("No, I don't think I need it",
+                                            "No, I didn't have the opportunity",
+                                            "Yes, I tested positive",
+                                            "Yes, waiting for results",
+                                            "No response"))
+label(exit$self_covid_testlb) <- "Have you been tested for COVID-19?"  
 
 exit <- exit %>% 
-  dplyr::mutate(family_covid_symptoms = case_when(family_covid_symptoms == 0 ~ "No",
-                                                  family_covid_symptoms == 1 ~ "Yes",
-                                                  family_covid_symptoms == 2 ~ "No response"))
-exit$family_covid_symptoms <- factor(exit$family_covid_symptoms, levels = c("Yes", "No",
-                                                                            "No response"))
-label(exit$family_covid_symptoms) <- "Has anyone else in your household exhibited COVID-19 symptoms in the last 14 days?"
+  dplyr::mutate(family_covid_symptomslb = case_when(family_covid_symptoms == 0 ~ "No",
+                                                    family_covid_symptoms == 1 ~ "Yes",
+                                                    family_covid_symptoms == 2 ~ "No response"))
+exit$family_covid_symptomslb <- factor(exit$family_covid_symptomslb, levels = c("Yes", "No",
+                                                                                "No response"))
+label(exit$family_covid_symptomslb) <- "Has anyone else in your household exhibited COVID-19 symptoms in the last 14 days?"
 
 exit <- exit %>% 
-  dplyr::mutate(family_covid_test = case_when(family_covid_test == 0 ~ "No",
-                                              family_covid_test == 1 ~ "Yes",
-                                              family_covid_test == 2 ~ "No response"))
-exit$family_covid_test <- factor(exit$family_covid_test, levels = c("Yes", "No",
-                                                                    "No response"))
-label(exit$family_covid_test) <- "Has anyone else in your household been tested for COVID-19?"
+  dplyr::mutate(family_covid_testlb = case_when(family_covid_test == 0 ~ "No",
+                                                family_covid_test == 1 ~ "Yes",
+                                                family_covid_test == 2 ~ "No response"))
+exit$family_covid_testlb <- factor(exit$family_covid_testlb, levels = c("Yes", "No",
+                                                                        "No response"))
+label(exit$family_covid_testlb) <- "Has anyone else in your household been tested for COVID-19?"
 
 exit <- exit %>% 
-  dplyr::mutate(phone_access = case_when(phone_access == 0 ~ "No",
-                                         phone_access == 1 ~ "Yes"))
-exit$phone_access <- factor(exit$phone_access, levels = c("Yes", "No"))
+  dplyr::mutate(phone_accesslb = case_when(phone_access == 0 ~ "No",
+                                           phone_access == 1 ~ "Yes"))
+exit$phone_accesslb <- factor(exit$phone_accesslb, levels = c("Yes", "No"))
 
-label(exit$phone_access) <- "Do you have access to a mobile phone?"
-
-exit <- exit %>% 
-  dplyr::mutate(phone_ownership = case_when(phone_ownership == 0 ~ "No",
-                                            phone_ownership == 1 ~ "Yes"))
-exit$phone_ownership <- factor(exit$phone_ownership, levels = c("Yes", "No"))
-label(exit$phone_ownership) <- "If yes, do you own it?"
+label(exit$phone_accesslb) <- "Do you have access to a mobile phone?"
 
 exit <- exit %>% 
-  dplyr::mutate(phone_function = case_when(phone_function == 1 ~ "Basic features",
-                                           #phone (no internet)",
-                                           phone_function == 2 ~ "Smart phone")) 
+  dplyr::mutate(phone_ownershiplb = case_when(phone_ownership == 0 ~ "No",
+                                              phone_ownership == 1 ~ "Yes"))
+exit$phone_ownershiplb <- factor(exit$phone_ownershiplb, levels = c("Yes", "No"))
+label(exit$phone_ownershiplb) <- "If yes, do you own it?"
+
+exit <- exit %>% 
+  dplyr::mutate(phone_functionlb = case_when(phone_function == 1 ~ "Basic features",
+                                             #phone (no internet)",
+                                             phone_function == 2 ~ "Smart phone")) 
 #(internet enabled)"))
-label(exit$phone_function) <- "If you use a mobile phone, what is the functionality? "
+label(exit$phone_functionlb) <- "If you use a mobile phone, what is the functionality? "
 
 exit <- exit %>% 
-  dplyr::mutate(phone_comm_mode = case_when(phone_comm_mode == 1 ~ "Normal call and text",
-                                            phone_comm_mode == 2 ~ "Internet calls and text"))
+  dplyr::mutate(phone_comm_modelb = case_when(phone_comm_mode == 1 ~ "Normal call and text",
+                                              phone_comm_mode == 2 ~ "Internet calls and text"))
 #e.g. via Whatsapp"))
-exit$phone_comm_mode <- factor(exit$phone_comm_mode, levels = c("Normal call and text",
-                                                                "Internet calls and text"))
-label(exit$phone_comm_mode) <- "If smartphone, what is your preferred mode of communication?" 
+exit$phone_comm_modelb <- factor(exit$phone_comm_mode, levels = c("Normal call and text",
+                                                                  "Internet calls and text"))
+label(exit$phone_comm_modelb) <- "If smartphone, what is your preferred mode of communication?" 
 
 label(exit$phone_provider___0) <- "Movitel"
 label(exit$phone_provider___1) <- "Vodacom"
@@ -634,20 +676,20 @@ label(exit$phone_provider___2) <- "TMcel"
 label(exit$phone_provider___3) <- "Other"
 
 exit <- exit %>% 
-  dplyr::mutate(phone_signal = case_when(phone_signal == 0 ~ "Poor",
-                                         phone_signal == 1 ~ "Normal",
-                                         phone_signal == 2 ~ "Good"))
-exit$phone_signal <- factor(exit$phone_signal, levels = c("Poor", "Normal", "Good"))
-label(exit$phone_signal) <- "If you use a mobile phone, rate the signal in most locations that you visit during the day."
+  dplyr::mutate(phone_signallb = case_when(phone_signal == 0 ~ "Poor",
+                                           phone_signal == 1 ~ "Normal",
+                                           phone_signal == 2 ~ "Good"))
+exit$phone_signallb <- factor(exit$phone_signallb, levels = c("Poor", "Normal", "Good"))
+label(exit$phone_signallb) <- "If you use a mobile phone, rate the signal in most locations that you visit during the day."
 
 exit <- exit %>% 
-  dplyr::mutate(phone_use = case_when(phone_use == 0 ~ "Never",
-                                      phone_use == 1 ~ "1-5 times",
-                                      phone_use == 2 ~ "6-10 times",
-                                      phone_use == 3 ~ ">10 times"))
-exit$phone_use <- factor(exit$phone_use, levels = c("Never", "1-5 times", 
-                                                    "6-10 times", ">10 times"))
-label(exit$phone_use) <- "In the last 24 hours, how often did you call/ text using your mobile phone?"
+  dplyr::mutate(phone_uselb = case_when(phone_use == 0 ~ "Never",
+                                        phone_use == 1 ~ "1-5 times",
+                                        phone_use == 2 ~ "6-10 times",
+                                        phone_use == 3 ~ ">10 times"))
+exit$phone_uselb <- factor(exit$phone_uselb, levels = c("Never", "1-5 times", 
+                                                        "6-10 times", ">10 times"))
+label(exit$phone_uselb) <- "In the last 24 hours, how often did you call/ text using your mobile phone?"
 
 ```
 
@@ -689,7 +731,8 @@ exit <- exit %>%
 data <- data %>% 
   filter(rec_id %in% participant_ids)
 
-# now, the total number of total records is 1960.
+# previously, the total number records is 1960.
+# after running the drop_missing_hhdata, we remain with 1322 recordsS
 length(unique(study_site$rec_id))
 length(unique(participant$rec_id))
 length(unique(exit$rec_id))
@@ -824,20 +867,20 @@ participant_vars <- c("rec_id", "individual_id", "study_site", "aim", "isindex",
                       "num_sibling")
 # household size, composition, 
 
-exit_vars <- c("rec_id", "contacts_completedby", "all_contacts",
-               "contact_compare", "behavior_change", "movement_change", "days_left_home",
+exit_vars <- c("rec_id", "contacts_completedbylb", "all_contactslb",
+               "contact_comparelb", "behavior_changelb", "movement_changelb", "days_left_homelb",
                "activities___1", "activities___2", "activities___3", "activities___4",
                "activities___5", "activities___6", "activities___7", "activities___8",
                "activities_work", "activities_school", "activities_other", 
-               "yesterday_left_home", "quarantine", "quarantine_behavior", "self_isolation",
-               "self_isolation_location", "self_isolation_home", "self_isolation_away",
-               "isolation_ability", "mask_use", "age_symptom", "ari_symptom", 
-               "quarantine_behavior", "self_isolation", "self_isolation_location", 
-               "self_isolation_home", "self_isolation_away", "isolation_ability",
-               "mask_use", "ari_symptom", "contact_with_infected", "self_covid_test",
-               "family_covid_symptoms", "family_covid_test", "phone_access",
-               "phone_ownership", "phone_function", "phone_comm_mode", "phone_signal",
-               "phone_use")
+               "yesterday_left_homelb", "quarantinelb", "quarantine_behaviorlb", "self_isolationlb",
+               "self_isolation_locationlb", "self_isolation_homelb", "self_isolation_awaylb",
+               "isolation_abilitylb", "mask_uselb", "age_symptom", "ari_symptom", 
+               "quarantine_behaviorlb", "self_isolationlb", "self_isolation_locationlb", 
+               "self_isolation_homelb", "self_isolation_awaylb", "isolation_abilitylb",
+               "mask_uselb", "ari_symptom", "contact_with_infectedlb", "self_covid_testlb",
+               "family_covid_symptomslb", "family_covid_testlb", "phone_accesslb",
+               "phone_ownershiplb", "phone_functionlb", "phone_comm_modelb", "phone_signallb",
+               "phone_uselb")
 
 participant <- participant %>%
   select(any_of(participant_vars))
@@ -855,7 +898,7 @@ aim1_summary <- participant %>%
   filter(aim==1) %>%
   select("study_site", "participant_sex", "participant_age", "read_write", 
          "enrolled_school", "highest_educ", "school_level", "occupation", 
-         "ari_symptom", "mask_use", "age_symptom") %>%
+         "ari_symptom", "mask_uselb", "age_symptom") %>%
   tbl_summary(by=study_site,
               percent="column",
               digits = all_categorical() ~ 0) %>%
@@ -893,7 +936,7 @@ contact_name <- data %>%
   group_by(rec_id) %>%
   select(rec_id, hh_member_name)
 
-# generate unique number for each contact
+# generate unique number for each household member contact
 contact_name$hh_member_id <- NA
 
 for (i in unique(contact_name$rec_id)) {
@@ -908,6 +951,7 @@ contact_name_full <- contact_name_full %>%
   left_join(contact_name, by=c("rec_id", "hh_member_id")) %>%
   mutate(hh_member_id2 = paste(rec_id, hh_member_id, sep="-")) %>%
   select(rec_id, hh_member_id, hh_member_id2, hh_member_name)
+
 ```
 
 
@@ -1776,7 +1820,12 @@ contact_hh_all <- contact_hh_all %>%
 contact_nonhh_all <- contact_nonhh_all %>%
   select(any_of(contact_vars))
 
-
+# keep only ids that are common in both data sets. this should move up in cleaning, 
+# to keep only ids that are in participant file. 
+# intersect_ids <- intersect(unique(contact_hh_all$rec_id),
+#                            unique(contact_nonhh_all$rec_id))
+# length(intersect_ids)
+# 
 # nrow(contact_hh_all) # n=1950
 # nrow(contact_nonhh_all) # n=24460
 # 
@@ -1886,24 +1935,28 @@ contact_all$age_group_contact <- factor(contact_all$age_group_contact,
 #                       "transport_use", "hh_resp_exposure", "child_breastfeed", 
 #                       "num_sibling")
 
+
 participants_aim1 <- participant %>% 
-  filter(aim == 1) %>%
-  # merge with hh size data
-  left_join(hh_size, by = "rec_id")
+  filter(aim == 1)
 
 participants_aim2_index <- participant %>% 
-  filter(aim==2, participant_age %in% c("<6mo","6-11mo", "1-4y")) %>%
+  filter(aim==2, participant_age %in% c("<6mo","6-11mo", "1-4y"))
+
+participants_aim2_index <- participants_aim2_index %>%
   # merge with hh size data
   left_join(hh_size, by = "rec_id")
+  
 
 participants_aim1 <- rbind(participants_aim1, participants_aim2_index) %>%
-  rename(
-    # participant_sex = sex,
-    # participant_age = participant_age,
+  rename(# participant_sex = sex, participant_age = participant_age,
     highest_education = highest_educ,
     number_sibling = num_sibling) %>%
   mutate(aim = case_when(aim == 2 ~ 1,
                          TRUE ~ 1))
+
+participants_aim1 <- participants_aim1 %>%   
+  # merge with hh size data
+  left_join(hh_size, by = "rec_id")
 
 # add index contacts from aim 2 to aim 1 data for analysis
 contacts_aim1 <- contact_all %>% 
@@ -1951,9 +2004,9 @@ saveRDS(participants_aim2, "../data/clean/participant_data_aim2.RDS")
 saveRDS(contacts_aim2, "../data/clean/contact_data_aim2.RDS")
 
 
-saveRDS(participants_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/aim_2/analysis/diary/data/participant_data_aim2.RDS")
+saveRDS(participants_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/participant_data_aim2.RDS")
 
-saveRDS(contacts_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/aim_2/analysis/diary/contact_data_aim2.RDS")
+saveRDS(contacts_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/contact_data_aim2.RDS")
 ```
 
 \
@@ -2045,8 +2098,8 @@ hh_survey <- data %>%
 hh_survey <- hh_survey %>% 
   dplyr::mutate(study_site = case_when(study_site == 1 ~ "Manhiça",
                                        study_site == 2 ~ "Polana Caniço"),
-                study_site = factor(study_site, levels = c("Manhiça", "Polana Caniço"),
-                                    labels = c("Rural", "Urban")),
+                factor(study_site, levels = c("Manhiça", "Polana Caniço"),
+                       labels = c("Rural", "Urban")),
                 
                 aim = case_when(aim == 0 ~ 1,
                                 aim == 1 ~ 2),
@@ -2054,8 +2107,7 @@ hh_survey <- hh_survey %>%
                 hh_head_gender = case_when(hh_head_gender == 0 ~ 'Female',
                                            hh_head_gender == 1 ~ 'Male',
                                            TRUE ~ "Other"),
-                hh_head_gender = factor(hh_head_gender, 
-                                        levels = c("Female", "Male")),
+                factor(hh_head_gender, levels = c("Female", "Male")),
                 # hh_head_gender == 2 ~ 'Transsexual Female'),
                 
                 hh_roof_material = case_when(hh_roof_material == 0 ~ "Natural", 
@@ -2065,8 +2117,7 @@ hh_survey <- hh_survey %>%
                                              hh_roof_material == 2 ~ "Modern", 
                                              #'Modern roofing (eg zinc sheet, concrete, ceramic, tiles)',
                                              hh_roof_material == 3 ~ 'Other'),
-                hh_roof_material = factor(hh_roof_material, 
-                                          levels = c("Rudimentary", "Natural", "Modern", "Other")),
+                factor(hh_roof_material, levels = c("Rudimentary", "Natural", "Modern", "Other")),
                 
                 hh_wall_material = case_when(hh_wall_material == 0 ~ "Natural",
                                              # 'Natural walls (Ex. No wall, reeds, palm leaves, stakes)',
@@ -2075,20 +2126,17 @@ hh_survey <- hh_survey %>%
                                              hh_wall_material == 2 ~ "Modern",
                                              #'Modern walls (eg Cement, limestone/cement, bricks, cement blocks, cement-covered adobe, wooden planks/laths, burnt bricks, zinc sheet walls)',
                                              hh_wall_material == 3 ~ 'Other'),
-                hh_wall_material = factor(hh_wall_material, 
-                                          levels = c("Rudimentary", "Natural", "Modern", "Other")),
+                factor(hh_wall_material, levels = c("Rudimentary", "Natural", "Modern", "Other")),
                 
                 hh_ac = case_when(hh_ac == 0 ~ 'No',
                                   hh_ac == 1 ~ 'Yes',
                                   hh_ac == 2 ~ "No response"),
-                hh_ac = factor(hh_ac, 
-                               levels = c("Yes", "No", "No response")),
+                factor(hh_ac, levels = c("Yes", "No", "No response")),
                 
                 hh_fan = case_when(hh_fan == 0 ~ 'No',
                                    hh_fan == 1 ~ 'Yes',
                                    hh_fan == 2 ~ "No response"),
-                hh_fan = factor(hh_fan, 
-                                levels = c("Yes", "No", "No response")))
+                factor(hh_fan, levels = c("Yes", "No", "No response")))
 
 
 label(hh_survey$hh_amenities___0) <- "Electricity"
@@ -2170,53 +2218,49 @@ label(hh_survey$water_purify_method___8) <- "Unnown"
 
 hh_survey <- hh_survey %>% 
   # Do you wash your hands after helping a child defecate?
-  dplyr::mutate(wash_hands_defecate = case_when(wash_hands_defecate == 0 ~ "Never",
-                                                wash_hands_defecate == 1 ~ "Rarely",
-                                                wash_hands_defecate == 2 ~ "Sometimes",
-                                                wash_hands_defecate == 3 ~ "Always",
-                                                wash_hands_defecate == 4 ~ "Not applicable"), 
+  dplyr::mutate(wash_hands_defecatelb = case_when(wash_hands_defecate == 0 ~ "Never",
+                                                  wash_hands_defecate == 1 ~ "Rarely",
+                                                  wash_hands_defecate == 2 ~ "Sometimes",
+                                                  wash_hands_defecate == 3 ~ "Always",
+                                                  wash_hands_defecate == 4 ~ "Not applicable"), 
                 # (does not help a child defecate)"
-                wash_hands_defecate = factor(wash_hands_defecate, 
-                                             levels = c("Never", "Rarely", "Sometimes",
-                                                        "Always", "Not applicable")),
+                factor(wash_hands_defecatelb, levels = c("Never", "Rarely", "Sometimes",
+                                                         "Always", "Not applicable")),
                 
                 # Do members of your household wash their hands before touching food (Ex. cooking, preparing, before eating)?
-                wash_hands_food = case_when(wash_hands_food == 0 ~ "Never",
-                                            wash_hands_food == 1 ~ "Rarely",
-                                            wash_hands_food == 2 ~ "Sometimes",
-                                            wash_hands_food == 3 ~ "Always"),
-                wash_hands_food =  factor(wash_hands_food, levels = c("Never", "Rarely", "Sometimes", "Always")),
+                wash_hands_foodlb = case_when(wash_hands_food == 0 ~ "Never",
+                                              wash_hands_food == 1 ~ "Rarely",
+                                              wash_hands_food == 2 ~ "Sometimes",
+                                              wash_hands_food == 3 ~ "Always"),
+                factor(wash_hands_foodlb, levels = c("Never", "Rarely", "Sometimes", "Always")),
                 
                 # Do members of your household wash their hands after using the toilet?
-                wash_hands_toilet = case_when(wash_hands_toilet == 0 ~ "Never",
-                                              wash_hands_toilet == 1 ~ "Rarely",
-                                              wash_hands_toilet == 2 ~ "Sometimes",
-                                              wash_hands_toilet == 3 ~ "Always"),
-                wash_hands_toilet = factor(wash_hands_toilet, 
-                                           levels = c("Never", "Rarely", "Sometimes", "Always")))
+                wash_hands_toiletlb = case_when(wash_hands_toilet == 0 ~ "Never",
+                                                wash_hands_toilet == 1 ~ "Rarely",
+                                                wash_hands_toilet == 2 ~ "Sometimes",
+                                                wash_hands_toilet == 3 ~ "Always"),
+                factor(wash_hands_toiletlb, levels = c("Never", "Rarely", "Sometimes", "Always")))
 
-label(hh_survey$wash_hands_defecate) <- "Do you wash your hands after helping a child defecate?"
-label(hh_survey$wash_hands_food) <- "Do members of your household wash their hands before touching food?" 
+label(hh_survey$wash_hands_defecatelb) <- "Do you wash your hands after helping a child defecate?"
+label(hh_survey$wash_hands_foodlb) <- "Do members of your household wash their hands before touching food?" 
 # (Ex. cooking, preparing, before eating)?"
-label(hh_survey$wash_hands_toilet) <- "Do members of your household wash their hands after using the toilet?"
+label(hh_survey$wash_hands_toiletlb) <- "Do members of your household wash their hands after using the toilet?"
 
 hh_survey = hh_survey %>% 
   # Does anyone in your household (including yourself) smoke tobacco products?
-  dplyr::mutate(hh_smoking = case_when(hh_smoking == 0 ~ "No",
-                                       hh_smoking == 1 ~ "Yes",
-                                       hh_smoking == 2 ~ "No response"),
-                hh_smoking = factor(hh_smoking, 
-                                    levels = c("Yes", "No", "No response")),
+  dplyr::mutate(hh_smokinglb = case_when(hh_smoking == 0 ~ "No",
+                                         hh_smoking == 1 ~ "Yes",
+                                         hh_smoking == 2 ~ "No response"),
+                factor(hh_smokinglb, levels = c("Yes", "No", "No response")),
                 
                 #Do you cook food inside or outside the house?
-                hh_cook = case_when(hh_cook == 0 ~ "Inside",
-                                    hh_cook == 1 ~ "Outside",
-                                    hh_cook == 2 ~ "Both"),
-                hh_cook = factor(hh_cook, 
-                                 levels = c("Inside", "Outside", "Both")))
+                hh_cooklb = case_when(hh_cook == 0 ~ "Inside",
+                                      hh_cook == 1 ~ "Outside",
+                                      hh_cook == 2 ~ "Both"),
+                factor(hh_cooklb, levels = c("Inside", "Outside", "Both")))
 
-label(hh_survey$hh_smoking) <- "Does anyone in your household smoke tobacco products?"
-label(hh_survey$hh_cook) <- "Do you cook food inside/ outside the house?"
+label(hh_survey$hh_smokinglb) <- "Does anyone in your household smoke tobacco products?"
+label(hh_survey$hh_cooklb) <- "Do you cook food inside/ outside the house?"
 
 # What do you use to cook food? 
 label(hh_survey$hh_fuel___0) <- "Biomass" # (Wood, Coal, Manure)"
@@ -2226,25 +2270,24 @@ label(hh_survey$hh_fuel___3) <- "Other"
 
 hh_survey <- hh_survey %>% 
   # Does anyone in your household have asthma?
-  dplyr::mutate(hh_asthma = case_when(hh_asthma == 0 ~ "No",
-                                      hh_asthma == 1 ~ "Yes",
-                                      hh_asthma == 2 ~ "No response"),
-                hh_asthma = factor(hh_asthma, 
-                                   levels = c("Yes", "No", "No response")),
+  dplyr::mutate(hh_asthmalb = case_when(hh_asthma == 0 ~ "No",
+                                        hh_asthma == 1 ~ "Yes",
+                                        hh_asthma == 2 ~ "No response"),
+                factor(hh_asthmalb, levels = c("Yes", "No", "No response")),
                 
                 # Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?
-                hh_tb = case_when(hh_tb == 0 ~ "No",
-                                  hh_tb == 1 ~ "Yes",
-                                  hh_tb == 2 ~ "No response"),
-                hh_tb = factor(hh_tb, 
-                               levels = c("Yes", "No", "No response")))
+                hh_tblb = case_when(hh_tb == 0 ~ "No",
+                                    hh_tb == 1 ~ "Yes",
+                                    hh_tb == 2 ~ "No response"),
+                factor(hh_tblb, levels = c("Yes", "No", "No response")))
 
-label(hh_survey$hh_asthma) -> "Does anyone in your household have asthma?"
-label(hh_survey$hh_tb) -> "Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?"
+label(hh_survey$hh_asthmalb) -> "Does anyone in your household have asthma?"
+label(hh_survey$hh_tblb) -> "Has anyone in your household been diagnosed with Tuberculosis (TB) in the past year?"
 
 # extract dataframe with the rec_id, hh_id and hh_member_id
 hh_id <- hh_survey %>%
   select(rec_id, hh_id)
+
 
 
 # keep aim 1 data only
@@ -2263,7 +2306,7 @@ hh_survey_aim2 <- hh_survey %>%
 
 saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2.RDS")
 
-saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/aim_2/analysis/diary/household_survey_aim2.RDS")
+saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/household_survey_aim2.RDS")
 
 # rm(hh_survey, hh_survey_aim1, hh_survey_aim2)
 ```
@@ -2404,7 +2447,7 @@ loc_visit_aim2 <- loc_visit %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
-saveRDS(loc_visit_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/aim_2/analysis/diary/locations_visited_aim2.RDS")
+saveRDS(loc_visit_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/locations_visited_aim2.RDS")
 
 rm(loc_visit_d1, loc_visit_d2)
 ```
@@ -2423,7 +2466,7 @@ exit_interview_aim2 <- exit %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
-saveRDS(exit_interview_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/aim_2/analysis/diary/exit_interview_aim2.RDS")
+saveRDS(exit_interview_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/exit_interview_aim2.RDS")
 
 # rm(exit_interview_aim1, exit_interview_aim2)
 
