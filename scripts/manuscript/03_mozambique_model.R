@@ -1,5 +1,3 @@
-
-
 ###############################################################################  
 # This file contains scripts to analyze and visualize place use data.
 # Author: Sara Kim
@@ -8,34 +6,36 @@
 
 
 ### Check to see if there are IDs with no contacts reported
-sum(!participants$rec_id %in% contacts$rec_id) # 3
-
-missing <- participants %>% 
-  filter(!rec_id %in% unlist(contacts$rec_id)) %>% 
-  arrange(rec_id)
-# 371, 754, 1996
-
-# Remove those without contact diaries
-participants <- participants %>%
-  filter(!rec_id %in% unlist(missing$rec_id)) 
-
-rm(missing)
+# sum(!participants$rec_id %in% contacts$rec_id) # 0
+# 
+# missing <- participants %>% 
+#   filter(!rec_id %in% unlist(contacts$rec_id)) %>% 
+#   arrange(rec_id)
+# # 371, 754, 1996
+# 
+# # Remove those without contact diaries
+# participants <- participants %>%
+#   filter(!rec_id %in% unlist(missing$rec_id)) 
+# 
+# rm(missing)
 
 ### Check those who live alone
 live_alone <- household %>% 
   filter(rec_id %in% unlist(participants$rec_id)) %>%
   filter(hh_occupants==1) 
-# 35
+# 42
 
 
 ##### Data cleaning for socialmixr package
-contacts <- contacts %>%
+contacts2 <- contacts %>%
   left_join(participants %>% 
-              select(rec_id, participant_age), 
+              select(rec_id, "participant_age"), 
             by = c("rec_id"="rec_id")) %>%
-  mutate(age_part = participant_age) 
+  mutate(part_age = participant_age,
+         part_id = rec_id) 
 
-contacts <- contacts %>%
+
+contacts2 <- contacts2 %>%
   mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
          cnt_school = ifelse(location_contact___2==1, 1,0),
          cnt_work = ifelse(location_contact___3==1, 1,0),
@@ -49,42 +49,38 @@ contacts <- contacts %>%
                                    location_contact___10==1 | 
                                    location_contact___11==1,1,0))
 
-contacts <- contacts %>%
-  mutate(part_id = rec_id,
-         part_age = age_part)
-
-
 ##### Weighting
 ### age categories to join with population weighting
-contacts <- contacts %>%
+contacts2 <- contacts2 %>%
   mutate(
-    part_age = as.numeric(part_age),
-    weight_cat = case_when(
-      part_age ==1 ~ "0",
-      part_age<=4  ~ "1-4y",
-      part_age<=9  ~ "5-9y",
-      part_age<=14 ~ "10-14y",
-      part_age<=19 ~ "15-19y",
-      part_age<=29 ~ "20-29y",
-      part_age<=39 ~ "30-39y",
-      part_age<=59 ~ "40-59y",
-      part_age<=100 ~ "60+y",
+   part_age = as.character(part_age),
+   weight_cat = case_when(
+      part_age == "<6mo"  ~ "0-9y",
+      part_age == "6-11mo" ~ "0-9y",
+      part_age == "1-4y" ~ "0-9y",
+      part_age == "5-9y" ~ "0-9y",
+      part_age == "10-14y" ~ "10-19y",
+      part_age == "15-19y" ~ "10-19y",
+      part_age == "20-29y" ~ "20-29y",
+      part_age == "30-39y" ~ "30-39y",
+      part_age == "40-59y" ~ "40-59y",
+      part_age == "60+y" ~ "60+y",
       TRUE ~ NA_character_
     )
   )
 
-contacts <- contacts %>%
-  mutate(
-    part_age = as.numeric(part_age),
-    weight_cat = case_when(
-      participant_age == "<6mo" ~ "0",
-      participant_age == "6-11mo" ~ "0",
-      TRUE ~ participant_age
-    )
-  )
+#contacts <- contacts %>%
+ # mutate(
+  #  part_age = as.numeric(part_age),
+   # weight_cat = case_when(
+    #  participant_age == "<6mo" ~ "0",
+     # participant_age == "6-11mo" ~ "0",
+      #TRUE ~ participant_age
+    #)
+  #)
 
 ### read in population distribution
-pop_dist <- read.csv("scripts/manuscript/mozambique_population_distribution.csv") %>%
+pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -92,7 +88,7 @@ pop_dist <- read.csv("scripts/manuscript/mozambique_population_distribution.csv"
   ))
 
 ### weight cleaning
-pop_weight <- contacts %>%
+pop_weight <- contacts2 %>%
   select(part_id, study_site, weight_cat) %>% 
   unique() %>%
   group_by(study_site, weight_cat) %>%
@@ -109,24 +105,24 @@ pop_weight <- pop_weight %>%
          part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
 
 ### join weights into participants data
-contacts <- contacts %>%
+contacts2 <- contacts2 %>%
   left_join(pop_weight %>% select(study_site, weight_cat, part_weight),
             by = c("study_site"="study_site", "weight_cat"="weight_cat"))
 
 
 ##### Create survey structures for input into socialmixr package
-contacts <- contacts %>% 
-  mutate(part_age = as.numeric(part_age),
+contacts2 <- contacts2 %>% 
+  mutate(
+         part_age = as.character(part_age),
          contact_age = as.character(contact_age),
-         
          cnt_age_est_min = case_when( 
            ## If dont have exact contact age, need to specify a minimum and maximum based on the age group range
            contact_age == "<6mo" ~0,
            contact_age == "6-11mo"~0,
-           contact_age == "1-4y" ~1,
-           contact_age == "5-9y" ~ 5,
+           contact_age == "1-4y" ~0,
+           contact_age == "5-9y" ~ 0,
            contact_age == "10-14y"~10,
-           contact_age == "15-19y"~15,
+           contact_age == "15-19y"~10,
            contact_age == "20-29y"~20,
            contact_age == "30-39y"~30,
            contact_age == "40-59y"~40,
@@ -136,11 +132,11 @@ contacts <- contacts %>%
          ),
          
          cnt_age_est_max= case_when(
-           contact_age == "<6mo" ~0,
-           contact_age == "6-11mo"~1,
-           contact_age == "1-4y" ~ 4,
+           contact_age == "<6mo" ~9,
+           contact_age == "6-11mo"~9,
+           contact_age == "1-4y" ~ 9,
            contact_age == "5-9y" ~ 9,
-           contact_age == "10-14y"~14,
+           contact_age == "10-14y"~19,
            contact_age == "15-19y"~19,
            contact_age == "20-29y"~29,
            contact_age == "30-39y"~39,
@@ -148,33 +144,63 @@ contacts <- contacts %>%
            contact_age == "60+y"~99,
            contact_age== "I don't know" ~ NA_real_,
            is.na(contact_age) ~ NA_real_
-         )
+         ),
+         
+         part_age_est_min = case_when(
+           part_age == "<6mo" ~0,
+           part_age == "6-11mo"~0,
+           part_age == "1-4y" ~0,
+           part_age == "5-9y" ~ 0,
+           part_age == "10-14y"~10,
+           part_age == "15-19y"~10,
+           part_age == "20-29y"~20,
+           part_age == "30-39y"~30,
+           part_age == "40-59y"~40,
+           part_age == "60+y"~60,
+           part_age== "I don't know" ~ NA_real_,
+           is.na(part_age) ~ NA_real_
+         ),
+         
+         part_age_est_max= case_when(
+           part_age == "<6mo" ~9,
+           part_age == "6-11mo"~9,
+           part_age == "1-4y" ~ 9,
+           part_age == "5-9y" ~ 9,
+           part_age == "10-14y"~19,
+           part_age == "15-19y"~19,
+           part_age == "20-29y"~29,
+           part_age == "30-39y"~39,
+           part_age == "40-59y"~59,
+           part_age == "60+y"~99,
+           part_age== "I don't know" ~ NA_real_,
+           is.na(part_age) ~ NA_real_
+         ),
   ) 
 
 ### One urban and one rural
-cnt_u <- contacts %>% 
+cnt_u <- contacts2 %>% 
   filter(study_site == "Urban")
 
-cnt_r <- contacts %>% 
+cnt_r <- contacts2 %>% 
   filter(study_site == "Rural")
 
 
 df_r <- survey(
   participants = cnt_r %>% 
-    select(part_id, part_age, part_weight) %>% 
+    select(part_id, part_age, part_age_est_min, part_age_est_max, part_weight) %>% 
     unique() %>%
     rename(weights = part_weight) %>%
     mutate(country = rep("Mozambique"),
            year = rep(2020)),
   
   contacts = cnt_r %>%
-    select(part_id,cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
+    select(part_id, cnt_age_est_min, cnt_age_est_max, cnt_home:cnt_otherplace)
   
 )
 
 df_u <- survey(
   participants = cnt_u %>% 
-    select(part_id, part_age,part_weight) %>% 
+    select(part_id, part_age, part_age_est_min, part_age_est_max, part_weight) %>% 
     unique()%>%
     rename(weights = part_weight) %>%
     mutate(country=rep("Mozambique"),
@@ -190,61 +216,174 @@ df_u <- survey(
 
 ### urban
 m_u <- contact_matrix(df_u, 
-                      age.limits = c(0,10,20,30,40,50,60,99), ##Specify age bands for the matrix
+                      age.limits = c(0,10,20,30,40,60), ##Specify age bands for the matrix
                       symmetric=T,  ##symmetric matrix
-                      missing.contact.age="sample", 
-                      estimated.contact.age = "sample",  ##what to do if missing contact age group, use sample with bootstraping
+                      estimated.participant.age = "sample",
+                      missing.contact.age="sample",
+                      # missing.participant.age="remove",
+                      estimated.contact.age = "sample",  
+                      ##what to do if missing contact age group, use sample with bootstraping
                       weigh.age = T,
                       return.part.weights=T,
                       n=1000)     ##Number of bootstraps
+
 
 #Code to take the mean of matrices
 mr_u <- Reduce("+", lapply(m_u$matrices, function(x) {x$matrix})) / length(m_u$matrices)
 
 #Make into long form
 mat_u <- reshape2::melt(mr_u, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
-  left_join(data.frame(age1 = c(1,2,3,4,5,6,7),
-                       age_part = c("[0,10)","[10,20)","[20,30)","[30,40)","[40,50)","[50,60)","60+")),
+  left_join(data.frame(age1 = c(1,2,3,4,5,6),
+                       age_part = c("0-9y","10-19y","20-29y","30-39y","40-59y","60+y")),
             by="age1")
 
 ### Do same for rural
-m_r <- contact_matrix(df_r, age.limits = c(0,10,20,30,40,50,60,99),symmetric=T, 
-                      missing.contact.age="sample",estimated.contact.age = "sample",
-                      return.part.weights = T,n=1000)
+m_r <- contact_matrix(df_r, age.limits = c(0,10,20,30,40,60),
+                      symmetric=T, 
+                      estimated.participant.age = "sample",
+                      missing.contact.age="sample",
+                      estimated.contact.age = "sample",
+                      return.part.weights = T,
+                      n=1000)
 
 
 mr_r <- Reduce("+", lapply(m_r$matrices, function(x) {x$matrix})) / length(m_r$matrices)
 mat_r <- reshape2::melt(mr_r, varnames = c("age1", "age_cont"), value.name = "contacts") %>%
-  left_join(data.frame(age1 = c(1,2,3,4,5,6,7),
-                       age_part = c("[0,10)","[10,20)","[20,30)","[30,40)","[40,50)","[50,60)","60+")),
+  left_join(data.frame(age1 = c(1,2,3,4,5,6),
+                       age_part = c("0-9y","10-19y","20-29y","30-39y","40-59y","60+y")),
             by="age1")
 
 
 ##### Matrix visualization
+### rural
+ruralmatrix <- mat_r %>%
+  mutate(age_cont = case_when(age_cont == "[0,10)" ~ "0-9y", 
+                              age_cont == "[10,20)" ~ "10-19y", 
+                              age_cont == "[20,30)" ~ "20-29y",
+                              age_cont == "[30,40)" ~ "30-39y", 
+                              age_cont == "[40,60)" ~  "40-59y",
+                              age_cont == "60+" ~ "60+y")) %>%
+  ggplot(aes(x = age_part, y = age_cont, fill = contacts)) + 
+  geom_tile() + 
+  scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                       midpoint = 8, limit = c(0,20)) +
+  xlab("") +
+  ylab("Contact age") +
+  geom_text(aes(label=round(contacts, digits=1)), 
+            colour = "black", check_overlap = TRUE, size=3) +
+  axis_text_theme2 +  
+  theme(legend.position = "right",
+        legend.direction = "vertical")
+ruralmatrix
 
 ### urban
-ggplot(mat_u, aes(x = age_part, y = age_cont, fill = contacts)) + 
-  theme(legend.position = "bottom") + 
-  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
-  xlab("Age of participant")+ylab("Age of contact")+
-  geom_tile()+
-  geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
-  theme()
+urbanmatrix <- mat_u %>%
+  mutate(age_cont = case_when(age_cont == "[0,10)" ~ "0-9y", 
+                              age_cont == "[10,20)" ~ "10-19y", 
+                              age_cont == "[20,30)" ~ "20-29y",
+                              age_cont == "[30,40)" ~ "30-39y", 
+                              age_cont == "[40,60)" ~  "40-59y",
+                              age_cont == "60+" ~ "60+y")) %>%
+  ggplot(aes(x = age_part, y = age_cont, fill = contacts)) +
+  geom_tile() +
+  scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                       midpoint = 8, limit = c(0,20))+
+  xlab("") +
+  ylab("Contact age") +
+  geom_text(aes(label=round(contacts, digits=1)), colour = "black", 
+            check_overlap = TRUE, size=3) +
+  axis_text_theme2 + 
+  theme(legend.position = "right",
+        legend.direction = "vertical")
+# axis.text.y = element_blank(),
+# axis.title.y = element_blank()
+  
+urbanmatrix
 
-### rural
-ggplot(mat_r, aes(x = age_part, y = age_cont, fill = contacts)) + 
-  theme(legend.position = "bottom") + 
-  scale_fill_gradient2(low = "white", high = "#273871", mid = "#7FABD3", midpoint = 3.4, limit = c(0,7))+
-  xlab("Age of participant")+ylab("Age of contact")+
-  geom_tile()+ 
-  geom_text(aes(label=round(contacts, digits=2)), colour = "black", check_overlap = TRUE)+
-  theme()
+# generate prem matrix
+# source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
+### read in social contact patterns
+# default is by 5 year age groups
+moz_prem <- read.csv("../../data/clean/moz_prem_2017.csv")
+
+### Generate data frame of participant age groups for orig prem matrix matched to age groups for target matrix
+age_cat_part <- data.frame(part_age1=c("0_4","5_9","10_14","15_19","20_24","25_29",
+                                       "30_34","35_39", "40_44","45_49","50_54",
+                                       "55_59","60_64","65_69","70_74","75"),
+                           
+                           part_age2 =c("0-9y", "0-9y", "10-19y","10-19y", 
+                                        "20-29y", "20-29y", "30-39y", "30-39y", 
+                                        "40-59y","40-59y", "40-59y", "40-59y",  
+                                        "60+y", "60+y", "60+y", "60+y"))
 
 
+### Generate data frame of contact age groups for orig prem matrix matched to contact age groups for target matrix
+age_cat_cont <- data.frame(cont_age1 = colnames(moz_prem),
+                           cont_age2 = c("0-9y", "0-9y", "10-19y","10-19y", 
+                                         "20-29y", "20-29y", "30-39y", "30-39y", 
+                                         "40-59y","40-59y", "40-59y", "40-59y",  
+                                         "60+y", "60+y", "60+y", "60+y"))
+
+moz_prem$part_age1 <- age_cat_part$part_age1
 
 
-#####          CODE FOR TRANSMISSION MODEL           #####
+### pivot_longer for ease of data manipulation
+moz_prem <- moz_prem %>%
+  pivot_longer(cols = contact_0_4:contact_75, 
+               names_to = "cont_age",
+               values_to = "avg_cont")
 
+### Create a column for the age groups of the target matrix
+moz_prem <- moz_prem %>%
+  left_join(age_cat_part, by = c("part_age1" = "part_age1")) %>%
+  left_join(age_cat_cont, by = c("cont_age" = "cont_age1"))
+
+
+### population data for 5-year population distribution in Moz
+moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
+
+### population data for 10-year population distribution in Moz
+moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
+  # recategorize ages to conform to original agecat_10_total part_age2 groups
+  mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
+                               part_age2 == "10_19" ~ "10-19y", 
+                               part_age2 == "20_29" ~ "20-29y",
+                               part_age2 == "30_39" ~ "30-39y", 
+                               part_age2 == "40_49" ~  "40-59y",
+                               part_age2 == "50_59" ~  "40-59y",
+                               part_age2 == "60" ~ "60+y")) %>%
+  group_by(part_age2) %>%
+  summarize(pop10yr = sum(pop10yr))
+
+
+### "linearly" collapse the participant-contact cells based on population sizes
+moz_prem10 <- moz_prem %>%
+  left_join(moz_pop_5yr, by = c("part_age1" = "part_age1")) %>%  ## pop size of 5-year participant age band
+  mutate(tot_pop_contacts = avg_cont * pop5yr) %>%   ## total contacts made between 0_4 & 0_4, 0_4&5_9 etc
+  group_by(part_age2, cont_age2) %>%
+  summarise(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
+  left_join(moz_pop_10yr, by = c("part_age2"="part_age2")) %>% # pop size of 10-year participant age band
+  mutate(contacts = tot_pop_contacts/pop10yr)        ## average contacts made using 10-year age band
+
+### plot
+premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contacts)) + 
+  geom_tile() +
+  scale_fill_gradient2(low = "#91bfdb", mid="#fee090", high="#d73027",
+                       midpoint = 8, limit = c(0,20))+
+  xlab("Participant age") + 
+  ylab("Contact age") +
+  geom_text(aes(label=round(contacts, digits=1)), 
+            colour = "black", check_overlap = TRUE, size=3) +
+  axis_text_theme2 +
+  theme(legend.position = "right",
+        legend.direction  = "vertical")
+# axis.text.y = element_blank(),
+# axis.title.y = element_blank()
+  
+premmatrix
+
+
+##### CODE FOR TRANSMISSION MODEL #####
 ### Fix R0. 2.5 to get q parameter
 
 # function
@@ -254,39 +393,36 @@ getr0 <- function(q,CM,d){
   print(r0)
 }
 
-# globalmix rural matrix
-rural <- c(5.91, 5.31, 2.72, 3.17, 2.91, 3.86, 3.11,
-           3.91, 13.77, 5.38, 4.91, 4.80, 5.36, 3.44,
-           1.37, 3.68, 3.27, 2.58, 2.33, 3.06, 1.81,
-           1.10, 2.31, 1.78, 4.04, 3.27, 3.99, 2.58,
-           0.64, 1.44, 1.02, 2.08, 2.75, 3.36, 1.76,
-           0.55, 1.05, 0.88, 1.65, 2.19, 2.99, 2.01,
-           0.46, 0.70, 0.54, 1.11, 1.19, 2.09, 1.84)
-cm_rural <- matrix(rural, nrow = 7, ncol = 7)
-getr0(q=0.01676074, CM=cm_rural, d=7)
+# globalmix rural matrix values
+rural <- c(4.49, 4.46, 2.35, 2.67, 2.69, 2.45,
+           3.28, 13.72, 5.40, 4.91, 5.03, 3.44,
+           1.18, 3.69, 3.25, 2.62, 2.63, 1.80,
+           0.92, 2.31, 1.80, 4.03, 3.56, 2.59,
+           0.98, 2.49, 1.90, 3.74, 5.50, 3.77, 
+           0.37, 0.70, 0.54, 1.12, 1.55, 1.83)
+cm_rural <- matrix(rural, nrow = 6, ncol = 6)
+getr0(q=0.01737544, CM=cm_rural, d=7)
 
 # globalmix urban matrix
-urban <- c(4.46, 3.05, 3.05, 2.91, 1.04, 2.01, 1.94,
-           2.24, 9.61, 3.70, 3.76, 3.22, 3.01, 2.08,
-           1.53, 2.53, 1.99, 2.26, 1.88, 2.93, 1.36,
-           1.01, 1.77, 1.56, 3.48, 2.01, 2.38, 1.47,
-           0.23, 0.97, 0.82, 1.28, 1.55, 2.17, 1.12,
-           0.29, 0.59, 0.84, 0.99, 1.41, 1.78, 0.87,
-           0.29, 0.42, 0.41, 0.64, 0.76, 0.90, 1.53)
-cm_urban <- matrix(urban, nrow = 7, ncol = 7)
-getr0(q=0.024248775, CM=cm_urban, d=7)
+urban <- c(2.49, 2.66, 2.54, 2.80, 1.35, 1.79,
+           1.96, 9.83, 3.80, 3.59, 3.05, 2.28,
+           1.28, 2.59, 2.08, 2.47, 2.44, 1.72, 
+           0.97, 1.69, 1.70, 3.56, 2.20, 1.32, 
+           0.49, 1.51, 1.77, 2.32, 3.20, 2.19, 
+           0.27, 0.46, 0.51, 0.57, 0.90, 0.99)
+cm_urban <- matrix(urban, nrow = 6, ncol = 6)
+getr0(q=0.02471834, CM=cm_urban, d=7)
 
 
 # prem 
-prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
-          3.66, 14.09, 2.86, 1.90, 2.33, 1.92, 1.10, 
-          2.33, 2.19, 6.10, 2.67, 1.90, 1.80, 0.56,
-          2.67, 1.58, 2.81, 3.63, 2.62, 2.10, 0.75, 
-          1.08, 1.31, 1.76, 2.41, 2.69, 2.46, 0.70, 
-          0.56, 0.46, 1.04, 1.21, 1.38, 1.78, 0.63, 
-          0.39, 0.22, 0.28, 0.32, 0.31, 0.44, 0.33)
-cm_prem <- matrix(prem, nrow = 7, ncol = 7)
-getr0(q=0.01521068, CM=cm_prem, d=7)
+prem <- c(19.34, 4.54, 1.68, 2.63, 1.64, 1.02,
+          3.66, 14.09, 2.86, 1.90, 2.18, 1.10, 
+          2.33, 2.19, 6.10, 2.67, 1.86, 0.56,
+          2.67, 1.58, 2.81, 3.63, 2.43, 0.75, 
+          1.65, 1.77, 2.79, 3.62, 4.14, 1.32, 
+          0.39, 0.22, 0.28, 0.32, 0.36, 0.33)
+cm_prem <- matrix(prem, nrow = 6, ncol = 6)
+getr0(q=0.0152126, CM=cm_prem, d=7)
 
 
 
@@ -301,7 +437,6 @@ seirmod <- function(t, t0, parms) {
     num.4 <- s.num.4 + s.v.num.4 + i.num.4 + r.num.4
     num.5 <- s.num.5 + s.v.num.5 + i.num.5 + r.num.5
     num.6 <- s.num.6 + s.v.num.6 + i.num.6 + r.num.6
-    num.7 <- s.num.7 + s.v.num.7 + i.num.7 + r.num.7
     
     # 2. define age-specific forces of infection
     # force of infection for 0-9 contacts (infecting the 0-9 year olds, infecting the contact)
@@ -310,16 +445,14 @@ seirmod <- function(t, t0, parms) {
       q*c13*(i.num.3/num.3) + 
       q*c14*(i.num.4/num.4) +
       q*c15*(i.num.5/num.5) + 
-      q*c16*(i.num.6/num.6) + 
-      q*c17*(i.num.7/num.7)
+      q*c16*(i.num.6/num.6)
     
     lambda.v.1 <- (1-psi)*q*c11*(i.num.1/num.1) + 
       (1-psi)*q*c12*(i.num.2/num.2) + 
       (1-psi)*q*c13*(i.num.3/num.3) + 
       (1-psi)*q*c14*(i.num.4/num.4) +
       (1-psi)*q*c15*(i.num.5/num.5) + 
-      (1-psi)*q*c16*(i.num.6/num.6) + 
-      (1-psi)*q*c17*(i.num.7/num.7)
+      (1-psi)*q*c16*(i.num.6/num.6) 
     
     # force of infection for 10-19 contacts (infecting the 10-19 year olds, infecting the contact)
     lambda.2 <- q*c21*(i.num.1/num.1) + 
@@ -327,15 +460,14 @@ seirmod <- function(t, t0, parms) {
       q*c23*(i.num.3/num.3) + 
       q*c24*(i.num.4/num.4) +
       q*c25*(i.num.5/num.5) + 
-      q*c26*(i.num.6/num.6) + 
+      q*c26*(i.num.6/num.6) 
       
     lambda.v.2 <- (1-psi)*q*c21*(i.num.1/num.1) + 
       (1-psi)*q*c22*(i.num.2/num.2) + 
       (1-psi)*q*c23*(i.num.3/num.3) + 
       (1-psi)*q*c24*(i.num.4/num.4) +
       (1-psi)*q*c25*(i.num.5/num.5) + 
-      (1-psi)*q*c26*(i.num.6/num.6) + 
-      (1-psi)*q*c27*(i.num.7/num.7)
+      (1-psi)*q*c26*(i.num.6/num.6) 
     
     # force of infection for 20-29 contacts
     lambda.3 <- q*c31*(i.num.1/num.1) + 
@@ -343,16 +475,14 @@ seirmod <- function(t, t0, parms) {
       q*c33*(i.num.3/num.3) + 
       q*c34*(i.num.4/num.4) +
       q*c35*(i.num.5/num.5) + 
-      q*c36*(i.num.6/num.6) + 
-      q*c37*(i.num.7/num.7)
+      q*c36*(i.num.6/num.6) 
     
     lambda.v.3 <- (1-psi)*q*c31*(i.num.1/num.1) + 
       (1-psi)*q*c32*(i.num.2/num.2) + 
       (1-psi)*q*c33*(i.num.3/num.3) + 
       (1-psi)*q*c34*(i.num.4/num.4) +
       (1-psi)*q*c35*(i.num.5/num.5) + 
-      (1-psi)*q*c36*(i.num.6/num.6) + 
-      (1-psi)*q*c37*(i.num.7/num.7)
+      (1-psi)*q*c36*(i.num.6/num.6) 
     
     # force of infection for 30-39 contacts
     lambda.4 <- q*c41*(i.num.1/num.1) + 
@@ -360,67 +490,45 @@ seirmod <- function(t, t0, parms) {
       q*c43*(i.num.3/num.3) + 
       q*c44*(i.num.4/num.4) +
       q*c45*(i.num.5/num.5) + 
-      q*c46*(i.num.6/num.6) + 
-      q*c47*(i.num.7/num.7)
+      q*c46*(i.num.6/num.6) 
     
     lambda.v.4 <- (1-psi)*q*c41*(i.num.1/num.1) + 
       (1-psi)*q*c42*(i.num.2/num.2) + 
       (1-psi)*q*c43*(i.num.3/num.3) + 
       (1-psi)*q*c44*(i.num.4/num.4) +
       (1-psi)*q*c45*(i.num.5/num.5) + 
-      (1-psi)*q*c46*(i.num.6/num.6) + 
-      (1-psi)*q*c47*(i.num.7/num.7)
+      (1-psi)*q*c46*(i.num.6/num.6) 
     
-    # force of infection for 40-49 contacts
+    # force of infection for 40-59 contacts
     lambda.5 <- q*c51*(i.num.1/num.1) + 
       q*c52*(i.num.2/num.2) + 
       q*c53*(i.num.3/num.3) + 
       q*c54*(i.num.4/num.4) +
       q*c55*(i.num.5/num.5) + 
-      q*c56*(i.num.6/num.6) + 
-      q*c57*(i.num.7/num.7)
+      q*c56*(i.num.6/num.6) 
     
     lambda.v.5 <- (1-psi)*q*c51*(i.num.1/num.1) + 
       (1-psi)*q*c52*(i.num.2/num.2) + 
       (1-psi)*q*c53*(i.num.3/num.3) + 
       (1-psi)*q*c54*(i.num.4/num.4) +
       (1-psi)*q*c55*(i.num.5/num.5) + 
-      (1-psi)*q*c56*(i.num.6/num.6) + 
-      (1-psi)*q*c57*(i.num.7/num.7)
+      (1-psi)*q*c56*(i.num.6/num.6) 
     
-    # force of infection for 50-59 contacts
+    # force of infection for 60+y contacts
     lambda.6 <- q*c61*(i.num.1/num.1) + 
       q*c62*(i.num.2/num.2) + 
       q*c63*(i.num.3/num.3) + 
       q*c64*(i.num.4/num.4) +
       q*c65*(i.num.5/num.5) + 
-      q*c66*(i.num.6/num.6) + 
-      q*c67*(i.num.7/num.7)
+      q*c66*(i.num.6/num.6) 
     
     lambda.v.6 <- (1-psi)*q*c61*(i.num.1/num.1) + 
       (1-psi)*q*c62*(i.num.2/num.2) + 
       (1-psi)*q*c63*(i.num.3/num.3) + 
       (1-psi)*q*c64*(i.num.4/num.4) +
       (1-psi)*q*c65*(i.num.5/num.5) + 
-      (1-psi)*q*c66*(i.num.6/num.6) + 
-      (1-psi)*q*c67*(i.num.7/num.7)
+      (1-psi)*q*c66*(i.num.6/num.6) 
     
-    # force of infection for 60+ contacts
-    lambda.7 <- q*c71*(i.num.1/num.1) + 
-      q*c72*(i.num.2/num.2) + 
-      q*c73*(i.num.3/num.3) + 
-      q*c74*(i.num.4/num.4) +
-      q*c75*(i.num.5/num.5) + 
-      q*c76*(i.num.6/num.6) + 
-      q*c77*(i.num.7/num.7)
-    
-    lambda.v.7 <- (1-psi)*q*c71*(i.num.1/num.1) + 
-      (1-psi)*q*c72*(i.num.2/num.2) + 
-      (1-psi)*q*c73*(i.num.3/num.3) + 
-      (1-psi)*q*c74*(i.num.4/num.4) +
-      (1-psi)*q*c75*(i.num.5/num.5) + 
-      (1-psi)*q*c76*(i.num.6/num.6) + 
-      (1-psi)*q*c77*(i.num.7/num.7)
     
     # 3. differential equations 
     dS.1 <- -lambda.1*s.num.1 
@@ -453,10 +561,6 @@ seirmod <- function(t, t0, parms) {
     dI.6 <- lambda.6*s.num.6 + lambda.v.6*s.v.num.6 - gamma*i.num.6
     dR.6 <- gamma*i.num.6
     
-    dS.7 <- -lambda.7*s.num.7
-    dS.v.7 <- -lambda.v.7*s.v.num.7
-    dI.7 <- lambda.7*s.num.7 + lambda.v.7*s.v.num.7 - gamma*i.num.7
-    dR.7 <- gamma*i.num.7
     
     # 4. List outputs
     list(c(dS.1, dS.v.1, dI.1, dR.1,
@@ -465,52 +569,46 @@ seirmod <- function(t, t0, parms) {
            dS.4, dS.v.4, dI.4, dR.4,
            dS.5, dS.v.5, dI.5, dR.5,
            dS.6, dS.v.6, dI.6, dR.6,
-           dS.7, dS.v.7, dI.7, dR.7,
            si.flow.1 = lambda.1*s.num.1 + lambda.v.1*s.v.num.1,
            si.flow.2 = lambda.2*s.num.2 + lambda.v.2*s.v.num.2,
            si.flow.3 = lambda.3*s.num.3 + lambda.v.3*s.v.num.3,
            si.flow.4 = lambda.4*s.num.4 + lambda.v.4*s.v.num.4,
            si.flow.5 = lambda.5*s.num.5 + lambda.v.6*s.v.num.5,
            si.flow.6 = lambda.6*s.num.6 + lambda.v.6*s.v.num.6,
-           si.flow.7 = lambda.7*s.num.7 + lambda.v.7*s.v.num.7,
            svi.flow.1 = lambda.v.1*s.v.num.1, svi.flow.2 = lambda.v.2*s.v.num.2,
            svi.flow.3 = lambda.v.3*s.v.num.3, svi.flow.4 = lambda.v.4*s.v.num.4, 
-           svi.flow.5 = lambda.v.5*s.v.num.5, svi.flow.6 = lambda.v.6*s.v.num.6,
-           svi.flow.7 = lambda.v.7*s.v.num.7
+           svi.flow.5 = lambda.v.5*s.v.num.5, svi.flow.6 = lambda.v.6*s.v.num.6
     ))
   })
 }
 
 ### Parameters
 # rural contact patterns
-param.rural <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.01676074,
-                         c11=5.91, c12=5.31, c13=2.72, c14=3.17, c15=2.91, c16=3.86, c17=3.11,
-                         c21=3.91, c22=13.77, c23=5.38, c24=4.91, c25=4.80, c26=5.36, c27=3.44,
-                         c31=1.37, c32=3.68, c33=3.27, c34=2.58, c35=2.33, c36=3.06, c37=1.81,
-                         c41=1.10, c42=2.31, c43=1.78, c44=4.04, c45=3.27, c46=3.99, c47=2.58,
-                         c51=0.64, c52=1.44, c53=1.02, c54=2.08, c55=2.75, c56=3.36, c57=1.76,
-                         c61=0.55, c62=1.05, c63=0.88, c64=1.65, c65=2.19, c66=2.99, c67=2.01,
-                         c71=0.46, c72=0.70, c73=0.54, c74=1.11, c75=1.19, c76=2.09, c77=1.84)
+param.rural <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.01737544,
+                         c11=4.49, c12=4.46, c13=2.35, c14=2.67, c15=2.69, c16=2.45,
+                         c21=3.28, c22=13.72, c23=5.40, c24=4.91, c25=5.03, c26=3.44, 
+                         c31=1.18, c32=3.69, c33=3.25, c34=2.62, c35=2.63, c36=1.80,
+                         c41=0.92, c42=2.31, c43=1.80, c44=4.03, c45=3.56, c46=2.59, 
+                         c51=0.98, c52=2.49, c53=1.90, c54=3.74, c55=5.50, c56=3.77,
+                         c61=0.37, c62=0.70, c63=0.54, c64=1.12, c65=1.55, c66=1.83)
 
 # urban contact patterns
-param.urban <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.024248775,
-                         c11=4.46, c12=3.05, c13=3.05, c14=2.91, c15=1.04, c16=2.01, c17=1.94,
-                         c21=2.24, c22=9.61, c23=3.70, c24=3.76, c25=3.22, c26=3.01, c27=2.08,
-                         c31=1.53, c32=2.53, c33=1.99, c34=2.26, c35=1.88, c36=2.93, c37=1.36,
-                         c41=1.01, c42=1.77, c43=1.56, c44=3.48, c45=2.01, c46=2.38, c47=1.47,
-                         c51=0.23, c52=0.97, c53=0.82, c54=1.28, c55=1.55, c56=2.17, c57=1.12,
-                         c61=0.29, c62=0.59, c63=0.84, c64=0.99, c65=1.41, c66=1.78, c67=0.87,
-                         c71=0.29, c72=0.42, c73=0.41, c74=0.64, c75=0.76, c76=0.90, c77=1.53)
+param.urban <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.02471834,
+                         c11=2.49, c12=2.66, c13=2.54, c14=2.80, c15=1.35, c16=1.79,
+                         c21=1.96, c22=9.83, c23=3.80, c24=3.59, c25=3.05, c26=2.28, 
+                         c31=1.28, c32=2.59, c33=2.08, c34=2.47, c35=2.44, c36=1.72,
+                         c41=0.97, c42=1.69, c43=1.70, c44=3.56, c45=2.20, c46=1.32, 
+                         c51=0.49, c52=1.51, c53=1.77, c54=2.32, c55=3.20, c56=2.19,
+                         c61=0.27, c62=0.46, c63=0.51, c64=0.57, c65=0.90, c66=0.99)
 
 # prem et al contact patterns
-param.prem <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.01521068,
-                        c11=19.34, c12=4.54, c13=1.68, c14=2.63, c15=1.76, c16=1.45, c17=1.02,
-                        c21=3.66, c22=14.09, c23=2.86, c24=1.9, c25=2.33, c26=1.92, c27=1.1,
-                        c31=2.33, c32=2.19, c33=6.1, c34=2.67, c35=1.9, c36=1.8, c37=0.56,
-                        c41=2.67, c42=1.58, c43=2.81, c44=3.63, c45=2.62, c46=2.1, c47=0.75,
-                        c51=1.08, c52=1.31, c53=1.76, c54=2.41, c55=2.69, c56=2.46, c57=0.7,
-                        c61=0.56, c62=0.46, c63=1.04, c64=1.21, c65=1.38, c66=1.78, c67=0.63,
-                        c71=0.39, c72=0.22, c73=0.28, c74=0.32, c75=0.31, c76=0.44, c77=0.33)
+param.prem <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.0152126,
+                        c11=19.34, c12=4.54, c13=1.68, c14=2.63, c15=1.64, c16=1.02,
+                        c21=3.66, c22=14.09, c23=2.86, c24=1.90, c25=2.18, c26=1.10,
+                        c31=2.33, c32=2.19, c33=6.10, c34=2.67, c35=1.86, c36=0.56,
+                        c41=2.67, c42=1.58, c43=2.81, c44=3.63, c45=2.43, c46=0.75,
+                        c51=1.65, c52=1.77, c53=2.79, c54=3.67, c55=4.14, c56=1.32,
+                        c61=0.39, c62=0.22, c63=0.28, c64=0.32, c65=0.36, c66=0.33)
 
 
 ### Initial conditions
@@ -519,77 +617,71 @@ init.vax.rur <- init.dcm(s.num.1 = 0.50*6782044, s.v.num.1 = 0.50*6782044, i.num
                          s.num.2 = 0.50*5090656, s.v.num.2 = 0.50*5090656, i.num.2 = 1, r.num.2 = 0,
                          s.num.3 = 0.50*3120038, s.v.num.3 = 0.50*3120038, i.num.3 = 1, r.num.3 = 0,
                          s.num.4 = 0.50*1917767, s.v.num.4 = 0.50*1917767, i.num.4 = 1, r.num.4 = 0,
-                         s.num.5 = 0.50*1461670, s.v.num.5 = 0.50*1461670, i.num.5 = 1, r.num.5 = 0,
-                         s.num.6 = 0.50*887489, s.v.num.6 = 0.50*887489, i.num.6 = 1, r.num.6 = 0,
-                         s.num.7 = 0.50*1013562, s.v.num.7 = 0.50*1013562, i.num.7 = 1, r.num.7 = 0,
+                         s.num.5 = 0.50*2349159, s.v.num.5 = 0.50*2349159, i.num.5 = 1, r.num.5 = 0,
+                         s.num.6 = 0.50*1013562, s.v.num.6 = 0.50*1013562, i.num.6 = 1, r.num.6 = 0,
                          si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0,
-                         si.flow.5 = 0, si.flow.6 = 0, si.flow.7 = 0, 
+                         si.flow.5 = 0, si.flow.6 = 0,
                          svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                         svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                         svi.flow.5 = 0, svi.flow.6 = 0)
 # rural with no vaccine
 init.novax.rur <- init.dcm(s.num.1 = 6782044, s.v.num.1 = 0, i.num.1 = 1, r.num.1 = 0,
                            s.num.2 = 5090656, s.v.num.2 = 0, i.num.2 = 1, r.num.2 = 0,
                            s.num.3 = 3120038, s.v.num.3 = 0, i.num.3 = 1, r.num.3 = 0,
                            s.num.4 = 1917767, s.v.num.4 = 0, i.num.4 = 1, r.num.4 = 0,
-                           s.num.5 = 1461670, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
-                           s.num.6 = 887489, s.v.num.6 = 0,  i.num.6 = 1, r.num.6 = 0,
-                           s.num.7 = 1013562, s.v.num.7 = 0, i.num.7 = 1, r.num.7 = 0,
+                           s.num.5 = 2349159, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
+                           s.num.6 = 1013562, s.v.num.6 = 0,  i.num.6 = 1, r.num.6 = 0,
                            si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0,
-                           si.flow.5 = 0, si.flow.6 = 0, si.flow.7 = 0, 
+                           si.flow.5 = 0, si.flow.6 = 0, 
                            svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                           svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                           svi.flow.5 = 0, svi.flow.6 = 0)
 
 # urban with vaccine
 init.vax.urb <- init.dcm(s.num.1 = 0.50*2884776, s.v.num.1 = 0.50*2884776, i.num.1 = 1, r.num.1 = 0,
                          s.num.2 = 0.50*2589432, s.v.num.2 = 0.50*2589432, i.num.2 = 1, r.num.2 = 0,
                          s.num.3 = 0.50*2024202, s.v.num.3 = 0.50*2024202, i.num.3 = 1, r.num.3 = 0,
                          s.num.4 = 0.50*1317494, s.v.num.4 = 0.50*1317494, i.num.4 = 1, r.num.4 = 0,
-                         s.num.5 = 0.50*805883, s.v.num.5 = 0.50*805883, i.num.5 = 1, r.num.5 = 0,
-                         s.num.6 = 0.50*469481, s.v.num.6 = 0.50*469481, i.num.6 = 1, r.num.6 = 0,
-                         s.num.7 = 0.50*467750, s.v.num.7 = 0.50*467750, i.num.7 = 1, r.num.7 = 0,
+                         s.num.5 = 0.50*1275364, s.v.num.5 = 0.50*1275364, i.num.5 = 1, r.num.5 = 0,
+                         s.num.6 = 0.50*467750, s.v.num.6 = 0.50*467750, i.num.6 = 1, r.num.6 = 0,
                          si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0,
-                         si.flow.5 = 0, si.flow.6 = 0, si.flow.7 = 0,
+                         si.flow.5 = 0, si.flow.6 = 0, 
                          svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                         svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                         svi.flow.5 = 0, svi.flow.6 = 0)
 
 # urban with no vaccine
 init.novax.urb <- init.dcm(s.num.1 = 2884776, s.v.num.1 = 0, i.num.1 = 1, r.num.1 = 0,
                            s.num.2 = 2589432, s.v.num.2 = 0, i.num.2 = 1, r.num.2 = 0,
                            s.num.3 = 2024202, s.v.num.3 = 0, i.num.3 = 1, r.num.3 = 0,
                            s.num.4 = 1317494, s.v.num.4 = 0, i.num.4 = 1, r.num.4 = 0,
-                           s.num.5 = 805883, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
-                           s.num.6 = 469481, s.v.num.6 = 0, i.num.6 = 1, r.num.6 = 0,
-                           s.num.7 = 467750, s.v.num.7 = 0, i.num.7 = 1, r.num.7 = 0,
+                           s.num.5 = 1275364, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
+                           s.num.6 = 467750, s.v.num.6 = 0, i.num.6 = 1, r.num.6 = 0,
                            si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0,
-                           si.flow.5 = 0, si.flow.6 = 0, si.flow.7 = 0, 
+                           si.flow.5 = 0, si.flow.6 = 0,  
                            svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                           svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                           svi.flow.5 = 0, svi.flow.6 = 0)
 
 # prem et al with vaccine
 init.vax.prem <- init.dcm(s.num.1 = 0.50*9666820, s.v.num.1 = 0.50*9666820, i.num.1 = 1, r.num.1 = 0,
                           s.num.2 = 0.50*7680088, s.v.num.2 = 0.50*7680088, i.num.2 = 1, r.num.2 = 0,
                           s.num.3 = 0.50*5144240, s.v.num.3 = 0.50*5144240, i.num.3 = 1, r.num.3 = 0,
                           s.num.4 = 0.50*3235261, s.v.num.4 = 0.50*3235261, i.num.4 = 1, r.num.4 = 0,
-                          s.num.5 = 0.50*2267553, s.v.num.5 = 0.50*2267553, i.num.5 = 1, r.num.5 = 0,
-                          s.num.6 = 0.50*1356970, s.v.num.6 = 0.50*1356970, i.num.6 = 1, r.num.6 = 0,
-                          s.num.7 = 0.50*1481312, s.v.num.7 = 0.50*1481312, i.num.7 = 1, r.num.7 = 0,
+                          s.num.5 = 0.50*3624523, s.v.num.5 = 0.50*3624523, i.num.5 = 1, r.num.5 = 0,
+                          s.num.6 = 0.50*1481312, s.v.num.6 = 0.50*1481312, i.num.6 = 1, r.num.6 = 0,
                           si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0, si.flow.5 = 0,
-                          si.flow.6 = 0, si.flow.7 = 0,
+                          si.flow.6 = 0, 
                           svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                          svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                          svi.flow.5 = 0, svi.flow.6 = 0)
 
 # prem et al with no vaccine
 init.novax.prem <- init.dcm(s.num.1 = 9666820, s.v.num.1 = 0, i.num.1 = 1, r.num.1 = 0,
                             s.num.2 = 7680088, s.v.num.2 = 0, i.num.2 = 1, r.num.2 = 0,
                             s.num.3 = 5144240, s.v.num.3 = 0, i.num.3 = 1, r.num.3 = 0,
                             s.num.4 = 3235261, s.v.num.4 = 0, i.num.4 = 1, r.num.4 = 0,
-                            s.num.5 = 2267553, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
-                            s.num.6 = 1356970, s.v.num.6 = 0, i.num.6 = 1, r.num.6 = 0,
-                            s.num.7 = 1481312, s.v.num.7 = 0, i.num.7 = 1, r.num.7 = 0,
+                            s.num.5 = 3624523, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
+                            s.num.6 = 1481312, s.v.num.6 = 0, i.num.6 = 1, r.num.6 = 0,
                             si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0, si.flow.5 = 0,
-                            si.flow.6 = 0, si.flow.7 = 0,
+                            si.flow.6 = 0,
                             svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                            svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                            svi.flow.5 = 0, svi.flow.6 = 0)
 
 ### Controls 
 control <- control.dcm(nstep=360, new.mod = seirmod)
@@ -695,53 +787,257 @@ ARv.prem.30_39 <- print(ARv(df.vax.prem$si.flow.4, init.novax.prem$s.num.4))
 ov.eff.prem.30_39 <- print(overall.eff(df.vax.prem$si.flow.4, df.novax.prem$si.flow.4)) 
 
 
-### age group 40-49
+### age group 40-59
 # rural
-AR.rur.40_49 <- print(AR(df.novax.rur$si.flow.5, init.novax.rur$s.num.5)) 
-ARv.rur.40_49 <- print(ARv(df.vax.rur$si.flow.5, init.novax.rur$s.num.5))
-ov.eff.rur.40_49 <- print(overall.eff(df.vax.rur$si.flow.5, df.novax.rur$si.flow.5)) 
+AR.rur.40_59 <- print(AR(df.novax.rur$si.flow.5, init.novax.rur$s.num.5)) 
+ARv.rur.40_59 <- print(ARv(df.vax.rur$si.flow.5, init.novax.rur$s.num.5))
+ov.eff.rur.40_59 <- print(overall.eff(df.vax.rur$si.flow.5, df.novax.rur$si.flow.5)) 
 
 # urban
-AR.urb.40_49 <- print(AR(df.novax.urban$si.flow.5, init.novax.urb$s.num.5)) 
-ARv.urb.40_49 <- print(ARv(df.vax.urban$si.flow.5, init.novax.urb$s.num.5)) 
-ov.eff.urb.40_49 <- print(overall.eff(df.vax.urban$si.flow.5, df.novax.urban$si.flow.5)) 
+AR.urb.40_59 <- print(AR(df.novax.urban$si.flow.5, init.novax.urb$s.num.5)) 
+ARv.urb.40_59 <- print(ARv(df.vax.urban$si.flow.5, init.novax.urb$s.num.5)) 
+ov.eff.urb.40_59 <- print(overall.eff(df.vax.urban$si.flow.5, df.novax.urban$si.flow.5)) 
 
 # prem
-AR.prem.40_49 <- print(AR(df.novax.prem$si.flow.5, init.novax.prem$s.num.5)) 
-ARv.prem.40_49 <- print(ARv(df.vax.prem$si.flow.5, init.novax.prem$s.num.5)) 
-ov.eff.prem.40_49 <- print(overall.eff(df.vax.prem$si.flow.5, df.novax.prem$si.flow.5)) 
+AR.prem.40_59 <- print(AR(df.novax.prem$si.flow.5, init.novax.prem$s.num.5)) 
+ARv.prem.40_59 <- print(ARv(df.vax.prem$si.flow.5, init.novax.prem$s.num.5)) 
+ov.eff.prem.40_59 <- print(overall.eff(df.vax.prem$si.flow.5, df.novax.prem$si.flow.5)) 
 
 
 
-### age group 50-59
+### age group 60+y
 # rural
-AR.rur.50_59 <- print(AR(df.novax.rur$si.flow.6, init.novax.rur$s.num.6)) 
-ARv.rur.50_59 <- print(ARv(df.vax.rur$si.flow.6, init.novax.rur$s.num.6)) 
-ov.eff.rur.50_59 <- print(overall.eff(df.vax.rur$si.flow.6, df.novax.rur$si.flow.6)) 
+AR.rur.60 <- print(AR(df.novax.rur$si.flow.6, init.novax.rur$s.num.6)) 
+ARv.rur.60 <- print(ARv(df.vax.rur$si.flow.6, init.novax.rur$s.num.6)) 
+ov.eff.rur.60 <- print(overall.eff(df.vax.rur$si.flow.6, df.novax.rur$si.flow.6)) 
 
 # urban
-AR.urb.50_59 <- print(AR(df.novax.urban$si.flow.6, init.novax.urb$s.num.6)) 
-ARv.urb.50_59 <- print(ARv(df.vax.urban$si.flow.6, init.novax.urb$s.num.6)) 
-ov.eff.urb.50_59 <- print(overall.eff(df.vax.urban$si.flow.6, df.novax.urban$si.flow.6)) 
+AR.urb.60 <- print(AR(df.novax.urban$si.flow.6, init.novax.urb$s.num.6)) 
+ARv.urb.60 <- print(ARv(df.vax.urban$si.flow.6, init.novax.urb$s.num.6)) 
+ov.eff.urb.60 <- print(overall.eff(df.vax.urban$si.flow.6, df.novax.urban$si.flow.6)) 
 
 # prem
-AR.prem.50_59 <- print(AR(df.novax.prem$si.flow.6, init.novax.prem$s.num.6)) 
-ARv.prem.50_59 <- print(ARv(df.vax.prem$si.flow.6, init.novax.prem$s.num.6)) 
-ov.eff.prem.50_59 <- print(overall.eff(df.vax.prem$si.flow.6, df.novax.prem$si.flow.6)) 
+AR.prem.60 <- print(AR(df.novax.prem$si.flow.6, init.novax.prem$s.num.6)) 
+ARv.prem.60 <- print(ARv(df.vax.prem$si.flow.6, init.novax.prem$s.num.6)) 
+ov.eff.prem.60 <- print(overall.eff(df.vax.prem$si.flow.6, df.novax.prem$si.flow.6)) 
 
 
-### age group 60+
-# rural
-AR.rur.60 <- print(AR(df.novax.rur$si.flow.7, init.novax.rur$s.num.7)) 
-ARv.rur.60 <- print(ARv(df.vax.rur$si.flow.7, init.novax.rur$s.num.7)) 
-ov.eff.rur.60 <- print(overall.eff(df.vax.rur$si.flow.7, df.novax.rur$si.flow.7)) 
+# create a dataframe with the attack rates RURAL 
+AR.rural <- rbind(AR.rur.0_9, AR.rur.10_19, AR.rur.20_29, AR.rur.30_39, AR.rur.40_59, AR.rur.60)
+ARV.rural <- rbind(ARv.rur.0_9, ARv.rur.10_19, ARv.rur.20_29, ARv.rur.30_39, ARv.rur.40_59, ARv.rur.60)
 
-# urban
-AR.urb.60 <- print(AR(df.novax.urban$si.flow.7, init.novax.urb$s.num.7)) 
-ARv.urb.60 <- print(ARv(df.vax.urban$si.flow.7, init.novax.urb$s.num.7)) 
-ov.eff.urb.60 <- print(overall.eff(df.vax.urban$si.flow.7, df.novax.urban$si.flow.7)) 
+allAR.rural <- cbind(AR.rural, ARV.rural)
+allAR.rural.melt <- reshape2::melt(allAR.rural, id.vars="Xax")
+allAR.rural.melt <- allAR.rural.melt %>%
+  mutate(vax = case_when(Var2 == 1 ~ "No Vaccine",
+                         Var2 == 2 ~ "Vaccine")) %>%
+  mutate(age_group = case_when(Var1 == "AR.rur.0_9" ~ "0-9y",
+                               Var1 == "AR.rur.10_19" ~ "10-19y",
+                               Var1 == "AR.rur.20_29" ~ "20-29y",
+                               Var1 == "AR.rur.30_39" ~ "30-39y",
+                               Var1 == "AR.rur.40_59" ~ "40-59y",
+                               Var1 == "AR.rur.60" ~ "60+y",)) %>%
+  select(age_group, vax, value)
 
-# prem
-AR.prem.60 <- print(AR(df.novax.prem$si.flow.7, init.novax.prem$s.num.7)) 
-ARv.prem.60 <- print(ARv(df.vax.prem$si.flow.7, init.novax.prem$s.num.7)) 
-ov.eff.prem.60 <- print(overall.eff(df.vax.prem$si.flow.7, df.novax.prem$si.flow.7)) 
+rural.ve <- c("26%", "13%", "30%", "32%", "49%", "41%")
+
+# create a dataframe with the attack rates URBAN 
+AR.urban <- rbind(AR.urb.0_9, AR.urb.10_19, AR.urb.20_29, AR.urb.30_39, AR.urb.40_59, AR.urb.60)
+ARV.urban <- rbind(ARv.urb.0_9, ARv.urb.10_19, ARv.urb.20_29, ARv.urb.30_39, ARv.urb.40_59, ARv.urb.60)
+
+allAR.urban <- cbind(AR.urban, ARV.urban)
+allAR.urban.melt <- reshape2::melt(allAR.urban, id.vars="Xax")
+allAR.urban.melt <- allAR.urban.melt %>%
+  mutate(vax = case_when(Var2 == 1 ~ "No Vaccine",
+                         Var2 == 2 ~ "Vaccine")) %>%
+  mutate(age_group = case_when(Var1 == "AR.urb.0_9" ~ "0-9y",
+                               Var1 == "AR.urb.10_19" ~ "10-19y",
+                               Var1 == "AR.urb.20_29" ~ "20-29y",
+                               Var1 == "AR.urb.30_39" ~ "30-39y",
+                               Var1 == "AR.urb.40_59" ~ "40-59y",
+                               Var1 == "AR.urb.60" ~ "60+y",)) %>%
+  select(age_group, vax, value)
+
+
+# create a dataframe with the attack rates PREM
+AR.prem <- rbind(AR.prem.0_9, AR.prem.10_19, AR.prem.20_29, AR.prem.30_39, AR.prem.40_59, AR.prem.60)
+ARV.prem <- rbind(ARv.prem.0_9, ARv.prem.10_19, ARv.prem.20_29, ARv.prem.30_39, ARv.prem.40_59, ARv.prem.60)
+
+allAR.prem <- cbind(AR.prem, ARV.prem)
+allAR.prem.melt <- reshape2::melt(allAR.prem, id.vars="Xax")
+allAR.prem.melt <- allAR.prem.melt %>%
+  mutate(vax = case_when(Var2 == 1 ~ "No Vaccine",
+                         Var2 == 2 ~ "Vaccine")) %>%
+  mutate(age_group = case_when(Var1 == "AR.prem.0_9" ~ "0-9y",
+                               Var1 == "AR.prem.10_19" ~ "10-19y",
+                               Var1 == "AR.prem.20_29" ~ "20-29y",
+                               Var1 == "AR.prem.30_39" ~ "30-39y",
+                               Var1 == "AR.prem.40_59" ~ "40-59y",
+                               Var1 == "AR.prem.60" ~ "60+y",)) %>%
+  select(age_group, vax, value)
+
+
+
+# function to create dot plot for attack rates
+cols_model <- c("#9467bd","#aec7e8")
+
+fxn_create_dot_plot <- function(data) {
+  segment_helper <- data %>%
+    mutate(vax = case_when(vax == "Vaccine" ~ "Yes",
+                           vax == "No Vaccine" ~ "No"),
+           vax = factor(vax,
+                        levels = c("Yes", "No"))) %>%
+    pivot_wider(names_from = vax, values_from = value, names_prefix = 'v_') %>%
+    mutate(change = v_Yes - v_No )
+  
+  ggplot() + 
+    geom_segment(data = segment_helper,
+                 aes(x = v_No, xend = v_Yes, y = age_group, yend = age_group),
+                 col = 'grey60',
+                 linewidth = 1.25) +
+    geom_point(
+      data = data,
+      aes(x = value, y = age_group, col = vax), size = 4) +
+    axis_text_theme2 +
+    labs(
+      x = 'Attack rate (%)',
+      y = 'Age group') +
+    scale_color_manual(values = cols_model) +
+    scale_x_continuous(limits = c(0, 100)) +
+    theme(
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 0),
+      legend.position = "right",
+      legend.direction = "vertical")
+    # scale_x_continuous(expand = expansion(mult = 0.01))
+}
+
+# plot
+AR.rural.plot <- fxn_create_dot_plot(allAR.rural.melt) +
+  labs(x = '')
+AR.rural.plot
+
+AR.urban.plot <- fxn_create_dot_plot(allAR.urban.melt) +
+  labs(x = '')
+AR.urban.plot
+
+AR.prem.plot <- fxn_create_dot_plot(allAR.prem.melt)
+AR.prem.plot  
+
+# combine all plots and matrices into one figure
+rural_model <- ruralmatrix | AR.rural.plot
+urban_model <- urbanmatrix | AR.urban.plot
+prem_model <- premmatrix | AR.prem.plot
+
+
+fig_model <- wrap_plots(rural_model,
+                        urban_model,
+                        prem_model) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(800, 800, 800))
+fig_model
+
+# ggsave(fig_model, filename = "output/figs/fig_modelplot.pdf",
+#        height=8, width=8, dpi=300,
+#        bg="#FFFFFF")
+
+cat("End of model script.")
+
+
+# ALTERNATIVE CODE FOR GRAPHS
+
+# AR.rural.plot
+AR.rural.plot2 <- allAR.rural.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.2%"),
+           hjust=0, size=5) +
+  coord_flip() +
+  xlab("Age Group") +
+  ylab("") +
+  labs(fill = NULL)  +
+  axis_text_theme2 +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle=0))
+AR.rural.plot2
+
+# AR.urban.plot
+AR.urban.plot2 <- allAR.urban.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  coord_flip() +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.2%"),
+           hjust=0, size=5) +
+  xlab("Age Group") +
+  ylab("Attack Rate (%)") +
+  labs(fill = NULL) +
+  axis_text_theme2 +
+  theme(legend.position = "none",
+        # axis.text.y = element_blank(),
+        # axis.title.y = element_blank(),
+        axis.text.x = element_text(angle=0))
+AR.urban.plot2
+
+# AR.prem.plot
+AR.prem.plot2 <- allAR.prem.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.9, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.9%"),
+           hjust=0, size=5) +
+  coord_flip() +
+  xlab("Age Group") +
+  ylab("Attack Rate (%)") +
+  labs(fill = NULL)  +
+  axis_text_theme2 +
+  theme(legend.position = "right",
+        legend.direction = "vertical",
+        # axis.text.y = element_blank(),
+        # axis.title.y = element_blank(),
+        axis.text.x = element_text(angle=0))
+AR.prem.plot2
+
+rural_model2 <- ruralmatrix | AR.rural.plot2
+urban_model2 <- urbanmatrix | AR.urban.plot2
+prem_model2 <- premmatrix | AR.prem.plot2
+
+fig_model2 <- wrap_plots(rural_model2,
+                        urban_model2,
+                        prem_model2) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(800, 800, 800))
+fig_model2
+
+ggsave(fig_model2, filename = "output/figs/fig_modelplot_v2.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
+
+# # ADDED BY MCK TO TEST
+# modelplots <- plot_grid(ruralmatrix, urbanmatrix,
+#                         AR.rural.plot, AR.urban.plot,
+#                         labels = c('GlobalMix Rural', 'GlobalMix Urban',
+#                                    'GlobalMix Rural', 'GlobalMix Urban',
+#                                    label_size = 12, vjust = 3))
+
+# premmatrix MISSING. WILL NEED SOME REFORMATING E.G. COMBINING LEGENDS AND
+# CONFORMING TEXTS TO axis_text-theme2 AVAILABLE IN CUSTOMIZATION CODE.
+
+# model_matrices <- ruralmatrix | urbanmatrix | premmatrix
+# model_ar <- AR.rural.plot | AR.urban.plot | AR.prem.plot
+# fig_model <- wrap_plots(model_matrices,
+#                         model_ar) + 
+#   plot_annotation(tag_levels = 'A') + 
+#   theme(plot.tag = element_text(size = 12)) +
+#   plot_layout(nrow=2, heights = c(600, 600))
+
