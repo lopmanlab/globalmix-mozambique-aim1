@@ -14,6 +14,8 @@ rm(list=ls())
 # install_packages <- c("pacman", "processx", "EpiModel", "qpcR")
 # if (!require(install_packages)) install.packages(install_packages)
 
+set.seed(30322)
+
 pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid, 
                gridExtra, gtsummary, knitr, kableExtra, lubridate, patchwork, 
                plotly, readr, socialmixr, table1, tidyr)
@@ -55,16 +57,6 @@ axis_text_theme2 <- theme_classic() +
     legend.box.background = element_rect(fill='transparent'),
     legend.background = element_rect(colour ="white"))
 
-# matrix theme for presentation
-matrix_presentation_theme <- theme_classic() +
-  theme(legend.title = element_text(size = 25),
-        legend.text = element_text(size = 20),
-        legend.justification = "bottom",
-        plot.title = element_text(size = 30),
-        axis.title.x = element_text(size=25, face="bold"),
-        axis.title.y = element_text(size=25, face="bold"),
-        axis.text.x = element_text(size = 18, angle=90),
-        axis.text.y = element_text(size= 18))
 
 ## Generate boxplots
 fxn_fig_boxplot <- function(data, fill_var) {
@@ -96,7 +88,7 @@ get_legend <- function(myggplot){
 ## over title, text size, mid and max points for legend and legend position
 
 # function to generate overall matrices
-fun_matrix1_plot <- function(m1data, title){ #, xlab, ylab
+fun_matrix1_plot <- function(m1data, title, xlab, ylab){
   m1data %>%
     ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
     geom_raster() +
@@ -104,7 +96,7 @@ fun_matrix1_plot <- function(m1data, title){ #, xlab, ylab
               color = "black", size = 3) +
     theme_classic() +
     scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
-                         midpoint = 3.5, limits=c(0, 7), breaks = seq(0,7, by = 1)) +
+                         midpoint = 5, limits=c(0,10), breaks=(c(0,2,4,6,8,10))) +
     labs(x = xlab, 
          y = ylab,
          title = title,
@@ -119,7 +111,7 @@ fun_matrix1_plot <- function(m1data, title){ #, xlab, ylab
           axis.text.y = element_text(size= 10))
 }
 
-# function to generate matrices by touch
+# function to matrices by touch
 fun_matrix2_plot <- function(m1data, title, xlab, ylab){
   m1data %>%
     ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
@@ -159,7 +151,92 @@ make_matrix <- function(df1, site, title, txt_size=12, mid=8, max = 15, legendpo
 }
 
 
-## 3. Functions for additional plot customizations
+### Function to generate symmetric matrices
+
+#### function to adjust for reciprocity
+adjust_for_reciprocity <- function(matrix, num_participants) {
+  n <- nrow(matrix)
+  t <- as.numeric(num_participants$n_participants)
+  
+  # # Ensure the matrix is square
+  # if (n != ncol(matrix)) {
+  #   stop("Input matrix is not square.")
+  # }
+  
+  # Adjust for reciprocity
+  for (i in 1:n) {
+    for (j in 1:n) {
+      # do not adjust the diagonal
+      if (i != j) {
+        matrix[i, j] <- ((matrix[i, j] + matrix[j, i]) / 
+                           (num_participants$n_participants[i] + num_participants$n_participants[j]))
+        # here m.t is number of participants in the age group
+      }
+    }
+  }
+  
+  return(matrix)
+}
+
+#### generating symmetric matrix
+fun_symmetric_matrix <- function(data, study_site, n){
+  # load data
+  matrix_data <- data %>%
+    dplyr::filter(study_site == {{study_site}}) %>%
+    dplyr::group_by(participant_age, contact_age) %>%
+    summarize(total_contacts = n()) %>%
+    full_join(standard_str, by = c("participant_age", "contact_age"), keep = F) %>%
+    dplyr::mutate(total_contacts = replace_na(total_contacts, 0)) %>% 
+    drop_na() %>%
+    distinct(participant_age, contact_age, .keep_all = T)  
+  
+  # generate table of total number of contacts by age
+  contact_matrix <- xtabs(total_contacts ~ participant_age + contact_age, data = matrix_data)
+  # print(contact_matrix)
+  
+  # adjust for reciprocity using function defined
+  symmetric_matrix <- adjust_for_reciprocity(contact_matrix, n)
+  
+  # compute average
+  symmetric_matrix <- reshape2::melt(symmetric_matrix) %>%
+    rename(average_contact = value) %>%
+    mutate(average_contact = round(average_contact, 1))
+  
+  # print(xtabs(average_contact ~ participant_age + contact_age, data = symmetric_matrix))
+  # left_join(n, by="participant_age")  %>%
+  # dplyr::mutate(average_contact = round(value / n$n_participants, 
+  #                                       digits = 1))
+  
+  return(symmetric_matrix)
+}  
+
+
+#### plot the matrix
+fun_symmetric_plot <- function(data, title, xlab, ylab){
+  data %>%
+    ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
+    geom_raster() +
+    geom_text(aes(participant_age, contact_age, label = average_contact), 
+              color = "black", size = 3) +
+    theme_classic() +
+    scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
+                         midpoint = 3, limits=c(0,6), breaks=(c(0,2,4,6))) +
+    labs(x = xlab, 
+         y = ylab,
+         title = title,
+         fill = "Average\ncontacts") +
+    theme(legend.title = element_text(size = 10),
+          legend.text = element_text(size = 8),
+          legend.justification = "right") +
+    theme(plot.title = element_text(size = 14), 
+          axis.title.x = element_text(size=14, face="bold"),
+          axis.title.y = element_text(size=14, face="bold"),
+          axis.text.x = element_text(size = 10, angle=90),
+          axis.text.y = element_text(size= 10))
+}
+
+
+## 3. Functions for additional plot customization
 
 fun_sex_plot <- function(data){
   data %>%
