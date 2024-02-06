@@ -22,15 +22,41 @@ date: today
 #| label: import-analysis-codes
 #| include: false
 #| warnings: false
+#| comments: false
 
 source("00_customization.R")
 
 # Source data analysis code
-source("02_mozambique_analysis_code.R") 
+source("02_mozambique_analysis_code.R")
+
+# Source model code
+source("03_mozambique_model.R")
 
 # Source place use code
 source("04_placeuse.R")
 
+```
+
+```{r}
+library(lattice)
+
+trial_matrix <- levelplot(average_contact ~ participant_age*contact_age, 
+                          data=m1_rural, 
+                          xlab="Participant age", ylab="Contact age",
+                          # col.regions = heat.colors(100),
+                          main="")
+
+symmetric_matrix_plot <- levelplot(average_contact ~ participant_age*contact_age, 
+          data=symmetric_trial_matrix2, 
+          xlab="Participant age", ylab="Contact age",
+          # col.regions = heat.colors(100),
+          main="")
+symmetric_matrix_plot
+trial_matrix / symmetric_matrix_plot
+```
+
+```{r}
+fun_matrix1_plot(m1_rural, "Rural", xlab = "Participant age", ylab = "Contact age") 
 
 ```
 
@@ -122,12 +148,13 @@ fig_contact_covariates <- (fig_sex_box / fig_touch_box) /
 
 ```{r}
 #| label: fig-site-matrix
-# crude_matrix
+#| eval: false
+crude_matrix
 ```
 
 @fig-site-matrix suggests that the patterns of age-specific social contacts are strikingly similar when comparing rural and urban sites. However, the latter depicts lower average number of contacts compared to the rural site. Mean contacts tended to be assortative especially for ages 5-14 and 30-59 years in both rural and urban areas. Participants aged 10-14 and 15-19 years reported the highest mean number of contacts with 10-14 year olds in both sites. Another peak in mean number of contacts is observed between 40-59 year olds. In both sites, no contacts are reported between infants \<6 months old. The average number of contacts with infants generally rises with age to peak at 10-14 years in rural and 20-29 years among urban dwellers.
 
-When stratified by conversation and physical contacts (SI figure @contact-type-matrix), no clear patterns are observed in conversational contacts in rural (panel A) and urban (panel B) sites. On average, physical contacts are higher than conversation contacts in both rural (`r mean_contacts_touch_rural` vs `rmean_contacts_conv_rural`, p\<0.05) and urban sites (`r mean_contacts_touch_urban` vs `rmean_contacts_conv_urban`, p\<0.05). Comparing type of contact by sites, both physical and conversation contacts were higher in the urban compared to rural sites (p\<0.05 for both).
+When stratified by conversation and physical contacts (SI figure @contact-type-matrix), no clear patterns are observed in conversational contacts in rural (panel A) and urban (panel B) sites. On average, physical contacts are higher than conversation contacts in both rural (`r mean_contacts_touch_rural` vs `r mean_contacts_conv_rural`, p\<0.05) and urban sites (`r mean_contacts_touch_urban` vs `r mean_contacts_conv_urban`, p\<0.05). Comparing type of contact by sites, both physical and conversation contacts were higher in the urban compared to rural sites (p\<0.05 for both).
 
 ### Patterns of contact by location
 
@@ -135,7 +162,8 @@ Analysis of the place-use data revealed that in both urban and rural areas, prox
 
 ```{r}
 #| label: fig-contact-location
-#| eval: false
+#| eval: true
+
 fig4_locvisit_timespent
 tab1_loc
 ```
@@ -143,6 +171,13 @@ tab1_loc
 ### Transmission modeling (SK)
 
 Overall vaccine effects using synthetically derived contact patterns were higher and attack rates were lower than those using empirically collected GlobalMix contacts across all but the youngest age group, 0-9 years (Table X). GlobalMix adult participants had more contact with children and adolescents than with their own age group, while synthetically derived contact patterns showed stronger assortative mixing by age. Compared to the GlobalMix rural and urban sites, synthetically derived contact patterns overestimated the number of contacts among those aged 0-9 years. This over-projection of contacts yielded higher attack rates (AR: 94.3%, ARv: 78.7%) and lower overall vaccine effects (16.6%) for this group compared to outcomes using empirically collected contact patterns (Rural AR: 91.4%, Rural ARv, 71.8%, Rural vaccine effects: 21.5%; Urban AR: 91.4%, Urban ARv: 72.0%, Urban vaccine effects: 21.2%). Additionally, synthetically derived contacts among those aged ≥60 years were underestimated compared to that of GlobalMix, producing notably lower attack rates among this age group (Synthetic AR: 13.4%, Synthetic ARv: 7.2%; Rural AR: 46.3%, Rural ARv: 26.6%; Urban AR: 40.9%, Urban ARv: 23.2%). Table X.
+
+```{r}
+#| label: fig-transmission-model
+#| eval: true
+
+modelplots
+```
 
 # Discussion
 
@@ -173,14 +208,12 @@ table2
 ## SI 2. Median (IQR) rural contacts on day 1 and day 2
 
 ```{r}
-#| eval: false
 table4
 ```
 
 ## SI 3. Median (IQR) urban contacts on day 1 and day 2
 
 ```{r}
-#| eval: false
 table5
 ```
 
@@ -190,8 +223,7 @@ The panels are arranged by rural and urban conversation (A and B) and rural and 
 
 ```{r}
 #| label: contact-type-matrix
-#| eval: false
-combined_matrix
+fig_matrix_type
 ```
 
 ```{r}
@@ -217,6 +249,7 @@ occupation_page_plt
 ## XXX. Violin plots comparing the distribution of social contact versus proximity contact reported by participants at each location type in urban versus rural areas
 
 ```{r}
+#| eval: true
 figsi_compdist_urb
 figsi_compdist_rur
 ```
