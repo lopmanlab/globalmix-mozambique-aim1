@@ -1532,7 +1532,7 @@ fig_matrix_type <- rural_matrix_type / urban_matrix_type
 ggsave(fig_matrix_type, filename = "../../output/figs/fig_matrix_type.pdf",
        height=8, width=8, dpi=1024,
        bg="#FFFFFF")
-ss
+
 # fig_matrix_type
 
 ### Weighted contact matrix
