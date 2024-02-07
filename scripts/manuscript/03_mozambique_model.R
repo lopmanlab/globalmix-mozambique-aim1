@@ -306,7 +306,12 @@ urbanmatrix <- mat_u %>%
 # axis.text.y = element_blank(),
 # axis.title.y = element_blank()
   
-urbanmatrix
+adjusted_matrix <- ruralmatrix / urbanmatrix
+# adjusted_matrix
+ggsave(adjusted_matrix, filename = "output/figs/fig_adjusted_matrix.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
+
 
 # generate prem matrix
 # source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
@@ -958,11 +963,11 @@ allAR.rural.melt <- allAR.rural.melt %>%
                                Var1 == "AR.rur.30_39" ~ "30-39y",
                                Var1 == "AR.rur.40_49" ~ "40-49y",
                                Var1 == "AR.rur.50_59" ~ "50-59y",
-                               Var1 == "AR.rur.60" ~ "60+y",)) %>%
+                               Var1 == "AR.rur.60" ~ "60+y")) %>%
   select(age_group, vax, value)
 
 # rural.ve <- c("26%", "13%", "30%", "32%", "49%", "41%")
-rural.ve <- c("31%", "56%", "26%", "22%", "15%", "13%", "9%")
+# rural.ve <- c("31%", "56%", "26%", "22%", "15%", "13%", "9%")
 
 # create a dataframe with the attack rates URBAN 
 AR.urban <- rbind(AR.urb.0_9, AR.urb.10_19, AR.urb.20_29, AR.urb.30_39, 
@@ -981,7 +986,7 @@ allAR.urban.melt <- allAR.urban.melt %>%
                                Var1 == "AR.urb.30_39" ~ "30-39y",
                                Var1 == "AR.urb.40_49" ~ "40-49y",
                                Var1 == "AR.urb.50_59" ~ "50-59y",
-                               Var1 == "AR.urb.60" ~ "60+y",)) %>%
+                               Var1 == "AR.urb.60" ~ "60+y")) %>%
   select(age_group, vax, value)
 
 
@@ -1002,9 +1007,8 @@ allAR.prem.melt <- allAR.prem.melt %>%
                                Var1 == "AR.prem.30_39" ~ "30-39y",
                                Var1 == "AR.prem.40_49" ~ "40-49y",
                                Var1 == "AR.prem.50_59" ~ "50-59y",
-                               Var1 == "AR.prem.60" ~ "60+y",)) %>%
+                               Var1 == "AR.prem.60" ~ "60+y")) %>%
   select(age_group, vax, value)
-
 
 
 # function to create dot plot for attack rates
@@ -1073,6 +1077,93 @@ ggsave(fig_model, filename = "../../output/figs/fig_modelplot.pdf",
        bg="#FFFFFF")
 
 cat("End of model script.")
+
+
+# Create a dataframe with rural, urban and prem vaccine ARs
+ARV <- cbind(ARV.rural, ARV.urban, ARV.prem) %>%
+  reshape2::melt(id.vvars="Xax") %>%
+  mutate(site = case_when(Var2 == 1 ~ "Rural",
+                          Var2 == 2 ~ "Urban",
+                          Var2 == 3 ~ "Prem")) %>%
+  mutate(age_group = case_when(Var1 == "AR.rur.0_9" ~ "0-9y",
+                               Var1 == "AR.rur.10_19" ~ "10-19y",
+                               Var1 == "AR.rur.20_29" ~ "20-29y",
+                               Var1 == "AR.rur.30_39" ~ "30-39y",
+                               Var1 == "AR.rur.40_49" ~ "40-49y",
+                               Var1 == "AR.rur.50_59" ~ "50-59y",
+                               Var1 == "AR.rur.60" ~ "60+y"))
+
+data2 <- ARV %>%
+  # filter(site != "Urban") %>%
+  select(Var1, site, value) %>%
+  mutate(site = factor(site,
+                       levels = c("Rural", "Urban", "Prem"))) %>%
+  pivot_wider(names_from = site, values_from = value) %>%
+  mutate(change_prem_rural = Prem - Rural,
+         change_prem_urban = Prem - Urban) %>%
+  as.data.frame() %>%
+  mutate(age_group = case_when(Var1 == AR.rur.0_9 ~ "0-9y",
+                               Var1 == AR.rur.10_19 ~ "10-19y",
+                               Var1 == AR.rur.20_29 ~ "20-29y",
+                               Var1 == AR.rur.30_39 ~ "30-39y",
+                               Var1 == AR.rur.40_49 ~ "40-49y",
+                               Var1 == AR.rur.50_59 ~ "50-59y",
+                               Var1 == AR.rur.60 ~ "60+y"))
+
+rural_prem <- ggplot() + 
+  geom_segment(data = data2,
+               aes(x = Prem, xend = Rural, y = Var1, yend = Var1),
+               col = 'grey60',
+               linewidth = 1.25) +
+  geom_point(
+    data = ARV %>% filter(site != "Urban"),
+    aes(x = value, y = Var1, col = site), size = 4) +
+  # axis_text_theme2 +
+  labs(
+    x = 'Attack rate (%)',
+    y = 'Age group') +
+  scale_color_manual(values = cols_model) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = "right",
+    legend.direction = "vertical")
+rural_prem
+# scale_x_continuous(expand = expansion(mult = 0.01))
+
+
+urban_prem <- ggplot() + 
+  geom_segment(data = data2,
+               aes(x = Urban, xend = Prem, y = Var1, yend = Var1),
+               col = 'grey60',
+               linewidth = 1.25) +
+  geom_point(
+    data = ARV %>% filter(site != "Rural"),
+    aes(x = value, y = Var1, col = site), size = 4) +
+  # axis_text_theme2 +
+  labs(
+    x = 'Attack rate (%)',
+    y = 'Age group') +
+  scale_color_manual(values = cols_model) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = "right",
+    legend.direction = "vertical")
+# scale_x_continuous(expand = expansion(mult = 0.01))
+urban_prem
+
+sites_vax <- rural_prem / urban_prem
+
+ggsave(sites_vax, filename = "../../output/figs/fig_siteARV.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF") 
+
+################
 
 
 # ALTERNATIVE CODE FOR GRAPHS
