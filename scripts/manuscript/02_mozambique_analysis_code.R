@@ -1005,6 +1005,76 @@ fig_weekday_box <- fxn_fig_boxplot(contacts_weekday, "weekday") +
 #        height=6, width=8, dpi=300,
 #        bg="#FFFFFF")
 
+contacts_change <- df_contact_d1 %>%
+  dplyr::group_by(rec_id, study_site, participant_age, contact_compare) %>%
+  dplyr::summarize(num_contacts = n()) %>%
+  na.omit()
+# Ho: there is no difference in number of contacts for those reporting behavior change     
+contacts_urban_fewer <- contacts_change %>% 
+  select(rec_id, study_site, participant_age, contact_compare, num_contacts) %>% 
+  filter(contact_compare == "Fewer" & study_site == "Urban")
+contacts_urban_same <- contacts_change %>% 
+  select(rec_id, study_site, participant_age, contact_compare, num_contacts) %>%  
+  filter(contact_compare == "Same" & study_site == "Urban")
+contacts_urban_more <- contacts_change %>% 
+  select(rec_id, study_site, participant_age, contact_compare, num_contacts) %>%
+  filter(contact_compare == "More" & study_site == "Urban")
+
+
+ci_contacts_urban_fewer <- lm(num_contacts ~ 1, contacts_urban_fewer)
+mean_contacts_urban_fewer <- ci_contacts_urban_fewer$coefficients
+ci_contacts_urban_fewer  <- as.data.frame(round(confint(ci_contacts_urban_fewer),1))
+names(ci_contacts_urban_fewer)[1] <- "ll"
+names(ci_contacts_urban_fewer)[2] <- "ul"
+mean_contacts_urban_fewer 
+
+ci_contacts_urban_same <- lm(num_contacts ~ 1, contacts_urban_same)
+mean_contacts_urban_same <- ci_contacts_urban_same$coefficients
+ci_contacts_urban_same  <- as.data.frame(round(confint(ci_contacts_urban_same),1))
+names(ci_contacts_urban_same)[1] <- "ll"
+names(ci_contacts_urban_same)[2] <- "ul"
+mean_contacts_urban_same
+
+ci_contacts_urban_more <- lm(num_contacts ~ 1, contacts_urban_more)
+mean_contacts_urban_more <- ci_contacts_urban_more$coefficients
+ci_contacts_urban_more  <- as.data.frame(round(confint(ci_contacts_urban_more),1))
+names(ci_contacts_urban_more)[1] <- "ll"
+names(ci_contacts_urban_more)[2] <- "ul"
+mean_contacts_urban_more
+
+# rural
+contacts_rural_fewer <- contacts_change %>% 
+  select(rec_id, study_site, participant_age, contact_compare, num_contacts) %>% 
+  filter(contact_compare == "Fewer" & study_site == "Rural")
+contacts_rural_same <- contacts_change %>% 
+  select(rec_id, study_site, participant_age, contact_compare, num_contacts) %>%  
+  filter(contact_compare == "Same" & study_site == "Rural")
+contacts_rural_more <- contacts_change %>% 
+  select(rec_id, study_site, participant_age, contact_compare, num_contacts) %>%
+  filter(contact_compare == "More" & study_site == "Rural")
+
+ci_contacts_rural_fewer <- lm(num_contacts ~ 1, contacts_rural_fewer)
+mean_contacts_rural_fewer <- ci_contacts_rural_fewer$coefficients
+ci_contacts_rural_fewer  <- as.data.frame(round(confint(ci_contacts_rural_fewer),1))
+names(ci_contacts_rural_fewer)[1] <- "ll"
+names(ci_contacts_rural_fewer)[2] <- "ul"
+mean_contacts_rural_fewer 
+
+ci_contacts_rural_same <- lm(num_contacts ~ 1, contacts_rural_same)
+mean_contacts_rural_same <- ci_contacts_rural_same$coefficients
+ci_contacts_rural_same  <- as.data.frame(round(confint(ci_contacts_rural_same),1))
+names(ci_contacts_rural_same)[1] <- "ll"
+names(ci_contacts_rural_same)[2] <- "ul"
+mean_contacts_rural_same
+
+ci_contacts_rural_more <- lm(num_contacts ~ 1, contacts_rural_more)
+mean_contacts_rural_more <- ci_contacts_rural_more$coefficients
+ci_contacts_rural_more  <- as.data.frame(round(confint(ci_contacts_rural_more),1))
+names(ci_contacts_rural_more)[1] <- "ll"
+names(ci_contacts_rural_more)[2] <- "ul"
+mean_contacts_rural_more
+
+# ci_contacts_urban_weekday_d1
 
 # fig7_weekday_rural_box <- contacts_weekday %>%
 #   dplyr::filter(study_site == "Rural") %>%
@@ -1344,36 +1414,40 @@ orca(fig_crude_matrix, "../../output/figs/fig_contacts_crude_matrix.pdf")
 # generate, draw and display symmetric matrix plot
 rural_symmetric_matrix <- fun_symmetric_matrix(df_contact_d1, "Rural", n_participants_rural)
 rural_symmetric_matrix_plot <- fun_symmetric_plot(rural_symmetric_matrix, "Rural","Participant age","Contact age")
-rural_symmetric_matrix_plot
+# rural_symmetric_matrix_plot
 matrix_legend <- get_legend(rural_symmetric_matrix_plot)
 rural_symmetric_matrix_plot <- rural_symmetric_matrix_plot + 
   theme(legend.position = "none")
 
 urban_symmetric_matrix <- fun_symmetric_matrix(df_contact_d1, "Urban", n_participants_urban)
 urban_symmetric_matrix_plot <- fun_symmetric_plot(urban_symmetric_matrix, "Urban","Participant age","")
-urban_symmetric_matrix_plot
+# urban_symmetric_matrix_plot
 
-rural_symmetric_matrix_plot | urban_symmetric_matrix_plot
+fig_adjusted_matrix <- rural_symmetric_matrix_plot | urban_symmetric_matrix_plot
 
-wrap_plots(rural_symmetric_matrix_plot, urban_symmetric_matrix_plot) + 
-  plot_annotation(tag_levels = 'A') + 
-  theme(plot.tag = element_text(size = 12)) +
-  plot_layout(nrow=1, heights = c(600))
+# wrap_plots(rural_symmetric_matrix_plot, urban_symmetric_matrix_plot) + 
+#   plot_annotation(tag_levels = 'A') + 
+#   theme(plot.tag = element_text(size = 12)) +
+#   plot_layout(nrow=1, heights = c(600))
 
 
 # fig_sex_age, removed
 fig_baseline_distributions <- wrap_plots(contact_hist_d1, 
                                          fig_contacts_age_box, 
-                                         fig_crude_matrix) + 
+                                         fig_adjusted_matrix) + 
   plot_annotation(tag_levels = 'A') + 
   theme(plot.tag = element_text(size = 12)) +
   plot_layout(nrow=3, heights = c(600, 600, 600))
 
 fig_baseline_distributions
 
-ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_distributions_v2.pdf",
-       height=10, width=8, dpi=300,
-       bg="#FFFFFF")
+ggsave("output/figs/fig_baseline_distributions_v2.png", 
+       fig_baseline_distributions, 
+       width = 8, height = 10, units = "in")
+
+# ggsave(fig_baseline_distributions, filename = "../../output/figs/fig_baseline_distributions_v2.pdf",
+#        height=10, width=8, dpi=600,
+#        bg="#FFFFFF")
 
 
 #| label: fig-matrix-type
@@ -1585,8 +1659,6 @@ ggsave(fig_matrix_type, filename = "../../output/figs/fig_matrix_type.pdf",
 
 
 #| label: contact-behavior
-#| include: false
-
 
 contact_behav <- df_contact_d1 %>% 
   dplyr::select(study_site, participant_age, touch_contact, where_contact, contact_mask2, duration_contact2) %>%
@@ -1869,7 +1941,7 @@ table3 <- res_restruct(results_list)
 table3 <- kable(table3, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
-# table3
+table3
 
 rm(t0, t1, t2)
 
