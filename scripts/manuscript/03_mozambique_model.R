@@ -273,14 +273,15 @@ ruralmatrix <- mat_r %>%
   geom_tile() + 
   scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
                        midpoint = 4, limit = c(0,8)) +
-  xlab("") +
-  ylab("Contact age") +
-  geom_text(aes(label=round(contacts, digits=2)), 
-            colour = "black", check_overlap = TRUE, size=3) +
-  axis_text_theme2 +  
-  theme(legend.position = "right",
-        legend.direction = "vertical")
-ruralmatrix
+  labs(x = "Participant age",
+       y = "Contact age",
+       title = "Rural") +
+  geom_text(aes(label=round(contacts, digits=1)), 
+            colour = "black", check_overlap = TRUE, size=2) +
+  axis_text_theme2 +
+  theme(legend.position = "top",
+        legend.direction  = "horizontal")
+# ruralmatrix
 
 ### urban
 ## EDIT 06/02: Age groups changed from 40-59 to 40-49 and 50-59
@@ -296,21 +297,15 @@ urbanmatrix <- mat_u %>%
   geom_tile() +
   scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
                        midpoint = 4, limit = c(0,8))+
-  xlab("") +
-  ylab("Contact age") +
-  geom_text(aes(label=round(contacts, digits=2)), colour = "black", 
-            check_overlap = TRUE, size=3) +
-  axis_text_theme2 + 
-  theme(legend.position = "right",
-        legend.direction = "vertical")
-# axis.text.y = element_blank(),
-# axis.title.y = element_blank()
-  
-adjusted_matrix <- ruralmatrix / urbanmatrix
-# adjusted_matrix
-ggsave(adjusted_matrix, filename = "output/figs/fig_adjusted_matrix.pdf",
-       height=8, width=8, dpi=300,
-       bg="#FFFFFF")
+  labs(x = "Participant age",
+       y = "Contact age",
+       title = "Urban") +
+  geom_text(aes(label=round(contacts, digits=1)), colour = "black", 
+            check_overlap = TRUE, size=2) +
+  axis_text_theme2 +
+  theme(legend.position = "top",
+        legend.direction  = "horizontal")
+# urbanmatrix 
 
 
 # generate prem matrix
@@ -385,25 +380,32 @@ premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contac
   geom_tile() +
   scale_fill_gradient2(low = "#91bfdb", mid="#fee090", high="#d73027",
                        midpoint = 10, limit = c(0,20))+
-  xlab("Participant age") + 
-  ylab("Contact age") +
-  geom_text(aes(label=round(contacts, digits=2)), 
-            colour = "black", check_overlap = TRUE, size=3) +
+  labs(x = "Participant age",
+       y = "Contact age",
+       title = "Prem et al.") +
+  geom_text(aes(label=round(contacts, digits=1)), 
+            colour = "black", check_overlap = TRUE, size=2) +
   axis_text_theme2 +
-  theme(legend.position = "right",
-        legend.direction  = "vertical")
+  theme(legend.position = "top",
+        legend.direction  = "horizontal")
+# premmatrix
 # axis.text.y = element_blank(),
 # axis.title.y = element_blank()
-  
-premmatrix
+
+# combine the matrices
+adjusted_matrix <- ruralmatrix | urbanmatrix | premmatrix
+# adjusted_matrix
+ggsave(adjusted_matrix, filename = "../../output/figs/fig_adjusted_matrix.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
 
 
 ##### CODE FOR TRANSMISSION MODEL #####
 ### Fix R0. 2.5 to get q parameter
 
 # function
-getr0 <- function(q,CM,d){
-  m_ngm <- CM*q*d
+getr0 <- function(q, CM, d){
+  m_ngm <- CM * q * d
   r0 <- max(eigen(as.matrix(m_ngm))$values)
   print(r0)
 }
@@ -945,7 +947,6 @@ AR.prem.60 <- print(AR(df.novax.prem$si.flow.7, init.novax.prem$s.num.7))
 ARv.prem.60 <- print(ARv(df.vax.prem$si.flow.7, init.novax.prem$s.num.7)) 
 ov.eff.prem.60 <- print(overall.eff(df.vax.prem$si.flow.7, df.novax.prem$si.flow.7)) 
 
-
 # create a dataframe with the attack rates RURAL 
 AR.rural <- rbind(AR.rur.0_9, AR.rur.10_19, AR.rur.20_29, AR.rur.30_39, 
                   AR.rur.40_49, AR.rur.50_59, AR.rur.60)
@@ -1010,10 +1011,7 @@ allAR.prem.melt <- allAR.prem.melt %>%
                                Var1 == "AR.prem.60" ~ "60+y")) %>%
   select(age_group, vax, value)
 
-
 # function to create dot plot for attack rates
-cols_model <- c("#9467bd","#aec7e8")
-
 fxn_create_dot_plot <- function(data) {
   segment_helper <- data %>%
     mutate(vax = case_when(vax == "Vaccine" ~ "Yes",
@@ -1070,13 +1068,13 @@ fig_model <- wrap_plots(rural_model,
   plot_annotation(tag_levels = 'A') + 
   theme(plot.tag = element_text(size = 12)) +
   plot_layout(nrow=3, heights = c(800, 800, 800))
-fig_model
+# fig_model
+# 
+# ggsave(fig_model, filename = "../../output/figs/fig_modelplot.pdf",
+#        height=8, width=8, dpi=300,
+#        bg="#FFFFFF")
 
-ggsave(fig_model, filename = "../../output/figs/fig_modelplot.pdf",
-       height=8, width=8, dpi=300,
-       bg="#FFFFFF")
 
-cat("End of model script.")
 
 
 # Create a dataframe with rural, urban and prem vaccine ARs
@@ -1163,7 +1161,150 @@ ggsave(sites_vax, filename = "../../output/figs/fig_siteARV.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF") 
 
+
+############
+# Create a df for overall attack rates
+OE.rur <- rbind(ov.eff.rur.0_9, ov.eff.rur.10_19, ov.eff.rur.20_29, ov.eff.rur.30_39, 
+                ov.eff.rur.40_49, ov.eff.rur.50_59, ov.eff.rur.60)
+OE.urb <- rbind(ov.eff.urb.0_9, ov.eff.urb.10_19, ov.eff.urb.20_29, ov.eff.urb.30_39, 
+                ov.eff.urb.40_49, ov.eff.urb.50_59, ov.eff.urb.60)
+OE.prem <- rbind(ov.eff.prem.0_9, ov.eff.prem.10_19, ov.eff.prem.20_29, ov.eff.prem.30_39, 
+                 ov.eff.prem.40_49, ov.eff.prem.50_59, ov.eff.prem.60)
+
+OE <- cbind(OE.rur, OE.urb, OE.prem) %>%
+  reshape2::melt(id.vvars="Xax") %>%
+  mutate(site = case_when(Var2 == 1 ~ "Rural",
+                          Var2 == 2 ~ "Urban",
+                          Var2 == 3 ~ "Prem")) %>%
+  mutate(age_group = case_when(Var1 == "ov.eff.rur.0_9" ~ "0-9y",
+                               Var1 == "ov.eff.rur.10_19" ~ "10-19y",
+                               Var1 == "ov.eff.rur.20_29" ~ "20-29y",
+                               Var1 == "ov.eff.rur.30_39" ~ "30-39y",
+                               Var1 == "ov.eff.rur.40_49" ~ "40-49y",
+                               Var1 == "ov.eff.rur.50_59" ~ "50-59y",
+                               Var1 == "ov.eff.rur.60" ~ "60+y"))
+
+data3 <- OE %>%
+  # filter(site != "Urban") %>%
+  select(Var1, site, value) %>%
+  mutate(site = factor(site,
+                       levels = c("Rural", "Urban", "Prem"))) %>%
+  pivot_wider(names_from = site, values_from = value) %>%
+  mutate(change_prem_rural = Prem - Rural,
+         change_prem_urban = Prem - Urban) %>%
+  as.data.frame() %>%
+  mutate(age_group = case_when(Var1 == "ov.eff.rur.0_9" ~ "0-9y",
+                               Var1 == "ov.eff.rur.10_19" ~ "10-19y",
+                               Var1 == "ov.eff.rur.20_29" ~ "20-29y",
+                               Var1 == "ov.eff.rur.30_39" ~ "30-39y",
+                               Var1 == "ov.eff.rur.40_49" ~ "40-49y",
+                               Var1 == "ov.eff.rur.50_59" ~ "50-59y",
+                               Var1 == "ov.eff.rur.60" ~ "60+y")) %>%
+  select(-c(Var1))
+
+# combined overall VE for Prem, rural and urban
+oe_combined <- ggplot() + 
+  geom_segment(data = data3,
+               aes(x = Prem, xend = Rural, y = age_group, yend = age_group),
+               col = 'grey60',
+               linewidth = 1.25) +
+  geom_segment(data = data3,
+               aes(x = Prem, xend = Urban, y = age_group, yend = age_group),
+               col = 'grey60',
+               linewidth = 1.25) +
+  geom_point(
+    data = OE %>% filter(site != "Urban"),
+    aes(x = value, y = age_group, col = site), size = 3) +
+  geom_point(
+    data = OE %>% filter(site != "Rural"),
+    aes(x = value, y = age_group, col = site), 
+    size = 3,
+    shape = 1) +
+  axis_text_theme2 +
+  labs(
+    x = 'Overall VE (%)',
+    y = 'Age group',
+    title = 'Overall VE') +
+  scale_color_manual(values = cols_model) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = c(0.1, 0.8),
+    legend.direction = "vertical")
+oe_combined
+
+ggsave(oe_combined, filename = "output/figs/oe_fig_site.pdf",
+       height=4, width=8, dpi=300,
+       bg="#FFFFFF") 
+
+# combine the matrices and VEs
+combined_model_figure <- adjusted_matrix / oe_combined
+
+combined_model_figure <- wrap_plots(adjusted_matrix, oe_combined) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=2, heights = c(600))
+combined_model_figure
+
+ggsave(combined_model_figure, filename = "output/figs/fig2_matrix_model.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF") 
+
+# below generates separate oVE per site
+oe_rural_prem <- ggplot() + 
+  geom_segment(data = data3,
+               aes(x = Prem, xend = Rural, y = Var1, yend = Var1),
+               col = 'grey60',
+               linewidth = 1.25) +
+  geom_point(
+    data = OE %>% filter(site != "Urban"),
+    aes(x = value, y = Var1, col = site), size = 4) +
+  # axis_text_theme2 +
+  labs(
+    x = 'Overall VE (%)',
+    y = 'Age group') +
+  scale_color_manual(values = cols_model) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = "right",
+    legend.direction = "vertical")
+# oe_rural_prem
+
+oe_urban_prem <- ggplot() + 
+  geom_segment(data = data3,
+               aes(x = Urban, xend = Prem, y = Var1, yend = Var1),
+               col = 'grey60',
+               linewidth = 1.25) +
+  geom_point(
+    data = OE %>% filter(site != "Rural"),
+    aes(x = value, y = Var1, col = site), size = 4) +
+  axis_text_theme2 +
+  labs(
+    x = 'Overall VE (%)',
+    y = 'Age group') +
+  scale_color_manual(values = cols_model) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = "right",
+    legend.direction = "vertical")
+# oe_urban_prem
+
+# oe_sites_vax <- oe_rural_prem / oe_urban_prem
+# 
+# ggsave(oe_sites_vax, filename = "../../output/figs/oe_fig_site.pdf",
+#        height=8, width=8, dpi=300,
+#        bg="#FFFFFF") 
 ################
+
+cat("End of model script.")
 
 
 # ALTERNATIVE CODE FOR GRAPHS
