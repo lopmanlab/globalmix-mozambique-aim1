@@ -20,6 +20,8 @@ pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid,
                gridExtra, gtsummary, knitr, kableExtra, lubridate, patchwork, 
                plotly, readr, socialmixr, table1, tidyr)
 
+cols_model <- c("#9467bd","#aec7e8", "#000000")
+
 
 # install orca to save plotly plots: https://github.com/plotly/orca#installation
 
@@ -167,11 +169,11 @@ adjust_for_reciprocity <- function(matrix, num_participants) {
   for (i in 1:n) {
     for (j in 1:n) {
       # do not adjust the diagonal
-      if (i != j) {
-        matrix[i, j] <- ((matrix[i, j] + matrix[j, i]) / 
-                           (num_participants$n_participants[i] + num_participants$n_participants[j]))
+      # if (i != j) {
+      matrix[i, j] <- ((matrix[i, j] + matrix[j, i]) / 
+                         (num_participants$n_participants[i] + num_participants$n_participants[j]))
         # here m.t is number of participants in the age group
-      }
+      # }
     }
   }
   
@@ -217,7 +219,7 @@ fun_symmetric_plot <- function(data, title, xlab, ylab){
     ggplot(aes(x = participant_age, y = contact_age, fill=average_contact)) +
     geom_raster() +
     geom_text(aes(participant_age, contact_age, label = average_contact), 
-              color = "black", size = 3) +
+              color = "black", size = 2) +
     theme_classic() +
     scale_fill_gradient2(low="#91bfdb", mid="#fee090", high="#d73027", 
                          midpoint = 3, limits=c(0,6), breaks=(c(0,2,4,6))) +
