@@ -22,41 +22,15 @@ date: today
 #| label: import-analysis-codes
 #| include: false
 #| warnings: false
-#| comments: false
 
 source("00_customization.R")
 
 # Source data analysis code
-source("02_mozambique_analysis_code.R")
-
-# Source model code
-source("03_mozambique_model.R")
+source("02_mozambique_analysis_code.R") 
 
 # Source place use code
 source("04_placeuse.R")
 
-```
-
-```{r}
-library(lattice)
-
-trial_matrix <- levelplot(average_contact ~ participant_age*contact_age, 
-                          data=m1_rural, 
-                          xlab="Participant age", ylab="Contact age",
-                          # col.regions = heat.colors(100),
-                          main="")
-
-symmetric_matrix_plot <- levelplot(average_contact ~ participant_age*contact_age, 
-          data=symmetric_trial_matrix2, 
-          xlab="Participant age", ylab="Contact age",
-          # col.regions = heat.colors(100),
-          main="")
-symmetric_matrix_plot
-trial_matrix / symmetric_matrix_plot
-```
-
-```{r}
-fun_matrix1_plot(m1_rural, "Rural", xlab = "Participant age", ylab = "Contact age") 
 
 ```
 
@@ -72,7 +46,7 @@ The main aim of this study was to characterize the patterns of social contact an
 
 ## Study design and site
 
-This was a cross-sectional study conducted between April 2021 and April 2022, thus coinciding with active SARS-CoV-2 transmission in Mozambique \[ref\]. The rural site was the Manhiça Health and Demographic Surveillance Site (Manhiça HDSS) established in 1996 within the district of Manhiça, Maputo province, while the urban area was in the Polana Caniço HDSS established in 2018 and located in Maputo City. The Manhiça HDSS has approximately 201,000 as permanent residents while the urban HDSS has a population of approximately 92,000 inhabitants.
+This was a cross-sectional study conducted between April 2021 and April 2022, thus coinciding with active SARS-CoV-2 transmission in Mozambique. The rural site was the Manhiça Health and Demographic Surveillance Site (Manhiça HDSS) located in the district of Manhiça, Maputo province, while the urban area was in the Polana Caniço HDSS located in Maputo City. The Manhiça HDSS is located about 80km north of Maputo City, the capital of Mozambique. It was established in 1996 and currently hosts approximately 201,000 individuals registered as permanent residents living in 45,300 households. The Polana Caniço HDSS was established in 2018 and partly covers the third most populated urban district of KaMaxaquene in Maputo city. Currently, the urban HDSS has a population of approximately 92,000 inhabitants.
 
 ## Sample size
 
@@ -88,15 +62,15 @@ On the diary collection date, the field team conducted an exit interview. Each p
 
 ## Data analysis
 
-### Characteristics of contact patterns
+### Contact patterns (MCK)
 
-The primary outcome was mean contact rates per person with 95% confidence intervals (CI) or median contact rates per person with inter-quartile range (IQR) over two days. These were initially stratified by day 1 and day 2 of contact diary data collection. Assuming xij represents the total number of contacts between participants in age group j and individuals in age group i, then the mean number of reported contacts (mij) was calculated as xij/nj, where nj is the study population in group j. We did not adjust for reciprocity. To assess the difference in mean number of contacts reported on day 1 compared to 2, we use the paired sample T-test of significance assuming that there is no difference between the means over the two days (null hypothesis).
+The primary outcome was mean contact rates per person with 95% confidence intervals (CI) or median contact rates per person with inter-quartile range (IQR) over two days and also stratified by day 1 and day 2 of contact diary data collection. The mean contact rates were calculated as \[insert equation\]... To assess the difference in mean number of contacts reported on day 1 compared to 2, we use the paired sample T-test of significance assuming that there is no difference between the means over the two days (null hypothesis).
 
-Average contact rates were stratified first by site, then further by age, sex, day of the week (weekday vs weekend), type of contact (physical or conversation only, household membership (household member vs non-household member), occupation, *COVID-19 infection periods*, and whether the participant reported symptoms of acute respiratory infections (ARI) or acute gastroenteritis (AGE). We used the Wilcoxon rank sum test for significance to assess the difference between median contact rates within the sites for each covariate, and also between the rural and urban sites.
+Average contact rates were stratified first by site, then further by age, sex, day of the week (weekday vs weekend), type of contact (physical or conversation only, household membership (household member vs non-household member), *COVID-19 infection periods*, and whether the participant reported symptoms of acute respiratory infections (ARI) or acute gastroenteritis (AGE). We used the Wilcoxon rank sum test for significance to assess the difference between median contact rates within the sites for each covariate, and also between the rural and urban sites.
 
 We constructed age-specific contact matrices (by 10-year age bands) from the average number of contacts reported by participants in age group i with contactees in age group j. The matrices were stratified by site and
 
-### Characterizing location-specific proximity contact exposures
+### Proximity contact exposures through places visited (CL)
 
 It is commonly assumed that higher population density in urban areas increases close contact, facilitating increases in person-to-person transmission of directly transmitted infections. However, social cohesion is lower in urban areas, potentially diminishing number of close contacts. We compare close contacts reported in contact diaries (capturing close, known contacts) and place-use surveys (capturing proximity or "co-location" to others without direct interaction) in rural and urban Mozambique to explore the effect of urbanicity on contact patterns. We first describe the number of unique visits to various types of places including other person's home, street, market/shop, transport/hub, agricultural field, school, work, place of worship, well, playground or other and the distribution of time spent at each place. We then compare the number of total "proximal" persons present per participant at each location type, study day to the total social contacts per participant at the same location type and study day.
 
@@ -112,9 +86,9 @@ This study was be conducted in accordance with the protocol, current Declaration
 
 ## Baseline characteristics of participants
 
-A total of `r N` individuals participated in the study, with `r N_site$N[1]+N_site$N[2]` (`r 100*round(N_site$N[1]/(N_site$N[1]+N_site$N[2]), 2)`% female) and `r N_site$N[4]+N_site$N[5]` (`r 100*round(N_site$N[4]/(N_site$N[4]+N_site$N[5]), 2)`% female) participants recruited from the rural and urban sites, respectively. @fig-baseline-distributions (A) shows the age and sex characteristics of the participants in the rural and urban site. By site, there was no major difference in number of participants recruited by age, sex, and school enrollment status. We exceeded our target sample size for children aged \<5 years over-sampled adults aged 40-59 years old in both sites.
+A total of `r N` individuals participated in the study, with `r N_site$N[1]+N_site$N[2]` (`r 100*round(N_site$N[1]/(N_site$N[1]+N_site$N[2]), 2)`% female) and `r N_site$N[3]+N_site$N[4]` (`r 100*round(N_site$N[3]/(N_site$N[3]+N_site$N[4]), 2)`% female) participants recruited from the rural and urban sites, respectively. @fig-baseline-distributions (A) shows the age and sex characteristics of the participants in the rural and urban site. By site, there was no major difference in number of participants recruited by age, sex, and school enrollment status. However, we did not attain our target sample size for children aged \<5 years in both sites and over-sampled adults aged 40-59 years old.
 
-The mean household size was `r mean_hh_size[1,2]` and `r mean_hh_size[2,2]` in the rural and urban areas, respectively. Actual household size ranged from 1 to 20, with majority of households in both sites having 4-6 members, and 33 (5%) in rural and 10 (2%) in urban being one-person households. Occupation categories were mainly invariable by site, with majority being students at various levels (30%), children aged \<5 years (17%), or unemployed adults (15%). Key differences were observed among businesspeople (rural 1%, urban 11%) and office workers (rural 5%, urban 10%). When asked about regular mask use inside or outside the house, 931 (76%) of participants reported wearing a mask with no difference by site. Additionally, one-fifth (209) of participants reported having \>1 ARI symptom and 2% (24) reported at least one AGE symptom.
+The mean household size was `r mean_hh_size[1,2]` and `r mean_hh_size[2,2]` in the rural and urban areas, respectively. Actual household size ranged from 1 to 20, with majority of households in both sites having 4-6 members, and 33 (5%) in rural and 10 (2%) in urban being one-person households. Occupation categories were mainly invariable by site, with majority being students at various levels (30%), children aged \<5 years (17%), or unemployed adults (15%). Key differences were observed among business people (rural 1%, urban 11%) and office workers (rural 5%, urban 10%). When asked about regular mask use inside or outside the house, 931 (76%) of participants reported wearing a mask with no difference by site. Additionally, one-fifth (209) of participants reported having \>1 ARI symptom and 2% (24) reported at least one AGE symptom.
 
 In both sites, almost two-thirds of the participants (701, 57%) were able to read and write. Most (88%) participants reported all contacts despite half (632, 51%) of all participants requiring assistance from a fieldworker to fill in the diary at the end of the two days. Out of the 632, a third were children aged \<5 years. Two-thirds of participants reported reduced interactions compared to normal periods pre-COVID-19 era. Eight participants reported testing positive for SARS-CoV-2 virus and all of them either went to quarantine (government facility) or self-isolation (at home). Out of these, 2 stayed in a separate room away from other individuals, while 5 continued to mingle with other members, and 2 went out of the house. Almost half (531, 43%) of the participants reported contact with animals ranging from poultry (26%), cats and dogs (15%), grazing animals (2%), and one individual each coming into contact with rodents, primates, and bats.
 
@@ -128,7 +102,9 @@ fig_baseline_distributions
 
 ## Distribution of number of contacts
 
-Overall, `r tot_contacts` contacts were reported over two days with a mean of `r mean_contacts_overall$mean` (95% CI `r ci_contacts_overall$ll`-`r ci_contacts_overall$ul`). Slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) of the contacts were reported from the rural site. (SI 1). We observe a decrease in the mean number of contacts reported on day 2 (`r mean_contacts_overall_d2` (95% CI `r ci_contacts_overall_d2$ll`-`r ci_contacts_overall_d2$ul`) compared to day 1 (`r mean_contacts_overall_d1` (95% CI `r ci_contacts_overall_d1$ll`-`r ci_contacts_overall_d1$ul`) (paired t-test p=`r  ttest_overall_d1d2`). Since 20% (3089) of total contacts were newly reported on day 2, from here henceforth we report the number of contacts occurring on day 1. Median values for day 1 and 2 by site are available in the SI *(link to table showing day 1 and day 2 median number of contacts)*.
+We present a summary of median (IQR) of the total number of contacts (including repeat contacts) over two study days. Overall, `r tot_contacts` contacts were reported with slightly above half (`r tot_rural_contacts`, `r round(100*(tot_rural_contacts/tot_contacts), 0)`%) from the rural site. (SI 1). In each site, 6% of the total contacts were reported with children aged \<5 years (7% rural, 6% urban), with 1% of the contacts in each site happening with infants aged \<6 months (148 rural, 82 urban). The highest number of contacts were reported with children aged 10-14 yrs (26% rural, 21% urban). Overall, more contacts were reported with women (54%) with no difference between sites.
+
+First, we report the total and mean (and median, see SI 2) number of contacts collected over two days. Overall, the mean number of contacts reported on two days was `r mean_contacts_overall$mean` (95% CI `r ci_contacts_overall$ll`-`r ci_contacts_overall$ul`). We observe a significant difference in the mean number of contacts reported on day 1 (`r mean_contacts_overall_d1` (95% CI `r ci_contacts_overall_d1$ll`-`r ci_contacts_overall_d1$ul`) compared to day 2 (`r mean_contacts_overall_d2` (95% CI `r ci_contacts_overall_d2$ll`-`r ci_contacts_overall_d2$ul`) (paired t-test p=`r  ttest_overall_d1d2`). Since 20% (3089) of total contacts were newly reported on day 2, from here henceforth we report the number of contacts occurring on day 1. Median values for day 1 and 2 by site are available in the SI *(link to table showing day 1 and day 2 median number of contacts)*.
 
 ```{r}
 table3
@@ -144,26 +120,33 @@ fig_contact_covariates <- (fig_sex_box / fig_touch_box) /
   (fig_touch_box)
 ```
 
-### Contact matrices
+### Unweighted non-symmetrical contact matrices
 
 ```{r}
 #| label: fig-site-matrix
-#| eval: false
-crude_matrix
+# crude_matrix
 ```
 
-@fig-site-matrix suggests that the patterns of age-specific social contacts are strikingly similar when comparing rural and urban sites. However, the latter depicts lower average number of contacts compared to the rural site. Mean contacts tended to be assortative especially for ages 5-14 and 30-59 years in both rural and urban areas. Participants aged 10-14 and 15-19 years reported the highest mean number of contacts with 10-14 year olds in both sites. Another peak in mean number of contacts is observed between 40-59 year olds. In both sites, no contacts are reported between infants \<6 months old. The average number of contacts with infants generally rises with age to peak at 10-14 years in rural and 20-29 years among urban dwellers.
+```{r}
+#| eval: false
+fig_hhmembership_box
+fig_education_box
+fig_dayweek_box
+fig_weekday_box
+fig_weekyear_site_box
+fig_ari_box
+fig_AGE_box
+fig1_masking
+fig2_duration
+fig3_touch
+```
 
-When stratified by conversation and physical contacts (SI figure @contact-type-matrix), no clear patterns are observed in conversational contacts in rural (panel A) and urban (panel B) sites. On average, physical contacts are higher than conversation contacts in both rural (`r mean_contacts_touch_rural` vs `r mean_contacts_conv_rural`, p\<0.05) and urban sites (`r mean_contacts_touch_urban` vs `r mean_contacts_conv_urban`, p\<0.05). Comparing type of contact by sites, both physical and conversation contacts were higher in the urban compared to rural sites (p\<0.05 for both).
+### Contacts patterns and places visited
 
-### Patterns of contact by location
-
-Analysis of the place-use data revealed that in both urban and rural areas, proximity contacts at locations visited by participants drastically exceeded the number of close contacts, with differences more pronounced among urban participants. We estimated a mean of 26.9 (95% CI 23.5-30.3) proximity contacts per person per day compared to 6.3 (6-6.6) close contacts in urban areas and 23.1 (20.3-25.9) proximity and 8.8 (8.4-9.2) close contacts in rural areas. This pattern was consistent across multiple public locations (streets, markets, transport, schools etc) even as rural and urban participants were equally likely to visit public locations. Urban participants were substantially less likely to visit another person's home, contributing to lower close contact: 34% and 68% participants from urban and rural areas visited another home, with differences persisting across all age groups.
+Analysis of the place-use survey showed that, in both urban and rural areas, proximity contacts at locations visited by participants drastically exceeded the number of close contacts, with differences more pronounced among urban participants. We estimated a mean of 26.9 (95% CI 23.5-30.3) proximity contacts per person per day compared to 6.3 (6-6.6) close contacts in urban areas and  23.1 (20.3-25.9) proximity and 8.8 (8.4-9.2) close contacts in rural areas. This pattern was consistent across multiple public locations (streets, markets, transport, schools etc) even as rural and urban participants were equally likely to visit public locations. Urban participants were substantially less likely to visit another person's home, contributing to lower close contact: 34% and 68% participants from urban and rural areas visited another home, with differences persisting across all age groups.
 
 ```{r}
-#| label: fig-contact-location
-#| eval: true
-
+#fig4_location
 fig4_locvisit_timespent
 tab1_loc
 ```
@@ -172,30 +155,11 @@ tab1_loc
 
 Overall vaccine effects using synthetically derived contact patterns were higher and attack rates were lower than those using empirically collected GlobalMix contacts across all but the youngest age group, 0-9 years (Table X). GlobalMix adult participants had more contact with children and adolescents than with their own age group, while synthetically derived contact patterns showed stronger assortative mixing by age. Compared to the GlobalMix rural and urban sites, synthetically derived contact patterns overestimated the number of contacts among those aged 0-9 years. This over-projection of contacts yielded higher attack rates (AR: 94.3%, ARv: 78.7%) and lower overall vaccine effects (16.6%) for this group compared to outcomes using empirically collected contact patterns (Rural AR: 91.4%, Rural ARv, 71.8%, Rural vaccine effects: 21.5%; Urban AR: 91.4%, Urban ARv: 72.0%, Urban vaccine effects: 21.2%). Additionally, synthetically derived contacts among those aged ≥60 years were underestimated compared to that of GlobalMix, producing notably lower attack rates among this age group (Synthetic AR: 13.4%, Synthetic ARv: 7.2%; Rural AR: 46.3%, Rural ARv: 26.6%; Urban AR: 40.9%, Urban ARv: 23.2%). Table X.
 
-```{r}
-#| label: fig-transmission-model
-#| eval: true
-
-modelplots
-```
-
 # Discussion
 
+In some age groups (\<5 yrs and 40-59 yrs) we recruited participants more than the target (n=63).
+
 # Conclusion
-
-# Acknowledgements
-
-# Funding
-
-# Availability of data and materials
-
-All data generated or analysed during this study are available through our github link ().
-
-# Authors contribution
-
-# Competing interests
-
-The authors declare they have no competing interest.
 
 # Supplementary Information
 
@@ -222,23 +186,11 @@ table5
 The panels are arranged by rural and urban conversation (A and B) and rural and urban physical contacts (C and D), respectively.
 
 ```{r}
-#| label: contact-type-matrix
-fig_matrix_type
+combined_matrix
 ```
 
 ```{r}
-#| label: additional-figs
 #| eval: false
-fig_hhmembership_box
-fig_education_box
-fig_dayweek_box
-fig_weekday_box
-fig_weekyear_site_box
-fig_ari_box
-fig_AGE_box
-fig1_masking
-fig2_duration
-fig3_touch
 
 literacy_page_plt
 enrolledsch_page_plt
@@ -249,7 +201,6 @@ occupation_page_plt
 ## XXX. Violin plots comparing the distribution of social contact versus proximity contact reported by participants at each location type in urban versus rural areas
 
 ```{r}
-#| eval: true
 figsi_compdist_urb
 figsi_compdist_rur
 ```
