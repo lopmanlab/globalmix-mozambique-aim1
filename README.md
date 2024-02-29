@@ -4,6 +4,8 @@
 
 *<sup>1</sup> Emory University*
 
+*Correspondence to: mkiti@emory.edu; blopman.emory.edu*
+
 ## Description of study
 
 **Research question**
