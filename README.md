@@ -13,5 +13,5 @@
 ## Description of repository
 This contains data from the Mozambique arm of GlobalMix, and scripts that will be used to clean and analyze the data, and prepare output.
 
-**data**:
-**scripts**:
+1. **data**:
+2. **scripts**:
