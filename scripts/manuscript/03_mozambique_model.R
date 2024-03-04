@@ -312,7 +312,8 @@ urbanmatrix <- mat_u %>%
 # source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
 ### read in social contact patterns
 # default is by 5 year age groups
-moz_prem <- read.csv("../../data/clean/moz_prem_2017.csv")
+# updated to 2021 contacts
+moz_prem <- read.csv("../../data/clean/moz_prem_2021.csv")
 
 ### Generate data frame of participant age groups for orig prem matrix matched to age groups for target matrix
 ### # EDIT 06/02: Age groups changed from 40-59 to 40-49 and 50-59
@@ -451,15 +452,17 @@ getr0(q=0.04852599, CM=cm_urban, d=7)
 
 # prem
 # premmatrix
-prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
-          3.66, 14.09, 2.86, 1.90, 2.33, 1.92, 1.10, 
-          2.33, 2.19, 6.10, 2.67, 1.90, 1.80, 0.56,
-          2.67, 1.58, 2.81, 3.63, 2.62, 2.10, 0.75, 
-          1.08, 1.31, 1.76, 2.41, 2.69, 2.46, 0.70,
-          0.56, 0.46, 1.04, 1.21, 1.38, 1.78, 0.63,
-          0.39, 0.22, 0.28, 0.32, 0.31, 0.44, 0.33)
+
+# 2021 values 
+prem <- c(7.5, 3.4, 2.2, 3.5, 2.4, 2.1, 1.8,
+          2.5, 11.2, 3.1, 2.3, 2.8, 2.2, 1.5,
+          1.7, 1.7, 5.3, 2.7, 2.3, 2.6, 1.3, 
+          1.8, 1.3, 2.1, 3.2, 2.7, 2.2, 1.4,
+          1.0, 1.2, 1.4, 2.1, 2.6, 2.2, 1.1,
+          0.7, 0.6, 0.9, 1.2, 1.4, 1.6, 0.8,
+          0.7, 0.7, 0.8, 0.9, 1.0, 1.0, 1.0)
 cm_prem <- matrix(prem, nrow = 7, ncol = 7)
-getr0(q=0.01521068, CM=cm_prem, d=7)
+getr0(q=0.02136927, CM=cm_prem, d=7)
 
 # OLD VALUES
 # prem <- c(19.34, 4.54, 1.68, 2.63, 1.64, 1.02,
@@ -468,6 +471,14 @@ getr0(q=0.01521068, CM=cm_prem, d=7)
 #           2.67, 1.58, 2.81, 3.63, 2.43, 0.75, 
 #           1.65, 1.77, 2.79, 3.62, 4.14, 1.32, 
 #           0.39, 0.22, 0.28, 0.32, 0.36, 0.33)
+# 2017 VALUES
+# prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
+#         3.66, 14.09, 2.86, 1.90, 2.33, 1.92, 1.10, 
+#          2.33, 2.19, 6.10, 2.67, 1.90, 1.80, 0.56,
+#          2.67, 1.58, 2.81, 3.63, 2.62, 2.10, 0.75, 
+#          1.08, 1.31, 1.76, 2.41, 2.69, 2.46, 0.70,
+#          0.56, 0.46, 1.04, 1.21, 1.38, 1.78, 0.63,
+#          0.39, 0.22, 0.28, 0.32, 0.31, 0.44, 0.33)
 
 
 ### Model 
@@ -701,14 +712,14 @@ param.urban <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.04852599,
                          c71=0.12, c72=0.23, c73=0.24, c74=0.29, c75=0.34, c76=0.53, c77=0.80)
 
 # prem et al contact patterns
-param.prem <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.01521068,
-                        c11=19.34, c12=4.54, c13=1.68, c14=2.63, c15=1.76, c16=1.45, c17=1.02,
-                        c21=3.66, c22=14.09, c23=2.86, c24=1.90, c25=2.33, c26=1.92, c27=1.10,
-                        c31=2.33, c32=2.19, c33=6.10, c34=2.67, c35=1.90, c36=1.80, c37=0.56,
-                        c41=2.67, c42=1.58, c43=2.81, c44=3.63, c45=2.62, c46=2.10, c47=0.75,
-                        c51=1.08, c52=1.31, c53=1.76, c54=2.41, c55=2.69, c56=2.46, c57=0.70,
-                        c61=0.56, c62=0.46, c63=1.04, c64=1.21, c65=1.38, c66=1.78, c67=0.63,
-                        c71=0.39, c72=0.22, c73=0.28, c74=0.32, c75=0.31, c76=0.44, c77=0.33)
+param.prem <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.02136927,
+                        c11=7.5, c12=3.4, c13=2.2, c14=3.5, c15=2.4, c16=2.1, c17=1.8,
+                        c21=2.5, c22=11.2, c23=3.1, c24=2.3, c25=2.8, c26=2.2, c27=1.5,
+                        c31=1.7, c32=1.7, c33=5.3, c34=2.7, c35=2.3, c36=2.6, c37=1.3,
+                        c41=1.8, c42=1.3, c43=2.1, c44=3.2, c45=2.7, c46=2.2, c47=1.4,
+                        c51=1.0, c52=1.2, c53=1.4, c54=2.1, c55=2.6, c56=2.2, c57=1.1,
+                        c61=0.7, c62=0.6, c63=0.9, c64=1.2, c65=1.4, c66=1.6, c67=0.8,
+                        c71=0.7, c72=0.7, c73=0.8, c74=0.9, c75=1.0, c76=1.0, c77=1.0)
 
 
 ### Initial conditions
@@ -1033,7 +1044,7 @@ fxn_create_dot_plot <- function(data) {
     labs(
       x = 'Attack rate (%)',
       y = 'Age group') +
-    scale_color_manual(values = cols_model) +
+   scale_color_manual(values = cols_model) +
     scale_x_continuous(limits = c(0, 100)) +
     theme(
       panel.grid.major.y = element_blank(),
@@ -1116,7 +1127,7 @@ rural_prem <- ggplot() +
   geom_point(
     data = ARV %>% filter(site != "Urban"),
     aes(x = value, y = Var1, col = site), size = 4) +
-  # axis_text_theme2 +
+  axis_text_theme2 +
   labs(
     x = 'Attack rate (%)',
     y = 'Age group') +
@@ -1140,7 +1151,7 @@ urban_prem <- ggplot() +
   geom_point(
     data = ARV %>% filter(site != "Rural"),
     aes(x = value, y = Var1, col = site), size = 4) +
-  # axis_text_theme2 +
+  axis_text_theme2 +
   labs(
     x = 'Attack rate (%)',
     y = 'Age group') +
