@@ -50,7 +50,7 @@ contacts2 <- contacts2 %>%
   )
 
 ### read in population distribution
-pop_dist <- rio::import("data/clean/moz_pop_dist_new.csv") %>%
+pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -284,7 +284,7 @@ urbanmatrix <- mat_u %>%
 ### read in social contact patterns
 # default is by 5 year age groups
 # updated to 2021 contacts
-moz_prem <- read.csv("data/clean/moz_prem_2021.csv")
+moz_prem <- read.csv("../../data/clean/moz_prem_2021.csv")
 
 ### Generate data frame of participant age groups for orig prem matrix matched to age groups for target matrix
 ### # EDIT 06/02: Age groups changed from 40-59 to 40-49 and 50-59
@@ -322,10 +322,10 @@ moz_prem <- moz_prem %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr <- read.csv("data/clean/agecat_5_total.csv")
+moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr <- read.csv("data/clean/agecat_10_total.csv") %>%
+moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
@@ -368,7 +368,7 @@ premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contac
 # combine the matrices
 adjusted_matrix <- ruralmatrix | urbanmatrix | premmatrix
 adjusted_matrix
-ggsave(adjusted_matrix, filename = "output/figs/fig_adjusted_matrix.pdf",
+ggsave(adjusted_matrix, filename = "../../output/figs/fig_adjusted_matrix.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
 
@@ -1116,7 +1116,7 @@ urban_prem
 
 sites_vax <- rural_prem / urban_prem
 
-ggsave(sites_vax, filename = "output/figs/fig_siteARV_2021data.pdf",
+ggsave(sites_vax, filename = "../../output/figs/fig_siteARV_2021data.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1195,7 +1195,7 @@ oe_combined <- ggplot() +
     legend.direction = "vertical")
 oe_combined
 
-ggsave(oe_combined, filename = "output/figs/oe_fig_site_2021data.pdf",
+ggsave(oe_combined, filename = "../../output/figs/oe_fig_site_2021data.pdf",
        height=4, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1208,7 +1208,7 @@ combined_model_figure <- wrap_plots(adjusted_matrix, oe_combined) +
   plot_layout(nrow=2, heights = c(600))
 combined_model_figure
 
-ggsave(combined_model_figure, filename = "output/figs/fig2_matrix_model_2021data.pdf",
+ggsave(combined_model_figure, filename = "../../output/figs/fig2_matrix_model_2021data.pdf",
        height=6, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1340,7 +1340,7 @@ fig_model2 <- wrap_plots(rural_model2,
   plot_layout(nrow=3, heights = c(800, 800, 800))
 fig_model2
 
-ggsave(fig_model2, filename = "output/figs/fig_modelplot_v2.pdf",
+ggsave(fig_model2, filename = "../../output/figs/fig_modelplot_v2.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
 
