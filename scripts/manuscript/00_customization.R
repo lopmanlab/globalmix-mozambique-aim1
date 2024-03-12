@@ -4,7 +4,7 @@
 # 
 ###############################################################################  
 
-rm(list=ls())
+# rm(list=ls())
 
 ## 1. Install and load packages
 
@@ -48,7 +48,7 @@ axis_text_theme2 <- theme_classic() +
     plot.title = element_text(size = 14),
     axis.title.x = element_text(size=14, face="bold"),
     axis.title.y = element_text(size=14, face="bold"),
-    axis.text.x = element_text(size = 10, angle=90, hjust = 1),
+    axis.text.x = element_text(size = 10, angle=0, hjust = 1),
     axis.text.y = element_text(size= 10),
     legend.position = c(0.2, 0.9),
     legend.key.size = unit(1, "lines"),
@@ -472,4 +472,54 @@ fun_occupation_plot <- function(data){
           axis.title.y = element_text(size=12, face="bold"),
           axis.text.x = element_text(size = 8, angle=0, hjust = 1),
           axis.text.y = element_text(size= 8))
+}
+
+
+#+++++++++++
+fun_contact_behavior <- function(df, action){
+  df %>% 
+    dplyr::filter(var == action) %>% 
+    ggplot(x = prop, y = participant_age, fill = value) +
+    geom_col(aes(x = prop, y = participant_age, fill = value), 
+             position = "fill", col="white") +
+    
+    # plot by site and delete site title slab
+    facet_wrap(~study_site) +
+    theme(strip.background = element_blank(),
+          strip.text.x = element_blank(), # remove facet titles
+          panel.spacing = unit(2, "lines")) + # increase space between facets
+    
+    labs(title = "",
+         x = "", 
+         y = "Participant age",
+         fill = element_blank()) +
+    
+    coord_cartesian(xlim = c(0, 1), 
+                    # ylim = c(0.5, 20.5), 
+                    expand = F, # removes white spaces at edge of plot
+                    clip = 'off') + # allows drawing outside of panel
+    
+    # move x-axis title to the top and format
+    scale_x_continuous(labels = function(x) format(x*100, digits=2, nsmall=0), 
+                       breaks = seq(0, 1, 0.2),
+                       position="top") + 
+    axis_text_theme2 +
+    theme(axis.text.x = element_text(angle = 0, hjust=1),
+          axis.line.x = element_line(colour = "black"), 
+          axis.ticks.x = element_line(colour = "black")) # +
+  #       axis.text = element_text(colour = unhighlighed_col_darker),
+  #       text = element_text(colour = unhighlighed_col_darker),
+  #       plot.title = element_text(colour = 'black')) +
+  
+  # # format titles
+  # theme(plot.title = element_text(size = 26, face="bold"),
+  #       plot.title.position = "plot", 
+  #       axis.title.y = element_text(size=22), #face="bold"),
+  #       axis.title.x = element_text(size=22), # face="bold"),
+  #       axis.text.y = element_text(size = 14),
+  #       axis.text.x = element_text(size = 14, angle=0)) +
+  # theme(legend.title = element_text(size=18),
+  #       legend.text = element_text(size = 14),
+  #       legend.position = "top",
+  #       legend.box = "vertical")
 }
