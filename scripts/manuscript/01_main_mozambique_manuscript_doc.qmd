@@ -28,6 +28,17 @@ source("00_customization.R")
 # Source data analysis code
 source("02_mozambique_analysis_code.R") 
 
+# model code.
+
+## 1. this uses 2017 Prem data.
+#source("03_mozambique_model.R")
+
+## 2. this uses 2021 Prem data, matrices not stratified into rural and urban 
+source("03_mozambique_model_v2.R")
+
+## 3. this uses 2021 Prem data, matrices stratified into rural and urban 
+source("03_mozambique_model_v3.R")
+
 # Source place use code
 source("04_placeuse.R")
 
@@ -186,7 +197,7 @@ table5
 The panels are arranged by rural and urban conversation (A and B) and rural and urban physical contacts (C and D), respectively.
 
 ```{r}
-combined_matrix
+fig_matrix_type
 ```
 
 ```{r}
