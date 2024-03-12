@@ -50,7 +50,7 @@ contacts2 <- contacts2 %>%
   )
 
 ### read in population distribution
-pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
+pop_dist <- rio::import("data/clean/moz_pop_dist_new.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -245,10 +245,11 @@ ruralmatrix <- mat_r %>%
   labs(x = "Participant age",
        y = "Contact age",
        title = "Rural") +
-  geom_text(aes(label=round(contacts, digits=2)), 
+  geom_text(aes(label=round(contacts, digits=1)), 
             colour = "black", check_overlap = TRUE, size=2) +
   axis_text_theme2 +
-  theme(legend.position = "top",
+  theme(axis.text.x = element_text(size = 10, angle=90, hjust = 1),,
+        legend.position = "top",
         legend.direction  = "horizontal")
 ruralmatrix
 
@@ -269,20 +270,21 @@ urbanmatrix <- mat_u %>%
   labs(x = "Participant age",
        y = "Contact age",
        title = "Urban") +
-  geom_text(aes(label=round(contacts, digits=2)), colour = "black", 
+  geom_text(aes(label=round(contacts, digits=1)), colour = "black", 
             check_overlap = TRUE, size=2) +
   axis_text_theme2 +
-  theme(legend.position = "top",
+  theme(axis.text.x = element_text(size = 10, angle=90, hjust = 1),,
+        legend.position = "top",
         legend.direction  = "horizontal")
 # urbanmatrix 
 
 
 # generate prem matrix
-# source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
+# source("scripts/manuscript/03b_mozambique_prem_matrix.R")
 ### read in social contact patterns
 # default is by 5 year age groups
 # updated to 2021 contacts
-moz_prem <- read.csv("../../data/clean/moz_prem_2021.csv")
+moz_prem <- read.csv("data/clean/moz_prem_2021.csv")
 
 ### Generate data frame of participant age groups for orig prem matrix matched to age groups for target matrix
 ### # EDIT 06/02: Age groups changed from 40-59 to 40-49 and 50-59
@@ -320,10 +322,10 @@ moz_prem <- moz_prem %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
+moz_pop_5yr <- read.csv("data/clean/agecat_5_total.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
+moz_pop_10yr <- read.csv("data/clean/agecat_10_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
@@ -356,7 +358,8 @@ premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contac
   geom_text(aes(label=round(contacts, digits=1)), 
             colour = "black", check_overlap = TRUE, size=2) +
   axis_text_theme2 +
-  theme(legend.position = "top",
+  theme(axis.text.x = element_text(size = 10, angle=90, hjust = 1),
+        legend.position = "top",
         legend.direction  = "horizontal")
 # premmatrix
 # axis.text.y = element_blank(),
@@ -364,8 +367,8 @@ premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contac
 
 # combine the matrices
 adjusted_matrix <- ruralmatrix | urbanmatrix | premmatrix
-# adjusted_matrix
-ggsave(adjusted_matrix, filename = "../../output/figs/fig_adjusted_matrix.pdf",
+adjusted_matrix
+ggsave(adjusted_matrix, filename = "output/figs/fig_adjusted_matrix.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
 
@@ -1113,7 +1116,7 @@ urban_prem
 
 sites_vax <- rural_prem / urban_prem
 
-ggsave(sites_vax, filename = "../../output/figs/fig_siteARV_2021data.pdf",
+ggsave(sites_vax, filename = "output/figs/fig_siteARV_2021data.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1177,6 +1180,7 @@ oe_combined <- ggplot() +
     size = 3,
     shape = 1) +
   axis_text_theme2 +
+  
   labs(
     x = 'Overall VE (%)',
     y = 'Age group',
