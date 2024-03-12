@@ -4,7 +4,7 @@
 # 
 ###############################################################################  
 
-location <- readRDS("data/clean/locations_visited_aim1.RDS") %>%
+location <- readRDS("../../data/clean/locations_visited_aim1.RDS") %>%
   filter(study_day == 1)
 
 location <- location %>% 
@@ -23,7 +23,7 @@ location <- location %>%
                                                      "Work", "Other", "Place of worship", "Well", "Playground")))
 
 # figure included in ms
-fig_locvisit_timespent <- location %>%
+fig4_locvisit_timespent <- location %>%
   group_by(study_site, place_visited, time_visited_cat) %>%
   filter(place_visited!="My home") %>%
   summarise(place_time = n()) %>%
@@ -44,9 +44,9 @@ fig_locvisit_timespent <- location %>%
   theme(axis.text.x = element_text(angle=0)) +
   theme(legend.position = c(0.6, 0.9),
         legend.text = element_text(size=6))
-fig_locvisit_timespent
+fig4_locvisit_timespent
 
-ggsave(fig_locvisit_timespent, filename = "../../output/figs/fig_locvisit_timespent.pdf",
+ggsave(fig4_locvisit_timespent, filename = "../../output/figs/fig_locvisit_timespent.pdf",
        height=4, width=6, dpi=300,
        bg="#FFFFFF")
 
