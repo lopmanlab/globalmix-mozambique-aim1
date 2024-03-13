@@ -1,5 +1,5 @@
 ###############################################################################  
-# This file contains scripts to analyze and visualize place use data.
+# This file contains scripts to analyze and visualize age-structured contacts
 # Author: Sara Kim
 # Date: 08/18/2023
 # this one uses Prem 2017 data.
