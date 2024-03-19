@@ -1,5 +1,5 @@
 ###############################################################################  
-# This file contains scripts to analyze and visualize place use data.
+# This file contains scripts to analyze and visualize age-structured contacts
 # Author: Sara Kim
 # Date: 08/18/2023; 
 # modified 03/12/2024 - included updated Globalmix matrices and 2021 Prem et al matrices
@@ -406,16 +406,15 @@ urban <- c(1.79, 1.49, 1.38, 1.64, 0.84, 1.23, 0.98,
 cm_urban <- matrix(urban, nrow = 7, ncol = 7)
 getr0(q=0.04852599, CM=cm_urban, d=7)
 
-# premmatrix
 
-# 2021 values 
-prem <- c(7.5, 3.4, 2.2, 3.5, 2.4, 2.1, 1.8,
-          2.5, 11.2, 3.1, 2.3, 2.8, 2.2, 1.5,
-          1.7, 1.7, 5.3, 2.7, 2.3, 2.6, 1.3, 
-          1.8, 1.3, 2.1, 3.2, 2.7, 2.2, 1.4,
-          1.0, 1.2, 1.4, 2.1, 2.6, 2.2, 1.1,
-          0.7, 0.6, 0.9, 1.2, 1.4, 1.6, 0.8,
-          0.7, 0.7, 0.8, 0.9, 1.0, 1.0, 1.0)
+# Prem 2021 rural values 
+prem_rural <- c(8.1,3.7,2.5,4.0,2.6,2.3,2.0,
+          2.5,10.9,3.0,2.3,2.8,2.2,1.5,
+          1.7,1.8,5.6,2.9,2.4,2.7,1.3,
+          1.9,1.4,2.2,3.4,2.8,2.3,1.4,
+          1.0,1.2,1.4,2.1,2.6,2.2,1.1,
+          0.7,0.6,0.9,1.2,1.4,1.7,0.8,
+          0.7,0.7,0.8,0.9,1.0,1.1,1.0)
 cm_prem <- matrix(prem, nrow = 7, ncol = 7)
 getr0(q=0.02136927, CM=cm_prem, d=7)
 
