@@ -4,10 +4,10 @@
 # Author: Moses C Kiti, PhD
 ###############################################################################
 
-participants <- readRDS("../../data/clean/participant_data_aim1b.RDS")
+participants <- readRDS("../../data/clean/moz_participant_data_aim1.RDS")
 # exit <- readRDS("../../data/clean/exit_interview_aim1.RDS")
-contacts <- readRDS("../../data/clean/contact_data_aim1b.RDS")
-household <- readRDS("../../data/clean/household_survey_aim1.RDS")
+contacts <- readRDS("../../data/clean/moz_contact_data_aim1.RDS")
+household <- readRDS("../../data/clean/moz_household_survey_aim1.RDS")
 # location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
 # 
 
