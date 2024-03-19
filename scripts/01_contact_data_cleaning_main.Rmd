@@ -2219,6 +2219,7 @@ exit_interview_aim2 <- exit %>%
 saveRDS(exit_interview_aim2, paste0(AIM2_EXPORT_PATH, "/moz_exit_interview_data_aim2.RDS"))
 ```
 
+
 ```{r data-export-rds, echo=FALSE, include=FALSE}
 # Export data to GlobalMix shared folder.
 
