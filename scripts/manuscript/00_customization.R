@@ -18,7 +18,7 @@ set.seed(30322)
 
 pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid, 
                gridExtra, gtsummary, knitr, kableExtra, lubridate, patchwork, 
-               plotly, readr, socialmixr, table1, tidyr)
+               plotly, readr, socialmixr, table1, tidyr, openxlsx)
 
 cols_model <- c("#9467bd","#aec7e8", "#000000")
 
@@ -506,7 +506,8 @@ fun_contact_behavior <- function(df, action){
     axis_text_theme2 +
     theme(axis.text.x = element_text(angle = 0, hjust=1),
           axis.line.x = element_line(colour = "black"), 
-          axis.ticks.x = element_line(colour = "black")) # +
+          axis.ticks.x = element_line(colour = "black"),
+          legend.box = "vertical") # +
   #       axis.text = element_text(colour = unhighlighed_col_darker),
   #       text = element_text(colour = unhighlighed_col_darker),
   #       plot.title = element_text(colour = 'black')) +
