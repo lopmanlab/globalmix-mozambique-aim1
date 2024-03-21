@@ -305,7 +305,7 @@ participant <- participant %>%
                                        occupation___3 == 1 ~ "Business person",
                                        occupation___4 == 1 ~ "Casual laboror",
                                        occupation___5 == 1 ~ "Farmer",
-                                       occupation___6 == 1 ~ "Fisherman",
+                                       occupation___6 == 1 ~ "Other", # fisherman, n=2
                                        occupation___7 == 1 ~ "Retired",
                                        occupation___8 == 1 ~ "Homemaker/Housewife",
                                        occupation___9 == 1 ~ "Other"),
@@ -316,11 +316,11 @@ participant <- participant %>%
                                        TRUE ~ occupation))
 participant$occupation <- factor(participant$occupation, 
                                  levels = c("Child", "Unemployed", "Student", "Homemaker/Housewife",
-                                            "Casual laboror", "Farmer", "Fisherman", 
+                                            "Casual laboror", "Farmer", 
                                             "Business person", "Office worker", "Retired",
                                             "Other"),
                                  labels = c("Child", "Unemployed", "Student", "Homemaker",
-                                            "Casual laboror", "Farmer", "Fisherman", 
+                                            "Casual laboror", "Farmer",
                                             "Business person", "Office worker", "Retired",
                                             "Other"))
 label(participant$occupation) <- "What is your occupation?"
@@ -2223,7 +2223,7 @@ saveRDS(exit_interview_aim2, paste0(AIM2_EXPORT_PATH, "/moz_exit_interview_data_
 ```{r data-export-rds, echo=FALSE, include=FALSE}
 # Export data to GlobalMix shared folder.
 
-EXPORT_PATH1 <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/3.GlobalMix/Globalmix country data/Mozambique/aim_1"
+EXPORT_PATH1 <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/3.GlobalMix/Globalmix data/data/Mozambique/aim_1"
 
 saveRDS(participants_aim1, paste0(EXPORT_PATH1, "/moz_participant_data_aim1.RDS"))
 saveRDS(contacts_aim1, paste0(EXPORT_PATH1, "/moz_contact_data_aim1.RDS"))
@@ -2231,7 +2231,7 @@ saveRDS(hh_survey_aim1, paste0(EXPORT_PATH1, "/moz_household_survey_data_aim1.RD
 saveRDS(loc_visit_aim1, paste0(EXPORT_PATH1, "/moz_locations_visited_data_aim1.RDS"))
 saveRDS(exit_interview_aim1, paste0(EXPORT_PATH1, "/moz_exit_interview_data_aim1.RDS"))
 
-EXPORT_PATH2 <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/3.GlobalMix/Globalmix country data/Mozambique/aim_2"
+EXPORT_PATH2 <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/3.GlobalMix/Globalmix data/data/Mozambique/aim_2"
 
 saveRDS(participants_aim2, paste0(EXPORT_PATH2, "/moz_participant_data_aim2.RDS"))
 saveRDS(contacts_aim2, paste0(EXPORT_PATH2, "/moz_contact_data_aim2.RDS"))
