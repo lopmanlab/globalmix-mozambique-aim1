@@ -573,3 +573,9 @@ ov.eff.prem.rural.60 <- print(overall.eff(df.vax.prem.rural$si.flow.7, df.novax.
 AR.prem.urban.60 <- print(AR(df.novax.prem.urban$si.flow.7, init.novax.prem.urban$s.num.7)) 
 ARv.prem.urban.60 <- print(ARv(df.vax.prem.urban$si.flow.7, init.novax.prem.urban$s.num.7)) 
 ov.eff.prem.urban.60 <- print(overall.eff(df.vax.prem.urban$si.flow.7, df.novax.prem.urban$si.flow.7)) 
+
+# # NEXT STEPS
+# 1. create VE dataframes with: empirical rural+urban and Prem rural+urban_day1_contacts
+# 2. create graph with Prem rural and urban VE compared to empirical by site.
+# 2. create graph with rural and urban matrices.
+# 3. combine graphs.
