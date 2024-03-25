@@ -5,6 +5,9 @@
 # modified 03/13/2024 - 2021 Prem et al matrices stratified by rural/urban
 # ------------------------------------------------------------------------------
 
+# First, let us run the _v1 model to get the VE values for empirical data.
+# source("03_mozambique_model_v1.R")
+
 
 #---------- Prem Rural Matrix ----------#
 moz_prem_rural <- read.csv("../../data/clean/moz_prem_2021_rural.csv")
@@ -43,10 +46,10 @@ moz_prem_rural <- moz_prem_rural %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr_rural <- read.csv("../../data/clean/agecat_5_rural.csv")
+moz_pop_5yr_rural <- read.csv("../../data/clean/moz_agecat_5yr_rural.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr_rural <- read.csv("../../data/clean/agecat_10_total.csv") %>%
+moz_pop_10yr_rural <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
@@ -78,7 +81,7 @@ premmatrix_rural <- ggplot(moz_prem10_rural, aes(x = part_age2, y = cont_age2, f
        title = "Prem et al.") +
   geom_text(aes(label=round(contacts, digits=1)), 
             colour = "black", check_overlap = TRUE, size=2) +
- axis_text_theme2 +
+  axis_text_theme2 +
   theme(axis.text.x = element_text(size = 10, angle=90, hjust = 1),
         legend.position = "top",
         legend.direction  = "horizontal")
@@ -121,10 +124,10 @@ moz_prem_urban <- moz_prem_urban %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr_urban <- read.csv("../../data/clean/agecat_5_urban.csv")
+moz_pop_5yr_urban <- read.csv("../../data/clean/moz_agecat_5yr_urban.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr_urban <- read.csv("../../data/clean/agecat_10_urban.csv") %>%
+moz_pop_10yr_urban <- read.csv("../../data/clean/moz_agecat_10yr_urban.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
@@ -156,7 +159,7 @@ premmatrix_urban <- ggplot(moz_prem10_urban, aes(x = part_age2, y = cont_age2, f
        title = "Prem et al.") +
   geom_text(aes(label=round(contacts, digits=1)), 
             colour = "black", check_overlap = TRUE, size=2) +
- axis_text_theme2 +
+  axis_text_theme2 +
   theme(axis.text.x = element_text(size = 10, angle=90, hjust = 1),
         legend.position = "top",
         legend.direction  = "horizontal")
@@ -407,13 +410,13 @@ seirmod <- function(t, t0, parms) {
 
 # prem et al contact patterns
 param.prem.rural <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.020862535,
-                        c11=8.1, c12=3.7, c13=2.5, c14=4.0, c15=2.6, c16=2.3, c17=2.0,
-                        c21=2.5, c22=10.9, c23=3.0, c24=2.3, c25=2.8, c26=2.2, c27=1.5,
-                        c31=1.7, c32=1.8, c33=5.6, c34=2.9, c35=2.4, c36=2.7, c37=1.3,
-                        c41=1.9, c42=1.4, c43=2.2, c44=3.4, c45=2.8, c46=2.3, c47=1.4,
-                        c51=1.0, c52=1.2, c53=1.4, c54=2.1, c55=2.6, c56=2.2, c57=1.1,
-                        c61=0.7, c62=0.6, c63=0.9, c64=1.2, c65=1.4, c66=1.7, c67=0.8,
-                        c71=0.7, c72=0.7, c73=0.8, c74=0.9, c75=1.0, c76=1.1, c77=1.0)
+                              c11=8.1, c12=3.7, c13=2.5, c14=4.0, c15=2.6, c16=2.3, c17=2.0,
+                              c21=2.5, c22=10.9, c23=3.0, c24=2.3, c25=2.8, c26=2.2, c27=1.5,
+                              c31=1.7, c32=1.8, c33=5.6, c34=2.9, c35=2.4, c36=2.7, c37=1.3,
+                              c41=1.9, c42=1.4, c43=2.2, c44=3.4, c45=2.8, c46=2.3, c47=1.4,
+                              c51=1.0, c52=1.2, c53=1.4, c54=2.1, c55=2.6, c56=2.2, c57=1.1,
+                              c61=0.7, c62=0.6, c63=0.9, c64=1.2, c65=1.4, c66=1.7, c67=0.8,
+                              c71=0.7, c72=0.7, c73=0.8, c74=0.9, c75=1.0, c76=1.1, c77=1.0)
 
 param.prem.urban <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.017250615,
                               c11=9.9, c12=3.5, c13=2.0, c14=3.3, c15=2.3, c16=1.8, c17=1.7,
@@ -427,29 +430,29 @@ param.prem.urban <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.017250615,
 ### Initial conditions
 # prem rural with vaccine
 init.vax.prem.rural <- init.dcm(s.num.1 = 0.50*6782044, s.v.num.1 = 0.50*6782044, i.num.1 = 1, r.num.1 = 0,
-                          s.num.2 = 0.50*5090656, s.v.num.2 = 0.50*5090656, i.num.2 = 1, r.num.2 = 0,
-                          s.num.3 = 0.50*3120038, s.v.num.3 = 0.50*3120038, i.num.3 = 1, r.num.3 = 0,
-                          s.num.4 = 0.50*1917767, s.v.num.4 = 0.50*1917767, i.num.4 = 1, r.num.4 = 0,
-                          s.num.5 = 0.50*1461670, s.v.num.5 = 0.50*1461670, i.num.5 = 1, r.num.5 = 0,
-                          s.num.6 = 0.50*887489, s.v.num.6 = 0.50*887489, i.num.6 = 1, r.num.6 = 0,
-                          s.num.7 = 0.50*1013562, s.v.num.7 = 0.50*1013562, i.num.7 = 1, r.num.7 = 0,
-                          si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0, si.flow.5 = 0,
-                          si.flow.6 = 0, si.flow.7 = 0,
-                          svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                          svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                                s.num.2 = 0.50*5090656, s.v.num.2 = 0.50*5090656, i.num.2 = 1, r.num.2 = 0,
+                                s.num.3 = 0.50*3120038, s.v.num.3 = 0.50*3120038, i.num.3 = 1, r.num.3 = 0,
+                                s.num.4 = 0.50*1917767, s.v.num.4 = 0.50*1917767, i.num.4 = 1, r.num.4 = 0,
+                                s.num.5 = 0.50*1461670, s.v.num.5 = 0.50*1461670, i.num.5 = 1, r.num.5 = 0,
+                                s.num.6 = 0.50*887489, s.v.num.6 = 0.50*887489, i.num.6 = 1, r.num.6 = 0,
+                                s.num.7 = 0.50*1013562, s.v.num.7 = 0.50*1013562, i.num.7 = 1, r.num.7 = 0,
+                                si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0, si.flow.5 = 0,
+                                si.flow.6 = 0, si.flow.7 = 0,
+                                svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
+                                svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
 
 # prem rural with no vaccine
 init.novax.prem.rural <- init.dcm(s.num.1 = 6782044, s.v.num.1 = 0, i.num.1 = 1, r.num.1 = 0,
-                            s.num.2 = 5090656, s.v.num.2 = 0, i.num.2 = 1, r.num.2 = 0,
-                            s.num.3 = 3120038, s.v.num.3 = 0, i.num.3 = 1, r.num.3 = 0,
-                            s.num.4 = 1917767, s.v.num.4 = 0, i.num.4 = 1, r.num.4 = 0,
-                            s.num.5 = 1461670, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
-                            s.num.6 = 887489, s.v.num.6 = 0, i.num.6 = 1, r.num.6 = 0,
-                            s.num.7 = 1013562, s.v.num.7 = 0, i.num.7 = 1, r.num.7 = 0,
-                            si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0, 
-                            si.flow.5 = 0, si.flow.6 = 0, si.flow.7 = 0,
-                            svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
-                            svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
+                                  s.num.2 = 5090656, s.v.num.2 = 0, i.num.2 = 1, r.num.2 = 0,
+                                  s.num.3 = 3120038, s.v.num.3 = 0, i.num.3 = 1, r.num.3 = 0,
+                                  s.num.4 = 1917767, s.v.num.4 = 0, i.num.4 = 1, r.num.4 = 0,
+                                  s.num.5 = 1461670, s.v.num.5 = 0, i.num.5 = 1, r.num.5 = 0,
+                                  s.num.6 = 887489, s.v.num.6 = 0, i.num.6 = 1, r.num.6 = 0,
+                                  s.num.7 = 1013562, s.v.num.7 = 0, i.num.7 = 1, r.num.7 = 0,
+                                  si.flow.1 = 0, si.flow.2 = 0, si.flow.3 = 0, si.flow.4 = 0, 
+                                  si.flow.5 = 0, si.flow.6 = 0, si.flow.7 = 0,
+                                  svi.flow.1 = 0, svi.flow.2 = 0, svi.flow.3 = 0, svi.flow.4 = 0,
+                                  svi.flow.5 = 0, svi.flow.6 = 0, svi.flow.7 = 0)
 
 # prem urban with vaccine
 init.vax.prem.urban <- init.dcm(s.num.1 = 0.50*2884776, s.v.num.1 = 0.50*2884776, i.num.1 = 1, r.num.1 = 0,
@@ -574,8 +577,130 @@ AR.prem.urban.60 <- print(AR(df.novax.prem.urban$si.flow.7, init.novax.prem.urba
 ARv.prem.urban.60 <- print(ARv(df.vax.prem.urban$si.flow.7, init.novax.prem.urban$s.num.7)) 
 ov.eff.prem.urban.60 <- print(overall.eff(df.vax.prem.urban$si.flow.7, df.novax.prem.urban$si.flow.7)) 
 
+
 # # NEXT STEPS
 # 1. create VE dataframes with: empirical rural+urban and Prem rural+urban_day1_contacts
+# Create a df for overall attack rates
+OE.empirical.rur <- rbind(ov.eff.rur.0_9, ov.eff.rur.10_19, ov.eff.rur.20_29, ov.eff.rur.30_39, 
+                          ov.eff.rur.40_49, ov.eff.rur.50_59, ov.eff.rur.60)
+OE.empirical.urb <- rbind(ov.eff.urb.0_9, ov.eff.urb.10_19, ov.eff.urb.20_29, ov.eff.urb.30_39, 
+                          ov.eff.urb.40_49, ov.eff.urb.50_59, ov.eff.urb.60)
+OE.rural.prem <- rbind(ov.eff.prem.rural.0_9, ov.eff.prem.rural.10_19, ov.eff.prem.rural.20_29, 
+                       ov.eff.prem.rural.30_39, ov.eff.prem.rural.40_49, ov.eff.prem.rural.50_59, 
+                       ov.eff.prem.rural.60)
+OE.urban.prem <- rbind(ov.eff.prem.urban.0_9, ov.eff.prem.urban.10_19, ov.eff.prem.urban.20_29, 
+                       ov.eff.prem.urban.30_39, ov.eff.prem.urban.40_49, ov.eff.prem.urban.50_59, 
+                       ov.eff.prem.urban.60)
+
+OE_v3 <- cbind(OE.empirical.rur, OE.empirical.urb, OE.rural.prem, OE.urban.prem) %>%
+  reshape2::melt(id.vvars="Xax") %>%
+  mutate(site = case_when(Var2 == 1 ~ "ER",
+                          Var2 == 2 ~ "EU",
+                          Var2 == 3 ~ "SR",
+                          Var2 == 4 ~ "SU")) %>%
+  mutate(study_site = case_when(site == "ER" ~ "Rural",
+                                site == "SR" ~ "Rural",
+                                site == "EU" ~ "Urban",
+                                site == "SU" ~ "Urban")) %>%
+  mutate(age_group = case_when(Var1 == "ov.eff.rur.0_9" ~ "0-9y",
+                               Var1 == "ov.eff.rur.10_19" ~ "10-19y",
+                               Var1 == "ov.eff.rur.20_29" ~ "20-29y",
+                               Var1 == "ov.eff.rur.30_39" ~ "30-39y",
+                               Var1 == "ov.eff.rur.40_49" ~ "40-49y",
+                               Var1 == "ov.eff.rur.50_59" ~ "50-59y",
+                               Var1 == "ov.eff.rur.60" ~ "60+y"))
+
+data4 <- OE_v3 %>%
+  # filter(site != "Urban") %>%
+  select(Var1, site, value) %>%
+  mutate(site = factor(site,
+                       levels = c("ER", "EU", "SR", "SU"))) %>%
+  mutate(study_site = case_when(site == "ER" ~ "Rural",
+                                site == "SR" ~ "Rural",
+                                site == "EU" ~ "Urban",
+                                site == "SU" ~ "Urban")) %>%
+  pivot_wider(names_from = site, values_from = value) %>%
+  mutate(change_prem_rural = SR - ER,
+         change_prem_urban = SU - EU) %>%
+  as.data.frame() %>%
+  mutate(age_group = case_when(Var1 == "ov.eff.rur.0_9" ~ "0-9y",
+                               Var1 == "ov.eff.rur.10_19" ~ "10-19y",
+                               Var1 == "ov.eff.rur.20_29" ~ "20-29y",
+                               Var1 == "ov.eff.rur.30_39" ~ "30-39y",
+                               Var1 == "ov.eff.rur.40_49" ~ "40-49y",
+                               Var1 == "ov.eff.rur.50_59" ~ "50-59y",
+                               Var1 == "ov.eff.rur.60" ~ "60+y")) %>%
+  select(-c(Var1))
+
 # 2. create graph with Prem rural and urban VE compared to empirical by site.
-# 2. create graph with rural and urban matrices.
-# 3. combine graphs.
+# combined overall VE for Prem, rural and urban
+oe_rural_v3 <- ggplot() + 
+  geom_segment(data = data4,
+               aes(x = SR, xend = ER, y = age_group, yend = age_group),
+               col = 'grey40',
+               linewidth = 1.25) +
+  geom_point(
+    data = OE_v3 %>% filter(study_site == "Rural"),
+    aes(x = value, y = age_group, fill = site), 
+    size = 3,
+    shape = 21) +
+  axis_text_theme2 +
+  labs(
+    x = 'Overall VE (%)',
+    y = 'Age group',
+    title = 'Rural') +
+  scale_fill_manual(values = c("#d8b365", "#000000")) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = c(0.15, 0.8),
+    legend.direction = "vertical")
+# oe_rural_v3
+
+oe_urban_v3 <- ggplot() + 
+  geom_segment(data = data4,
+               aes(x = SU, xend = EU, y = age_group, yend = age_group),
+               col = 'grey40',
+               linewidth = 1.25) +
+  geom_point(
+    data = OE_v3 %>% filter(study_site == "Urban"),
+    aes(x = value, y = age_group, fill = site), 
+    size = 3,
+    shape = 21) +
+  axis_text_theme2 +
+  labs(
+    x = 'Overall VE (%)',
+    y = 'Age group',
+    title = 'Urban') +
+  scale_fill_manual(values = c("#5ab4ac", "#000000")) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 0),
+    legend.position = c(0.15, 0.8),
+    legend.direction = "vertical")
+# oe_urban_v3
+
+oe_combined_v3 <- oe_rural_v3 | oe_urban_v3
+oe_combined_v3
+ggsave(oe_combined_v3, filename = "output/figs/oe_fig_site_2021data.pdf",
+       height=4, width=8, dpi=300,
+       bg="#FFFFFF") 
+
+# 2. combine graphs.
+combined_model_figure_v3 <- adjusted_matrix / oe_combined_v3
+# combined_model_figure_v3
+# 
+combined_model_figure_v3 <- wrap_plots(adjusted_matrix, oe_combined_v3) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=2, heights = c(600))
+
+ggsave(combined_model_figure_v3, filename = "output/figs/fig2_matrix_model_2021data.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF") 
+
+cat("End of model _v3 code.")
