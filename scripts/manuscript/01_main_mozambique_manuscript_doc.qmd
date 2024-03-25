@@ -32,9 +32,10 @@ source("02_mozambique_analysis_code.R")
 
 ## 1. this uses 2017 Prem data.
 #source("03_mozambique_model.R")
+source("03_mozambique_model_v1.R")
 
 ## 2. this uses 2021 Prem data, matrices not stratified into rural and urban 
-source("03_mozambique_model_v2.R")
+# source("03_mozambique_model_v2.R")
 
 ## 3. this uses 2021 Prem data, matrices stratified into rural and urban 
 source("03_mozambique_model_v3.R")
