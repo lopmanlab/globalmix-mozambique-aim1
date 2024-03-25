@@ -1,5 +1,5 @@
 ###############################################################################  
-# This file contains scripts to analyze and visualize age-structured contacts
+# This file contains scripts to analyze and visualize place use data.
 # Author: Sara Kim
 # Date: 08/18/2023
 # this one uses Prem 2017 data.
@@ -249,7 +249,8 @@ ruralmatrix <- mat_r %>%
             colour = "black", check_overlap = TRUE, size=2) +
   axis_text_theme2 +
   theme(legend.position = "top",
-        legend.direction  = "horizontal")
+        legend.direction  = "horizontal",
+        axis.text.x = element_text(angle=90))
 # ruralmatrix
 
 ### urban
@@ -273,12 +274,13 @@ urbanmatrix <- mat_u %>%
             check_overlap = TRUE, size=2) +
   axis_text_theme2 +
   theme(legend.position = "top",
-        legend.direction  = "horizontal")
-# urbanmatrix 
+        legend.direction  = "horizontal",
+        axis.text.x = element_text(angle=90))
+# urbanmatrix
 
 
 # generate prem matrix
-# source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
+# source("scripts/manuscript/03b_mozambique_prem_matrix.R")
 ### read in social contact patterns
 # default is by 5 year age groups
 moz_prem <- read.csv("../../data/clean/moz_prem_2017.csv")
@@ -319,10 +321,10 @@ moz_prem <- moz_prem %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
+moz_pop_5yr <- read.csv("../../data/clean/moz_agecat_5yr_total.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
+moz_pop_10yr <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
@@ -356,7 +358,9 @@ premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contac
             colour = "black", check_overlap = TRUE, size=2) +
   axis_text_theme2 +
   theme(legend.position = "top",
-        legend.direction  = "horizontal")
+        legend.direction  = "horizontal",
+        axis.text.x = element_text(angle=90))
+
 # premmatrix
 # axis.text.y = element_blank(),
 # axis.title.y = element_blank()
@@ -1041,7 +1045,7 @@ fig_model <- wrap_plots(rural_model,
   plot_layout(nrow=3, heights = c(800, 800, 800))
 # fig_model
 # 
-# ggsave(fig_model, filename = "../../output/figs/fig_modelplot.pdf",
+# ggsave(fig_model, filename = "output/figs/fig_modelplot.pdf",
 #        height=8, width=8, dpi=300,
 #        bg="#FFFFFF")
 
@@ -1128,7 +1132,7 @@ urban_prem
 
 sites_vax <- rural_prem / urban_prem
 
-ggsave(sites_vax, filename = "../../output/figs/fig_siteARV_2017data.pdf",
+ggsave(sites_vax, filename = "output/figs/fig_siteARV_2017data.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1206,7 +1210,7 @@ oe_combined <- ggplot() +
     legend.direction = "vertical")
 oe_combined
 
-ggsave(oe_combined, filename = "../../output/figs/oe_fig_site_2017data.pdf",
+ggsave(oe_combined, filename = "output/figs/oe_fig_site_2017data.pdf",
        height=4, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1219,7 +1223,7 @@ combined_model_figure <- wrap_plots(adjusted_matrix, oe_combined) +
   plot_layout(nrow=2, heights = c(600))
 combined_model_figure
 
-ggsave(combined_model_figure, filename = "../../output/figs/fig2_matrix_model_2017data.pdf",
+ggsave(combined_model_figure, filename = "output/figs/fig2_matrix_model_2017data.pdf",
        height=6, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1270,7 +1274,7 @@ oe_urban_prem <- ggplot() +
 
 # oe_sites_vax <- oe_rural_prem / oe_urban_prem
 # 
-# ggsave(oe_sites_vax, filename = "../../output/figs/oe_fig_site.pdf",
+# ggsave(oe_sites_vax, filename = "output/figs/oe_fig_site.pdf",
 #        height=8, width=8, dpi=300,
 #        bg="#FFFFFF") 
 ################
@@ -1354,6 +1358,7 @@ fig_model2
 ggsave(fig_model2, filename = "../../output/figs/fig_modelplot_v2_2017data.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
+
 
 # # ADDED BY MCK TO TEST
 # modelplots <- plot_grid(ruralmatrix, urbanmatrix,
