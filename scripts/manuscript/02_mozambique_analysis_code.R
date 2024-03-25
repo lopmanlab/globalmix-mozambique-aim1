@@ -188,7 +188,7 @@ table1 <- participants %>%
 # check homemaker, college
 
 # ## save table as text
-table1
+table2
 
 
 # label: fig-participant-summary-agesex
@@ -1712,13 +1712,14 @@ table2 <- contacts %>%
 results_list <- list(0)  ## empty list
 
 ## specify participant characteristic stratification for cross tabs/analysis
-participant_variables <- data.frame(var=c("participant_sex","participant_age",  
-                                          "occupation", "hh_size_cat", "hh_membership",
+participant_variables <- data.frame(var=c("participant_sex", "participant_age",  
+                                          "occupation", "hh_size_cat",
                                           "enrolled_school", "weekday", "ari_symptom", 
-                                          "age_symptom"),
+                                          "age_symptom"), #  "hh_membership",
                                     name=c("Sex", "Age", "Occupation", "Household size",
-                                           "Household membership",  "Enrolled in school", 
+                                           "Enrolled in school", 
                                            "Weekday/Weekend", "ARI symptoms", "AGE symptoms")) %>% 
+  # "Household membership",  
   mutate(var = as.character(var),
          name = as.character(name))
 
@@ -1822,7 +1823,7 @@ res_restruct<- function(res) {
 table2 <- res_restruct(results_list)
 # colnames(table3) <- c("Total (%)", "Median", "Mean", "Median", "Mean")
 
-table2 <- kable(table3, digits = 0, align = "r") %>%
+table2 <- kable(table2, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 table2
@@ -1847,7 +1848,7 @@ for (i in 1:nrow(participant_variables)){
   colnames(t0)[1:2] <- c("Total","Col") 
   Tot <- rep("",5)
   
-  # Rural median contacts for day 1
+  # Rural median contacts for day 2
   t1_median <- df_contact_d2 %>%
     dplyr::filter(study_site == "Rural") %>%
     # since this is total contacts per person, keep only 1 distinct record
@@ -1858,7 +1859,7 @@ for (i in 1:nrow(participant_variables)){
   t1_median$med_contact <- as.character(paste(
     t1_median$X50., " (",t1_median$X25., "-", t1_median$X75.,")", sep=""))
   
-  # Calculate mean and 95% confidence intervals for day 1
+  # Calculate mean and 95% confidence intervals for day 2
   t1_mean <- df_contact_d2 %>%
     dplyr::filter(study_site == "Rural") %>%
     distinct(rec_id, .keep_all = TRUE) %>%
@@ -1883,7 +1884,7 @@ for (i in 1:nrow(participant_variables)){
   t2_median$med_contact <- as.character(paste(
     t2_median$X50.," (",t2_median$X25.,"-",t2_median$X75.,")",sep="")) # Formatting for export
   
-  # Calculate mean and 95% confidence intervals for day 1
+  # Calculate mean and 95% confidence intervals for day 2
   t2_mean <- df_contact_d2 %>%
     dplyr::filter(study_site == "Urban") %>%
     distinct(rec_id, .keep_all = TRUE) %>%
@@ -1994,68 +1995,5 @@ occupation_page_plt <- fun_occupation_plot(occupation_page)
 #        bg="#FFFFFF")
 #        
 
-
-
-### TRIAL TO USE SOCIALMIXR PACKAGE
-# library(socialmixr)
-# 
-# 
-# rural_data <- df_contact_d1 %>%
-#   filter(study_site == "Rural") %>%
-#   select(rec_id, study_site, age, participant_age, participant_sex, contact_age, contact_sex, study_day) %>%
-#   mutate(
-#     country = "Mozambique",
-#     contact_age = as.character(contact_age, participant_age),
-#     cnt_age_est_min = case_when(
-#       contact_age == "<6mo" ~ 0,
-#       contact_age == "6-11mo" ~ 6,
-#       contact_age == "1-4y" ~ 10,
-#       contact_age == "5-9y" ~ 15,
-#       contact_age == "10-14y" ~ 20,
-#       contact_age == "15-19y" ~ 25,
-#       contact_age == "20-29y" ~ 30,
-#       contact_age == "30-39y" ~ 40,
-#       contact_age == "40-59y" ~ 50,
-#       contact_age == "60+y" ~ 60,
-#       TRUE ~ NA_real_),
-#     
-#     cnt_age_est_max = case_when(
-#       contact_age == "<6mo" ~ 5,
-#       contact_age == "6-11mo" ~ 9,
-#       contact_age == "1-4y" ~ 14,
-#       contact_age == "5-9y" ~ 19,
-#       contact_age == "10-14y" ~ 24,
-#       contact_age == "15-19y" ~ 29,
-#       contact_age == "20-29y" ~ 39,
-#       contact_age == "30-39y" ~ 49,
-#       contact_age == "40-59y" ~ 59,
-#       contact_age == "60+y" ~ 100,
-#       TRUE ~ NA_real_),
-#   )
-# 
-# # age_limits =c(0,5,4,9,14,19,29,39,59)
-# 
-# rural_data <- survey(
-#   participants = rural_data %>%
-#     select(rec_id, age, participant_age, participant_sex, country) %>%
-#     rename("part_age" = "age",
-#            "part_gender" = "participant_sex",
-#            "part_id" = "rec_id") %>%
-#     # mutate(part_age = as.character(part_age)) %>%
-#     unique(),
-#   
-#   contacts = rural_data %>%
-#     dplyr::filter(study_day==1) %>%
-#     select(rec_id, cnt_age_est_min, cnt_age_est_max, contact_sex) %>%
-#     rename("cnt_gender" = "contact_sex",
-#            "part_id" = "rec_id")
-# )
-# 
-# socialmixr::contact_matrix(rural_data, 
-#                            countries = "Mozambique",
-#                            # age.limits = age_limits,
-#                            missing.participant.age = NULL,
-#                            symmetric = TRUE)
-# 
 
 cat("End of main analysis script")
