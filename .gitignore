@@ -18,8 +18,9 @@ output/figs/.DS_Store
 # R Environment Variables
 .Renviron
 
-# data download file
+# data files
 scripts/00_data_download.R
+scripts/01_contact_data_cleaning_maion.Rmd
 
 # folders
 scripts/old.zip
