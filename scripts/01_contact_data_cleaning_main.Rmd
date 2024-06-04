@@ -305,7 +305,7 @@ participant <- participant %>%
                                        occupation___3 == 1 ~ "Business person",
                                        occupation___4 == 1 ~ "Casual laboror",
                                        occupation___5 == 1 ~ "Farmer",
-                                       occupation___6 == 1 ~ "Other", # fisherman, n=2
+                                       occupation___6 == 1 ~ "Fisherman",
                                        occupation___7 == 1 ~ "Retired",
                                        occupation___8 == 1 ~ "Homemaker/Housewife",
                                        occupation___9 == 1 ~ "Other"),
@@ -316,11 +316,11 @@ participant <- participant %>%
                                        TRUE ~ occupation))
 participant$occupation <- factor(participant$occupation, 
                                  levels = c("Child", "Unemployed", "Student", "Homemaker/Housewife",
-                                            "Casual laboror", "Farmer", 
+                                            "Casual laboror", "Farmer", "Fisherman", 
                                             "Business person", "Office worker", "Retired",
                                             "Other"),
                                  labels = c("Child", "Unemployed", "Student", "Homemaker",
-                                            "Casual laboror", "Farmer",
+                                            "Casual laboror", "Farmer", "Fisherman", 
                                             "Business person", "Office worker", "Retired",
                                             "Other"))
 label(participant$occupation) <- "What is your occupation?"
@@ -1562,8 +1562,7 @@ contact_nonhh_all <- contact_nonhh_all %>%
   select(-c(study_site, contact_count, contact_age_yn, contact_id,
             age_group_contact, age_contact, location_contact_other))
 
-contact_all <- rbind(contact_hh_all, contact_nonhh_all) %>%
-  left_join(study_site, by="rec_id")
+contact_all <- rbind(contact_hh_all, contact_nonhh_all) 
 
 rm(contact_hh_all, contact_nonhh_all)
 ```
@@ -1686,6 +1685,24 @@ contact_all <- contact_all %>%
   filter(hh_member_relationship != "Self") 
 # 4487/36529 (12%) contacts dropped, 88 higher than the final total number of participants
 
+# contact_all <- contact_all %>% 
+#   dplyr::mutate(share_room = case_when(share_room == 0 ~ "No",
+#                                        share_room == 1 ~ "Yes"))
+# 
+# contact_all = contact_all %>% 
+#   dplyr::mutate(share_bed = case_when(share_bed == 0 ~ "No",
+#                                       share_bed == 1 ~ "Yes"))
+# 
+# contact_all = contact_all %>% 
+#   dplyr::mutate(cook_food = case_when(cook_food == 0 ~ "No",
+#                                       cook_food == 1 ~ "Yes"))
+```
+
+
+
+
+```{r}
+
 # survey date
 # participation day, weekday/weekend, weeknumber
 contact_all$day_of_week <- weekdays(contact_all$survey_date) 
@@ -1776,7 +1793,7 @@ participants_aim2_index <- participant %>%
   filter(aim==2,
          isindex == 1)
          
-participants_aim1 <- rbind(participants_aim1, participants_aim2_index) %>%
+participants_aim1b <- rbind(participants_aim1, participants_aim2_index) %>%
   rename(# participant_sex = sex, participant_age = participant_age,
     highest_education = highest_educ,
     number_sibling = num_sibling) %>%
@@ -1786,7 +1803,7 @@ participants_aim1 <- rbind(participants_aim1, participants_aim2_index) %>%
 
 # add index contacts from aim 2 to aim 1 data for analysis
 contacts_aim1 <- contact_all %>% 
-  filter(aim.x==0)  # 19409 records previous; now 21390; now 27569; now 15878 records; 
+  filter(aim==0)  # 19409 records previous; now 21390; now 27569
 
 # filter based on index participant list rather than age of contacts
 contacts_aim2_index <- contact_all %>% 
@@ -1799,9 +1816,9 @@ contacts_aim1 <- rbind(contacts_aim1, contacts_aim2_index) # 21223 records; now 
 
 
 # save participant and contact data for aim 1
-# this has been renamed to _aim1 to save the new data after correction in line 1969. MCK
-saveRDS(participants_aim1, "../data/clean/moz_participant_data_aim1.RDS")
-saveRDS(contacts_aim1, "../data/clean/moz_contact_data_aim1.RDS")
+# this has been renamed to _aim1b to save the new data after correction in line 1969. MCK
+saveRDS(participants_aim1b, "../data/clean/participant_data_aim1b.RDS")
+saveRDS(contacts_aim1, "../data/clean/contact_data_aim1b.RDS")
 
 ```
 
@@ -1810,9 +1827,6 @@ saveRDS(contacts_aim1, "../data/clean/moz_contact_data_aim1.RDS")
 
 ```{r}
 # aim 2 data
-
-# aim 2 path
-AIM2_EXPORT_PATH <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/Globalmix/Mozambique/Quantitative/aim_2/analysis/diary/data"
   
 # extract all aim 2 participants and contacts
 participants_aim2 <- participant %>% 
@@ -1834,31 +1848,36 @@ participant_aim2_recid <- contact_all %>%
 participants_aim2 <- participants_aim2 %>% 
   filter(rec_id %in% unlist(participant_aim2_recid$rec_id))
 
-contacts_aim2 <- contact_all %>%   
+contacts_aim2b <- contact_all %>%   
   filter(rec_id %in% unlist(participant_aim2_recid$rec_id))
 
   
 # select list of contacts for participants in participants_aim2 file
-# contacts_aim2 <- contact_all %>%   
+# contacts_aim2b <- contact_all %>%   
 #   filter(rec_id %in% unlist(participants_aim2$rec_id)) %>%
 #   rename(contact_age = age_group_contact)
-# length(unique(contacts_aim2$rec_id))
+# length(unique(contacts_aim2b$rec_id))
 #   # filter(aim==1) %>% # initial filter, changed to below
 #   filter(rec_id %in% unlist(participants_aim2$rec_id)) %>%
 #   rename(contact_age = age_group_contact)
-# length(unique(contacts_aim2$rec_id))
+# length(unique(contacts_aim2b$rec_id))
 # which means that there are some participants who recorded ZERO contacts.
 # this cannot be the case, so we drop these individuals. coded above.
 
 # save participant and contact data for aim 2
-saveRDS(participants_aim2, paste0(AIM2_EXPORT_PATH, "/moz_participant_data_aim2.RDS"))
-saveRDS(contacts_aim2, paste0(AIM2_EXPORT_PATH, "/moz_contact_data_aim2.RDS"))
+saveRDS(participants_aim2, "../data/clean/participant_data_aim2b.RDS")
+saveRDS(contacts_aim2b, "../data/clean/contact_data_aim2b.RDS")
+
+
+saveRDS(participants_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/participant_data_aim2.RDS")
+
+saveRDS(contacts_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/contact_data_aim2.RDS")
 ```
 
 \
 \
 
-```{r participant-summary-aim1}
+```{r participant-summary-aim1b}
 participant_summary_aim1 <- participants_aim1 %>%
   select("study_site", "participant_sex", "participant_age", "read_write", 
          "enrolled_school", "highest_education", "school_level", "occupation") %>%
@@ -1868,10 +1887,37 @@ participant_summary_aim1 <- participants_aim1 %>%
               digits = all_categorical() ~ 0) %>%
   bold_labels() %>%
   modify_header(label = "**Variable**") %>%
-  modify_caption("**Aim 1 Particiant Information for Mozambique**")
+  modify_caption("**Aim 1 Particiant Individual Information in Mozambique**")
 
 participant_summary_aim1
 # this includes aim 2 index participants
+```
+
+\
+\
+
+```{r contact-summary-all, echo=FALSE}
+
+# library(gtsummary)
+contact_summary_all <- contact_all %>%
+  # filter(aim==1) %>%
+  select("study_site","contact_sex","age_group_contact","fromdayone", 
+         "hh_member_relationship", "hh_membership",
+         "touch_contact","where_contact","contact_mask","duration_contact",
+         "frequency_contact","known_contact","location_contact___0",
+         "location_contact___1","location_contact___2","location_contact___3",
+         "location_contact___4","location_contact___5","location_contact___6",
+         "location_contact___7","location_contact___8","location_contact___9",
+         "location_contact___10","location_contact___11") %>%
+  # fct_explicit_na(na_level = "Missing") %>%
+  tbl_summary(by=study_site,
+              percent="column",
+              digits = all_categorical() ~ 0) %>%
+  bold_labels() %>%
+  modify_header(label = "**Variable**") %>%
+  modify_caption("**Baseline contact data**")
+
+contact_summary_all
 ```
 
 \
@@ -1899,7 +1945,7 @@ contact_summary_aim1
 ```
 
 
-```{r hh_survey, include=FALSE}
+```{r hh_survey}
 # create the data for household information survey 
 
 hh_survey <- data %>% 
@@ -2107,11 +2153,14 @@ label(hh_survey$hh_tb) -> "Has anyone in your household been diagnosed with Tube
 hh_id <- hh_survey %>%
   select(rec_id, hh_id)
 
+
+
 # keep aim 1 data only
 hh_survey_aim1 <- hh_survey %>%
-  filter(rec_id %in% participants_aim1$rec_id) %>%
+  filter(rec_id %in% participants_aim1b$rec_id) %>%
   select(-c(hoh_id))
-saveRDS(hh_survey_aim1, "../data/clean/moz_household_survey_aim1.RDS")
+
+saveRDS(hh_survey_aim1, "../data/clean/household_survey_aim1b.RDS")
 
 # keep aim 2 data only
 hh_survey_aim2 <- hh_survey %>%
@@ -2120,84 +2169,150 @@ hh_survey_aim2 <- hh_survey %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
-saveRDS(hh_survey_aim2, paste0(AIM2_EXPORT_PATH, "/moz_household_survey_aim2.RDS"))
+saveRDS(hh_survey_aim2, "../data/clean/household_survey_aim2b.RDS")
+
+saveRDS(hh_survey_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/household_survey_aim2.RDS")
+
+# rm(hh_survey, hh_survey_aim1, hh_survey_aim2)
 ```
 
 
-```{r locations-visited, include=FALSE}
+```{r locations-visited-d1}
 # create the data for participants' location visit information in 2 days 
 loc_visit_d1 <- data %>%
   # filter(rec_id %in% participant_ids) %>%
   dplyr::filter(redcap_repeat_instrument == "dirio_de_locais_visitados_dia_1") %>%
   select("rec_id", "place_visited_d1", "place_visited_d1_other",
-         "num_pax_place_d1", "time_visited_d1", "visited_frequency_d1") %>%
-  mutate(study_day = 1)
+         "num_pax_place_d1", "time_visited_d1", "visited_frequency_d1")
+# "redcap_event_name","redcap_repeat_instrument", "redcap_repeat_instance",
+# "dirio_de_locais_visitados_dia_1_complete")
 
-names(loc_visit_d1)[grep("_d1", names(loc_visit_d1))] <-
-  gsub("_d1", "", names(loc_visit_d1)[grep("_d1", names(loc_visit_d1))])
+loc_visit_d1 <- loc_visit_d1 %>%
+  mutate(place_visited_d1 = case_when(place_visited_d1 == 0 ~ "My home",
+                                      place_visited_d1 == 1~ "Other home",
+                                      place_visited_d1 == 2~ "School",
+                                      place_visited_d1 == 3~ "Work",
+                                      place_visited_d1 == 4~ "Transport/Hub",
+                                      place_visited_d1 == 5~ "Market/Shop",
+                                      place_visited_d1 == 6~ "Street",
+                                      place_visited_d1 == 7~ "Well",
+                                      place_visited_d1 == 8~ "Agricultural Field",
+                                      place_visited_d1 == 9~ "Playground",
+                                      place_visited_d1 == 10~ "Place of worship",
+                                      place_visited_d1 == 11~ "Other"))
 
+loc_visit_d1 = loc_visit_d1 %>%
+  dplyr::mutate(time_visited_d1 = case_when(time_visited_d1 == 0 ~ "<5 mins",
+                                            time_visited_d1 == 1 ~ "5-15 mins",
+                                            time_visited_d1 == 2 ~ "16-30 mins",
+                                            time_visited_d1 == 3 ~ "31 mins-1 hr",
+                                            time_visited_d1 == 4 ~ "1-4 hrs",
+                                            time_visited_d1 == 5 ~ ">4 hrs"),
+                factor(time_visited_d1, levels = c("<5 mins", "5-15 mins", "16-30 mins", 
+                                                   "31 mins-1 hr", "1-4 hrs", ">4 hrs")))
+label(loc_visit_d1$time_visited_d1) <- "How much time did you spend in this place?"
+
+loc_visit_d1 = loc_visit_d1 %>%
+  dplyr::mutate(visited_frequency_d1 = case_when(visited_frequency_d1 == 0 ~ "Never met before",
+                                                 visited_frequency_d1 == 1 ~ "Rarely",
+                                                 visited_frequency_d1 == 2 ~ "Daily/ almost daily",
+                                                 visited_frequency_d1 == 3 ~ "1-3 times per week",
+                                                 visited_frequency_d1 == 4 ~ "Once every 2 weeks",
+                                                 visited_frequency_d1 == 5 ~ "Once per month",
+                                                 visited_frequency_d1 == 6 ~ "Once every 3 months"),
+                factor(visited_frequency_d1, c("Never met before", "Rarely", "Daily/ almost daily",
+                                               "1-3 times per week", "Once every 2 weeks",
+                                               "Once per month", "Once every 3 months")))
+label(loc_visit_d1$visited_frequency_d1) <- "Besides this visit, how many times have you visited this place in the last 6 months?"
+
+# label(loc_visit_d1$dirio_de_locais_visitados_dia_1_complete) <- "Complete the location visit day 1 survey?"
+
+loc_visit_d1$study_day <- 1
+```
+
+
+```{r locations-visited-d2}
 loc_visit_d2 <- data %>%
   # filter(rec_id %in% participant_ids) %>%
   dplyr::filter(redcap_repeat_instrument == "dirio_de_locais_visitados_dia_2") %>%
   select("rec_id","place_visited_d2","place_visited_d2_other",
-         "num_pax_place_d2","time_visited_d2","visited_frequency_d2") %>%
-  mutate(study_day = 2)
+         "num_pax_place_d2","time_visited_d2","visited_frequency_d2")
+# "redcap_event_name","redcap_repeat_instrument", "redcap_repeat_instance",
+# "dirio_de_locais_visitados_dia_2_complete")
 
-names(loc_visit_d2)[grep("_d2", names(loc_visit_d2))] <-  
-  gsub("_d2", "", names(loc_visit_d2)[grep("_d2", names(loc_visit_d2))])
+loc_visit_d2 <- loc_visit_d2 %>%
+  mutate(place_visited_d2 = case_when(place_visited_d2 == 0 ~ "My home",
+                                      place_visited_d2 == 1~ "Other home",
+                                      place_visited_d2 == 2~ "School",
+                                      place_visited_d2 == 3~ "Work",
+                                      place_visited_d2 == 4~ "Transport/Hub",
+                                      place_visited_d2 == 5~ "Market/Shop",
+                                      place_visited_d2 == 6~ "Street",
+                                      place_visited_d2 == 7~ "Well",
+                                      place_visited_d2 == 8~ "Agricultural Field",
+                                      place_visited_d2 == 9~ "Playground",
+                                      place_visited_d2 == 10~ "Place of worship",
+                                      place_visited_d2 == 11~ "Other"))
 
-# combine data for location visit day 1 and day 2 together
-loc_visit <- rbind(loc_visit_d1, loc_visit_d2)
-
-
-loc_visit <- loc_visit %>%
-  mutate(place_visited = case_when(place_visited == 0 ~ "My home",
-                                      place_visited == 1~ "Other home",
-                                      place_visited == 2~ "School",
-                                      place_visited == 3~ "Work",
-                                      place_visited == 4~ "Transport/Hub",
-                                      place_visited == 5~ "Market/Shop",
-                                      place_visited == 6~ "Street",
-                                      place_visited == 7~ "Well",
-                                      place_visited == 8~ "Agricultural Field",
-                                      place_visited == 9~ "Playground",
-                                      place_visited == 10~ "Place of worship",
-                                      place_visited == 11~ "Other"))
-
-loc_visit <- loc_visit %>%
-  dplyr::mutate(time_visited = case_when(time_visited == 0 ~ "<5 mins",
-                                            time_visited == 1 ~ "5-15 mins",
-                                            time_visited == 2 ~ "16-30 mins",
-                                            time_visited == 3 ~ "31 mins-1 hr",
-                                            time_visited == 4 ~ "1-4 hrs",
-                                            time_visited == 5 ~ ">4 hrs"),
-                factor(time_visited, levels = c("<5 mins", "5-15 mins", "16-30 mins", 
+loc_visit_d2 <- loc_visit_d2 %>%
+  dplyr::mutate(time_visited_d2 = case_when(time_visited_d2 == 0 ~ "<5 mins",
+                                            time_visited_d2 == 1 ~ "5-15 mins",
+                                            time_visited_d2 == 2 ~ "16-30 mins",
+                                            time_visited_d2 == 3 ~ "31 mins-1 hr",
+                                            time_visited_d2 == 4 ~ "1-4 hrs",
+                                            time_visited_d2 == 5 ~ ">4 hrs"),
+                factor(time_visited_d2, levels = c("<5 mins", "5-15 mins", "16-30 mins", 
                                                    "31 mins-1 hr", "1-4 hrs", ">4 hrs")))
-label(loc_visit$time_visited) <- "How much time did you spend in this place?"
+label(loc_visit_d2$time_visited_d2) <- "How long did you spend in this place?"
 
-loc_visit <- loc_visit %>%
-  dplyr::mutate(visited_frequency = case_when(visited_frequency == 0 ~ "Never met before",
-                                                 visited_frequency == 1 ~ "Rarely",
-                                                 visited_frequency == 2 ~ "Daily/ almost daily",
-                                                 visited_frequency == 3 ~ "1-3 times per week",
-                                                 visited_frequency == 4 ~ "Once every 2 weeks",
-                                                 visited_frequency == 5 ~ "Once per month",
-                                                 visited_frequency == 6 ~ "Once every 3 months"),
-                factor(visited_frequency, c("Never met before", "Rarely", "Daily/ almost daily",
+loc_visit_d2 <- loc_visit_d2 %>%
+  dplyr::mutate(visited_frequency_d2 = case_when(visited_frequency_d2 == 0 ~ "Never met before",
+                                                 visited_frequency_d2 == 1 ~ "Rarely",
+                                                 visited_frequency_d2 == 2 ~ "Daily or almost daily",
+                                                 visited_frequency_d2 == 3 ~ "1-3 times per week",
+                                                 visited_frequency_d2 == 4 ~ "Once every 2 weeks",
+                                                 visited_frequency_d2 == 5 ~ "Once per month",
+                                                 visited_frequency_d2 == 6 ~ "Once every 3 months"),
+                factor(visited_frequency_d2, c("Never met before", "Rarely", "Daily/ almost daily",
                                                "1-3 times per week", "Once every 2 weeks",
                                                "Once per month", "Once every 3 months")))
-label(loc_visit$visited_frequency) <- "Besides this visit, how many times have you visited this place in the last 6 months?"
+label(loc_visit_d2$visited_frequency_d2) <- "Besides this visit, how many times have you visited this place in the last 6 months?"
 
+# label(loc_visit_d2$dirio_de_locais_visitados_dia_2_complete) <- "Complete the location visit day 2 survey?"
+
+loc_visit_d2$study_day <- 2
+```
+
+
+```{r locations-visited}
+# combine data for location visit day 1 and day 2 together
+names(loc_visit_d1)[grep("_d1", names(loc_visit_d1))] <-  gsub("_d1", "", 
+                                                               names(loc_visit_d1)[grep("_d1", names(loc_visit_d1))])
+# names(loc_visit_d1)[11] <- "survey_complete"
+
+names(loc_visit_d2)[grep("_d2", names(loc_visit_d2))] <-  gsub("_d2", "", 
+                                                               names(loc_visit_d2)[grep("_d2", names(loc_visit_d2))])
+# names(loc_visit_d2)[11] <- "survey_complete"
+
+loc_visit <- rbind(loc_visit_d1, loc_visit_d2)
+
+# keep only those in participants_id list
+loc_visit <- loc_visit %>%
+  left_join(participant, by='rec_id') %>%
+  filter(rec_id %in% participant_ids)
 
 # keep aim 1 data only
 loc_visit_aim1 <- loc_visit %>%
   filter(rec_id %in% participants_aim1$rec_id)
-saveRDS(loc_visit_aim1, "../data/clean/moz_locations_visited_data_aim1.RDS")
+saveRDS(loc_visit_aim1, "../data/clean/locations_visited_aim1.RDS")
 
-# aim 2 data
+# keep aim 2 data only
 loc_visit_aim2 <- loc_visit %>%
-  filter(rec_id %in% participants_aim2$rec_id)
-saveRDS(loc_visit_aim2, paste0(AIM2_EXPORT_PATH, "/moz_locations_visited_data_aim2.RDS"))
+  filter(rec_id %in% participants_aim2$rec_id)  %>%
+  # keep only rec_ids in the rurhhid and urbhhid list
+  filter(rec_id %in% hmid$rec_id)
+
+saveRDS(loc_visit_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/locations_visited_aim2.RDS")
 
 rm(loc_visit_d1, loc_visit_d2)
 ```
@@ -2208,7 +2323,7 @@ rm(loc_visit_d1, loc_visit_d2)
 # keep aim 1 data only
 exit_interview_aim1 <- exit %>%
   filter(rec_id %in% participants_aim1$rec_id)
-saveRDS(exit_interview_aim1, "../data/clean/moz_exit_interview_aim1.RDS")
+saveRDS(exit_interview_aim1, "../data/clean/exit_interview_aim1.RDS")
 
 # keep aim 2 data only
 exit_interview_aim2 <- exit %>%
@@ -2216,26 +2331,31 @@ exit_interview_aim2 <- exit %>%
   # keep only rec_ids in the rurhhid and urbhhid list
   filter(rec_id %in% hmid$rec_id)
 
-saveRDS(exit_interview_aim2, paste0(AIM2_EXPORT_PATH, "/moz_exit_interview_data_aim2.RDS"))
+saveRDS(exit_interview_aim2, "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/Mozambique/Quantitative/Aim_2/moz_analysis/joint_analysis/data/diary/exit_interview_aim2.RDS")
+
+# rm(exit_interview_aim1, exit_interview_aim2)
+
 ```
 
 
-```{r data-export-rds, echo=FALSE, include=FALSE}
+```{r data-export-rds, echo=FALSE}
 # Export data to GlobalMix shared folder.
 
-EXPORT_PATH1 <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/3.GlobalMix/Globalmix data/data/Mozambique/aim_1"
+EXPORT_PATH <- "~/Library/CloudStorage/OneDrive-EmoryUniversity/4.Data and Analysis/GlobalMix/globalmix-clean-country-data/Mozambique/aim_1/data"
 
-saveRDS(participants_aim1, paste0(EXPORT_PATH1, "/moz_participant_data_aim1.RDS"))
-saveRDS(contacts_aim1, paste0(EXPORT_PATH1, "/moz_contact_data_aim1.RDS"))
-saveRDS(hh_survey_aim1, paste0(EXPORT_PATH1, "/moz_household_survey_data_aim1.RDS"))
-saveRDS(loc_visit_aim1, paste0(EXPORT_PATH1, "/moz_locations_visited_data_aim1.RDS"))
-saveRDS(exit_interview_aim1, paste0(EXPORT_PATH1, "/moz_exit_interview_data_aim1.RDS"))
+saveRDS(participants_aim1, paste0(EXPORT_PATH, "/participant_data_aim1.RDS"))
+saveRDS(participants_aim2, paste0(EXPORT_PATH, "/participant_data_aim2.RDS"))
 
-EXPORT_PATH2 <- "/Users/mck/Library/CloudStorage/OneDrive-EmoryUniversity/3.GlobalMix/Globalmix data/data/Mozambique/aim_2"
+saveRDS(contacts_aim1, paste0(EXPORT_PATH, "/contact_data_aim1.RDS"))
+saveRDS(contacts_aim2, paste0(EXPORT_PATH, "/contact_data_aim2.RDS"))
 
-saveRDS(participants_aim2, paste0(EXPORT_PATH2, "/moz_participant_data_aim2.RDS"))
-saveRDS(contacts_aim2, paste0(EXPORT_PATH2, "/moz_contact_data_aim2.RDS"))
-saveRDS(hh_survey_aim2, paste0(EXPORT_PATH2, "/moz_household_survey_data_aim2.RDS"))
-saveRDS(loc_visit_aim2, paste0(EXPORT_PATH2, "/moz_locations_visited_data_aim2.RDS"))
-saveRDS(exit_interview_aim2, paste0(EXPORT_PATH2, "/moz_exit_interview_data_aim2.RDS"))
+saveRDS(hh_survey_aim1, paste0(EXPORT_PATH, "/household_survey_aim1.RDS"))
+saveRDS(hh_survey_aim2, paste0(EXPORT_PATH, "/household_survey_aim2.RDS"))
+
+saveRDS(loc_visit_aim1, paste0(EXPORT_PATH, "/locations_visited_aim1.RDS"))
+saveRDS(loc_visit_aim2, paste0(EXPORT_PATH, "/locations_visited_aim2.RDS"))
+
+saveRDS(exit_interview_aim1, paste0(EXPORT_PATH, "/exit_interview_aim1.RDS"))
+saveRDS(exit_interview_aim2, paste0(EXPORT_PATH, "/exit_interview_aim2.RDS"))
+
 ```
