@@ -11,7 +11,7 @@ scripts/manuscript/*.docx
 .RData
 .DS_Store
 scripts/.DS_Store
-data/.DS_Store
+data/clean/.DS_Store
 output/.DS_Store
 output/figs/.DS_Store
 
@@ -22,14 +22,20 @@ output/figs/.DS_Store
 scripts/00_data_download.R
 
 # folders
-scripts/old/*
+scripts/old.zip
 data/raw/*
-output/figs/*
+output/
 data/clean/old_data.zip
 
 # html files
 scripts/*.html
 scripts/02a_contact_analysis_main_v2_files
 scripts/extract_aim2_metadata_files
+scripts/manuscript/
+
+# sensor files
+data/sensor_metadata/
+
+
 
 
