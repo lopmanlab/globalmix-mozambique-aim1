@@ -2,8 +2,29 @@
 # This file contains scripts to analyze and visualize place use data.
 # Author: Sara Kim
 # Date: 08/18/2023
-# this one uses Prem 2017 data.
 ############################################################################### 
+
+
+### Check to see if there are IDs with no contacts reported
+# sum(!participants$rec_id %in% contacts$rec_id) # 0
+# 
+# missing <- participants %>% 
+#   filter(!rec_id %in% unlist(contacts$rec_id)) %>% 
+#   arrange(rec_id)
+# # 371, 754, 1996
+# 
+# # Remove those without contact diaries
+# participants <- participants %>%
+#   filter(!rec_id %in% unlist(missing$rec_id)) 
+# 
+# rm(missing)
+
+### Check those who live alone
+live_alone <- household %>% 
+  filter(rec_id %in% unlist(participants$rec_id)) %>%
+  filter(hh_occupants==1) 
+# 42
+
 
 ##### Data cleaning for socialmixr package
 contacts2 <- df_contact_d1 %>%
@@ -48,6 +69,16 @@ contacts2 <- contacts2 %>%
       TRUE ~ NA_character_
     )
   )
+
+#contacts <- contacts %>%
+ # mutate(
+  #  part_age = as.numeric(part_age),
+   # weight_cat = case_when(
+    #  participant_age == "<6mo" ~ "0",
+     # participant_age == "6-11mo" ~ "0",
+      #TRUE ~ participant_age
+    #)
+  #)
 
 ### read in population distribution
 pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
@@ -281,7 +312,8 @@ urbanmatrix <- mat_u %>%
 # source("../../scripts/manuscript/03b_mozambique_prem_matrix.R")
 ### read in social contact patterns
 # default is by 5 year age groups
-moz_prem <- read.csv("../../data/clean/moz_prem_2017.csv")
+# updated to 2021 contacts
+moz_prem <- read.csv("../../data/clean/moz_prem_2021.csv")
 
 ### Generate data frame of participant age groups for orig prem matrix matched to age groups for target matrix
 ### # EDIT 06/02: Age groups changed from 40-59 to 40-49 and 50-59
@@ -380,57 +412,57 @@ getr0 <- function(q, CM, d){
 }
 
 # globalmix rural matrix values
-rural <- c(2.98, 2.72, 1.47, 1.69, 1.37, 2.15, 1.49,
-           2.00, 7.47, 2.89, 2.34, 2.40, 2.77, 1.84,
-           0.74, 1.98, 1.77, 1.42, 1.26, 1.61, 0.99,
-           0.59, 1.10, 0.98, 2.12, 1.71, 2.07, 1.47,
-           0.30, 0.72, 0.55, 1.09, 1.70, 1.71, 1.22,
-           0.31, 0.54, 0.46, 0.86, 1.12, 1.69, 0.91,
-           0.22, 0.37, 0.30, 0.63, 0.83, 0.95, 0.99)
+rural <- c(2.39, 2.21, 1.22, 1.32, 1.15, 1.75, 1.20,
+           1.63, 7.41, 2.86, 2.28, 2.32, 2.82, 1.79,
+           0.61, 1.95, 1.72, 1.40, 1.28, 1.50, 1.01,
+           0.46, 1.08, 0.97, 2.06, 1.73, 1.97, 1.40,
+           0.25, 0.70, 0.56, 1.10, 1.38, 1.89, 1.19,
+           0.25, 0.55, 0.43, 0.82, 1.23, 1.60, 0.92,
+           0.18, 0.36, 0.30, 0.60, 0.81, 0.96, 0.98)
 
 cm_rural <- matrix(rural, nrow = 7, ncol = 7)
 getr0(q=0.03323546, CM=cm_rural, d=7)
-
 # OLD VALUES
-# rural <- c(2.39, 2.21, 1.22, 1.32, 1.15, 1.75, 1.20,
-#            1.63, 7.41, 2.86, 2.28, 2.32, 2.82, 1.79,
-#            0.61, 1.95, 1.72, 1.40, 1.28, 1.50, 1.01,
-#            0.46, 1.08, 0.97, 2.06, 1.73, 1.97, 1.40,
-#            0.25, 0.70, 0.56, 1.10, 1.38, 1.89, 1.19,
-#            0.25, 0.55, 0.43, 0.82, 1.23, 1.60, 0.92,
-#            0.18, 0.36, 0.30, 0.60, 0.81, 0.96, 0.98)
+# rural <- c(4.49, 4.46, 2.35, 2.67, 2.69, 2.45,
+#            3.28, 13.72, 5.40, 4.91, 5.03, 3.44,
+#            1.18, 3.69, 3.25, 2.62, 2.63, 1.80,
+#            0.92, 2.31, 1.80, 4.03, 3.56, 2.59,
+#            0.98, 2.49, 1.90, 3.74, 5.50, 3.77,
+#            0.37, 0.70, 0.54, 1.12, 1.55, 1.83)
 
 # globalmix urban matrix
-urban <- c(1.79, 1.49, 1.38, 1.64, 0.84, 1.23, 0.98,
-           1.10, 5.37, 1.90, 2.05, 1.79, 1.81, 1.23,
-           0.69, 1.30, 1.09, 1.23, 1.18, 1.13, 0.72,
-           0.57, 0.97, 0.85, 1.84, 1.06, 1.24, 0.88,
-           0.19, 0.64, 0.52, 0.67, 1.07, 1.12, 0.64,
-           0.18, 0.35, 0.32, 0.51, 0.73, 0.68, 0.56,
-           0.15, 0.25, 0.22, 0.38, 0.43, 0.58, 0.93)
+urban <- c(1.35, 1.35, 1.39, 1.41, 0.65, 1.03, 0.79,
+           0.99, 5.06, 1.78, 1.93, 1.37, 2.15, 1.15,
+           0.70, 1.22, 0.88, 1.11, 1.06, 1.05, 0.81,
+           0.49, 0.91, 0.77, 1.87, 1.05, 1.11, 0.68,
+           0.14, 0.41, 0.47, 0.67, 0.78, 1.10, 0.50,
+           0.15, 0.42, 0.30, 0.46, 0.72, 0.9, 0.51,
+           0.12, 0.23, 0.24, 0.29, 0.34, 0.53, 0.80)
 cm_urban <- matrix(urban, nrow = 7, ncol = 7)
 getr0(q=0.04852599, CM=cm_urban, d=7)
 
 # OLD VALUES
-# urban <- c(1.35, 1.35, 1.39, 1.41, 0.65, 1.03, 0.79,
-#            0.99, 5.06, 1.78, 1.93, 1.37, 2.15, 1.15,
-#            0.70, 1.22, 0.88, 1.11, 1.06, 1.05, 0.81,
-#            0.49, 0.91, 0.77, 1.87, 1.05, 1.11, 0.68,
-#            0.14, 0.41, 0.47, 0.67, 0.78, 1.10, 0.50,
-#            0.15, 0.42, 0.30, 0.46, 0.72, 0.9, 0.51,
-#            0.12, 0.23, 0.24, 0.29, 0.34, 0.53, 0.80)
+# urban <- c(2.49, 2.66, 2.54, 2.80, 1.35, 1.79,
+#            1.96, 9.83, 3.80, 3.59, 3.05, 2.28,
+#            1.28, 2.59, 2.08, 2.47, 2.44, 1.72, 
+#            0.97, 1.69, 1.70, 3.56, 2.20, 1.32, 
+#            0.49, 1.51, 1.77, 2.32, 3.20, 2.19, 
+#            0.27, 0.46, 0.51, 0.57, 0.90, 0.99)
 
 
-# premmatrix, 2017 data values
-prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
-          3.66, 14.09, 2.86, 1.90, 2.33, 1.92, 1.10, 
-          2.33, 2.19, 6.10, 2.67, 1.90, 1.80, 0.56,
-          2.67, 1.58, 2.81, 3.63, 2.62, 2.10, 0.75, 
-          1.08, 1.31, 1.76, 2.41, 2.69, 2.46, 0.70,
-          0.56, 0.46, 1.04, 1.21, 1.38, 1.78, 0.63,
-          0.39, 0.22, 0.28, 0.32, 0.31, 0.44, 0.33)
+# prem
+# premmatrix
+
+# 2021 values 
+prem <- c(7.5, 3.4, 2.2, 3.5, 2.4, 2.1, 1.8,
+          2.5, 11.2, 3.1, 2.3, 2.8, 2.2, 1.5,
+          1.7, 1.7, 5.3, 2.7, 2.3, 2.6, 1.3, 
+          1.8, 1.3, 2.1, 3.2, 2.7, 2.2, 1.4,
+          1.0, 1.2, 1.4, 2.1, 2.6, 2.2, 1.1,
+          0.7, 0.6, 0.9, 1.2, 1.4, 1.6, 0.8,
+          0.7, 0.7, 0.8, 0.9, 1.0, 1.0, 1.0)
 cm_prem <- matrix(prem, nrow = 7, ncol = 7)
-getr0(q=0.01521068, CM=cm_prem, d=7)
+getr0(q=0.02136927, CM=cm_prem, d=7)
 
 # OLD VALUES
 # prem <- c(19.34, 4.54, 1.68, 2.63, 1.64, 1.02,
@@ -439,6 +471,14 @@ getr0(q=0.01521068, CM=cm_prem, d=7)
 #           2.67, 1.58, 2.81, 3.63, 2.43, 0.75, 
 #           1.65, 1.77, 2.79, 3.62, 4.14, 1.32, 
 #           0.39, 0.22, 0.28, 0.32, 0.36, 0.33)
+# 2017 VALUES
+# prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
+#         3.66, 14.09, 2.86, 1.90, 2.33, 1.92, 1.10, 
+#          2.33, 2.19, 6.10, 2.67, 1.90, 1.80, 0.56,
+#          2.67, 1.58, 2.81, 3.63, 2.62, 2.10, 0.75, 
+#          1.08, 1.31, 1.76, 2.41, 2.69, 2.46, 0.70,
+#          0.56, 0.46, 1.04, 1.21, 1.38, 1.78, 0.63,
+#          0.39, 0.22, 0.28, 0.32, 0.31, 0.44, 0.33)
 
 
 ### Model 
@@ -672,14 +712,14 @@ param.urban <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.04852599,
                          c71=0.12, c72=0.23, c73=0.24, c74=0.29, c75=0.34, c76=0.53, c77=0.80)
 
 # prem et al contact patterns
-param.prem <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.01521068,
-                        c11=19.34, c12=4.54, c13=1.68, c14=2.63, c15=1.76, c16=1.45, c17=1.02,
-                        c21=3.66, c22=14.09, c23=2.86, c24=1.90, c25=2.33, c26=1.92, c27=1.10,
-                        c31=2.33, c32=2.19, c33=6.10, c34=2.67, c35=1.90, c36=1.80, c37=0.56,
-                        c41=2.67, c42=1.58, c43=2.81, c44=3.63, c45=2.62, c46=2.10, c47=0.75,
-                        c51=1.08, c52=1.31, c53=1.76, c54=2.41, c55=2.69, c56=2.46, c57=0.70,
-                        c61=0.56, c62=0.46, c63=1.04, c64=1.21, c65=1.38, c66=1.78, c67=0.63,
-                        c71=0.39, c72=0.22, c73=0.28, c74=0.32, c75=0.31, c76=0.44, c77=0.33)
+param.prem <- param.dcm(gamma = 1/7, psi = 0.50, q = 0.02136927,
+                        c11=7.5, c12=3.4, c13=2.2, c14=3.5, c15=2.4, c16=2.1, c17=1.8,
+                        c21=2.5, c22=11.2, c23=3.1, c24=2.3, c25=2.8, c26=2.2, c27=1.5,
+                        c31=1.7, c32=1.7, c33=5.3, c34=2.7, c35=2.3, c36=2.6, c37=1.3,
+                        c41=1.8, c42=1.3, c43=2.1, c44=3.2, c45=2.7, c46=2.2, c47=1.4,
+                        c51=1.0, c52=1.2, c53=1.4, c54=2.1, c55=2.6, c56=2.2, c57=1.1,
+                        c61=0.7, c62=0.6, c63=0.9, c64=1.2, c65=1.4, c66=1.6, c67=0.8,
+                        c71=0.7, c72=0.7, c73=0.8, c74=0.9, c75=1.0, c76=1.0, c77=1.0)
 
 
 ### Initial conditions
@@ -1004,7 +1044,7 @@ fxn_create_dot_plot <- function(data) {
     labs(
       x = 'Attack rate (%)',
       y = 'Age group') +
-    scale_color_manual(values = cols_model) +
+   scale_color_manual(values = cols_model) +
     scale_x_continuous(limits = c(0, 100)) +
     theme(
       panel.grid.major.y = element_blank(),
@@ -1087,7 +1127,7 @@ rural_prem <- ggplot() +
   geom_point(
     data = ARV %>% filter(site != "Urban"),
     aes(x = value, y = Var1, col = site), size = 4) +
-  # axis_text_theme2 +
+  axis_text_theme2 +
   labs(
     x = 'Attack rate (%)',
     y = 'Age group') +
@@ -1111,7 +1151,7 @@ urban_prem <- ggplot() +
   geom_point(
     data = ARV %>% filter(site != "Rural"),
     aes(x = value, y = Var1, col = site), size = 4) +
-  # axis_text_theme2 +
+  axis_text_theme2 +
   labs(
     x = 'Attack rate (%)',
     y = 'Age group') +
@@ -1128,7 +1168,7 @@ urban_prem
 
 sites_vax <- rural_prem / urban_prem
 
-ggsave(sites_vax, filename = "../../output/figs/fig_siteARV_2017data.pdf",
+ggsave(sites_vax, filename = "../../output/figs/fig_siteARV.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1206,7 +1246,7 @@ oe_combined <- ggplot() +
     legend.direction = "vertical")
 oe_combined
 
-ggsave(oe_combined, filename = "../../output/figs/oe_fig_site_2017data.pdf",
+ggsave(oe_combined, filename = "output/figs/oe_fig_site.pdf",
        height=4, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1219,7 +1259,7 @@ combined_model_figure <- wrap_plots(adjusted_matrix, oe_combined) +
   plot_layout(nrow=2, heights = c(600))
 combined_model_figure
 
-ggsave(combined_model_figure, filename = "../../output/figs/fig2_matrix_model_2017data.pdf",
+ggsave(combined_model_figure, filename = "output/figs/fig2_matrix_model.pdf",
        height=6, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -1351,7 +1391,7 @@ fig_model2 <- wrap_plots(rural_model2,
   plot_layout(nrow=3, heights = c(800, 800, 800))
 fig_model2
 
-ggsave(fig_model2, filename = "../../output/figs/fig_modelplot_v2_2017data.pdf",
+ggsave(fig_model2, filename = "output/figs/fig_modelplot_v2.pdf",
        height=8, width=8, dpi=300,
        bg="#FFFFFF")
 
