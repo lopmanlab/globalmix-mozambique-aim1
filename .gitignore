@@ -6,6 +6,7 @@ scripts/.DS_Store
 
 output/*.pdf
 scripts/manuscript/*.docx
+scripts/manuscript
 
 # Session Data files
 .RData
@@ -20,7 +21,7 @@ output/figs/.DS_Store
 
 # script files
 # scripts/00_data_download.R
-scripts/01_contact_data_cleaning_maion.Rmd
+scripts/01_contact_data_cleaning_main.Rmd
 scripts/cleaning/
 
 # folders
