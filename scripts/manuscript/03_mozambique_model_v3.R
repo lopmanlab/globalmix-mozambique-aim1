@@ -5,9 +5,6 @@
 # modified 03/13/2024 - 2021 Prem et al matrices stratified by rural/urban
 # ------------------------------------------------------------------------------
 
-# First, let us run the _v1 model to get the VE values for empirical data.
-# source("03_mozambique_model_v1.R")
-
 
 #---------- Prem Rural Matrix ----------#
 moz_prem_rural <- read.csv("../../data/clean/moz_prem_2021_rural.csv")
@@ -49,7 +46,7 @@ moz_prem_rural <- moz_prem_rural %>%
 moz_pop_5yr_rural <- read.csv("../../data/clean/moz_agecat_5yr_rural.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr_rural <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
+moz_pop_10yr_rural <- read.csv("../../data/clean/moz_agecat_10yr_rural.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
