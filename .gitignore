@@ -6,30 +6,40 @@ scripts/.DS_Store
 
 output/*.pdf
 scripts/manuscript/*.docx
+scripts/manuscript
 
 # Session Data files
 .RData
 .DS_Store
 scripts/.DS_Store
-data/.DS_Store
+data/clean/.DS_Store
 output/.DS_Store
 output/figs/.DS_Store
 
 # R Environment Variables
 .Renviron
 
-# data download file
+# script files
 scripts/00_data_download.R
+scripts/01_contact_data_cleaning_main.Rmd
+scripts/cleaning/
 
 # folders
-scripts/old/*
+scripts/old.zip
 data/raw/*
-output/figs/*
+output/
 data/clean/old_data.zip
+
 
 # html files
 scripts/*.html
 scripts/02a_contact_analysis_main_v2_files
 scripts/extract_aim2_metadata_files
+scripts/manuscript/
+
+# sensor files
+data/sensor_metadata/
+
+
 
 
