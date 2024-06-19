@@ -22,6 +22,8 @@ date: today
 #| label: import-analysis-codes
 #| include: false
 #| warnings: false
+#| comment: false
+#| echo: false
 
 source("00_customization.R")
 
@@ -42,7 +44,6 @@ source("03_mozambique_model_v3.R")
 
 # Source place use code
 source("04_placeuse.R")
-
 
 ```
 

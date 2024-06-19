@@ -20,7 +20,7 @@ pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid,
                gridExtra, gtsummary, knitr, kableExtra, lubridate, patchwork, 
                plotly, readr, socialmixr, table1, tidyr, openxlsx)
 
-cols_model <- c("#9467bd","#aec7e8", "#000000")
+cols_model <- c("#9467bd","#aec7e8", "#000000", "#000000")
 
 
 # install orca to save plotly plots: https://github.com/plotly/orca#installation
