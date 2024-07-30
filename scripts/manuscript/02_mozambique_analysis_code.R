@@ -9,7 +9,7 @@ participants <- readRDS("../../data/clean/moz_participant_data_aim1.RDS")
 contacts <- readRDS("../../data/clean/moz_contact_data_aim1.RDS") %>%
   left_join(participants %>% select(rec_id, study_site),
             by="rec_id")
-household <- readRDS("../../data/clean/moz_household_survey_aim1.RDS")
+household <- readRDS("../../data/clean/moz_household_survey_data_aim1.RDS")
 # location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
 
 # set color themes
@@ -54,18 +54,18 @@ contacts$hh_membership <- factor(contacts$hh_membership,
 
 # recategorize contact locations
 contacts <- contacts %>%
-  mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
-         cnt_school = ifelse(location_contact___2==1, 1,0),
-         cnt_work = ifelse(location_contact___3==1, 1,0),
-         cnt_otherplace = ifelse(location_contact___1==1 | 
-                                   location_contact___4==1 | 
-                                   location_contact___5==1 | 
-                                   location_contact___6==1 | 
-                                   location_contact___7==1 |
-                                   location_contact___8==1 | 
-                                   location_contact___9==1 |
-                                   location_contact___10==1 | 
-                                   location_contact___11==1,1,0))
+  mutate(cnt_home = ifelse(loc_home==1, 1,0),
+         cnt_school = ifelse(loc_school==1, 1,0),
+         cnt_work = ifelse(loc_work==1, 1,0),
+         cnt_otherplace = ifelse(loc_otherhome==1 | 
+                                   loc_transport==1 | 
+                                   loc_market==1 | 
+                                   loc_street==1 | 
+                                   loc_well==1 |
+                                   loc_agricfield==1 | 
+                                   loc_playground==1 |
+                                   loc_worship==1 | 
+                                   loc_other==1,1,0))
 # masking
 contacts <- contacts %>%
   mutate(contact_mask2 = dplyr::case_when(contact_mask == "Yes, for the entire encounter" ~ "Yes",
