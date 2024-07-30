@@ -186,7 +186,7 @@ fun_symmetric_matrix <- function(data, study_site, n){
   matrix_data <- data %>%
     dplyr::filter(study_site == {{study_site}}) %>%
     dplyr::group_by(participant_age, contact_age) %>%
-    summarize(total_contacts = n()) %>%
+    dplyr::summarize(total_contacts = n()) %>%
     full_join(standard_str, by = c("participant_age", "contact_age"), keep = F) %>%
     dplyr::mutate(total_contacts = replace_na(total_contacts, 0)) %>% 
     drop_na() %>%
