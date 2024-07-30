@@ -15,20 +15,20 @@ contacts2 <- df_contact_d1 %>%
   mutate(part_age = participant_age,
          part_id = rec_id) 
 
-
-contacts2 <- contacts2 %>%
-  mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
-         cnt_school = ifelse(location_contact___2==1, 1,0),
-         cnt_work = ifelse(location_contact___3==1, 1,0),
-         cnt_otherplace = ifelse(location_contact___1==1 | 
-                                   location_contact___4==1 | 
-                                   location_contact___5==1 | 
-                                   location_contact___6==1 | 
-                                   location_contact___7==1 |
-                                   location_contact___8==1 | 
-                                   location_contact___9==1 |
-                                   location_contact___10==1 | 
-                                   location_contact___11==1,1,0))
+# 
+# contacts2 <- contacts2 %>%
+#   mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
+#          cnt_school = ifelse(location_contact___2==1, 1,0),
+#          cnt_work = ifelse(location_contact___3==1, 1,0),
+#          cnt_otherplace = ifelse(location_contact___1==1 | 
+#                                    location_contact___4==1 | 
+#                                    location_contact___5==1 | 
+#                                    location_contact___6==1 | 
+#                                    location_contact___7==1 |
+#                                    location_contact___8==1 | 
+#                                    location_contact___9==1 |
+#                                    location_contact___10==1 | 
+#                                    location_contact___11==1,1,0))
 
 ##### Weighting
 ### age categories to join with population weighting
@@ -53,17 +53,17 @@ contacts2 <- contacts2 %>%
 ### read in population distribution
 pop_dist <- rio::import("../../data/clean/moz_pop_dist_all.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
-  mutate(study_site = case_when(
-    urb_rur =="urban" ~"Urban",
-    urb_rur == "rural"~"Rural"
-  ))
+  mutate(study_site = case_when(urb_rur =="urban" ~"Urban",
+                                urb_rur == "rural"~"Rural"),
+         study_site = as.factor(study_site))
+# label(pop_dist$study_site) <- "Study site"
 
 ### weight cleaning
 pop_weight <- contacts2 %>%
   select(part_id, study_site, weight_cat) %>% 
   unique() %>%
   group_by(study_site, weight_cat) %>%
-  summarise(n=n())
+  dplyr::summarize(n=n())
 urb_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="urban")])
 rur_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="rural")])
 
@@ -71,7 +71,7 @@ pop_weight <- pop_weight %>%
   left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
   left_join(pop_weight %>% 
               group_by(study_site) %>% 
-              summarise(tot_site = sum(n)), by = c("study_site"="study_site")) %>%
+              dplyr::summarize(tot_site = sum(n)), by = c("study_site"="study_site")) %>%
   mutate(pop_urb_rur =ifelse(study_site=="Rural", rur_pop, urb_pop),
          part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
 
@@ -333,15 +333,14 @@ moz_pop_10yr <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
                                part_age2 == "50_59" ~  "50-59y",
                                part_age2 == "60" ~ "60+y")) %>%
   group_by(part_age2) %>%
-  summarize(pop10yr = sum(pop10yr))
-
+  dplyr::summarize(pop10yr = sum(pop10yr))
 
 ### "linearly" collapse the participant-contact cells based on population sizes
 moz_prem10 <- moz_prem %>%
   left_join(moz_pop_5yr, by = c("part_age1" = "part_age1")) %>%  ## pop size of 5-year participant age band
   mutate(tot_pop_contacts = avg_cont * pop5yr) %>%   ## total contacts made between 0_4 & 0_4, 0_4&5_9 etc
   group_by(part_age2, cont_age2) %>%
-  summarise(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
+  dplyr::summarize(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
   left_join(moz_pop_10yr, by = c("part_age2"="part_age2")) %>% # pop size of 10-year participant age band
   mutate(contacts = tot_pop_contacts/pop10yr)        ## average contacts made using 10-year age band
 
