@@ -23,6 +23,7 @@ output/figs/.DS_Store
 scripts/00_data_download.R
 scripts/01_contact_data_cleaning_main.Rmd
 scripts/cleaning/
+scripts/manuscript/model_figs_presentation.qmd
 
 # folders
 scripts/old.zip
