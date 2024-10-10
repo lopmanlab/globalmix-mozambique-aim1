@@ -6,7 +6,6 @@ scripts/.DS_Store
 
 output/*.pdf
 scripts/manuscript/*.docx
-scripts/manuscript
 
 # Session Data files
 .RData
@@ -19,18 +18,15 @@ output/figs/.DS_Store
 # R Environment Variables
 .Renviron
 
-# script files
+# data files
 scripts/00_data_download.R
-scripts/01_contact_data_cleaning_main.Rmd
-scripts/cleaning/
-scripts/manuscript/model_figs_presentation.qmd
+scripts/01_contact_data_cleaning_maion.Rmd
 
 # folders
 scripts/old.zip
 data/raw/*
 output/
 data/clean/old_data.zip
-
 
 # html files
 scripts/*.html
