@@ -18,9 +18,9 @@ set.seed(30322)
 
 pacman::p_load(cowplot, dplyr, EpiModel, ggplot2, ggthemes, ggpubr, grid, 
                gridExtra, gtsummary, knitr, kableExtra, lubridate, patchwork, 
-               plotly, readr, socialmixr, table1, tidyr, openxlsx)
+               plotly, readr, socialmixr, table1, tidyr)
 
-cols_model <- c("#9467bd","#aec7e8", "#000000", "#000000")
+cols_model <- c("#9467bd","#aec7e8", "#000000")
 
 
 # install orca to save plotly plots: https://github.com/plotly/orca#installation
@@ -186,7 +186,7 @@ fun_symmetric_matrix <- function(data, study_site, n){
   matrix_data <- data %>%
     dplyr::filter(study_site == {{study_site}}) %>%
     dplyr::group_by(participant_age, contact_age) %>%
-    dplyr::summarize(total_contacts = n()) %>%
+    summarize(total_contacts = n()) %>%
     full_join(standard_str, by = c("participant_age", "contact_age"), keep = F) %>%
     dplyr::mutate(total_contacts = replace_na(total_contacts, 0)) %>% 
     drop_na() %>%
@@ -506,8 +506,7 @@ fun_contact_behavior <- function(df, action){
     axis_text_theme2 +
     theme(axis.text.x = element_text(angle = 0, hjust=1),
           axis.line.x = element_line(colour = "black"), 
-          axis.ticks.x = element_line(colour = "black"),
-          legend.box = "vertical") # +
+          axis.ticks.x = element_line(colour = "black")) # +
   #       axis.text = element_text(colour = unhighlighed_col_darker),
   #       text = element_text(colour = unhighlighed_col_darker),
   #       plot.title = element_text(colour = 'black')) +

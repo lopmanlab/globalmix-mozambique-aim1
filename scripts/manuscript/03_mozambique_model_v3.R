@@ -56,7 +56,7 @@ moz_pop_10yr_rural <- read.csv("../../data/clean/moz_agecat_10yr_rural.csv") %>%
                                part_age2 == "50_59" ~  "50-59y",
                                part_age2 == "60" ~ "60+y")) %>%
   group_by(part_age2) %>%
-  dplyr::summarize(pop10yr = sum(pop10yr))
+  summarize(pop10yr = sum(pop10yr))
 
 
 ### "linearly" collapse the participant-contact cells based on population sizes
@@ -64,7 +64,7 @@ moz_prem10_rural <- moz_prem_rural %>%
   left_join(moz_pop_5yr_rural, by = c("part_age1" = "part_age1")) %>%  ## pop size of 5-year participant age band
   mutate(tot_pop_contacts = avg_cont * pop5yr) %>%   ## total contacts made between 0_4 & 0_4, 0_4&5_9 etc
   group_by(part_age2, cont_age2) %>%
-  dplyr::summarize(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
+  summarise(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
   left_join(moz_pop_10yr_rural, by = c("part_age2"="part_age2")) %>% # pop size of 10-year participant age band
   mutate(contacts = tot_pop_contacts/pop10yr)        ## average contacts made using 10-year age band
 
@@ -134,7 +134,7 @@ moz_pop_10yr_urban <- read.csv("../../data/clean/moz_agecat_10yr_urban.csv") %>%
                                part_age2 == "50_59" ~  "50-59y",
                                part_age2 == "60" ~ "60+y")) %>%
   group_by(part_age2) %>%
-  dplyr::summarize(pop10yr = sum(pop10yr))
+  summarize(pop10yr = sum(pop10yr))
 
 
 ### "linearly" collapse the participant-contact cells based on population sizes
@@ -142,7 +142,7 @@ moz_prem10_urban <- moz_prem_urban %>%
   left_join(moz_pop_5yr_urban, by = c("part_age1" = "part_age1")) %>%  ## pop size of 5-year participant age band
   mutate(tot_pop_contacts = avg_cont * pop5yr) %>%   ## total contacts made between 0_4 & 0_4, 0_4&5_9 etc
   group_by(part_age2, cont_age2) %>%
-  dplyr::summarize(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
+  summarise(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
   left_join(moz_pop_10yr_urban, by = c("part_age2"="part_age2")) %>% # pop size of 10-year participant age band
   mutate(contacts = tot_pop_contacts/pop10yr)        ## average contacts made using 10-year age band
 
@@ -629,7 +629,6 @@ data4 <- OE_v3 %>%
                                Var1 == "ov.eff.rur.60" ~ "60+y")) %>%
   select(-c(Var1))
 
-
 # 2. create graph with Prem rural and urban VE compared to empirical by site.
 # combined overall VE for Prem, rural and urban
 oe_rural_v3 <- ggplot() + 
@@ -684,7 +683,7 @@ oe_urban_v3 <- ggplot() +
 
 oe_combined_v3 <- oe_rural_v3 | oe_urban_v3
 oe_combined_v3
-ggsave(oe_combined_v3, filename = "../../output/figs/oe_fig_site_2021data.pdf",
+ggsave(oe_combined_v3, filename = "output/figs/oe_fig_site_2021data.pdf",
        height=4, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -697,7 +696,7 @@ combined_model_figure_v3 <- wrap_plots(adjusted_matrix, oe_combined_v3) +
   theme(plot.tag = element_text(size = 12)) +
   plot_layout(nrow=2, heights = c(600))
 
-ggsave(combined_model_figure_v3, filename = "../../output/figs/fig2_matrix_model_2021data.pdf",
+ggsave(combined_model_figure_v3, filename = "output/figs/fig2_matrix_model_2021data.pdf",
        height=6, width=8, dpi=300,
        bg="#FFFFFF") 
 

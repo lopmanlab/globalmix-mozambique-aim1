@@ -5,11 +5,11 @@
 ###############################################################################
 
 participants <- readRDS("../../data/clean/moz_participant_data_aim1.RDS")
-exit <- readRDS("../../data/clean/moz_exit_interview_data_aim1.RDS")
+# exit <- readRDS("../../data/clean/exit_interview_aim1.RDS")
 contacts <- readRDS("../../data/clean/moz_contact_data_aim1.RDS") %>%
   left_join(participants %>% select(rec_id, study_site),
             by="rec_id")
-household <- readRDS("../../data/clean/moz_household_survey_data_aim1.RDS")
+household <- readRDS("../../data/clean/moz_household_survey_aim1.RDS")
 # location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
 
 # set color themes
@@ -54,18 +54,18 @@ contacts$hh_membership <- factor(contacts$hh_membership,
 
 # recategorize contact locations
 contacts <- contacts %>%
-  mutate(cnt_home = ifelse(loc_home==1, 1,0),
-         cnt_school = ifelse(loc_school==1, 1,0),
-         cnt_work = ifelse(loc_work==1, 1,0),
-         cnt_otherplace = ifelse(loc_otherhome==1 | 
-                                   loc_transport==1 | 
-                                   loc_market==1 | 
-                                   loc_street==1 | 
-                                   loc_well==1 |
-                                   loc_agricfield==1 | 
-                                   loc_playground==1 |
-                                   loc_worship==1 | 
-                                   loc_other==1,1,0))
+  mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
+         cnt_school = ifelse(location_contact___2==1, 1,0),
+         cnt_work = ifelse(location_contact___3==1, 1,0),
+         cnt_otherplace = ifelse(location_contact___1==1 | 
+                                   location_contact___4==1 | 
+                                   location_contact___5==1 | 
+                                   location_contact___6==1 | 
+                                   location_contact___7==1 |
+                                   location_contact___8==1 | 
+                                   location_contact___9==1 |
+                                   location_contact___10==1 | 
+                                   location_contact___11==1,1,0))
 # masking
 contacts <- contacts %>%
   mutate(contact_mask2 = dplyr::case_when(contact_mask == "Yes, for the entire encounter" ~ "Yes",
@@ -137,29 +137,26 @@ contacts <- contacts %>%
 N <- nrow(participants)
 N_site <- participants %>%
   group_by(study_site, participant_sex) %>%
-  dplyr::summarize(N = n())
+  summarize(N = n())
 
 # total number of contacts
 tot_contacts <- nrow(contacts)
-# contacts <- contacts %>%
-#   left_join(participants %>% select(rec_id, study_site),
-#             by = "rec_id")
+contacts <- contacts %>%
+  left_join(participants %>% select(rec_id, study_site),
+            by = "rec_id")
 tot_contacts_site <- contacts %>%
   group_by(study_site) %>%
-  dplyr::summarize(freq = n())
+  summarize(freq = n())
 tot_rural_contacts <- nrow(contacts %>% filter(study_site == "Rural"))
 tot_urban_contacts <- nrow(contacts %>% filter(study_site == "Urban"))
 
 
-participants <- participants %>%
-  left_join(exit, by="rec_id") # for additional variables
-
-# label: tbl-participant-summary
-# label(participants$study_site) <- "Site"
-# label(participants$aim) <- "Aim"
+#| label: tbl-participant-summary
+label(participants$study_site) <- "Site"
+label(participants$aim) <- "Aim"
 label(participants$participant_sex) <- "Sex"
 # label(participants$age) <- "Exact age"
-# label(participants$participant_age) <- "Participant age"
+label(participants$participant_age) <- "Participant age"
 label(participants$read_write) <- "Able to read and write"
 label(participants$enrolled_school) <- "Currently enrolled in school"
 label(participants$highest_educ) <- "Highest education level attained"
@@ -1156,9 +1153,9 @@ fig_weekyear_urban_box <- contacts_weekyear %>%
 #                  yaxis = list(title='Number of participants',
 #                               range=list(0,50)))
 
-# fig_weekyear_site_box <- subplot(style(fig_weekyear_rural_box, showlegend = F), nrows=2, 
-#                                  fig_weekyear_urban_box, shareX = TRUE, 
-#                                  margin = 0.05)
+fig_weekyear_site_box <- subplot(style(fig_weekyear_rural_box, showlegend = F), nrows=2, 
+                                 fig_weekyear_urban_box, 
+                                 shareX = TRUE, margin = 0.05)
 
 # ggsave(fig_weekyear_site_box, filename = "../../output/figs/fig_weekyear_site_box.pdf",
 #        height=6, width=8, dpi=300,
@@ -1263,7 +1260,7 @@ standard_str <- data.frame(participant_age = rep(unique(df_contact$participant_a
 n_participants_rural <- participants %>%
   dplyr::filter(study_site == "Rural") %>%
   dplyr::group_by(participant_age) %>%
-  dplyr::summarize(n_participants = n())
+  summarize(n_participants = n())
 
 m1_rural_contact_table <- df_contact_d1 %>%
   dplyr::filter(study_site == "Rural")
@@ -1272,7 +1269,7 @@ table(m1_rural_contact_table$participant_age, m1_rural_contact_table$contact_age
 m1_rural <- df_contact_d1 %>%
   dplyr::filter(study_site == "Rural") %>%
   dplyr::group_by(participant_age, contact_age) %>%
-  dplyr::summarize(total_contacts = n()) %>%
+  summarize(total_contacts = n()) %>%
   full_join(standard_str, by = c("participant_age", "contact_age"), keep = F) %>%
   dplyr::mutate(total_contacts = replace_na(total_contacts, 0)) %>% # if total_contacts==NA, replace with 0
   drop_na() %>%
@@ -1284,7 +1281,7 @@ m1_rural <- df_contact_d1 %>%
 n_participants_urban <- participants %>%
   dplyr::filter(study_site == "Urban") %>%
   dplyr::group_by(participant_age) %>%
-  dplyr::summarize(n_participants = n())
+  summarize(n_participants = n())
 # participants 15-19y did not have contacts with <6mo, so we generate that row
 missing_data_urban <- data.frame(participant_age="15-19y", contact_age="<6mo", 
                                  total_contacts=0, n_participants=60)
@@ -1326,35 +1323,35 @@ urban_matrix <- fun_matrix1_plot(m1_urban, "Urban", xlab = "Participant age", yl
 #### save graph
 # fig_crude_matrix <- rural_matrix | urban_matrix
 
-# fig_crude_matrix <- subplot(style(rural_matrix, showlegend = F),
-#                             urban_matrix, shareY = TRUE) %>%
-#   layout(title = '',
-#          # xaxis = list(title = "Participant age"),
-#          annotations = list(
-#            list(x=0.05, y=1.0,
-#                 text = "A. Rural",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE),
-#            list(x=0.57, y=1.0,
-#                 text = "B. Urban",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE),
-#            list(x=0.5, y=-0.3,
-#                 text = "Participant age",
-#                 xref = "paper",
-#                 yref = "paper",
-#                 xanchor = "center",
-#                 yanchor = "bottom",
-#                 showarrow = FALSE,
-#                 font = list(size = 18, face = "bold")
-#            )),
-#          height = 400)
+fig_crude_matrix <- subplot(style(rural_matrix, showlegend = F),
+                            urban_matrix, shareY = TRUE) %>%
+  layout(title = '',
+         # xaxis = list(title = "Participant age"),
+         annotations = list(
+           list(x=0.05, y=1.0,
+                text = "A. Rural",
+                xref = "paper",
+                yref = "paper",
+                xanchor = "center",
+                yanchor = "bottom",
+                showarrow = FALSE),
+           list(x=0.57, y=1.0,
+                text = "B. Urban",
+                xref = "paper",
+                yref = "paper",
+                xanchor = "center",
+                yanchor = "bottom",
+                showarrow = FALSE),
+           list(x=0.5, y=-0.3,
+                text = "Participant age",
+                xref = "paper",
+                yref = "paper",
+                xanchor = "center",
+                yanchor = "bottom",
+                showarrow = FALSE,
+                font = list(size = 18, face = "bold")
+           )),
+         height = 400)
 # orca(fig_crude_matrix, "../../output/figs/fig_contacts_crude_matrix.pdf")
 
 
@@ -1399,7 +1396,7 @@ m1_rural_touch <- df_contact_d1 %>%
   dplyr::filter(study_site == "Rural") %>%
   dplyr::filter(touch_contact == "Yes") %>%
   dplyr::group_by(participant_age, contact_age) %>%
-  dplyr::summarize(total_contacts = n()) %>%
+  summarize(total_contacts = n()) %>%
   full_join(standard_str, by = c("participant_age", "contact_age"), keep = F) %>%
   dplyr::mutate(total_contacts = replace_na(total_contacts, 0)) %>% # if total_contacts==NA, replace with 0
   drop_na() %>%
@@ -1539,9 +1536,9 @@ urban_matrix_type <-  rural_matrix_conv | urban_matrix_conv
 fig_matrix_type <- rural_matrix_type / urban_matrix_type
 
 
-# ggsave(fig_matrix_type, filename = "../../output/figs/figS2_matrix_type.png",
-#        height=8, width=8, units = "in",
-#        bg="#FFFFFF")
+ggsave(fig_matrix_type, filename = "../../output/figs/figS2_matrix_type.png",
+       height=8, width=8, units = "in",
+       bg="#FFFFFF")
 
 
 ### Weighted contact matrix
@@ -1670,10 +1667,10 @@ fig_duration <- fun_contact_behavior (contact_behav, "duration_contact2") +
         axis.title.y = element_blank(),
         # legend.position = c(0.5, 0.9),
         legend.text = element_text(size=8))
-# fig_duration
+fig_duration
 
 #| label:  fig-contact-behavior
-# fig_contact_behavior <- (fig_masking | fig_touch) / (fig_location | fig_duration)
+fig_contact_behavior <- (fig_masking | fig_touch) / (fig_location | fig_duration)
 
 # need to change the orientation of the legend to vetical
 # ggsave(fig_contact_behavior, filename = "../../output/figs/fig_contact_behavior.pdf",
@@ -1829,7 +1826,7 @@ table2 <- res_restruct(results_list)
 table2 <- kable(table2, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
-# table2
+table2
 
 
 
@@ -1923,7 +1920,7 @@ colnames(STable1) <- c("Total (%)", "Rural Median", "Rural Mean", "Urban Median"
 
 STable1 <- kable(STable1, digits = 0, align = "r") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-# STable1
+STable1
 
 
 # write.xlsx(as.data.frame(STable1), "../../output/tables/SupplementaryTable1.xlsx", rownames=FALSE)

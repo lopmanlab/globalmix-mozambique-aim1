@@ -1,7 +1,6 @@
 ###############################################################################  
 # This file contains scripts to analyze and visualize place use data.
 # Author: Sara Kim
-# Edited by: Moses Kiti
 # Date: 08/18/2023
 # this one uses Prem 2017 data.
 ############################################################################### 
@@ -15,20 +14,20 @@ contacts2 <- df_contact_d1 %>%
   mutate(part_age = participant_age,
          part_id = rec_id) 
 
-# 
-# contacts2 <- contacts2 %>%
-#   mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
-#          cnt_school = ifelse(location_contact___2==1, 1,0),
-#          cnt_work = ifelse(location_contact___3==1, 1,0),
-#          cnt_otherplace = ifelse(location_contact___1==1 | 
-#                                    location_contact___4==1 | 
-#                                    location_contact___5==1 | 
-#                                    location_contact___6==1 | 
-#                                    location_contact___7==1 |
-#                                    location_contact___8==1 | 
-#                                    location_contact___9==1 |
-#                                    location_contact___10==1 | 
-#                                    location_contact___11==1,1,0))
+
+contacts2 <- contacts2 %>%
+  mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
+         cnt_school = ifelse(location_contact___2==1, 1,0),
+         cnt_work = ifelse(location_contact___3==1, 1,0),
+         cnt_otherplace = ifelse(location_contact___1==1 | 
+                                   location_contact___4==1 | 
+                                   location_contact___5==1 | 
+                                   location_contact___6==1 | 
+                                   location_contact___7==1 |
+                                   location_contact___8==1 | 
+                                   location_contact___9==1 |
+                                   location_contact___10==1 | 
+                                   location_contact___11==1,1,0))
 
 ##### Weighting
 ### age categories to join with population weighting
@@ -51,19 +50,19 @@ contacts2 <- contacts2 %>%
   )
 
 ### read in population distribution
-pop_dist <- rio::import("../../data/clean/moz_pop_dist_all.csv") %>%
+pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
-  mutate(study_site = case_when(urb_rur =="urban" ~"Urban",
-                                urb_rur == "rural"~"Rural"),
-         study_site = as.factor(study_site))
-# label(pop_dist$study_site) <- "Study site"
+  mutate(study_site = case_when(
+    urb_rur =="urban" ~"Urban",
+    urb_rur == "rural"~"Rural"
+  ))
 
 ### weight cleaning
 pop_weight <- contacts2 %>%
   select(part_id, study_site, weight_cat) %>% 
   unique() %>%
   group_by(study_site, weight_cat) %>%
-  dplyr::summarize(n=n())
+  summarise(n=n())
 urb_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="urban")])
 rur_pop <- sum(pop_dist$tot_pop[which(pop_dist$urb_rur=="rural")])
 
@@ -71,7 +70,7 @@ pop_weight <- pop_weight %>%
   left_join(pop_dist, by = c("weight_cat"="age_cat","study_site"="study_site")) %>%
   left_join(pop_weight %>% 
               group_by(study_site) %>% 
-              dplyr::summarize(tot_site = sum(n)), by = c("study_site"="study_site")) %>%
+              summarise(tot_site = sum(n)), by = c("study_site"="study_site")) %>%
   mutate(pop_urb_rur =ifelse(study_site=="Rural", rur_pop, urb_pop),
          part_weight = (tot_pop/pop_urb_rur)/(n/tot_site))
 
@@ -320,10 +319,10 @@ moz_prem <- moz_prem %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr <- read.csv("../../data/clean/moz_agecat_5yr_total.csv")
+moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
+moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
@@ -333,14 +332,15 @@ moz_pop_10yr <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
                                part_age2 == "50_59" ~  "50-59y",
                                part_age2 == "60" ~ "60+y")) %>%
   group_by(part_age2) %>%
-  dplyr::summarize(pop10yr = sum(pop10yr))
+  summarize(pop10yr = sum(pop10yr))
+
 
 ### "linearly" collapse the participant-contact cells based on population sizes
 moz_prem10 <- moz_prem %>%
   left_join(moz_pop_5yr, by = c("part_age1" = "part_age1")) %>%  ## pop size of 5-year participant age band
   mutate(tot_pop_contacts = avg_cont * pop5yr) %>%   ## total contacts made between 0_4 & 0_4, 0_4&5_9 etc
   group_by(part_age2, cont_age2) %>%
-  dplyr::summarize(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
+  summarise(tot_pop_contacts = sum(tot_pop_contacts)) %>% ##total contacts made between 0_9&0_9, 0_9&10_19 etc
   left_join(moz_pop_10yr, by = c("part_age2"="part_age2")) %>% # pop size of 10-year participant age band
   mutate(contacts = tot_pop_contacts/pop10yr)        ## average contacts made using 10-year age band
 
@@ -358,14 +358,15 @@ premmatrix <- ggplot(moz_prem10, aes(x = part_age2, y = cont_age2, fill = contac
   theme(legend.position = "top",
         legend.direction  = "horizontal")
 # premmatrix
-
+# axis.text.y = element_blank(),
+# axis.title.y = element_blank()
 
 # combine the matrices
 adjusted_matrix <- ruralmatrix | urbanmatrix | premmatrix
 # adjusted_matrix
-# ggsave(adjusted_matrix, filename = "../../output/figs/fig_adjusted_matrix.pdf",
-#        height=8, width=8, dpi=300,
-#        bg="#FFFFFF")
+ggsave(adjusted_matrix, filename = "../../output/figs/fig_adjusted_matrix.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
 
 
 ##### CODE FOR TRANSMISSION MODEL #####
@@ -390,6 +391,14 @@ rural <- c(2.98, 2.72, 1.47, 1.69, 1.37, 2.15, 1.49,
 cm_rural <- matrix(rural, nrow = 7, ncol = 7)
 getr0(q=0.03323546, CM=cm_rural, d=7)
 
+# OLD VALUES
+# rural <- c(2.39, 2.21, 1.22, 1.32, 1.15, 1.75, 1.20,
+#            1.63, 7.41, 2.86, 2.28, 2.32, 2.82, 1.79,
+#            0.61, 1.95, 1.72, 1.40, 1.28, 1.50, 1.01,
+#            0.46, 1.08, 0.97, 2.06, 1.73, 1.97, 1.40,
+#            0.25, 0.70, 0.56, 1.10, 1.38, 1.89, 1.19,
+#            0.25, 0.55, 0.43, 0.82, 1.23, 1.60, 0.92,
+#            0.18, 0.36, 0.30, 0.60, 0.81, 0.96, 0.98)
 
 # globalmix urban matrix
 urban <- c(1.79, 1.49, 1.38, 1.64, 0.84, 1.23, 0.98,
@@ -402,6 +411,15 @@ urban <- c(1.79, 1.49, 1.38, 1.64, 0.84, 1.23, 0.98,
 cm_urban <- matrix(urban, nrow = 7, ncol = 7)
 getr0(q=0.04852599, CM=cm_urban, d=7)
 
+# OLD VALUES
+# urban <- c(1.35, 1.35, 1.39, 1.41, 0.65, 1.03, 0.79,
+#            0.99, 5.06, 1.78, 1.93, 1.37, 2.15, 1.15,
+#            0.70, 1.22, 0.88, 1.11, 1.06, 1.05, 0.81,
+#            0.49, 0.91, 0.77, 1.87, 1.05, 1.11, 0.68,
+#            0.14, 0.41, 0.47, 0.67, 0.78, 1.10, 0.50,
+#            0.15, 0.42, 0.30, 0.46, 0.72, 0.9, 0.51,
+#            0.12, 0.23, 0.24, 0.29, 0.34, 0.53, 0.80)
+
 
 # premmatrix, 2017 data values
 prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
@@ -413,6 +431,14 @@ prem <- c(19.34, 4.54, 1.68, 2.63, 1.76, 1.45, 1.02,
           0.39, 0.22, 0.28, 0.32, 0.31, 0.44, 0.33)
 cm_prem <- matrix(prem, nrow = 7, ncol = 7)
 getr0(q=0.01521068, CM=cm_prem, d=7)
+
+# OLD VALUES
+# prem <- c(19.34, 4.54, 1.68, 2.63, 1.64, 1.02,
+#           3.66, 14.09, 2.86, 1.90, 2.18, 1.10, 
+#           2.33, 2.19, 6.10, 2.67, 1.86, 0.56,
+#           2.67, 1.58, 2.81, 3.63, 2.43, 0.75, 
+#           1.65, 1.77, 2.79, 3.62, 4.14, 1.32, 
+#           0.39, 0.22, 0.28, 0.32, 0.36, 0.33)
 
 
 ### Model 
@@ -1102,9 +1128,9 @@ urban_prem
 
 sites_vax <- rural_prem / urban_prem
 
-# ggsave(sites_vax, filename = "../../output/figs/fig_siteARV_2017data.pdf",
-#        height=8, width=8, dpi=300,
-#        bg="#FFFFFF") 
+ggsave(sites_vax, filename = "../../output/figs/fig_siteARV_2017data.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF") 
 
 
 ############
@@ -1180,9 +1206,9 @@ oe_combined <- ggplot() +
     legend.direction = "vertical")
 oe_combined
 
-# ggsave(oe_combined, filename = "../../output/figs/oe_fig_site_2017data.pdf",
-#        height=4, width=8, dpi=300,
-#        bg="#FFFFFF") 
+ggsave(oe_combined, filename = "../../output/figs/oe_fig_site_2017data.pdf",
+       height=4, width=8, dpi=300,
+       bg="#FFFFFF") 
 
 # combine the matrices and VEs
 combined_model_figure <- adjusted_matrix / oe_combined
@@ -1193,9 +1219,9 @@ combined_model_figure <- wrap_plots(adjusted_matrix, oe_combined) +
   plot_layout(nrow=2, heights = c(600))
 combined_model_figure
 
-# ggsave(combined_model_figure, filename = "../../output/figs/fig2_matrix_model_2017data.pdf",
-#        height=6, width=8, dpi=300,
-#        bg="#FFFFFF") 
+ggsave(combined_model_figure, filename = "../../output/figs/fig2_matrix_model_2017data.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF") 
 
 # below generates separate oVE per site
 oe_rural_prem <- ggplot() + 
@@ -1249,82 +1275,101 @@ oe_urban_prem <- ggplot() +
 #        bg="#FFFFFF") 
 ################
 
-cat("End of model _v1 code.")
+cat("End of model script.")
 
 
 # ALTERNATIVE CODE FOR GRAPHS
 
-# # AR.rural.plot
-# AR.rural.plot2 <- allAR.rural.melt %>%
-#   filter(vax == "Vaccine") %>%
-#   ggplot(aes(age_group, value, fill=vax)) +
-#   geom_bar(stat = "identity", position = 'dodge') +
-#   geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
-#   annotate("text", x=6, y=28,
-#            label=paste0("VE = 26.2%"),
-#            hjust=0, size=5) +
-#   coord_flip() +
-#   xlab("Age Group") +
-#   ylab("") +
-#   labs(fill = NULL)  +
-#   axis_text_theme2 +
-#   theme(legend.position = "none",
-#         axis.text.x = element_text(angle=0))
-# AR.rural.plot2
-# 
-# # AR.urban.plot
-# AR.urban.plot2 <- allAR.urban.melt %>%
-#   filter(vax == "Vaccine") %>%
-#   ggplot(aes(age_group, value, fill=vax)) +
-#   coord_flip() +
-#   geom_bar(stat = "identity", position = 'dodge') +
-#   geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
-#   annotate("text", x=6, y=28,
-#            label=paste0("VE = 26.2%"),
-#            hjust=0, size=5) +
-#   xlab("Age Group") +
-#   ylab("Attack Rate (%)") +
-#   labs(fill = NULL) +
-#   axis_text_theme2 +
-#   theme(legend.position = "none",
-#         # axis.text.y = element_blank(),
-#         # axis.title.y = element_blank(),
-#         axis.text.x = element_text(angle=0))
-# AR.urban.plot2
-# 
-# # AR.prem.plot
-# AR.prem.plot2 <- allAR.prem.melt %>%
-#   filter(vax == "Vaccine") %>%
-#   ggplot(aes(age_group, value, fill=vax)) +
-#   geom_bar(stat = "identity", position = 'dodge') +
-#   geom_hline(yintercept = 26.9, color="black", linetype = "dashed", linewidth=1.3) +
-#   annotate("text", x=6, y=28,
-#            label=paste0("VE = 26.9%"),
-#            hjust=0, size=5) +
-#   coord_flip() +
-#   xlab("Age Group") +
-#   ylab("Attack Rate (%)") +
-#   labs(fill = NULL)  +
-#   axis_text_theme2 +
-#   theme(legend.position = "right",
-#         legend.direction = "vertical",
-#         # axis.text.y = element_blank(),
-#         # axis.title.y = element_blank(),
-#         axis.text.x = element_text(angle=0))
-# AR.prem.plot2
-# 
-# rural_model2 <- ruralmatrix | AR.rural.plot2
-# urban_model2 <- urbanmatrix | AR.urban.plot2
-# prem_model2 <- premmatrix | AR.prem.plot2
-# 
-# fig_model2 <- wrap_plots(rural_model2,
-#                         urban_model2,
-#                         prem_model2) + 
+# AR.rural.plot
+AR.rural.plot2 <- allAR.rural.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.2%"),
+           hjust=0, size=5) +
+  coord_flip() +
+  xlab("Age Group") +
+  ylab("") +
+  labs(fill = NULL)  +
+  axis_text_theme2 +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle=0))
+AR.rural.plot2
+
+# AR.urban.plot
+AR.urban.plot2 <- allAR.urban.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  coord_flip() +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.2, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.2%"),
+           hjust=0, size=5) +
+  xlab("Age Group") +
+  ylab("Attack Rate (%)") +
+  labs(fill = NULL) +
+  axis_text_theme2 +
+  theme(legend.position = "none",
+        # axis.text.y = element_blank(),
+        # axis.title.y = element_blank(),
+        axis.text.x = element_text(angle=0))
+AR.urban.plot2
+
+# AR.prem.plot
+AR.prem.plot2 <- allAR.prem.melt %>%
+  filter(vax == "Vaccine") %>%
+  ggplot(aes(age_group, value, fill=vax)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  geom_hline(yintercept = 26.9, color="black", linetype = "dashed", linewidth=1.3) +
+  annotate("text", x=6, y=28,
+           label=paste0("VE = 26.9%"),
+           hjust=0, size=5) +
+  coord_flip() +
+  xlab("Age Group") +
+  ylab("Attack Rate (%)") +
+  labs(fill = NULL)  +
+  axis_text_theme2 +
+  theme(legend.position = "right",
+        legend.direction = "vertical",
+        # axis.text.y = element_blank(),
+        # axis.title.y = element_blank(),
+        axis.text.x = element_text(angle=0))
+AR.prem.plot2
+
+rural_model2 <- ruralmatrix | AR.rural.plot2
+urban_model2 <- urbanmatrix | AR.urban.plot2
+prem_model2 <- premmatrix | AR.prem.plot2
+
+fig_model2 <- wrap_plots(rural_model2,
+                        urban_model2,
+                        prem_model2) + 
+  plot_annotation(tag_levels = 'A') + 
+  theme(plot.tag = element_text(size = 12)) +
+  plot_layout(nrow=3, heights = c(800, 800, 800))
+fig_model2
+
+ggsave(fig_model2, filename = "../../output/figs/fig_modelplot_v2_2017data.pdf",
+       height=8, width=8, dpi=300,
+       bg="#FFFFFF")
+
+# # ADDED BY MCK TO TEST
+# modelplots <- plot_grid(ruralmatrix, urbanmatrix,
+#                         AR.rural.plot, AR.urban.plot,
+#                         labels = c('GlobalMix Rural', 'GlobalMix Urban',
+#                                    'GlobalMix Rural', 'GlobalMix Urban',
+#                                    label_size = 12, vjust = 3))
+
+# premmatrix MISSING. WILL NEED SOME REFORMATING E.G. COMBINING LEGENDS AND
+# CONFORMING TEXTS TO axis_text-theme2 AVAILABLE IN CUSTOMIZATION CODE.
+
+# model_matrices <- ruralmatrix | urbanmatrix | premmatrix
+# model_ar <- AR.rural.plot | AR.urban.plot | AR.prem.plot
+# fig_model <- wrap_plots(model_matrices,
+#                         model_ar) + 
 #   plot_annotation(tag_levels = 'A') + 
 #   theme(plot.tag = element_text(size = 12)) +
-#   plot_layout(nrow=3, heights = c(800, 800, 800))
-# fig_model2
-# 
-# ggsave(fig_model2, filename = "../../output/figs/fig_modelplot_v2_2017data.pdf",
-#        height=8, width=8, dpi=300,
-#        bg="#FFFFFF")
+#   plot_layout(nrow=2, heights = c(600, 600))
+
