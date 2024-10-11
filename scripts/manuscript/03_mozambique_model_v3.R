@@ -683,7 +683,7 @@ oe_urban_v3 <- ggplot() +
 
 oe_combined_v3 <- oe_rural_v3 | oe_urban_v3
 oe_combined_v3
-ggsave(oe_combined_v3, filename = "output/figs/oe_fig_site_2021data.pdf",
+ggsave(oe_combined_v3, filename = "../../output/figs/oe_fig_site_2021data.pdf",
        height=4, width=8, dpi=300,
        bg="#FFFFFF") 
 
@@ -696,7 +696,11 @@ combined_model_figure_v3 <- wrap_plots(adjusted_matrix, oe_combined_v3) +
   theme(plot.tag = element_text(size = 12)) +
   plot_layout(nrow=2, heights = c(600))
 
-ggsave(combined_model_figure_v3, filename = "output/figs/fig2_matrix_model_2021data.pdf",
+ggsave(combined_model_figure_v3, filename = "./../output/figs/fig2_matrix_model_2021data.pdf",
+       height=6, width=8, dpi=300,
+       bg="#FFFFFF") 
+
+ggsave(combined_model_figure_v3, filename = "./../output/figs/fig2_matrix_model_2021data.png",
        height=6, width=8, dpi=300,
        bg="#FFFFFF") 
 

@@ -4,12 +4,13 @@
 # Author: Moses C Kiti, PhD
 ###############################################################################
 
-participants <- readRDS("../../data/clean/moz_participant_data_aim1.RDS")
+participants <- readRDS("../../data/clean/moz_participant_data_aim1_v1.RDS")
 # exit <- readRDS("../../data/clean/exit_interview_aim1.RDS")
-contacts <- readRDS("../../data/clean/moz_contact_data_aim1.RDS") %>%
-  left_join(participants %>% select(rec_id, study_site),
+contacts <- readRDS("../../data/clean/moz_contact_data_aim1_v1.RDS") %>%
+  left_join(participants %>% select(rec_id),
             by="rec_id")
 household <- readRDS("../../data/clean/moz_household_survey_aim1.RDS")
+exit <- readRDS("../../data/clean/moz_exit_interview_data_aim1.RDS")
 # location <- readRDS("../../data/clean/locations_visited_aim1.RDS")
 
 # set color themes
@@ -46,7 +47,11 @@ participants <- participants %>%
                 hh_size_cat = factor(hh_size_cat,
                                      levels = c("1", "2-3", "4-6", "7-10", "10+")))
 
-# cleaning contacts
+# merge with exit interview data
+participants <- participants %>%
+  left_join(exit, by = "rec_id")
+
+## cleaning contact data
 
 # relationship
 contacts$hh_membership <- factor(contacts$hh_membership,
@@ -54,18 +59,18 @@ contacts$hh_membership <- factor(contacts$hh_membership,
 
 # recategorize contact locations
 contacts <- contacts %>%
-  mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
-         cnt_school = ifelse(location_contact___2==1, 1,0),
-         cnt_work = ifelse(location_contact___3==1, 1,0),
-         cnt_otherplace = ifelse(location_contact___1==1 | 
-                                   location_contact___4==1 | 
-                                   location_contact___5==1 | 
-                                   location_contact___6==1 | 
-                                   location_contact___7==1 |
-                                   location_contact___8==1 | 
-                                   location_contact___9==1 |
-                                   location_contact___10==1 | 
-                                   location_contact___11==1,1,0))
+  mutate(cnt_home = ifelse(loc_home==1, 1, 0),
+         cnt_school = ifelse(loc_school==1, 1,0),
+         cnt_work = ifelse(loc_work==1, 1,0),
+         cnt_otherplace = ifelse(loc_otherhome==1 | 
+                                   loc_transport==1 | 
+                                   loc_market==1 | 
+                                   loc_street==1 | 
+                                   loc_well==1 |
+                                   loc_agricfield==1 | 
+                                   loc_playground==1 |
+                                   loc_worship==1 | 
+                                   loc_other==1,1,0))
 # masking
 contacts <- contacts %>%
   mutate(contact_mask2 = dplyr::case_when(contact_mask == "Yes, for the entire encounter" ~ "Yes",
@@ -151,30 +156,32 @@ tot_rural_contacts <- nrow(contacts %>% filter(study_site == "Rural"))
 tot_urban_contacts <- nrow(contacts %>% filter(study_site == "Urban"))
 
 
-#| label: tbl-participant-summary
+# label: tbl-participant-summary
 label(participants$study_site) <- "Site"
-label(participants$aim) <- "Aim"
 label(participants$participant_sex) <- "Sex"
-# label(participants$age) <- "Exact age"
 label(participants$participant_age) <- "Participant age"
 label(participants$read_write) <- "Able to read and write"
 label(participants$enrolled_school) <- "Currently enrolled in school"
 label(participants$highest_educ) <- "Highest education level attained"
 label(participants$school_level) <- "Current school level"
-# label(participants$transport_use) <- "Transport use last 3 months"
 label(participants$occupation) <- "Occupation"
+# label(participants$aim) <- "Aim"
+# # label(participants$age) <- "Exact age"
 label(participants$mask_use) <- "Regular mask use"
 label(participants$age_symptom) <- "Acute gastroenteritis (diarrhea)"
 label(participants$ari_symptom) <- "Acute respiratory infection"
 label(participants$contacts_completedby) <- "Who filled the diary?"
 label(participants$all_contacts) <- "Did you record all contacts?"
 label(participants$behavior_change) <- "Any social behavior change due to the pandemic?"
+# label(participants$transport_use) <- "Transport use last 3 months"
+
 
 table1 <- participants %>%
   # dplyr::filter(aim==1) %>%
   dplyr::select(study_site, participant_sex, participant_age,  read_write, 
-                enrolled_school, occupation, mask_use, age_symptom, 
-                ari_symptom, contacts_completedby) %>% # day_of_week, year, study_site
+                enrolled_school, occupation, mask_use, age_symptom, ari_symptom, 
+                contacts_completedby) %>% 
+  # day_of_week, year, study_site, 
   tbl_summary(by=study_site, 
               percent="column",
               digits = all_categorical() ~ 0,
@@ -188,7 +195,7 @@ table1 <- participants %>%
 # check homemaker, college
 
 # ## save table as text
-table2
+table1
 
 
 # label: fig-participant-summary-agesex
@@ -1350,8 +1357,7 @@ fig_crude_matrix <- subplot(style(rural_matrix, showlegend = F),
                 yanchor = "bottom",
                 showarrow = FALSE,
                 font = list(size = 18, face = "bold")
-           )),
-         height = 400)
+           )))
 # orca(fig_crude_matrix, "../../output/figs/fig_contacts_crude_matrix.pdf")
 
 
@@ -1383,7 +1389,7 @@ fig_baseline_distributions
 
 ggsave("output/figs/fig1_baseline_distributions.png", 
        fig_baseline_distributions, 
-       width = 8, height = 10, units = "in")
+       width = 8, height = 10, units = "in", , dpi=300)
 
 # label: fig-matrix-type
 
@@ -1537,8 +1543,7 @@ fig_matrix_type <- rural_matrix_type / urban_matrix_type
 
 
 ggsave(fig_matrix_type, filename = "../../output/figs/figS2_matrix_type.png",
-       height=8, width=8, units = "in",
-       bg="#FFFFFF")
+       height=8, width=8, units = "in", bg="#FFFFFF", dpi=300)
 
 
 ### Weighted contact matrix
@@ -1697,7 +1702,7 @@ table2 <- contacts %>%
                 hh_membership, duration_contact, frequency_contact, where_contact) %>%
   #  hh_member_relationship, 
   tbl_summary(by = study_site,
-              percent = "col",
+              percent = "column",
               digits = all_categorical() ~ 0,
               missing = "ifany") %>%
   add_overall() %>%

@@ -14,21 +14,6 @@ contacts2 <- df_contact_d1 %>%
   mutate(part_age = participant_age,
          part_id = rec_id) 
 
-
-contacts2 <- contacts2 %>%
-  mutate(cnt_home = ifelse(location_contact___0==1, 1,0),
-         cnt_school = ifelse(location_contact___2==1, 1,0),
-         cnt_work = ifelse(location_contact___3==1, 1,0),
-         cnt_otherplace = ifelse(location_contact___1==1 | 
-                                   location_contact___4==1 | 
-                                   location_contact___5==1 | 
-                                   location_contact___6==1 | 
-                                   location_contact___7==1 |
-                                   location_contact___8==1 | 
-                                   location_contact___9==1 |
-                                   location_contact___10==1 | 
-                                   location_contact___11==1,1,0))
-
 ##### Weighting
 ### age categories to join with population weighting
 contacts2 <- contacts2 %>%
@@ -50,7 +35,7 @@ contacts2 <- contacts2 %>%
   )
 
 ### read in population distribution
-pop_dist <- rio::import("../../data/clean/moz_pop_dist_new.csv") %>%
+pop_dist <- rio::import("../../data/clean/moz_pop_dist_all.csv") %>%
   pivot_longer(cols=urban:rural, names_to = "urb_rur", values_to = "tot_pop") %>%
   mutate(study_site = case_when(
     urb_rur =="urban" ~"Urban",
@@ -319,10 +304,10 @@ moz_prem <- moz_prem %>%
 
 
 ### population data for 5-year population distribution in Moz
-moz_pop_5yr <- read.csv("../../data/clean/agecat_5_total.csv")
+moz_pop_5yr <- read.csv("../../data/clean/moz_agecat_5yr_total.csv")
 
 ### population data for 10-year population distribution in Moz
-moz_pop_10yr <- read.csv("../../data/clean/agecat_10_total.csv") %>%
+moz_pop_10yr <- read.csv("../../data/clean/moz_agecat_10yr_total.csv") %>%
   # recategorize ages to conform to original agecat_10_total part_age2 groups
   mutate(part_age2 = case_when(part_age2 == "0_9" ~ "0-9y", 
                                part_age2 == "10_19" ~ "10-19y", 
