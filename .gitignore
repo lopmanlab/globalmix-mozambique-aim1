@@ -24,6 +24,7 @@ output/figs/.DS_Store
 data/
 output/
 scripts/
+manuscript/old_scripts/
 
 # folders
 scripts/old.zip
