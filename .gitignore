@@ -18,24 +18,18 @@ output/figs/.DS_Store
 # R Environment Variables
 .Renviron
 
-# data files
-scripts/00_data_download.R
-scripts/01_contact_data_cleaning_maion.Rmd
+## folders
+# scripts/00_data_download.R
+# scripts/01_contact_data_cleaning_maion.Rmd
+data/
+output/
+scripts/
 
 # folders
 scripts/old.zip
 data/raw/*
 output/
 data/clean/old_data.zip
-
-# html files
-scripts/*.html
-scripts/02a_contact_analysis_main_v2_files
-scripts/extract_aim2_metadata_files
-scripts/manuscript/
-
-# sensor files
-data/sensor_metadata/
 
 
 
