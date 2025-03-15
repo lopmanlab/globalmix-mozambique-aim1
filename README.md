@@ -34,3 +34,4 @@ This contains scripts and data to generate the output for this publication. The 
 5. moz_locations_visited_data_aim1.RDS - contains data on locations visited. Primary key is rec_id.
 
 ## How to run the code
+The main code is available in 01_main_mozambique_manuscript_doc.qmd. The code should be run sequentially as it appears in this file.
