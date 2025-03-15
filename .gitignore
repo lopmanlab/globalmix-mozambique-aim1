@@ -20,22 +20,19 @@ output/figs/.DS_Store
 .Renviron
 
 # data
-data/
 output/
 scripts/
-# data/sensor_metadata
-# data/clean/old_data1.zip
-# data/clean/old_data2.zip
-# data/clean/old_data3_09Aug2024
-# data/hh_survey_date.csv
-# data/clean/moz_participant_data_aim1_v1.RDS
-# data/clean/moz_participant_data_aim1_v2.RDS
-# data/clean/moz_participant_data_aim1_v3.RDS
-# data/clean/moz_contact_data_aim1_v1.RDS
-# data/clean/moz_contact_data_aim1_v2.RDS
-# data/clean/moz_contact_data_aim1_v3.RDS
-# data/clean/moz_contact_data_aim2.RDS
-# data/clean/pop_dist_ines_2021.csv
+data/sensor_metadata
+data/clean/old_data1.zip
+data/clean/old_data2.zip
+data/clean/old_data3_09Aug2024.zip
+data/hh_survey_date.csv
+data/clean/moz_participant_data_aim1_v2.RDS
+data/clean/moz_participant_data_aim1_v3.RDS
+data/clean/moz_contact_data_aim1_v2.RDS
+data/clean/moz_contact_data_aim1_v3.RDS
+data/clean/moz_contact_data_aim2.RDS
+data/clean/pop_dist_ines_2021.csv
 
 # some manuscript files
 manuscript/01_main_mozambique_manuscript_doc.docx
