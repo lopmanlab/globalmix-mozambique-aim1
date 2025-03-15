@@ -1,5 +1,7 @@
 # Comprehensively profiling social contact patterns in Mozambique: the GlobalMix project
 
+[Click on this link to access the full text publication](https://pmc.ncbi.nlm.nih.gov/articles/PMC11682788/)
+
 *Contributors: Moses C. Kiti<sup>1</sup>, Holin Chen <sup>1</sup>, Sara Kim <sup>1</sup>*
 Moses C. Kiti<sup>1,a</sup>, Charfudin Sacoor<sup>2,a</sup>, Obianuju G. Aguolu<sup>3</sup>, Alana Zelaya<sup>1</sup>, Holin Chen<sup>1</sup>, Sara S. Kim<sup>1</sup>, Nilzio Cavele<sup>2</sup>, Edgar Jamisse<sup>2</sup>, Corssino Tchavana<sup>2</sup>, Americo Jose<sup>4</sup>, Ivalda Macicame<sup>5</sup>, Orvalho Joaquim<sup>2</sup>, Noureen Ahmed<sup>6</sup>, Carol Y. Liu<sup>1</sup>, Inci Yildirim<sup>3</sup>, Kristin Nelson<sup>1</sup>, Samuel M. Jenness<sup>1</sup>, Herberth Maldonado<sup>7</sup>, Momin Kazi<sup>8</sup>, Rajan Srinivasan<sup>9</sup>, Venkata R. Mohan<sup>9</sup>, Alessia Melegaro<sup>10</sup>, Fauzia Malik<sup>6</sup>, Azucena Bardaji<sup>11</sup>, Saad B. Omer<sup>6,b</sup>, Ben Lopman<sup>1,b</sup>
 
