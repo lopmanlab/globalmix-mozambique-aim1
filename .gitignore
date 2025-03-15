@@ -20,46 +20,45 @@ output/figs/.DS_Store
 .Renviron
 
 # data
-data/raw
-data/sensor_metadata
-data/clean/old_data1.zip
-data/clean/old_data2.zip
-data/clean/old_data3_09Aug2024
-data/hh_survey_date.csv
-moz_participant_data_aim1_v1.RDS
-moz_participant_data_aim1_v2.RDS
-moz_participant_data_aim1_v3.RDS
-moz_contact_data_aim1_v1.RDS
-moz_contact_data_aim1_v2.RDS
-moz_contact_data_aim1_v3.RDS
-moz_contact_data_aim2.RDS
-pop_dist_ines_2021.csv
+data/
+output/
+scripts/
+# data/sensor_metadata
+# data/clean/old_data1.zip
+# data/clean/old_data2.zip
+# data/clean/old_data3_09Aug2024
+# data/hh_survey_date.csv
+# data/clean/moz_participant_data_aim1_v1.RDS
+# data/clean/moz_participant_data_aim1_v2.RDS
+# data/clean/moz_participant_data_aim1_v3.RDS
+# data/clean/moz_contact_data_aim1_v1.RDS
+# data/clean/moz_contact_data_aim1_v2.RDS
+# data/clean/moz_contact_data_aim1_v3.RDS
+# data/clean/moz_contact_data_aim2.RDS
+# data/clean/pop_dist_ines_2021.csv
 
-# manuscript
+# some manuscript files
 manuscript/01_main_mozambique_manuscript_doc.docx
 manuscript/01_main_mozambique_manuscript_doc.rmarkdown
 manuscript/Text_for_Moses.docx
 manuscript/01_main_mozambique_manuscript_doc_files
 manuscript/02_mozambique_analysis_code_files
 
-
-
-
+### all below here unnecessary
 moz_household_survey_aim1_v2.RDS
 moz_participant_data_aim2.RDS
 moz_household_survey_aim2.RDS
 
 # script files
-scripts/00_data_download.R
-scripts/01_contact_data_cleaning_main.Rmd
 scripts/cleaning/
+scripts/cleaning/00_data_download.R
+scripts/01_contact_data_cleaning_main.Rmd
 scripts/manuscript/model_figs_presentation.qmd
 scripts/cleaning/01a_cleaning_note_machi.R
 
 # folders
-scripts/old.zip
+scripts/old
 data/raw/*
-output/
 data/clean/old_data.zip
 
 
