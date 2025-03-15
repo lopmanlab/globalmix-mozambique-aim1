@@ -6,6 +6,7 @@ scripts/.DS_Store
 
 output/*.pdf
 scripts/manuscript/*.docx
+scripts/manuscript
 
 # Session Data files
 .RData
@@ -18,19 +19,58 @@ output/figs/.DS_Store
 # R Environment Variables
 .Renviron
 
-## folders
-# scripts/00_data_download.R
-# scripts/01_contact_data_cleaning_maion.Rmd
-data/
-output/
-scripts/
-manuscript/old_scripts/
+# data
+data/raw
+data/sensor_metadata
+data/clean/old_data1.zip
+data/clean/old_data2.zip
+data/clean/old_data3_09Aug2024
+data/hh_survey_date.csv
+moz_participant_data_aim1_v1.RDS
+moz_participant_data_aim1_v2.RDS
+moz_participant_data_aim1_v3.RDS
+moz_contact_data_aim1_v1.RDS
+moz_contact_data_aim1_v2.RDS
+moz_contact_data_aim1_v3.RDS
+moz_contact_data_aim2.RDS
+pop_dist_ines_2021.csv
+
+# manuscript
+manuscript/01_main_mozambique_manuscript_doc.docx
+manuscript/01_main_mozambique_manuscript_doc.rmarkdown
+manuscript/Text_for_Moses.docx
+manuscript/01_main_mozambique_manuscript_doc_files
+manuscript/02_mozambique_analysis_code_files
+
+
+
+
+moz_household_survey_aim1_v2.RDS
+moz_participant_data_aim2.RDS
+moz_household_survey_aim2.RDS
+
+# script files
+scripts/00_data_download.R
+scripts/01_contact_data_cleaning_main.Rmd
+scripts/cleaning/
+scripts/manuscript/model_figs_presentation.qmd
+scripts/cleaning/01a_cleaning_note_machi.R
 
 # folders
 scripts/old.zip
 data/raw/*
 output/
 data/clean/old_data.zip
+
+
+# html files
+scripts/*.html
+scripts/02a_contact_analysis_main_v2_files
+scripts/extract_aim2_metadata_files
+scripts/manuscript/
+
+# sensor files
+data/sensor_metadata/
 
 
 
